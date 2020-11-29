@@ -42,7 +42,7 @@ const LOGOS = [
     url: '//weixin.com'
   },
   {
-    title: 'Swiper',
+    title: '测试标题超长的情况啦啦啦啦',
     icon: 'https://swiperjs.com/i/favicon.png',
     themeColor: '#898989',
     url: 'https://swiperjs.com/'

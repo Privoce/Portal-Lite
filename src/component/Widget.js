@@ -32,6 +32,11 @@ const StyledWrapper = styled.a`
     font-weight: 400;
     color: #666;
     line-height: 0.2rem;
+    text-align: center;
+    width: 1.4rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   &.add {
     .icon {
