@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-
 const StyledWrapper = styled.a`
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   font-size: 0.2rem;
-
+  position: relative;
   .icon {
     width: 1.4rem;
     height: 1.05rem;
@@ -60,21 +59,34 @@ const StyledWrapper = styled.a`
     }
   }
 `;
+
 export default function Widget({
   themeColor = '#333',
   icon = 'https://www.apple.com/favicon.ico',
   title = '标题',
   url = '#',
+  showMenu = null,
   add,
   ...rest
 }) {
-  console.log({ add });
+  const handleContextMenu = (evt) => {
+    evt.preventDefault();
+    if (showMenu) {
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop; // 获取垂直滚动条位置
+      let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft; // 获取水平滚动条位置
+      let left = evt.clientX + scrollLeft;
+      let top = evt.clientY + scrollTop;
+      showMenu({ left, top });
+    }
+    return false;
+  };
   return (
     <StyledWrapper
       href={url}
       target="_blank"
       className={add && 'add'}
       bgColor={themeColor}
+      onContextMenu={handleContextMenu}
       {...rest}
     >
       <div className="icon">{!add && <img src={icon} alt="logo" />}</div>

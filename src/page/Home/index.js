@@ -3,8 +3,10 @@ import { useState } from 'react';
 import StyledWrapper from './styled';
 import BSearch from '../../component/BaiduSearch';
 import Account from '../../component/Account';
+import ContextMenu from '../../component/ContextMenu';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
+import { useContextMenu } from '../../hooks';
 const LOGOS = [
   {
     title: '微博',
@@ -51,6 +53,7 @@ const LOGOS = [
 ];
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
+  const { menuVisible, position, showMenu } = useContextMenu(false);
   const toggleModalVisible = (evt) => {
     evt.preventDefault();
     setModalVisible((prev) => !prev);
@@ -58,12 +61,13 @@ export default function Home() {
   return (
     <StyledWrapper>
       <Account />
+      {menuVisible && <ContextMenu {...position} />}
       <div className="search">
         <BSearch />
       </div>
       <div className="widgets">
         {LOGOS.map((logo) => {
-          return <Widget key={logo.title} {...logo} />;
+          return <Widget key={logo.title} showMenu={showMenu} {...logo} />;
         })}
         <Widget add onClick={toggleModalVisible} />
       </div>
