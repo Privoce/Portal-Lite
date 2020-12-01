@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import StyledWrapper from './styled';
 import BSearch from '../../component/BaiduSearch';
+import Account from '../../component/Account';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
 const LOGOS = [
@@ -56,6 +57,7 @@ export default function Home() {
   };
   return (
     <StyledWrapper>
+      <Account />
       <div className="search">
         <BSearch />
       </div>
