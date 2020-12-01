@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: -moz-available;
     min-height: -webkit-fill-available;
     min-height: fill-available;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-family: PingFangSC-Regular, PingFang SC;
   }
   button{
     outline:none;
