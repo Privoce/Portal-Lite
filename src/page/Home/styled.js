@@ -18,8 +18,8 @@ const StyledWrapper = styled.section`
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    gap: 0.24rem;
-    justify-content: flex-start;
+    /* margin-right: 0.24rem; */
+    justify-content: space-between;
   }
   .add_widget {
     position: fixed;

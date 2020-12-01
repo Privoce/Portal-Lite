@@ -70,6 +70,10 @@ export default function Home() {
           return <Widget key={logo.title} showMenu={showMenu} {...logo} />;
         })}
         <Widget add onClick={toggleModalVisible} />
+        {/* 填充物 */}
+        {new Array(4).fill(1).map((item, idx) => {
+          return <div style={{ width: '1.4rem', height: '1.05rem' }} key={idx} />;
+        })}
       </div>
       <button onClick={toggleModalVisible} className="add_widget">
         添加小组件

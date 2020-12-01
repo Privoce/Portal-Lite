@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
@@ -11,6 +12,7 @@ const StyledWrapper = styled.div`
     border-right: none;
     padding: 0.1rem 0.16rem;
     font-size: 0.18rem;
+    height: 0.44rem;
     &:focus {
       border: 0.02rem solid #4e6ef3;
       border-right: none;
@@ -22,17 +24,21 @@ const StyledWrapper = styled.div`
     word-break: keep-all;
     background: #4e6ef3;
     border-radius: 0rem 0.1rem 0.1rem 0rem;
-    padding: 0.1rem 0.35rem;
+    padding: 0.1rem 0.34rem 0.09rem 0.35rem;
     font-size: 0.18rem;
     font-weight: 600;
     color: #fff;
-    line-height: 0.24rem;
+    line-height: 0.25rem;
   }
 `;
 export default function BaiduSearch() {
+  const [input, setInput] = useState('');
+  const handleInput = (evt) => {
+    setInput(evt.target.value);
+  };
   return (
     <StyledWrapper>
-      <input type="text" className="input" />
+      <input value={input} onChange={handleInput} className="input" />
       <button className="btn">百度一下</button>
     </StyledWrapper>
   );

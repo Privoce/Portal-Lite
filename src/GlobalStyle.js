@@ -4,7 +4,6 @@ const GlobalStyle = createGlobalStyle`
   ${normalize};
   *{
     box-sizing:border-box;
-    user-select:none;
     outline:none;
     -webkit-text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
