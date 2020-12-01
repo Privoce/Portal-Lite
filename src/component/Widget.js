@@ -39,7 +39,7 @@ const StyledWrapper = styled.a`
   }
   &.add {
     .icon {
-      background: #d5d5d5;
+      background: #f9f9f9;
       position: relative;
       &:before,
       &:after {
