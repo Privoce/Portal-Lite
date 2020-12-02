@@ -12,7 +12,10 @@ const StyledWrapper = styled.div`
     display: flex;
     border-bottom: 1px solid #e4e4e4;
     margin: 0 0.2rem;
-    /* overflow: scroll; */
+    @media screen and (max-width: 375px) {
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
     .tab {
       cursor: pointer;
       color: #333;
