@@ -41,7 +41,9 @@ const StyledWrapper = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        gap: 0.44rem;
+        > a {
+          margin-right: 0.44rem;
+        }
       }
     }
   }
