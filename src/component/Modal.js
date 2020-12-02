@@ -22,23 +22,24 @@ const StyledWrapper = styled.section`
     border-radius: 0.04rem;
     padding: 0.7rem 0.25rem 0.35rem 0.25rem;
     width: 8.16rem;
-    @media screen and (max-width: 375px) {
-      width: 5rem;
-    }
+
     .add {
       padding: 0 0.2rem;
-      padding-bottom: 0.9rem;
+      padding-bottom: 0.8rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       .name {
         width: 1.42rem;
+        margin-right: 0.44rem;
       }
       .url {
         width: 3.24rem;
+        margin-right: 0.44rem;
       }
       .url,
       .name {
+        margin-bottom: 0.1rem;
         font-size: 0.16rem;
         font-weight: 400;
         color: #080808;
@@ -50,6 +51,7 @@ const StyledWrapper = styled.section`
       .btn {
         display: inherit;
         position: relative;
+        margin-bottom: 0.1rem;
         button {
           padding: 0.1rem 0.5rem;
           background: #4e6df2;
@@ -78,6 +80,13 @@ const StyledWrapper = styled.section`
       right: 0.16rem;
       width: 0.16rem;
       height: 0.16rem;
+    }
+    @media screen and (max-width: 375px) {
+      width: 5rem;
+      .add {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   }
 `;

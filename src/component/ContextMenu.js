@@ -4,7 +4,8 @@ const StyledMenu = styled.ul`
   z-index: 999;
   position: fixed;
   background: #ffffff;
-  box-shadow: 0rem 0.08rem 0.3rem 0rem #ececec, 0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5);
+
+  box-shadow: 0rem 0.02rem 0.12rem 0rem rgba(153, 153, 153, 0.8);
   border-radius: 0.03rem;
   border: 0.01rem solid #e8e8e8;
   padding: 0.12rem 0.16rem;

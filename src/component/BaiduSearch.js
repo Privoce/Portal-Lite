@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
     border: 0.02rem solid #c4c7ce;
     border-right: none;
     padding: 0.1rem 0.16rem;
-    font-size: 0.18rem;
+    font-size: 0.16rem;
     height: 0.44rem;
     &:focus {
       border: 0.02rem solid #4e6ef3;

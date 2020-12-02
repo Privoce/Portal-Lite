@@ -10,18 +10,22 @@ const StyledWrapper = styled.div`
   .tabs {
     font-weight: 400;
     display: flex;
-    gap: 0.61rem;
     border-bottom: 1px solid #e4e4e4;
     margin: 0 0.2rem;
+    /* overflow: scroll; */
     .tab {
       cursor: pointer;
-      color: #333333;
+      color: #333;
       line-height: 0.22rem;
       padding-bottom: 0.1rem;
-      margin-bottom: -1px;
+      margin-bottom: -1.5px;
+      margin-right: 0.61rem;
+      white-space: nowrap;
       &.active {
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
         color: #4e6df2;
-        border-bottom: 2px solid #4e6df2;
+        border-bottom: 0.03rem solid #4e6df2;
       }
     }
   }

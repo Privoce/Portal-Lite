@@ -26,7 +26,7 @@ const StyledWrapper = styled.section`
     bottom: 0.36rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.18rem;
+    font-size: 0.14rem;
     font-weight: 400;
     color: #333;
     line-height: 0.25rem;

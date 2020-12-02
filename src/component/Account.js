@@ -7,7 +7,7 @@ const StyledWrapper = styled.div`
   top: 0.16rem;
   right: 1rem;
 
-  font-size: 0.16rem;
+  font-size: 0.14rem;
   font-weight: 400;
   color: #333333;
   line-height: 0.22rem;

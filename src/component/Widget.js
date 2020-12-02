@@ -6,6 +6,7 @@ const StyledWrapper = styled.a`
   cursor: pointer;
   font-size: 0.2rem;
   position: relative;
+  padding-bottom: 0.32rem;
   .icon {
     width: 1.4rem;
     height: 1.05rem;
@@ -26,7 +27,7 @@ const StyledWrapper = styled.a`
       0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5), 0rem 0.04rem 0.24rem 0rem #a8a8a8;
   }
   .title {
-    margin-top: 0.12rem;
+    margin: 0.12rem 0 0 0;
     font-size: 0.14rem;
     font-weight: 400;
     color: #666;
