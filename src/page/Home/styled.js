@@ -6,7 +6,7 @@ const StyledWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 414px) {
     width: 4.68rem;
   }
   .search {

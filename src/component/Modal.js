@@ -81,7 +81,7 @@ const StyledWrapper = styled.section`
       width: 0.16rem;
       height: 0.16rem;
     }
-    @media screen and (max-width: 375px) {
+    @media screen and (max-width: 414px) {
       width: 5rem;
       .add {
         flex-direction: column;

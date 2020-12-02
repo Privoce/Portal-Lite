@@ -12,7 +12,7 @@ const StyledWrapper = styled.div`
     display: flex;
     border-bottom: 1px solid #e4e4e4;
     margin: 0 0.2rem;
-    @media screen and (max-width: 375px) {
+    @media screen and (max-width: 414px) {
       overflow-x: scroll;
       overflow-y: hidden;
     }
