@@ -2,9 +2,9 @@ import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import styled from 'styled-components';
-import IconPC from '../asset/img/icon.add.png';
-import IconMobile from '../asset/img/icon.add.png';
-import IconFS from '../asset/img/icon.add.png';
+import IconPC from '../asset/img/icon.pc.png';
+import IconMobile from '../asset/img/icon.mobile.png';
+import IconFS from '../asset/img/icon.full-screen.png';
 import { getPrefixPath } from '../util';
 
 const modalRoot = document.querySelector('#modal-root');

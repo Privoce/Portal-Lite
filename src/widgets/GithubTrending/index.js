@@ -110,7 +110,7 @@ export default function GithubTrending() {
                   <div className="repo_name">{repo_name}</div>
                   <div className="desc">{description}</div>
                 </div>
-                <a className="follow" href={url}>
+                <a className="follow" href={url} target="_blank">
                   Follow
                 </a>
               </div>
