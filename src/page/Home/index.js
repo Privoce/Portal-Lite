@@ -6,8 +6,17 @@ import Account from '../../component/Account';
 import ContextMenu from '../../component/ContextMenu';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
+import PreviewModal from '../../component/PreviewModal';
+
+import GithubTrending from '../../widgets/GithubTrending';
 import { useContextMenu } from '../../hooks';
 const LOGOS = [
+  {
+    title: 'Github Trending',
+    icon: './logos/github.trending.png',
+    themeColor: '#24292e',
+    widget: 'github-trending'
+  },
   {
     title: '微博',
     icon: './logos/wb.png',
@@ -53,10 +62,28 @@ const LOGOS = [
 ];
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [previewModalVisilbe, setPreviewModalVisilbe] = useState(false);
+  const [currWidget, setCurrWidget] = useState({});
   const { menuVisible, position, showMenu } = useContextMenu(false);
   const toggleModalVisible = (evt) => {
     evt.preventDefault();
     setModalVisible((prev) => !prev);
+  };
+  const togglePreviewModalVisible = () => {
+    setPreviewModalVisilbe((prev) => {
+      //  if (prev == false) {
+      //    setCurrWidget(app);
+      //  }
+      return !prev;
+    });
+  };
+  const handleWidgetClick = (w) => {
+    if (w.url) {
+      window.open(w.url, '_blank');
+    } else {
+      setCurrWidget(w);
+      togglePreviewModalVisible();
+    }
   };
   return (
     <StyledWrapper>
@@ -67,7 +94,14 @@ export default function Home() {
       </div>
       <div className="widgets">
         {LOGOS.map((logo) => {
-          return <Widget key={logo.title} showMenu={showMenu} {...logo} />;
+          return (
+            <Widget
+              key={logo.title}
+              onClick={handleWidgetClick.bind(null, logo)}
+              showMenu={showMenu}
+              {...logo}
+            />
+          );
         })}
         <Widget add onClick={toggleModalVisible} />
         {/* 填充物 */}
@@ -79,6 +113,13 @@ export default function Home() {
         添加小组件
       </button>
       <Modal visible={modalVisible} toggleVisible={toggleModalVisible} />
+      <PreviewModal
+        app={currWidget}
+        visible={previewModalVisilbe}
+        toggleVisible={togglePreviewModalVisible}
+      >
+        <GithubTrending />
+      </PreviewModal>
     </StyledWrapper>
   );
 }

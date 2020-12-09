@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-const StyledWrapper = styled.a`
+const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +19,7 @@ const StyledWrapper = styled.a`
     border: 0.01rem solid #e8e8e8;
     transition: all 0.5s;
     img {
-      height: 0.3rem;
+      height: 0.4rem;
     }
   }
   &:hover .icon {
@@ -65,7 +65,6 @@ export default function Widget({
   themeColor = '#333',
   icon = 'https://www.apple.com/favicon.ico',
   title = '标题',
-  url = '#',
   showMenu = null,
   add,
   ...rest
@@ -83,8 +82,6 @@ export default function Widget({
   };
   return (
     <StyledWrapper
-      href={url}
-      target="_blank"
       className={add && 'add'}
       bgColor={themeColor}
       onContextMenu={handleContextMenu}
