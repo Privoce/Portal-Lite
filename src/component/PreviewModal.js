@@ -21,7 +21,7 @@ const StyledWrapper = styled.section`
   .modal {
     position: relative;
     border-radius: 0.04rem;
-    padding: 0.08rem;
+    /* padding: 0.08rem; */
     min-height: 60vh;
     min-width: 375px;
     width: ${({ width }) => width};
