@@ -10,7 +10,14 @@ import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
 import { useContextMenu } from '../../hooks';
+import GithubDashboard from '../../widgets/GithubDashboard';
 const LOGOS = [
+  {
+    title: 'Github Dashboard',
+    icon: './logos/github.trending.png',
+    themeColor: '#24292e',
+    widget: 'github-dashboard'
+  },
   {
     title: 'Github Trending',
     icon: './logos/github.trending.png',
@@ -60,6 +67,10 @@ const LOGOS = [
     url: 'https://swiperjs.com/'
   }
 ];
+const Widgets = {
+  'github-trending': <GithubTrending />,
+  'github-dashboard': <GithubDashboard />
+};
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const [previewModalVisilbe, setPreviewModalVisilbe] = useState(false);
@@ -118,7 +129,7 @@ export default function Home() {
         visible={previewModalVisilbe}
         toggleVisible={togglePreviewModalVisible}
       >
-        <GithubTrending />
+        {Widgets[currWidget.widget]}
       </PreviewModal>
     </StyledWrapper>
   );
