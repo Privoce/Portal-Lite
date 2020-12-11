@@ -14,8 +14,8 @@ import GithubDashboard from '../../widgets/GithubDashboard';
 const LOGOS = [
   {
     title: 'Github Dashboard',
-    icon: './logos/github.trending.png',
-    themeColor: '#24292e',
+    icon: './logos/repo.png',
+    themeColor: '#fff',
     widget: 'github-dashboard'
   },
   {

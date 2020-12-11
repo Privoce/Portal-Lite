@@ -1,46 +1,80 @@
-// client_id:'f3505bc46977fad4bb33',
-// scope:'repo',
-const code = 'a7b66d47bf6ebb438260';
+import { useState, useEffect } from 'react';
+import { useQuery, useLazyQuery, gql } from '@apollo/client';
+import { format } from 'timeago.js';
+import StyledWrapper from './styled';
+import { useGithubToken } from '../../hooks';
 const cid = 'f3505bc46977fad4bb33';
-const rd = 'http://localhost:3000/one-stop-nav/auth';
-const secret = 'ab5cff13f4e1208258bb218522690f86a6d4bb5a';
 const authLink = `https://github.com/login/oauth/authorize?client_id=${cid}&scope=repo&redirect_uri=${encodeURI(
-  rd
+  process.env.REACT_APP_GH_REDIRECT
 )}`;
+const GET_VIEWER = gql`
+  query {
+    viewer {
+      avatarUrl
+      name
+      login
+    }
+  }
+`;
+const GET_REPOS = gql`
+  query GetRepos($viewer: String!) {
+    user(login: $viewer) {
+      repositories(isFork: false, first: 30, orderBy: { field: UPDATED_AT, direction: DESC }) {
+        totalCount
+        nodes {
+          name
+          createdAt
+          description
+          updatedAt
+          url
+        }
+      }
+    }
+  }
+`;
 export default function GithubDashboard() {
-  // https://github.com/login/oauth/authorize
-  // https://github.com/login/oauth/access_token
-  const handleOauth = () => {
-    fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      mode: 'no-cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify({
-        client_id: cid,
-        client_secret: secret,
-        code: code
-      })
-    })
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((data) => {
-        console.log({ data });
-      })
-      .catch((error) => {
-        console.log({ error });
-      });
-  };
+  const { token } = useGithubToken();
+  const [user, setUser] = useState(null);
+  const { loading: userLoading, data: userData } = useQuery(GET_VIEWER);
+  const [loadRepos, { loading: reposLoading, data: repos }] = useLazyQuery(GET_REPOS, {
+    variables: { viewer: user?.login }
+  });
+  useEffect(() => {
+    if (userData) {
+      setUser(userData.viewer);
+      loadRepos();
+    }
+  }, [userData, loadRepos]);
   return (
-    <div>
-      <a href={authLink} target="_blank">
-        去授权
-      </a>
-      <button onClick={handleOauth}>拿token</button>
-    </div>
+    <StyledWrapper>
+      {token ? (
+        <div className="auth">已授权</div>
+      ) : (
+        <a className="auth" href={authLink} target="_blank">
+          去授权 {token}
+        </a>
+      )}
+      {!userLoading && user && (
+        <div className="user">
+          <h2 className="username">{user.name}</h2>
+          <img className="head" src={user.avatarUrl} alt="用户头像" />
+        </div>
+      )}
+      {!reposLoading && repos && (
+        <ul className="list">
+          {repos.user.repositories.nodes.map((repo) => {
+            const { name, url, updatedAt } = repo;
+            return (
+              <li className="item" key={name}>
+                <a href={url} target="_blank">
+                  {name}
+                </a>
+                <span className="timeago">更新：{format(new Date(updatedAt), 'zh_CN')}</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </StyledWrapper>
   );
 }
