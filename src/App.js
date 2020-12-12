@@ -1,4 +1,4 @@
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './page/Home';
 import OAuth from './page/OAuth';
 import NotFound from './page/NotFound';
@@ -17,7 +17,7 @@ function App() {
   });
   return (
     <ApolloProvider client={client}>
-      <Router basename={'one-stop-nav'}>
+      <Router basename={'/'}>
         <Switch>
           <Route exact path="/">
             <Home />
