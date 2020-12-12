@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import StyledWrapper from './styled';
-import getToken from './github';
+import getGithubToken from './github';
+import getWeiboToken from './weibo';
 const APPs = {
-  github: 'Github OAuth'
+  github: 'Github OAuth',
+  weibo: 'Weibo OAuth'
 };
 export default function OAuth() {
   let { app } = useParams();
@@ -12,19 +14,33 @@ export default function OAuth() {
 
   useEffect(() => {
     let params = new URLSearchParams(location.search);
-
-    getToken(params.get('code')).then((resp) => {
-      console.log({ resp });
-      setPending(true);
-      const { code, data } = resp;
-      if (code == 0 && data.access_token) {
-        localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
-        setTipVisible(true);
-        setTimeout(() => {
-          window.close();
-        }, 3000);
-      }
-    });
+    if (app == 'github') {
+      getGithubToken(params.get('code')).then((resp) => {
+        console.log({ resp });
+        setPending(true);
+        const { code, data } = resp;
+        if (code == 0 && data.access_token) {
+          localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
+          setTipVisible(true);
+          setTimeout(() => {
+            window.close();
+          }, 3000);
+        }
+      });
+    } else {
+      getWeiboToken(params.get('code')).then((resp) => {
+        console.log({ resp });
+        setPending(true);
+        const { code, data } = resp;
+        if (code == 0 && data.access_token) {
+          localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
+          setTipVisible(true);
+          setTimeout(() => {
+            window.close();
+          }, 3000);
+        }
+      });
+    }
   }, []);
   const handleCloseClick = () => {
     window.close();

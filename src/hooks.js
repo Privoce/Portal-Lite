@@ -40,5 +40,25 @@ const useGithubToken = () => {
   }, []);
   return { token, setToken };
 };
+const StorageWeiboKey = 'WEIBO_OAUTH_TOKEN';
+const useWeiboToken = () => {
+  const [token, setToken] = useState(localStorage.getItem(StorageWeiboKey) || '');
+  useEffect(() => {
+    const storageEvent = (evt) => {
+      const { newValue, oldValue, key } = evt;
+      console.log({ evt });
+      if (key == StorageWeiboKey) {
+        if (newValue != oldValue) {
+          setToken(newValue);
+        }
+      }
+    };
+    window.addEventListener('storage', storageEvent);
+    return () => {
+      window.removeEventListener('storage', storageEvent);
+    };
+  }, []);
+  return { token, setToken };
+};
 
-export { useContextMenu, useGithubToken };
+export { useContextMenu, useWeiboToken, useGithubToken };

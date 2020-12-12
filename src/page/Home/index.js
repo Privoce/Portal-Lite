@@ -11,6 +11,7 @@ import PreviewModal from '../../component/PreviewModal';
 import GithubTrending from '../../widgets/GithubTrending';
 import { useContextMenu } from '../../hooks';
 import GithubDashboard from '../../widgets/GithubDashboard';
+import WeiboFeed from '../../widgets/WeiboFeed';
 const LOGOS = [
   {
     title: 'Github Dashboard',
@@ -28,7 +29,7 @@ const LOGOS = [
     title: '微博',
     icon: './logos/wb.png',
     themeColor: '#FFD902',
-    url: 'https://m.weibo.cn/'
+    widget: 'weibo-feed'
   },
   {
     title: '抖音',
@@ -69,7 +70,8 @@ const LOGOS = [
 ];
 const Widgets = {
   'github-trending': <GithubTrending />,
-  'github-dashboard': <GithubDashboard />
+  'github-dashboard': <GithubDashboard />,
+  'weibo-feed': <WeiboFeed />
 };
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
