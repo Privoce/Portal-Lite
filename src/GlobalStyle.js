@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
   }
   #root{
     background:#fff;
-    max-width:750px;
+    /* max-width:750px; */
         margin: 0 auto;
   }
 
@@ -63,6 +63,16 @@ const GlobalStyle = createGlobalStyle`
           font-size: 100px;
       }
   }
+  /* @media screen and (min-width: 1200px){
+      html {
+          font-size: 110px;
+      }
+  }
+  @media screen and (min-width: 1400px){
+      html {
+          font-size: 120px;
+      }
+  } */
 `;
 
 export default GlobalStyle;

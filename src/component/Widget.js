@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+import IconDefault from '../asset/img/icon.HTML5.png';
+import { getPrefixPath } from '../util';
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,8 +11,8 @@ const StyledWrapper = styled.div`
   position: relative;
   padding-bottom: 0.32rem;
   .icon {
-    width: 1.4rem;
-    height: 1.05rem;
+    width: 1.8rem;
+    height: 1.35rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,26 +63,31 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-
-export default function Widget({
-  themeColor = '#333',
-  icon = 'https://www.apple.com/favicon.ico',
-  title = '标题',
-  showMenu = null,
-  add,
-  ...rest
-}) {
+const AddTitle = {
+  nav: '添加导航',
+  tool: '添加工具'
+};
+export default function Widget({ type = 'nav', data = {}, showMenu = null, add, ...rest }) {
+  const { themeColor = '#333', icon = '', title = '标题', url = '' } = data;
+  const [ico, setIco] = useState(icon);
+  const handleImageError = () => {
+    setIco(IconDefault);
+  };
   const handleContextMenu = (evt) => {
     evt.preventDefault();
     if (showMenu) {
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop; // 获取垂直滚动条位置
-      let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft; // 获取水平滚动条位置
-      let left = evt.clientX + scrollLeft;
-      let top = evt.clientY + scrollTop;
+      // let scrollTop = document.documentElement.scrollTop || document.body.scrollTop; // 获取垂直滚动条位置
+      // let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft; // 获取水平滚动条位置
+      // let left = evt.clientX + scrollLeft;
+      // let top = evt.clientY + scrollTop;
+      let left = evt.clientX;
+      let top = evt.clientY;
+      console.log({ left, top });
       showMenu({ left, top });
     }
     return false;
   };
+
   return (
     <StyledWrapper
       className={add && 'add'}
@@ -87,9 +95,17 @@ export default function Widget({
       onContextMenu={handleContextMenu}
       {...rest}
     >
-      <div className="icon">{!add && <img src={icon} alt="logo" />}</div>
+      <div className="icon">
+        {!add && (
+          <img
+            onError={handleImageError}
+            src={ico ? ico : `${getPrefixPath(url)}favicon.ico`}
+            alt="logo"
+          />
+        )}
+      </div>
 
-      <h2 className="title">{add ? '添加导航' : title}</h2>
+      <h2 className="title">{add ? AddTitle[type] : title}</h2>
     </StyledWrapper>
   );
 }

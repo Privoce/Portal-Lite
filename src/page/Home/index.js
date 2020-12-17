@@ -2,135 +2,118 @@
 import { useState } from 'react';
 import StyledWrapper from './styled';
 import BSearch from '../../component/BaiduSearch';
-import Account from '../../component/Account';
+// import Account from '../../component/Account';
 import ContextMenu from '../../component/ContextMenu';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
+import ToolModal from '../../component/ToolModal';
 import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
 import { useContextMenu } from '../../hooks';
 import GithubDashboard from '../../widgets/GithubDashboard';
-const LOGOS = [
-  {
-    title: 'Github Dashboard',
-    icon: './logos/repo.png',
-    themeColor: '#fff',
-    widget: 'github-dashboard'
-  },
-  {
-    title: 'Github Trending',
-    icon: './logos/github.trending.png',
-    themeColor: '#24292e',
-    widget: 'github-trending'
-  },
-  {
-    title: '微博',
-    icon: './logos/wb.png',
-    themeColor: '#FFD902',
-    url: 'https://m.weibo.cn/'
-  },
-  {
-    title: '抖音',
-    icon: './logos/dy.png',
-    themeColor: '#888',
-    url: '//douyin.com'
-  },
-  {
-    title: '爱奇艺',
-    icon: './logos/iqy.png',
-    themeColor: '#07D302',
-    url: 'http://iqiyi.com/'
-  },
-  {
-    title: '淘宝',
-    icon: './logos/tb.png',
-    themeColor: '#Ff9',
-    url: 'http://taobao.com/'
-  },
-  {
-    title: '知乎',
-    icon: './logos/zh.png',
-    themeColor: '#1787fc',
-    url: '//zhichu.com'
-  },
-  {
-    title: '微信',
-    icon: './logos/wx.png',
-    themeColor: '#fff',
-    url: '//weixin.com'
-  },
-  {
-    title: '测试标题超长的情况啦啦啦啦',
-    icon: 'https://swiperjs.com/i/favicon.png',
-    themeColor: '#898989',
-    url: 'https://swiperjs.com/'
-  }
-];
+import { Sites, Tools } from './data';
 const Widgets = {
   'github-trending': <GithubTrending />,
   'github-dashboard': <GithubDashboard />
 };
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [previewModalVisilbe, setPreviewModalVisilbe] = useState(false);
+  const [toolModalVisible, setToolModalVisible] = useState(false);
+  const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [currWidget, setCurrWidget] = useState({});
+  const [currFrame, setCurrFrame] = useState(null);
   const { menuVisible, position, showMenu } = useContextMenu(false);
   const toggleModalVisible = (evt) => {
     evt.preventDefault();
     setModalVisible((prev) => !prev);
   };
-  const togglePreviewModalVisible = () => {
-    setPreviewModalVisilbe((prev) => {
-      //  if (prev == false) {
-      //    setCurrWidget(app);
-      //  }
+  const togglePreviewModalVisible = (app) => {
+    setPreviewModalVisible((prev) => {
+      if (prev == false) {
+        setCurrFrame(app);
+      }
+      return !prev;
+    });
+  };
+  const toggleToolModalVisible = () => {
+    setToolModalVisible((prev) => {
       return !prev;
     });
   };
   const handleWidgetClick = (w) => {
     if (w.url) {
-      window.open(w.url, '_blank');
+      if (w.frame) {
+        togglePreviewModalVisible(w);
+      } else {
+        window.open(w.url, '_blank');
+      }
     } else {
       setCurrWidget(w);
-      togglePreviewModalVisible();
+      toggleToolModalVisible();
     }
   };
   return (
     <StyledWrapper>
-      <Account />
+      {/* <Account /> */}
       {menuVisible && <ContextMenu {...position} />}
       <div className="search">
         <BSearch />
       </div>
-      <div className="widgets">
-        {LOGOS.map((logo) => {
-          return (
-            <Widget
-              key={logo.title}
-              onClick={handleWidgetClick.bind(null, logo)}
-              showMenu={showMenu}
-              {...logo}
-            />
-          );
-        })}
-        <Widget add onClick={toggleModalVisible} />
-        {/* 填充物 */}
-        {new Array(4).fill(1).map((item, idx) => {
-          return <div style={{ width: '1.4rem', height: '1.05rem' }} key={idx} />;
-        })}
-      </div>
+      <section className="block">
+        <h2 className="header">常用导航</h2>
+        <div className="widgets">
+          {Sites.map((s) => {
+            return (
+              <Widget
+                key={s.header}
+                onClick={handleWidgetClick.bind(null, s)}
+                showMenu={showMenu}
+                updateCurrAPP={setCurrWidget}
+                data={s}
+              />
+            );
+          })}
+          <Widget add onClick={toggleModalVisible} />
+          {/* 填充物 */}
+          {new Array(3).fill(1).map((item, idx) => {
+            return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
+          })}
+        </div>
+      </section>
+      <section className="block">
+        <h2 className="header">实用工具</h2>
+        <div className="widgets">
+          {Tools.map((t) => {
+            return (
+              <Widget
+                key={t.title}
+                onClick={handleWidgetClick.bind(null, t)}
+                showMenu={showMenu}
+                updateCurrAPP={setCurrWidget}
+                data={t}
+              />
+            );
+          })}
+          <Widget add type="tool" onClick={toggleModalVisible} />
+          {/* 填充物 */}
+          {new Array(4).fill(1).map((item, idx) => {
+            return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
+          })}
+        </div>
+      </section>
       <button onClick={toggleModalVisible} className="add_widget">
         添加小组件
       </button>
       <Modal visible={modalVisible} toggleVisible={toggleModalVisible} />
-      <PreviewModal
-        app={currWidget}
-        visible={previewModalVisilbe}
-        toggleVisible={togglePreviewModalVisible}
-      >
+      <ToolModal app={currWidget} visible={toolModalVisible} toggleVisible={toggleToolModalVisible}>
         {Widgets[currWidget.widget]}
-      </PreviewModal>
+      </ToolModal>
+      <PreviewModal
+        app={currFrame || {}}
+        visible={previewModalVisible}
+        toggleVisible={togglePreviewModalVisible}
+      ></PreviewModal>
     </StyledWrapper>
   );
 }

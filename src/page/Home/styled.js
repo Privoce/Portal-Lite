@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
   margin: 0 auto;
-  width: 8rem;
+  width: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,14 +12,25 @@ const StyledWrapper = styled.section`
   .search {
     padding-top: 0.91rem;
     padding-bottom: 0.6rem;
-    width: 100%;
+    width: 6.6rem;
   }
-  .widgets {
+  .block {
     display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    /* margin-right: 0.24rem; */
-    justify-content: space-between;
+    flex-direction: column;
+    .header {
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-size: 0.16rem;
+      font-weight: 500;
+      color: #333;
+      line-height: 0.22rem;
+    }
+    .widgets {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      /* margin-right: 0.24rem; */
+      justify-content: space-between;
+    }
   }
   .add_widget {
     position: fixed;

@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import IconPC from '../asset/img/icon.pc.png';
 import IconMobile from '../asset/img/icon.mobile.png';
 import IconFS from '../asset/img/icon.full-screen.png';
-import IconOpen from '../asset/img/icon.open.png';
 import { getPrefixPath } from '../util';
 
 const modalRoot = document.querySelector('#modal-root');
@@ -15,14 +14,14 @@ const StyledWrapper = styled.section`
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   .modal {
     position: relative;
     border-radius: 0.04rem;
-    padding: 0.08rem;
+    /* padding: 0.08rem; */
     min-height: 60vh;
     min-width: 375px;
     width: ${({ width }) => width};
@@ -30,35 +29,17 @@ const StyledWrapper = styled.section`
     overflow: scroll;
     border: 1px solid rgba(22, 22, 22, 0.6);
     resize: horizontal;
-    background: rgba(2, 2, 2, 0.8);
-    .loading {
-      color: ${({ themeColor }) => themeColor};
-      z-index: 996;
-      font-size: 0.22rem;
-      font-weight: 800;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-    }
-    .iframe-container {
+    background: #fff;
+    transition: all 0.5s ease-in-out;
+
+    .widget-container {
       z-index: 998;
       overflow: hidden;
       /* 16:9 aspect ratio */
       /* padding-top: 56.25%; */
       height: 90vh;
       position: relative;
-      transition: all 0.5s ease-in-out;
-      iframe {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 90vh;
-        width: 100%;
-        border: 0;
-      }
     }
-
     @media screen and (max-width: 414px) {
       width: 5rem;
       .add {
@@ -160,14 +141,15 @@ const SizeMap = {
     height: '100vh'
   }
 };
-export default function PreviewModal({
+export default function ToolModal({
   app: { url = '', title = '', icon = '', themeColor },
   visible = false,
-  toggleVisible = null
+  toggleVisible = null,
+  children
 }) {
   const [screenSize, setScreenSize] = useState({ width: '8.16rem', height: 'auto' });
   const [aniEnd, setAniEnd] = useState(false);
-  const iframe = useRef(null);
+  const widget = useRef(null);
   console.log({ visible });
   const handleAniEnd = () => {
     console.log('ani end');
@@ -175,42 +157,20 @@ export default function PreviewModal({
       setAniEnd(true);
     }, 500);
   };
-  const handleIframeLoad = () => {
-    // setLoaded(true);
-    let iframeEle = iframe.current;
-    try {
-      var bHeight = iframeEle.contentWindow.document.body.scrollHeight;
-      var dHeight = iframeEle.contentWindow.document.documentElement.scrollHeight;
-      var height = Math.min(bHeight, dHeight);
-      iframeEle.height = height + 50;
-      console.log(iframe.height);
-    } catch (ex) {
-      console.log({ ex });
-    }
-  };
   const handleScreenSize = (key) => {
     let size = SizeMap[key] || {};
     setScreenSize(size);
   };
   const handleFullScreen = () => {
-    iframe.current.requestFullscreen();
+    widget.current.requestFullscreen();
   };
 
   return visible ? (
     <ModalWrapper>
       <StyledWrapper {...screenSize} themeColor={themeColor}>
         <div className="modal animate__animated animate__zoomIn" onAnimationEnd={handleAniEnd}>
-          <div className="loading">加载中...</div>
-          <div className="iframe-container">
-            {aniEnd && (
-              <iframe
-                rel="nofollow"
-                ref={iframe}
-                src={url}
-                onLoad={handleIframeLoad}
-                frameBorder="0"
-              ></iframe>
-            )}
+          <div ref={widget} className="widget-container">
+            {aniEnd && children}
           </div>
         </div>
         <div onClick={toggleVisible} className="close" />
@@ -240,9 +200,6 @@ export default function PreviewModal({
           <button className="btn" onClick={handleFullScreen}>
             <img src={IconFS} alt="全屏" />
           </button>
-          <a className="btn" href={url} target={'_blank'}>
-            <img src={IconOpen} alt="新窗口打开" />
-          </a>
         </div>
       </StyledWrapper>
     </ModalWrapper>
