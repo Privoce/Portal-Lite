@@ -9,11 +9,11 @@ const StyledCard = styled.li`
   border-radius: 10px;
   border: 1px solid #e6e6e6;
   background: #ffffff;
-  box-shadow: 34px -34px 68px #e6e6e6, -34px 34px 68px #ffffff;
+  /* box-shadow: 34px -34px 68px #e6e6e6, -34px 34px 68px #ffffff; */
   transition: all 0.2s;
-  &:hover {
+  /* &:hover {
     transform: scale(1.1);
-  }
+  } */
 `;
 
 export default StyledCard;

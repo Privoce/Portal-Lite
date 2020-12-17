@@ -10,8 +10,11 @@ import ToolModal from '../../component/ToolModal';
 import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
+import YinNote from '../../widgets/YinNote';
+import GoAuth from '../../component/GoAuth';
 import { useContextMenu } from '../../hooks';
 import GithubDashboard from '../../widgets/GithubDashboard';
+import WidgetWrapper from './WidgetWrapper';
 import { Sites, Tools } from './data';
 const Widgets = {
   'github-trending': <GithubTrending />,
@@ -66,7 +69,7 @@ export default function Home() {
           {Sites.map((s) => {
             return (
               <Widget
-                key={s.header}
+                key={s.title}
                 onClick={handleWidgetClick.bind(null, s)}
                 showMenu={showMenu}
                 updateCurrAPP={setCurrWidget}
@@ -96,15 +99,25 @@ export default function Home() {
             );
           })}
           <Widget add type="tool" onClick={toggleModalVisible} />
-          {/* 填充物 */}
-          {new Array(4).fill(1).map((item, idx) => {
-            return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
-          })}
         </div>
       </section>
-      <button onClick={toggleModalVisible} className="add_widget">
+      <section className="block">
+        <h2 className="header">我的小组件</h2>
+        <div className="widgets">
+          <WidgetWrapper title="Github热门">
+            <GithubTrending />
+          </WidgetWrapper>
+          <WidgetWrapper title="印象笔记">
+            <YinNote />
+          </WidgetWrapper>
+          <WidgetWrapper title="Github 仓库">
+            <GoAuth />
+          </WidgetWrapper>
+        </div>
+      </section>
+      {/* <button onClick={toggleModalVisible} className="add_widget">
         添加小组件
-      </button>
+      </button> */}
       <Modal visible={modalVisible} toggleVisible={toggleModalVisible} />
       <ToolModal app={currWidget} visible={toolModalVisible} toggleVisible={toggleToolModalVisible}>
         {Widgets[currWidget.widget]}

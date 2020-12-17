@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
   margin: 0 auto;
-  width: 10rem;
+  width: 10.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,22 +17,28 @@ const StyledWrapper = styled.section`
   .block {
     display: flex;
     flex-direction: column;
+    width: 100%;
     .header {
       font-family: PingFangSC-Medium, PingFang SC;
       font-size: 0.16rem;
       font-weight: 500;
       color: #333;
-      line-height: 0.22rem;
+      line-height: 0.25rem;
+      margin-left: 0.25rem;
     }
     .widgets {
       display: flex;
       flex-wrap: wrap;
       width: 100%;
-      /* margin-right: 0.24rem; */
-      justify-content: space-between;
+      justify-content: flex-start;
+      padding: 0 0.125rem;
+      > div {
+        margin-left: 0.125rem;
+        margin-right: 0.125rem;
+      }
     }
   }
-  .add_widget {
+  /* .add_widget {
     position: fixed;
     bottom: 0.36rem;
     left: 50%;
@@ -41,7 +47,7 @@ const StyledWrapper = styled.section`
     font-weight: 400;
     color: #333;
     line-height: 0.25rem;
-  }
+  } */
 `;
 
 export default StyledWrapper;

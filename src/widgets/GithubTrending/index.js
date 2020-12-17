@@ -36,47 +36,28 @@ const StyledWrapper = styled.div`
       cursor: pointer;
       padding: 0.06rem;
       transition: all 0.5s;
+      color: #000;
       &.active {
         background-color: #333;
-        a {
-          color: #fff;
-        }
-      }
-      a {
-        color: #000;
+        color: #fff;
       }
     }
   }
 `;
 const RepoList = ({ data }) => {
   return (
-    <ul id="LIST_TOP" className="list">
+    <ul className="list">
       {data.map((r, idx) => {
-        return (
-          <Repo
-            isFirst={idx == 0}
-            repo={r}
-            key={r.url}
-            className="animate__animated animate__flipInX"
-            style={{ animationDelay: `${idx * 0.3}s`, animationDuration: '.5s' }}
-          ></Repo>
-        );
+        return <Repo isFirst={idx == 0} repo={r} key={r.url}></Repo>;
       })}
     </ul>
   );
 };
 const DeveloperList = ({ data = [] }) => {
   return (
-    <ul id="LIST_TOP" className="list">
-      {data.map((d, idx) => {
-        return (
-          <Developer
-            className="animate__animated animate__fadeInUp"
-            style={{ animationDelay: `${idx * 0.3}s`, animationDuration: '.5s' }}
-            developer={d}
-            key={d.username}
-          ></Developer>
-        );
+    <ul className="list">
+      {data.map((d) => {
+        return <Developer developer={d} key={d.username}></Developer>;
       })}
     </ul>
   );
@@ -113,13 +94,13 @@ export default function GithubTrending() {
           onClick={handleTabClick.bind(null, 'repositories')}
           className={`tab ${type == 'repositories' && 'active'}`}
         >
-          <a href="#LIST_TOP">热门仓库</a>
+          热门仓库
         </li>
         <li
           onClick={handleTabClick.bind(null, 'developers')}
           className={`tab ${type == 'developers' && 'active'}`}
         >
-          <a href="#LIST_TOP">热门开发者</a>
+          热门开发者
         </li>
       </ul>
       {type == 'developers' ? <DeveloperList data={devs} /> : <RepoList data={repos} />}
