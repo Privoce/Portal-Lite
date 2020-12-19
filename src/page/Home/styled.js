@@ -10,8 +10,10 @@ const StyledWrapper = styled.section`
     width: 4.68rem;
   }
   .search {
-    padding-top: 0.91rem;
-    padding-bottom: 0.6rem;
+    /* padding-top: 0.91rem; */
+    /* padding-bottom: 0.6rem; */
+    padding-top: 0.2rem;
+    padding-bottom: 1rem;
     width: 6.6rem;
   }
   .block {
