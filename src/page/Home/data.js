@@ -105,13 +105,6 @@ const Tools = [
   },
   {
     frame: true,
-    title: '杨二的主页',
-    icon: './logos/avator.jpg',
-    themeColor: '#222',
-    url: 'https://yangerxiao.com/'
-  },
-  {
-    frame: true,
     title: '沧海一声笑歌曲集',
     themeColor: 'rgb(57, 82, 96)',
     url: 'https://works.yangerxiao.com/swordman-music-list/'
@@ -133,12 +126,6 @@ const Tools = [
     title: 'HTML颜色手册',
     themeColor: '#3cb371',
     url: 'https://works.yangerxiao.com/html-color-cheatsheet/'
-  },
-  {
-    frame: true,
-    title: '健身激励器',
-    themeColor: '#fa6f57',
-    url: 'https://works.yangerxiao.com/oh-my-goal/'
   },
   {
     frame: true,

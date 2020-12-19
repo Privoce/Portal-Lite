@@ -26,11 +26,11 @@ const StyledWrapper = styled.div`
     padding: 0.11rem 0.46rem;
   }
 `;
-export default function GoAuth() {
+export default function GoAuth({ authLink = '' }) {
   return (
     <StyledWrapper>
       <p className="tip">暂未授权，点击进行授权</p>
-      <a className="btn" href="http://" target="_blank" rel="noopener noreferrer">
+      <a className="btn" href={authLink} target="_blank" rel="noopener noreferrer">
         去授权
       </a>
     </StyledWrapper>

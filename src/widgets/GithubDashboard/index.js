@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useLazyQuery, gql } from '@apollo/client';
 import { format } from 'timeago.js';
+import GoAuth from '../../component/GoAuth';
 import StyledWrapper from './styled';
 import { useGithubToken } from '../../hooks';
 const cid = 'f3505bc46977fad4bb33';
@@ -45,15 +46,8 @@ export default function GithubDashboard() {
       loadRepos();
     }
   }, [userData, loadRepos]);
-  return (
+  return token ? (
     <StyledWrapper>
-      {token ? (
-        <div className="auth">已授权</div>
-      ) : (
-        <a className="auth" href={authLink} target="_blank">
-          去授权 {token}
-        </a>
-      )}
       {!userLoading && user && (
         <div className="user">
           <h2 className="username">{user.name}</h2>
@@ -76,5 +70,7 @@ export default function GithubDashboard() {
         </ul>
       )}
     </StyledWrapper>
+  ) : (
+    <GoAuth authLink={authLink} />
   );
 }

@@ -11,6 +11,7 @@ const StyledWrapper = styled.div`
     border-radius: 0.05rem;
     border: 0.01rem solid #e8e8e8;
     overflow: hidden;
+    padding: 0.14rem 0.16rem;
   }
   .title {
     width: 100%;

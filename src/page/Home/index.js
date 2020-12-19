@@ -11,6 +11,7 @@ import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
 import YinNote from '../../widgets/YinNote';
+import WeiboHot from '../../widgets/WeiboHot';
 import GoAuth from '../../component/GoAuth';
 import { useContextMenu } from '../../hooks';
 import GithubDashboard from '../../widgets/GithubDashboard';
@@ -86,7 +87,7 @@ export default function Home() {
       </section>
       <section className="block">
         <h2 className="header">实用工具</h2>
-        <div className="widgets">
+        <div className="widgets one_line">
           {Tools.map((t) => {
             return (
               <Widget
@@ -107,8 +108,14 @@ export default function Home() {
           <WidgetWrapper title="Github热门">
             <GithubTrending />
           </WidgetWrapper>
+          <WidgetWrapper title="Github个人仓库">
+            <GithubDashboard />
+          </WidgetWrapper>
           <WidgetWrapper title="印象笔记">
             <YinNote />
+          </WidgetWrapper>
+          <WidgetWrapper title="微博热搜">
+            <WeiboHot />
           </WidgetWrapper>
           <WidgetWrapper title="Github 仓库">
             <GoAuth />

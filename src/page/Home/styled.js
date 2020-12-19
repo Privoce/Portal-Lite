@@ -32,6 +32,10 @@ const StyledWrapper = styled.section`
       width: 100%;
       justify-content: flex-start;
       padding: 0 0.125rem;
+      &.one_line {
+        flex-wrap: nowrap;
+        overflow: scroll;
+      }
       > div {
         margin-left: 0.125rem;
         margin-right: 0.125rem;
