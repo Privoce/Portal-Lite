@@ -31,9 +31,10 @@ const StyledWrapper = styled.div`
       position: absolute;
       font-size: 0.12rem;
       list-style: none;
-      padding: 0;
-      padding-left: 0.16rem;
+      padding: 0.02rem 0.16rem 0 0.16rem;
+
       margin: 0;
+      margin-top: -0.06rem;
       left: 0;
       top: 0.5rem;
       z-index: 999;
@@ -41,6 +42,17 @@ const StyledWrapper = styled.div`
       border: 0.02rem solid #4e6ef3;
       border-top: none;
       display: none;
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        height: 2px;
+        width: 94%;
+        background-color: #f5f5f6;
+      }
       .item {
         font-size: 0.14rem;
         padding: 0.04rem 0.02rem;
@@ -78,7 +90,7 @@ const StyledWrapper = styled.div`
 `;
 export default function BaiduSearch() {
   const [input, setInput] = useState('');
-  const [associates, setAssociates] = useState(['教书先生']);
+  const [associates, setAssociates] = useState([]);
   const handleInput = (evt) => {
     setInput(evt.target.value);
   };
@@ -96,6 +108,8 @@ export default function BaiduSearch() {
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      setAssociates([]);
     }
   }, [input]);
   return (
