@@ -96,7 +96,7 @@ export default function BaiduSearch() {
   };
   useEffect(() => {
     if (input) {
-      fetch(`http://localhost:3008/service/baidu/ass?w=${input}`)
+      fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/baidu/ass?w=${input}`)
         .then((response) => response.json())
         .then((resp) => {
           console.log({ resp });
