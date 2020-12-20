@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery, gql } from '@apollo/client';
 import { format } from 'timeago.js';
 import GoAuth from '../../component/GoAuth';
 import StyledWrapper from './styled';
@@ -36,10 +36,15 @@ const GET_REPOS = gql`
 export default function GithubDashboard() {
   const { token } = useGithubToken();
   const [user, setUser] = useState(null);
-  const { loading: userLoading, data: userData } = useQuery(GET_VIEWER);
+  const [loadUserData, { loading: userLoading, data: userData }] = useLazyQuery(GET_VIEWER);
   const [loadRepos, { loading: reposLoading, data: repos }] = useLazyQuery(GET_REPOS, {
     variables: { viewer: user?.login }
   });
+  useEffect(() => {
+    if (token) {
+      loadUserData();
+    }
+  }, [token, loadUserData]);
   useEffect(() => {
     if (userData) {
       setUser(userData.viewer);

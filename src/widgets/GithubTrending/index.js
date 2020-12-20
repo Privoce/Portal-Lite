@@ -8,6 +8,7 @@ const StyledWrapper = styled.div`
   /* position: relative; */
   background: #fff;
   overflow: scroll;
+  overscroll-behavior: contain;
   height: 100%;
   ul {
     display: flex;

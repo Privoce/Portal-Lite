@@ -80,14 +80,14 @@ export default function Home() {
           })}
           <Widget add onClick={toggleModalVisible} />
           {/* 填充物 */}
-          {new Array(3).fill(1).map((item, idx) => {
+          {/* {new Array(3).fill(1).map((item, idx) => {
             return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
-          })}
+          })} */}
         </div>
       </section>
-      <section className="block">
+      <section className="block one_line">
         <h2 className="header">实用工具</h2>
-        <div className="widgets one_line">
+        <div className="widgets">
           {Tools.map((t) => {
             return (
               <Widget

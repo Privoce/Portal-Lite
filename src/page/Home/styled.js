@@ -12,8 +12,8 @@ const StyledWrapper = styled.section`
   .search {
     /* padding-top: 0.91rem; */
     /* padding-bottom: 0.6rem; */
-    padding-top: 0.2rem;
-    padding-bottom: 1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     width: 6.6rem;
   }
   .block {
@@ -34,13 +34,20 @@ const StyledWrapper = styled.section`
       width: 100%;
       justify-content: flex-start;
       padding: 0 0.125rem;
-      &.one_line {
-        flex-wrap: nowrap;
-        overflow: scroll;
-      }
+
       > div {
         margin-left: 0.125rem;
         margin-right: 0.125rem;
+      }
+    }
+    &.one_line {
+      .header {
+        margin-bottom: -0.125rem;
+      }
+      .widgets {
+        flex-wrap: nowrap;
+        overflow: scroll;
+        padding-top: 0.25rem;
       }
     }
   }

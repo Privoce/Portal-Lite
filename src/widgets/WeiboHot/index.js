@@ -1,17 +1,20 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import News from './mock_data';
+// import News from './mock_data';
+import { formatNumber } from '../../util';
 const StyledWrapper = styled.ul`
   padding: 0.02rem;
   margin: 0;
   list-style: none;
   overflow: scroll;
+  overscroll-behavior: contain;
   height: 100%;
   .item {
     font-size: 0.13rem;
     font-weight: 400;
     line-height: 0.18rem;
-    margin-bottom: 0.24rem;
+    margin-bottom: 0.1rem;
+    /* margin-bottom: 0.24rem; */
     white-space: nowrap;
     padding-left: 0.3rem;
     padding-right: 0.4rem;
@@ -20,6 +23,12 @@ const StyledWrapper = styled.ul`
     position: relative;
     a {
       color: #0178b6;
+      .heat {
+        padding-left: 0.15rem;
+        font-size: 0.1rem;
+        color: #666;
+        text-transform: lowercase;
+      }
     }
     &:before {
       position: absolute;
@@ -56,28 +65,42 @@ const StyledWrapper = styled.ul`
     &[data-tag-type='new']:after {
       background: #ff3852;
     }
+    &[data-tag-type='recomm']:after {
+      background: #ff3852;
+    }
   }
 `;
 const TagMap = {
-  hot: '热',
-  hotest: '沸',
-  new: '新'
+  ['热']: 'hot',
+  ['沸']: 'hotest',
+  ['新']: 'new',
+  ['荐']: 'recomm'
 };
 export default function WeiboHot() {
+  const [hots, setHots] = useState([]);
+  useEffect(() => {
+    const getHots = async () => {
+      const list = await fetch('https://api.oioweb.cn/api/summary.php');
+      const arr = await list.json();
+      setHots(arr);
+    };
+    getHots();
+  }, []);
   return (
     <StyledWrapper>
-      {News.map((n, idx) => {
-        const { txt, link, tag } = n;
+      {hots.map((n, idx) => {
+        const { title, link, hot, heat } = n;
         return (
           <li
             className="item"
             key={idx}
             data-seq={idx + 1}
-            data-tag-type={tag}
-            data-tag={TagMap[tag]}
+            data-tag-type={TagMap[hot]}
+            data-tag={hot}
           >
             <a href={link} target="_blank" rel="noopener noreferrer">
-              {txt}
+              {title}
+              {heat && <span className="heat">{formatNumber(heat)}</span>}
             </a>
           </li>
         );
