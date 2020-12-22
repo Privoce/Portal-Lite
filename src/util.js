@@ -8,6 +8,12 @@ const getPrefixPath = (url) => {
   }
   return iconPrefix;
 };
+const highlightWord = (list, keyWord = '') => {
+  if (!keyWord) return list;
+  return list.map((w) => {
+    return w.replace(new RegExp(keyWord, 'g'), `<mark>${keyWord}</mark>`);
+  });
+};
 const formatNumber = (n, base = 10000) => {
   let tmp = 0;
   if (n >= base) {
@@ -30,4 +36,4 @@ const splitToChunks = (array, parts = 15) => {
   return result;
 };
 
-export { getPrefixPath, splitToChunks, formatNumber };
+export { getPrefixPath, splitToChunks, formatNumber, highlightWord };

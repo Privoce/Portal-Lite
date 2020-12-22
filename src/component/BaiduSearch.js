@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { highlightWord } from '../util';
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -22,43 +22,57 @@ const StyledWrapper = styled.div`
         /* border-right: none; */
       }
     }
-
+    .line {
+      position: absolute;
+      top: 0.44rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: block;
+      height: 0.01rem;
+      width: 94%;
+      background-color: #f5f5f6;
+      z-index: 999;
+    }
     .list {
       height: 2rem;
       overflow: scroll;
+      overscroll-behavior: contain;
       background-color: #fff;
       width: 100%;
       position: absolute;
       font-size: 0.12rem;
       list-style: none;
-      padding: 0.02rem 0.16rem 0 0.16rem;
+      padding: 0.02rem 0.16rem 0.04rem 0.16rem;
 
       margin: 0;
       margin-top: -0.06rem;
       left: 0;
       top: 0.5rem;
-      z-index: 999;
+      z-index: 996;
       border-radius: 0 0 0.1rem 0.1rem;
       border: 0.02rem solid #4e6ef3;
       border-top: none;
       display: none;
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        display: block;
-        height: 2px;
-        width: 94%;
-        background-color: #f5f5f6;
-      }
+
       .item {
-        font-size: 0.14rem;
-        padding: 0.04rem 0.02rem;
-        cursor: pointer;
-        &:hover {
+        a {
+          display: inline-block;
+          font-size: 0.15rem;
+          line-height: 0.21rem;
+          padding: 0.07rem 0;
+          color: #222;
+          cursor: pointer;
+          width: 100%;
+          /* &:hover {
           background-color: #eee;
+        } */
+          mark {
+            background: none;
+            color: #626676;
+          }
+        }
+        &:hover a {
+          color: #4e6ef3;
         }
       }
     }
@@ -79,13 +93,16 @@ const StyledWrapper = styled.div`
     /* width: 1.4rem;
     height: 0.44rem; */
     word-break: keep-all;
-    background: #4e6ef3;
+    background-color: #4e6ef3;
     border-radius: 0 0.1rem 0.1rem 0;
     padding: 0.1rem 0.34rem 0.09rem 0.35rem;
     font-size: 0.18rem;
     font-weight: 600;
     color: #fff;
     line-height: 0.25rem;
+    &:hover {
+      background-color: #4662d9;
+    }
   }
 `;
 export default function BaiduSearch() {
@@ -116,13 +133,16 @@ export default function BaiduSearch() {
     <StyledWrapper>
       <div className={`input ${associates.length ? 'asses' : ''}`}>
         <input value={input} onChange={handleInput} />
+        <div className="line"></div>
         <ul className={`list`}>
-          {associates.map((word) => {
+          {highlightWord(associates, input).map((word, idx) => {
             return (
               <li key={word} className="item">
-                <a target="_blank" href={`https://www.baidu.com/s?wd=${word}`}>
-                  {word}
-                </a>
+                <a
+                  target="_blank"
+                  href={`https://www.baidu.com/s?wd=${associates[idx]}`}
+                  dangerouslySetInnerHTML={{ __html: word }}
+                ></a>
               </li>
             );
           })}

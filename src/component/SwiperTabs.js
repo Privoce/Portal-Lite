@@ -41,7 +41,7 @@ const StyledWrapper = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        > a {
+        > div {
           margin-right: 0.44rem;
         }
       }
@@ -144,7 +144,7 @@ export default function SwiperTabs() {
             return (
               <SwiperSlide key={idx}>
                 {items.map((logo) => {
-                  return <Widget key={logo.title} {...logo} />;
+                  return <Widget key={logo.title} data={logo} />;
                 })}
               </SwiperSlide>
             );
