@@ -10,7 +10,8 @@ const StyledWrapper = styled.section`
   align-items: center;
   justify-content: center;
   height: 100%;
-  .loading {
+  .loading,
+  .error {
     font-size: 0.2rem;
     color: #333;
   }
@@ -98,17 +99,23 @@ const TagMap = {
 export default function WeiboHot() {
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errTip, setErrTip] = useState('');
   useEffect(() => {
     const getHots = async () => {
-      const list = await fetch('https://api.oioweb.cn/api/summary.php');
-      const arr = await list.json();
-      setHots(arr);
+      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/weibo/hot`);
+      const { code, data, msg } = await list.json();
       setLoading(false);
+      if (code != 0) {
+        setErrTip(msg);
+        return;
+      }
+      setHots(data);
     };
     getHots();
   }, []);
   return (
     <StyledWrapper>
+      {errTip && <div className="error">{errTip}</div>}
       {loading ? (
         <div className="loading">数据初始化中...</div>
       ) : (
@@ -123,7 +130,7 @@ export default function WeiboHot() {
                 data-tag-type={TagMap[hot]}
                 data-tag={hot}
               >
-                <a href={link} target="_blank" rel="noopener noreferrer">
+                <a href={`https://s.weibo.com${link}`} target="_blank" rel="noopener noreferrer">
                   {title}
                   {heat && (
                     <span className="heat">

@@ -72,6 +72,9 @@ const StyledWrapper = styled.div`
           }
         }
         &:hover a {
+          mark {
+            color: #4e6ef3;
+          }
           color: #4e6ef3;
         }
       }
