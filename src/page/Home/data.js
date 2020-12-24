@@ -11,6 +11,11 @@ const Sites = [
     url: 'https://www.bilibili.com/'
   },
   {
+    title: '百度',
+    themeColor: '#fff',
+    url: 'https://www.baidu.com/'
+  },
+  {
     title: '爱奇艺',
     icon: './logos/iqy.png',
     themeColor: '#07D302',

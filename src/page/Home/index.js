@@ -1,5 +1,7 @@
 // import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 import StyledWrapper from './styled';
 import BSearch from '../../component/BaiduSearch';
 // import Account from '../../component/Account';
@@ -27,6 +29,8 @@ export default function Home() {
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [currWidget, setCurrWidget] = useState({});
   const [currFrame, setCurrFrame] = useState(null);
+  const [tools, setTools] = useState(Tools);
+  const [sites, setSites] = useState(Sites);
   const { menuVisible, position, showMenu } = useContextMenu(false);
   const toggleModalVisible = (evt) => {
     evt.preventDefault();
@@ -57,6 +61,26 @@ export default function Home() {
       toggleToolModalVisible();
     }
   };
+  const handleNavDragEnd = (result) => {
+    console.log({ result });
+    const { source, destination } = result;
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+    if (source.droppableId == 'nav-droppable') {
+      let tmpItem = sites.splice(source.index, 1);
+      sites.splice(destination.index, 0, tmpItem[0]);
+      console.log({ sites });
+      setSites(sites);
+    } else {
+      let tmpItem = tools.splice(source.index, 1);
+      tools.splice(destination.index, 0, tmpItem[0]);
+      console.log({ tools });
+      setTools(tools);
+    }
+  };
   return (
     <StyledWrapper>
       {/* <Account /> */}
@@ -66,28 +90,96 @@ export default function Home() {
       </div>
       <section className="block">
         <h2 className="header">常用导航</h2>
-        <div className="widgets">
-          {Sites.map((s) => {
-            return (
-              <Widget
-                key={s.title}
-                onClick={handleWidgetClick.bind(null, s)}
-                showMenu={showMenu}
-                updateCurrAPP={setCurrWidget}
-                data={s}
-              />
-            );
-          })}
-          <Widget add onClick={toggleModalVisible} />
-          {/* 填充物 */}
-          {/* {new Array(3).fill(1).map((item, idx) => {
+        <DragDropContext onDragEnd={handleNavDragEnd}>
+          <Droppable droppableId="nav-droppable" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                className="widgets"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                data-drag-over={snapshot.isDraggingOver}
+              >
+                {sites.map((s, index) => {
+                  return (
+                    <Draggable key={s.title} draggableId={s.title} index={index}>
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            data-dragging={snapshot.isDragging}
+                          >
+                            <Widget
+                              // key={s.title}
+                              onClick={handleWidgetClick.bind(null, s)}
+                              showMenu={showMenu}
+                              updateCurrAPP={setCurrWidget}
+                              data={s}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+                <Widget add onClick={toggleModalVisible} />
+                {/* 填充物 */}
+                {/* {new Array(3).fill(1).map((item, idx) => {
             return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
           })} */}
-        </div>
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </section>
       <section className="block one_line">
         <h2 className="header">实用工具</h2>
-        <div className="widgets">
+        <DragDropContext onDragEnd={handleNavDragEnd}>
+          <Droppable droppableId="tool-droppable" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                className="widgets"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                data-drag-over={snapshot.isDraggingOver}
+              >
+                {tools.map((s, index) => {
+                  return (
+                    <Draggable key={s.title} draggableId={s.title} index={index}>
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            data-dragging={snapshot.isDragging}
+                          >
+                            <Widget
+                              onClick={handleWidgetClick.bind(null, s)}
+                              showMenu={showMenu}
+                              updateCurrAPP={setCurrWidget}
+                              data={s}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+                <Widget add type="tool" onClick={toggleModalVisible} />
+                {/* <Widget add onClick={toggleModalVisible} /> */}
+                {/* 填充物 */}
+                {/* {new Array(3).fill(1).map((item, idx) => {
+            return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
+          })} */}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {/* <div className="widgets">
           {Tools.map((t) => {
             return (
               <Widget
@@ -100,7 +192,7 @@ export default function Home() {
             );
           })}
           <Widget add type="tool" onClick={toggleModalVisible} />
-        </div>
+        </div> */}
       </section>
       <section className="block">
         <h2 className="header">我的小组件</h2>
