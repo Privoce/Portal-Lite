@@ -132,6 +132,18 @@ export default function BaiduSearch() {
       setAssociates([]);
     }
   }, [input]);
+  useEffect(() => {
+    const enterKeyUp = ({ keyCode }) => {
+      if (keyCode == 13) {
+        window.open(`https://www.baidu.com/s?wd=${input}`, '_blank');
+      }
+    };
+    window.addEventListener('keyup', enterKeyUp);
+
+    return () => {
+      window.removeEventListener('keyup', enterKeyUp);
+    };
+  }, [input]);
   return (
     <StyledWrapper>
       <div className={`input ${associates.length ? 'asses' : ''}`}>
