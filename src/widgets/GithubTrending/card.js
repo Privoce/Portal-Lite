@@ -11,6 +11,7 @@ const StyledCard = styled.li`
   background: #ffffff;
   /* box-shadow: 34px -34px 68px #e6e6e6, -34px 34px 68px #ffffff; */
   transition: all 0.2s;
+  flex-wrap: wrap;
   /* &:hover {
     transform: scale(1.1);
   } */

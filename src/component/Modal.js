@@ -47,6 +47,9 @@ const StyledWrapper = styled.section`
         padding: 0.1rem 0.08rem;
         border-radius: 0.04rem;
         border: 0.01rem solid #e0e0e0;
+        &::placeholder {
+          font-size: 0.14rem;
+        }
       }
       .btn {
         display: inherit;

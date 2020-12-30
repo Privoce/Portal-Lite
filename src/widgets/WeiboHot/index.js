@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // import News from './mock_data';
-import IconHot from '../../asset/img/icon.hot.png';
+// import IconHot from '../../asset/img/icon.hot.png';
 
-import { formatNumber } from '../../util';
+// import { formatNumber } from '../../util';
 const StyledWrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -27,8 +27,8 @@ const StyledWrapper = styled.section`
       font-size: 0.13rem;
       font-weight: 400;
       line-height: 0.18rem;
-      margin-bottom: 0.1rem;
-      /* margin-bottom: 0.24rem; */
+      /* margin-bottom: 0.1rem; */
+      margin-bottom: 0.24rem;
       white-space: nowrap;
       padding-left: 0.3rem;
       padding-right: 0.4rem;
@@ -121,7 +121,7 @@ export default function WeiboHot() {
       ) : (
         <ul className="wrapper">
           {hots.map((n, idx) => {
-            const { title, link, hot, heat } = n;
+            const { title, link, hot } = n;
             return (
               <li
                 className="item"
@@ -132,12 +132,12 @@ export default function WeiboHot() {
               >
                 <a href={`https://s.weibo.com${link}`} target="_blank" rel="noopener noreferrer">
                   {title}
-                  {heat && (
+                  {/* {heat && (
                     <span className="heat">
                       {formatNumber(heat)}
                       <img className="hot" src={IconHot} alt="hot icon" />
                     </span>
-                  )}
+                  )} */}
                 </a>
               </li>
             );
