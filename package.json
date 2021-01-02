@@ -1,6 +1,6 @@
 {
-  "name": "one-stop-nav",
-  "version": "0.1.0",
+  "name": "portal-lite-china",
+  "version": "0.9.0",
   "private": false,
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -57,16 +57,14 @@
     "webpack-manifest-plugin": "3.0.0",
     "workbox-webpack-plugin": "6.0.2"
   },
-  "homepage": "https://nav.yangerxiao.com",
+  "homepage": "https://nicegoodthings.com",
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build -f -r https://github.com/zerosoul/one-stop-nav.git"
+    "build": "node scripts/build.js"
   },
   "browserslist": {
     "production": [
-      ">0.2%",
+      ">80%",
       "not dead",
       "not op_mini all"
     ],
@@ -84,7 +82,6 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "gh-pages": "^3.1.0",
     "husky": "^4.3.6",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1"
