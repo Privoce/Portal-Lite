@@ -23,7 +23,7 @@ const StyledWrapper = styled.div`
     margin: 0;
   }
   .tabs {
-    z-index: 999;
+    z-index: 995;
     position: absolute;
     bottom: 0.1rem;
     left: 0.1rem;

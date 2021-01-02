@@ -42,6 +42,13 @@ const Sites = [
 ];
 const Tools = [
   {
+    title: 'We Transfer',
+    // icon: './logos/repo.png',
+    url: 'https://anonfiles.com/',
+    themeColor: '#fff',
+    frame: true
+  },
+  {
     title: 'Github Dashboard',
     icon: './logos/repo.png',
     themeColor: '#fff',
