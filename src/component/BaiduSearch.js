@@ -113,8 +113,12 @@ const StyledWrapper = styled.div`
 export default function BaiduSearch() {
   const [input, setInput] = useState('');
   const [associates, setAssociates] = useState([]);
+  const [focused, setFocused] = useState(false);
   const handleInput = (evt) => {
     setInput(evt.target.value);
+  };
+  const handleFocus = (val = false) => {
+    setFocused(val);
   };
   useEffect(() => {
     if (input) {
@@ -140,18 +144,23 @@ export default function BaiduSearch() {
         window.open(`https://www.baidu.com/s?wd=${input}`, '_blank');
       }
     };
-    if (input) {
+    if (input && focused) {
       window.addEventListener('keyup', enterKeyUp);
     }
 
     return () => {
       window.removeEventListener('keyup', enterKeyUp);
     };
-  }, [input]);
+  }, [input, focused]);
   return (
     <StyledWrapper>
       <div className={`input ${associates.length ? 'asses' : ''}`}>
-        <input value={input} onChange={handleInput} />
+        <input
+          value={input}
+          onFocus={handleFocus.bind(null, true)}
+          onBlur={handleFocus.bind(null, false)}
+          onChange={handleInput}
+        />
         <div className="line"></div>
         <ul className={`list`}>
           {highlightWord(associates, input).map((word, idx) => {
