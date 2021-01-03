@@ -54,8 +54,8 @@ const TabData = [
     title: '常用',
     items: [
       {
-        title: '微博',
-        icon: './logos/wb.png',
+        title: '哔哩哔哩',
+        icon: 'https://www.bilibili.com/favicon.ico',
         themeColor: '#FFD902'
       },
       {
@@ -69,9 +69,29 @@ const TabData = [
     title: '办公效率',
     items: [
       {
-        title: '微信',
-        icon: './logos/wx.png',
+        title: 'Github',
+        icon: 'https://github.com/favicon.ico',
         themeColor: '#fff'
+      },
+      {
+        title: '石墨文档',
+        icon: 'https://shimo.im/favicon.ico',
+        themeColor: '#f6f6f6'
+      },
+      {
+        title: '印象笔记',
+        icon: 'https://www.yinxiang.com/favicon.ico',
+        themeColor: '#1dbe6b'
+      },
+      {
+        title: 'Office',
+        icon: 'https://blobs.officehome.msocdn.com/images/content/images/favicon-8f211ea639.ico',
+        themeColor: '#d63c18'
+      },
+      {
+        title: '百度翻译',
+        icon: 'https://fanyi.baidu.com/favicon.ico',
+        themeColor: '#4898fc'
       }
     ]
   },
@@ -79,9 +99,19 @@ const TabData = [
     title: '社交',
     items: [
       {
+        title: '微博',
+        icon: './logos/wb.png',
+        themeColor: '#FFD902'
+      },
+      {
         title: '知乎',
         icon: './logos/zh.png',
-        themeColor: '#1787fc'
+        themeColor: '#FFD902'
+      },
+      {
+        title: '豆瓣',
+        icon: 'https://www.douban.com/favicon.ico',
+        themeColor: '#edf4ed'
       }
     ]
   },
@@ -89,9 +119,29 @@ const TabData = [
     title: '视频音乐',
     items: [
       {
-        title: '淘宝',
-        icon: './logos/tb.png',
+        title: '优酷',
+        icon: 'https://img.alicdn.com/tfs/TB1WeJ9Xrj1gK0jSZFuXXcrHpXa-195-195.png',
+        themeColor: '#fff'
+      },
+      {
+        title: '腾讯视频',
+        icon: 'https://v.qq.com/favicon.ico',
         themeColor: '#Ff9'
+      },
+      {
+        title: '爱奇艺',
+        icon: './logos/iqy.png',
+        themeColor: '#3a4412'
+      },
+      {
+        title: '网易云音乐',
+        icon: 'https://s1.music.126.net/style/favicon.ico?v20180823',
+        themeColor: '#242424'
+      },
+      {
+        title: '酷狗',
+        icon: 'https://www.kugou.com/favicon.ico',
+        themeColor: '#fff'
       }
     ]
   },
@@ -99,9 +149,14 @@ const TabData = [
     title: '新闻阅读',
     items: [
       {
-        title: '爱奇艺',
-        icon: './logos/iqy.png',
-        themeColor: '#07D302'
+        title: '虎嗅网',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/6fDNqR.jpg',
+        themeColor: '#f60'
+      },
+      {
+        title: '新华网',
+        icon: 'http://xinhuanet.com/favicon.ico',
+        themeColor: '#167ff8'
       }
     ]
   }

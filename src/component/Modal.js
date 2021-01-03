@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import uniqolor from 'uniqolor';
+import { validateUrl } from '../util';
 // import Widget from '../component/Widget';
 import SwiperTabs from '../component/SwiperTabs';
 
@@ -20,7 +23,8 @@ const StyledWrapper = styled.section`
     position: relative;
     background: #fff;
     border-radius: 0.04rem;
-    padding: 0.7rem 0.25rem 0.35rem 0.25rem;
+    /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
+    padding: 0.7rem 0.25rem 0 0.25rem;
     width: 8.16rem;
 
     .add {
@@ -29,7 +33,7 @@ const StyledWrapper = styled.section`
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      .name {
+      .title {
         width: 1.42rem;
         margin-right: 0.44rem;
       }
@@ -38,7 +42,7 @@ const StyledWrapper = styled.section`
         margin-right: 0.44rem;
       }
       .url,
-      .name {
+      .title {
         margin-bottom: 0.1rem;
         font-size: 0.16rem;
         font-weight: 400;
@@ -94,22 +98,62 @@ const StyledWrapper = styled.section`
   }
 `;
 
-export default function Modal({ visible = false, toggleVisible = null }) {
-  console.log({ visible });
-  return visible ? (
+export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
+  const [tip, setTip] = useState('');
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
+  const handleSubmit = () => {
+    let finalUrl = url;
+    if (!title) {
+      setTip('名称不能为空');
+      return;
+    }
+    if (!url) {
+      setTip('地址不能为空');
+      return;
+    }
+    if (!url.startsWith('http')) {
+      finalUrl = `//${url}`;
+    }
+    if (!validateUrl(finalUrl)) {
+      setTip('请输入正确的地址');
+      return;
+    }
+    const { color } = uniqolor.random({
+      saturation: 80,
+      lightness: [70, 80]
+    });
+    addApp({ title, url: finalUrl, themeColor: color });
+    resetModalVisible();
+  };
+  const handleInputChange = (evt) => {
+    console.log({ evt });
+    let { value } = evt.target;
+    if (evt.target.className == 'title') {
+      setTitle(value);
+    } else {
+      setUrl(value);
+    }
+  };
+  return type ? (
     <ModalWrapper>
       <StyledWrapper>
         <div className="modal ">
           <div className="add">
-            <input placeholder="名称" className="name" />
-            <input placeholder="地址" className="url" />
+            <input
+              placeholder="名称"
+              onChange={handleInputChange}
+              value={title}
+              className="title"
+            />
+            <input placeholder="地址" onChange={handleInputChange} value={url} className="url" />
             <div className="btn">
-              <button>添 加</button>
-              <div className="tip">格式有误</div>
+              <button onClick={handleSubmit}>添 加</button>
+              {tip && <div className="tip">{tip}</div>}
             </div>
           </div>
           <SwiperTabs />
-          <img src={IconClose} onClick={toggleVisible} className="close" />
+          <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
       </StyledWrapper>
     </ModalWrapper>

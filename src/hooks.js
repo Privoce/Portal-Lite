@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-
+import { Webapps, Tools } from './data';
 const useContextMenu = () => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ left: 0, top: 0 });
-  const showMenu = (pos) => {
-    setPosition(pos);
+  const [widget, setWidget] = useState(undefined);
+  const showMenu = ({ position, widget }) => {
+    setPosition(position);
+    setWidget(widget);
     setVisible(true);
   };
   const hideMenu = () => {
+    setWidget(undefined);
     setVisible(false);
   };
   useEffect(() => {
@@ -18,7 +21,7 @@ const useContextMenu = () => {
       document.onclick = null;
     };
   }, []);
-  return { menuVisible: visible, position, showMenu, hideMenu };
+  return { menuVisible: visible, position, widget, showMenu, hideMenu };
 };
 const StorageGithubKey = 'GITHUB_OAUTH_TOKEN';
 const useGithubToken = () => {
@@ -40,5 +43,38 @@ const useGithubToken = () => {
   }, []);
   return { token, setToken };
 };
+const AppKeyMap = {
+  webapp: { localKey: 'WEB_APP_DATA', initalData: Webapps },
+  tool: { localKey: 'WEB_TOOL_DATA', initalData: Tools }
+};
+const useAppData = (src = 'webapp') => {
+  const { localKey, initalData } = AppKeyMap[src];
+  const initialData = JSON.parse(localStorage.getItem(localKey) || 'null') || initalData;
+  const [data, setData] = useState(initialData);
+  const updateLocalData = (newData) => {
+    localStorage.setItem(localKey, JSON.stringify(newData));
+  };
+  const updateAppData = (list) => {
+    setData(list);
+    updateLocalData(list);
+  };
+  const addApp = (app) => {
+    setData((prev) => {
+      let newData = [...prev, app];
+      updateLocalData(newData);
+      return newData;
+    });
+  };
+  const removeApp = (url) => {
+    setData((prev) => {
+      let newData = prev.filter((item) => {
+        return item.url !== url;
+      });
+      updateLocalData(newData);
+      return newData;
+    });
+  };
+  return { data, addApp, removeApp, updateAppData };
+};
 
-export { useContextMenu, useGithubToken };
+export { useContextMenu, useGithubToken, useAppData };

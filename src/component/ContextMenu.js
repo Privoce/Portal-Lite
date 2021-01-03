@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 const StyledMenu = styled.ul`
   z-index: 999;
   position: fixed;
@@ -23,13 +22,29 @@ const StyledMenu = styled.ul`
   }
 `;
 
-const ContextMenu = ({ left = 0, top = 0 }) => {
+const ContextMenu = ({ left = 0, top = 0, currApp = {}, removeApp }) => {
+  const { url } = currApp;
+  const handleRemove = () => {
+    console.log({ currApp });
+    removeApp(currApp);
+  };
+  const handleOpenNew = () => {
+    window.open(url, '_blank');
+  };
+  const handleEdit = () => {
+    alert('暂未开发..');
+  };
   return (
     <StyledMenu style={{ left, top }}>
-      <li className="item">删除</li>
-      <li className="item">排序</li>
-      <li className="item">编辑</li>
-      <li className="item">新标签页打开</li>
+      <li className="item" onClick={handleRemove}>
+        删除
+      </li>
+      <li className="item" onClick={handleEdit}>
+        编辑
+      </li>
+      <li className="item" onClick={handleOpenNew}>
+        新标签页打开
+      </li>
     </StyledMenu>
   );
 };

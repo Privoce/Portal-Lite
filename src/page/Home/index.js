@@ -8,57 +8,58 @@ import BSearch from '../../component/BaiduSearch';
 import ContextMenu from '../../component/ContextMenu';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
-import ToolModal from '../../component/ToolModal';
 import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
 import YinNote from '../../widgets/YinNote';
 import WeiboHot from '../../widgets/WeiboHot';
-import GoAuth from '../../component/GoAuth';
-import { useContextMenu } from '../../hooks';
+import { useContextMenu, useAppData } from '../../hooks';
 import GithubDashboard from '../../widgets/GithubDashboard';
 import WidgetWrapper from './WidgetWrapper';
-import { Sites, Tools } from './data';
-const Widgets = {
-  'github-trending': <GithubTrending />,
-  'github-dashboard': <GithubDashboard />
-};
 export default function Home() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [toolModalVisible, setToolModalVisible] = useState(false);
-  const [previewModalVisible, setPreviewModalVisible] = useState(false);
-  const [currWidget, setCurrWidget] = useState({});
-  const [currFrame, setCurrFrame] = useState(null);
-  const [tools, setTools] = useState(Tools);
-  const [sites, setSites] = useState(Sites);
-  const { menuVisible, position, showMenu } = useContextMenu(false);
-  const toggleModalVisible = (evt) => {
-    evt.preventDefault();
-    setModalVisible((prev) => !prev);
+  // const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleType, setModalVisibleType] = useState('');
+  const [currWidget, setCurrWidget] = useState(undefined);
+  const {
+    data: webapps,
+    addApp: addWebapp,
+    removeApp: removeWebapp,
+    updateAppData: updateWebapps
+  } = useAppData();
+  const {
+    data: tools,
+    addApp: addTool,
+    removeApp: removeTool,
+    updateAppData: updateTools
+  } = useAppData('tool');
+
+  const { menuVisible, position, widget, showMenu } = useContextMenu(false);
+  // const toggleModalVisible = (evt) => {
+  //   evt.preventDefault();
+  //   setModalVisible((prev) => !prev);
+  // };
+  const updateModalVisibleType = (type) => {
+    // evt.preventDefault();
+    setModalVisibleType(type);
   };
-  const togglePreviewModalVisible = (app) => {
-    setPreviewModalVisible((prev) => {
-      if (prev == false) {
-        setCurrFrame(app);
-      }
-      return !prev;
-    });
-  };
-  const toggleToolModalVisible = () => {
-    setToolModalVisible((prev) => {
-      return !prev;
-    });
+
+  const removeApp = (w) => {
+    const { url } = w;
+    console.log({ w });
+    if (w.tool) {
+      console.log('remove tool');
+      removeTool(url);
+    } else {
+      removeWebapp(url);
+    }
   };
   const handleWidgetClick = (w) => {
     if (w.url) {
       if (w.frame) {
-        togglePreviewModalVisible(w);
+        setCurrWidget(w);
       } else {
         window.open(w.url, '_blank');
       }
-    } else {
-      setCurrWidget(w);
-      toggleToolModalVisible();
     }
   };
   const handleNavDragEnd = (result) => {
@@ -70,21 +71,21 @@ export default function Home() {
       return;
     }
     if (source.droppableId == 'nav-droppable') {
-      let tmpItem = sites.splice(source.index, 1);
-      sites.splice(destination.index, 0, tmpItem[0]);
-      console.log({ sites });
-      setSites(sites);
+      let tmpItem = webapps.splice(source.index, 1);
+      webapps.splice(destination.index, 0, tmpItem[0]);
+      console.log({ webapps });
+      updateWebapps(webapps);
     } else {
       let tmpItem = tools.splice(source.index, 1);
       tools.splice(destination.index, 0, tmpItem[0]);
       console.log({ tools });
-      setTools(tools);
+      updateTools(tools);
     }
   };
   return (
     <StyledWrapper>
       {/* <Account /> */}
-      {menuVisible && <ContextMenu {...position} />}
+      {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
       <div className="search">
         <BSearch />
       </div>
@@ -99,7 +100,7 @@ export default function Home() {
                 ref={provided.innerRef}
                 data-drag-over={snapshot.isDraggingOver}
               >
-                {sites.map((s, index) => {
+                {webapps.map((s, index) => {
                   return (
                     <Draggable key={s.title} draggableId={s.title} index={index}>
                       {(provided, snapshot) => {
@@ -124,7 +125,7 @@ export default function Home() {
                   );
                 })}
                 {provided.placeholder}
-                <Widget add onClick={toggleModalVisible} />
+                <Widget add onClick={updateModalVisibleType.bind(null, 'nav')} />
                 {/* 填充物 */}
                 {/* {new Array(3).fill(1).map((item, idx) => {
             return <div style={{ width: '1.8rem', height: '1.35rem' }} key={idx} />;
@@ -169,7 +170,7 @@ export default function Home() {
                   );
                 })}
                 {provided.placeholder}
-                <Widget add type="tool" onClick={toggleModalVisible} />
+                <Widget add type="tool" onClick={updateModalVisibleType.bind(null, 'tool')} />
                 {/* <Widget add onClick={toggleModalVisible} /> */}
                 {/* 填充物 */}
                 {/* {new Array(3).fill(1).map((item, idx) => {
@@ -179,20 +180,6 @@ export default function Home() {
             )}
           </Droppable>
         </DragDropContext>
-        {/* <div className="widgets">
-          {Tools.map((t) => {
-            return (
-              <Widget
-                key={t.title}
-                onClick={handleWidgetClick.bind(null, t)}
-                showMenu={showMenu}
-                updateCurrAPP={setCurrWidget}
-                data={t}
-              />
-            );
-          })}
-          <Widget add type="tool" onClick={toggleModalVisible} />
-        </div> */}
       </section>
       <section className="block">
         <h2 className="header">我的小组件</h2>
@@ -203,29 +190,29 @@ export default function Home() {
           <WidgetWrapper title="Github个人仓库">
             <GithubDashboard />
           </WidgetWrapper>
-          <WidgetWrapper title="印象笔记">
-            <YinNote />
-          </WidgetWrapper>
           <WidgetWrapper title="微博热搜">
             <WeiboHot />
           </WidgetWrapper>
-          <WidgetWrapper title="Github 仓库">
-            <GoAuth />
+          <WidgetWrapper title="印象笔记">
+            <YinNote />
           </WidgetWrapper>
         </div>
       </section>
-      {/* <button onClick={toggleModalVisible} className="add_widget">
-        添加小组件
-      </button> */}
-      <Modal visible={modalVisible} toggleVisible={toggleModalVisible} />
-      <ToolModal app={currWidget} visible={toolModalVisible} toggleVisible={toggleToolModalVisible}>
-        {Widgets[currWidget.widget]}
-      </ToolModal>
-      <PreviewModal
-        app={currFrame || {}}
-        visible={previewModalVisible}
-        toggleVisible={togglePreviewModalVisible}
-      ></PreviewModal>
+      {modalVisibleType ? (
+        <Modal
+          type={modalVisibleType}
+          addApp={modalVisibleType == 'nav' ? addWebapp : addTool}
+          resetModalVisible={updateModalVisibleType.bind(null, '')}
+        />
+      ) : null}
+      {currWidget ? (
+        <PreviewModal
+          app={currWidget}
+          resetCurrApp={() => {
+            setCurrWidget(undefined);
+          }}
+        ></PreviewModal>
+      ) : null}
     </StyledWrapper>
   );
 }

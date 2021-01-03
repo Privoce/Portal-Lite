@@ -160,15 +160,11 @@ const SizeMap = {
     height: '100vh'
   }
 };
-export default function PreviewModal({
-  app: { url = '', title = '', icon = '', themeColor },
-  visible = false,
-  toggleVisible = null
-}) {
+export default function PreviewModal({ app = {}, resetCurrApp }) {
+  const { url = '', title = '', icon = '', themeColor } = app;
   const [screenSize, setScreenSize] = useState({ width: '8.16rem', height: 'auto' });
   const [aniEnd, setAniEnd] = useState(false);
   const iframe = useRef(null);
-  console.log({ visible });
   const handleAniEnd = () => {
     console.log('ani end');
     setTimeout(() => {
@@ -196,7 +192,7 @@ export default function PreviewModal({
     iframe.current.requestFullscreen();
   };
 
-  return visible ? (
+  return url ? (
     <ModalWrapper>
       <StyledWrapper {...screenSize} themeColor={themeColor}>
         <div className="modal animate__animated animate__zoomIn" onAnimationEnd={handleAniEnd}>
@@ -213,7 +209,7 @@ export default function PreviewModal({
             )}
           </div>
         </div>
-        <div onClick={toggleVisible} className="close" />
+        <div onClick={resetCurrApp} className="close" />
         <div className="info">
           <div className="logo">
             <img src={icon ? icon : `${getPrefixPath(url)}favicon.ico`} alt="图标" />

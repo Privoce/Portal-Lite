@@ -31,6 +31,9 @@ const StyledWrapper = styled.div`
   }
 `;
 export default function YinNote() {
+  const handleSave = () => {
+    alert('暂未开发~');
+  };
   return (
     <StyledWrapper>
       <textarea
@@ -39,9 +42,11 @@ export default function YinNote() {
         id=""
         cols="30"
         rows="10"
-        placeholder="再次输入文字，快速记录"
+        placeholder="在此输入文字，快速记录"
       ></textarea>
-      <button className="btn">保存到印象笔记</button>
+      <button className="btn" onClick={handleSave}>
+        保存到印象笔记
+      </button>
     </StyledWrapper>
   );
 }

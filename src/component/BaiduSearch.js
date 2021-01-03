@@ -32,6 +32,7 @@ const StyledWrapper = styled.div`
       width: 94%;
       background-color: #f5f5f6;
       z-index: 999;
+      display: none;
     }
     .list {
       height: 2rem;
@@ -84,7 +85,8 @@ const StyledWrapper = styled.div`
         border-bottom: none;
         border-bottom-left-radius: unset;
       }
-      .list {
+      .list,
+      .line {
         display: initial;
       }
       &:not(:focus-within) .list {
@@ -138,7 +140,9 @@ export default function BaiduSearch() {
         window.open(`https://www.baidu.com/s?wd=${input}`, '_blank');
       }
     };
-    window.addEventListener('keyup', enterKeyUp);
+    if (input) {
+      window.addEventListener('keyup', enterKeyUp);
+    }
 
     return () => {
       window.removeEventListener('keyup', enterKeyUp);

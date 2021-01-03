@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
   margin: 0 auto;
+  padding-bottom: 0.6rem;
   width: 10.5rem;
   display: flex;
   flex-direction: column;
@@ -27,6 +28,9 @@ const StyledWrapper = styled.section`
       color: #333;
       line-height: 0.25rem;
       margin-left: 0.25rem;
+      align-self: flex-start;
+      cursor: grabbing;
+      user-select: none;
     }
     .widgets {
       display: flex;
