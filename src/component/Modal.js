@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import uniqolor from 'uniqolor';
 import { validateUrl } from '../util';
 // import Widget from '../component/Widget';
-import SwiperTabs from '../component/SwiperTabs';
+import SwiperTabs from './SwiperTabs';
 
 import IconClose from '../asset/img/icon.close.png';
 
@@ -135,6 +135,12 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
       setUrl(value);
     }
   };
+  const updateCurrSelect = (item) => {
+    const { title, url } = item;
+    console.log({ title, url });
+    setUrl(url.startsWith('//') ? url.replace('//', '') : url);
+    setTitle(title);
+  };
   return type ? (
     <ModalWrapper>
       <StyledWrapper>
@@ -152,7 +158,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
               {tip && <div className="tip">{tip}</div>}
             </div>
           </div>
-          <SwiperTabs />
+          <SwiperTabs source={type} handleSelect={updateCurrSelect} />
           <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
       </StyledWrapper>

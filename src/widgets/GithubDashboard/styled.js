@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
   font-size: 0.12rem;
   overflow: scroll;
-  overscroll-behavior: contain;
+  /* overscroll-behavior: contain; */
   height: 100%;
   padding: 0.1rem;
   display: flex;

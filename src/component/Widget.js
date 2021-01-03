@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import IconDefault from '../asset/img/icon.HTML5.png';
+import IconDefault from '../asset/img/icon.logo.png';
 import { getPrefixPath } from '../util';
 const StyledWrapper = styled.div`
   display: flex;
