@@ -97,7 +97,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-
+let other_params = {};
 export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
@@ -123,7 +123,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
       saturation: 80,
       lightness: [70, 80]
     });
-    addApp({ title, url: finalUrl, themeColor: color });
+    addApp({ title, url: finalUrl, themeColor: color, ...other_params });
     resetModalVisible();
   };
   const handleInputChange = (evt) => {
@@ -136,7 +136,8 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     }
   };
   const updateCurrSelect = (item) => {
-    const { title, url } = item;
+    const { title, url, ...rest } = item;
+    other_params = rest;
     console.log({ title, url });
     setUrl(url.startsWith('//') ? url.replace('//', '') : url);
     setTitle(title);
