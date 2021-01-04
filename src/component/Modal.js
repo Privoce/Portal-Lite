@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import uniqolor from 'uniqolor';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+
 import { validateUrl } from '../util';
 // import Widget from '../component/Widget';
 import SwiperTabs from './SwiperTabs';
@@ -102,6 +104,16 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+  const modal = useRef(null);
+  useEffect(() => {
+    let modalEle = modal || modal.current;
+    if (modalEle) {
+      disableBodyScroll(modalEle);
+    }
+    return () => {
+      enableBodyScroll(modalEle);
+    };
+  }, []);
   const handleSubmit = () => {
     let finalUrl = url;
     if (!title) {
@@ -143,9 +155,9 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     setTitle(title);
   };
   return type ? (
-    <ModalWrapper>
+    <ModalWrapper ref={modal}>
       <StyledWrapper>
-        <div className="modal ">
+        <div className="modal">
           <div className="add">
             <input
               placeholder="名称"

@@ -1,7 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import styled from 'styled-components';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+
 import IconPC from '../asset/img/icon.pc.png';
 import IconMobile from '../asset/img/icon.mobile.png';
 import IconFS from '../asset/img/icon.full-screen.png';
@@ -171,6 +173,7 @@ export default function PreviewModal({ app = {}, resetCurrApp }) {
   const [aniEnd, setAniEnd] = useState(false);
 
   const iframe = useRef(null);
+  const prModal = useRef(null);
   const handleAniEnd = () => {
     console.log('ani end');
     setTimeout(() => {
@@ -199,9 +202,15 @@ export default function PreviewModal({ app = {}, resetCurrApp }) {
   const handleFullScreen = () => {
     iframe.current.requestFullscreen();
   };
-
+  useEffect(() => {
+    const modalEle = prModal || prModal.current;
+    disableBodyScroll(modalEle);
+    return () => {
+      enableBodyScroll(modalEle);
+    };
+  }, []);
   return url ? (
-    <ModalWrapper>
+    <ModalWrapper ref={prModal}>
       <StyledWrapper {...screenSize} themeColor={themeColor} className={loading ? 'loading' : ''}>
         <div className="modal animate__animated animate__zoomIn" onAnimationEnd={handleAniEnd}>
           {loading && <div className="loading">加载中...</div>}
