@@ -1,22 +1,5 @@
 const Navs = [
   {
-    title: '常用',
-    items: [
-      {
-        title: '哔哩哔哩',
-        url: '//bilibili.com',
-        icon: 'https://www.bilibili.com/favicon.ico',
-        themeColor: '#FFD902'
-      },
-      {
-        title: '抖音',
-        url: '//douyin.com',
-        icon: './logos/dy.png',
-        themeColor: '#888'
-      }
-    ]
-  },
-  {
     title: '办公效率',
     items: [
       {
@@ -58,13 +41,14 @@ const Navs = [
         title: '微博',
         url: '//weibo.com',
         icon: './logos/wb.png',
-        themeColor: '#FFD902'
+        themeColor: '#FFD902',
+        popular: true
       },
       {
         title: '知乎',
         url: '//zhihu.com',
         icon: './logos/zh.png',
-        themeColor: '#FFD902'
+        themeColor: '#137ae3'
       },
       {
         title: '豆瓣',
@@ -78,33 +62,68 @@ const Navs = [
     title: '视频音乐',
     items: [
       {
+        id: 22222,
+        title: '哔哩哔哩',
+        url: '//bilibili.com',
+        icon: 'https://www.bilibili.com/favicon.ico',
+        themeColor: '#77c9e4',
+        popular: true
+      },
+      {
         title: '优酷',
         url: '//youku.com',
         icon: 'https://img.alicdn.com/tfs/TB1WeJ9Xrj1gK0jSZFuXXcrHpXa-195-195.png',
-        themeColor: '#fff'
+        themeColor: '#fff',
+        popular: true
       },
       {
         title: '腾讯视频',
         url: '//v.qq.com',
         icon: 'https://v.qq.com/favicon.ico',
-        themeColor: '#Ff9'
+        themeColor: '#Ff9',
+        popular: true
       },
       {
         title: '爱奇艺',
         url: '//iqiyi.com',
-        icon: './logos/iqy.png',
-        themeColor: '#3a4412'
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/aiqiyi.png',
+        themeColor: '#07D302',
+        popular: true
       },
       {
         title: '网易云音乐',
         url: '//music.163.com',
         icon: 'https://s1.music.126.net/style/favicon.ico?v20180823',
-        themeColor: '#242424'
+        themeColor: '#c01119'
       },
       {
         title: '酷狗',
         url: '//kugou.com',
         icon: 'https://www.kugou.com/favicon.ico',
+        themeColor: '#fff'
+      }
+    ]
+  },
+  {
+    title: '购物',
+    items: [
+      {
+        title: '淘宝',
+        url: '//taobao.com',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/淘宝,TAO,alibaba,1688.png',
+        themeColor: '#FF6900',
+        popular: true
+      },
+      {
+        title: '京东',
+        url: '//jd.com',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/京东icon-01.png',
+        themeColor: '#FF2F2D'
+      },
+      {
+        title: '苏宁易购',
+        url: 'https://www.suning.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/苏宁易购-01.png',
         themeColor: '#fff'
       }
     ]
@@ -127,4 +146,19 @@ const Navs = [
     ]
   }
 ];
+let popular_items = [];
+
+Navs.forEach((nav) => {
+  let { items } = nav;
+  items.forEach((itm) => {
+    if (itm.popular) {
+      popular_items.push(itm);
+    }
+  });
+});
+let populars = {
+  title: '常用',
+  items: popular_items
+};
+Navs.unshift(populars);
 export default Navs;
