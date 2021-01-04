@@ -123,7 +123,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
       saturation: 80,
       lightness: [70, 80]
     });
-    addApp({ title, url: finalUrl, themeColor: color, ...other_params });
+    addApp({ title, url: finalUrl, themeColor: color, ...other_params, tool: type == 'tool' });
     resetModalVisible();
   };
   const handleInputChange = (evt) => {

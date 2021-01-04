@@ -15,10 +15,11 @@ const StyledWrapper = styled.section`
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.9);
+
   .modal {
     position: relative;
     border-radius: 0.04rem;
@@ -30,7 +31,7 @@ const StyledWrapper = styled.section`
     overflow: scroll;
     border: 1px solid rgba(22, 22, 22, 0.6);
     resize: horizontal;
-    background: rgba(2, 2, 2, 0.8);
+    background: #fff;
     .loading {
       color: ${({ themeColor }) => themeColor};
       z-index: 996;
@@ -66,6 +67,9 @@ const StyledWrapper = styled.section`
         align-items: flex-start;
       }
     }
+  }
+  &.loading .modal {
+    background: rgba(2, 2, 2, 0.8);
   }
   .setting {
     display: flex;
@@ -163,7 +167,9 @@ const SizeMap = {
 export default function PreviewModal({ app = {}, resetCurrApp }) {
   const { url = '', title = '', icon = '', themeColor } = app;
   const [screenSize, setScreenSize] = useState({ width: '8.16rem', height: 'auto' });
+  const [loading, setLoading] = useState(true);
   const [aniEnd, setAniEnd] = useState(false);
+
   const iframe = useRef(null);
   const handleAniEnd = () => {
     console.log('ani end');
@@ -182,6 +188,8 @@ export default function PreviewModal({ app = {}, resetCurrApp }) {
       console.log(iframe.height);
     } catch (ex) {
       console.log({ ex });
+    } finally {
+      setLoading(false);
     }
   };
   const handleScreenSize = (key) => {
@@ -194,9 +202,9 @@ export default function PreviewModal({ app = {}, resetCurrApp }) {
 
   return url ? (
     <ModalWrapper>
-      <StyledWrapper {...screenSize} themeColor={themeColor}>
+      <StyledWrapper {...screenSize} themeColor={themeColor} className={loading ? 'loading' : ''}>
         <div className="modal animate__animated animate__zoomIn" onAnimationEnd={handleAniEnd}>
-          <div className="loading">加载中...</div>
+          {loading && <div className="loading">加载中...</div>}
           <div className="iframe-container">
             {aniEnd && (
               <iframe

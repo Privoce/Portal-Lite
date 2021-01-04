@@ -12,7 +12,7 @@ const Tools = [
         title: 'PhotoShop Online',
         url: 'https://www.photopea.com/',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
-        themeColor: '#f6f6f6',
+        themeColor: '#0b2446',
         popular: true
       },
       {
@@ -26,18 +26,42 @@ const Tools = [
     ]
   },
   {
-    title: '效率',
+    title: '办公效率',
     items: [
       {
         title: '格式转换',
         url: 'https://cloudconvert.com/',
-        themeColor: '#888',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/transfer.png',
+        themeColor: '#fff',
         popular: true
       },
       {
         title: '计算器',
         url: 'https://www.desmos.com/scientific',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jisuanqi.png',
+        themeColor: '#003461',
+        popular: true,
+        frame: true
+      },
+      {
+        title: 'Markdown编辑',
+        url: 'https://www.zybuluo.com/mdeditor',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/file-markdown.png',
+        themeColor: '#fff',
+        popular: true,
+        frame: true
+      },
+
+      {
+        title: 'ProcessOn流程图',
+        url: 'https://www.processon.com/',
+        themeColor: '#54b9cf'
+      },
+      {
+        title: '图片压缩',
+        url: 'https://squoosh.app/',
         themeColor: '#FFD902',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/compress.png',
         popular: true,
         frame: true
       },
@@ -49,12 +73,31 @@ const Tools = [
     ]
   },
   {
+    title: '编程开发',
+    items: [
+      {
+        title: 'JSON编辑',
+        url: 'https://www.beejson.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/JSON.png',
+        themeColor: '#eee',
+        popular: true
+      }
+    ]
+  },
+  {
     title: '生活',
     items: [
       {
+        title: '在线汉语词典',
+        url: 'http://xh.5156edu.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/cidian.png',
+        themeColor: '#fff'
+      },
+      {
         title: '天气预报',
         url: 'https://weather.com/',
-        themeColor: '#FD2'
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/weather.png',
+        themeColor: '#37aad2'
       },
       {
         title: 'KTV',
@@ -74,7 +117,14 @@ const Tools = [
       {
         title: '书籍搜索',
         url: 'http://libgen.rs/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/book.png',
         themeColor: '#FFD'
+      },
+      {
+        title: '奶牛快传',
+        url: 'https://cowtransfer.com/',
+        icon: 'https://background.cowtransfer.com/apple-icon-57x57.png',
+        themeColor: '#fb7f7b'
       }
     ]
   }
@@ -84,6 +134,7 @@ let popular_items = [];
 Tools.forEach((nav) => {
   let { items } = nav;
   items.forEach((itm) => {
+    itm.tool = true;
     if (itm.popular) {
       popular_items.push(itm);
     }

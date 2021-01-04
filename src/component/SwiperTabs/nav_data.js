@@ -5,7 +5,7 @@ const Navs = [
       {
         title: 'Github',
         url: '//github.com',
-        icon: 'https://github.com/favicon.ico',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/GitHub.png',
         themeColor: '#fff'
       },
       {
@@ -17,19 +17,19 @@ const Navs = [
       {
         title: '印象笔记',
         url: '//yinxiang.com',
-        icon: 'https://www.yinxiang.com/favicon.ico',
-        themeColor: '#1dbe6b'
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/yinxiangbiji.png',
+        themeColor: '#f2f2f2'
       },
       {
         title: 'Office',
         url: 'https://www.office.com/',
         icon: 'https://blobs.officehome.msocdn.com/images/content/images/favicon-8f211ea639.ico',
-        themeColor: '#d63c18'
+        themeColor: '#d63c10'
       },
       {
         title: '百度翻译',
         url: '//fanyi.baidu.com',
-        icon: 'https://fanyi.baidu.com/favicon.ico',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/fanyi.png',
         themeColor: '#4898fc'
       }
     ]
@@ -123,7 +123,7 @@ const Navs = [
       {
         title: '苏宁易购',
         url: 'https://www.suning.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/苏宁易购-01.png',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/suning.png',
         themeColor: '#fff'
       }
     ]
@@ -134,14 +134,19 @@ const Navs = [
       {
         title: '虎嗅网',
         url: '//huxiu.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/6fDNqR.jpg',
-        themeColor: '#f60'
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/huxiuwang2.png',
+        themeColor: '#fff'
       },
       {
         title: '新华网',
         url: 'http://xinhuanet.com',
-        icon: 'http://xinhuanet.com/favicon.ico',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/xinhuawang.png',
         themeColor: '#167ff8'
+      },
+      {
+        title: '书籍',
+        url: 'https://salttiger.com/',
+        themeColor: '#fff'
       }
     ]
   }
