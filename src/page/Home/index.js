@@ -188,24 +188,24 @@ export default function Home() {
       <section className="block">
         <h2 className="header">我的小组件</h2>
         <div className="widgets ">
-          <WidgetWrapper title="Github热门">
-            <GithubTrending />
-          </WidgetWrapper>
-          <WidgetWrapper title="Github个人仓库">
-            <GithubDashboard />
-          </WidgetWrapper>
           <WidgetWrapper title="微博热搜">
             <WeiboHot />
           </WidgetWrapper>
           <WidgetWrapper title="公众号24小时热文">
             <MPDaily />
           </WidgetWrapper>
-          {/* <WidgetWrapper compact title="百度翻译">
-            <Fanyi />
-          </WidgetWrapper> */}
           <WidgetWrapper title="今日天气">
             <Weather />
           </WidgetWrapper>
+          <WidgetWrapper title="Github热门">
+            <GithubTrending />
+          </WidgetWrapper>
+          <WidgetWrapper title="Github个人仓库">
+            <GithubDashboard />
+          </WidgetWrapper>
+          {/* <WidgetWrapper compact title="百度翻译">
+            <Fanyi />
+          </WidgetWrapper> */}
           <WidgetWrapper compact title="计算器">
             <Calc />
           </WidgetWrapper>
