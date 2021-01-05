@@ -22,10 +22,23 @@ const StyledWrapper = styled.div`
     line-height: 0.2rem;
     margin-top: 0.18rem;
   }
+  &.l .container {
+    height: 4.68rem;
+  }
+  &.compact .container {
+    padding: 0;
+    overflow: scroll;
+  }
 `;
-export default function WidgetWrapper({ title = '组件标题', children = null }) {
+export default function WidgetWrapper({
+  title = '组件标题',
+  compact,
+  size = 'm',
+  children = null
+}) {
+  console.log({ compact });
   return (
-    <StyledWrapper>
+    <StyledWrapper className={`${compact ? 'compact' : ''} ${size}`}>
       <div className="container">{children}</div>
       <h2 className="title">{title}</h2>
     </StyledWrapper>

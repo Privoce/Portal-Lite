@@ -43,6 +43,9 @@ const StyledWrapper = styled.section`
         margin-left: 0.125rem;
         margin-right: 0.125rem;
       }
+      &.grid {
+        display: grid;
+      }
     }
     &.one_line {
       .header {

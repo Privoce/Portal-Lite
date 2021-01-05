@@ -11,6 +11,10 @@ import Modal from '../../component/Modal';
 import PreviewModal from '../../component/PreviewModal';
 
 import GithubTrending from '../../widgets/GithubTrending';
+import Calc from '../../widgets/Calc';
+import MPDaily from '../../widgets/MPDaily';
+// import Fanyi from '../../widgets/Fanyi';
+import Weather from '../../widgets/Weather';
 import YinNote from '../../widgets/YinNote';
 import WeiboHot from '../../widgets/WeiboHot';
 import { useContextMenu, useAppData } from '../../hooks';
@@ -183,7 +187,7 @@ export default function Home() {
       </section>
       <section className="block">
         <h2 className="header">我的小组件</h2>
-        <div className="widgets">
+        <div className="widgets ">
           <WidgetWrapper title="Github热门">
             <GithubTrending />
           </WidgetWrapper>
@@ -192,6 +196,18 @@ export default function Home() {
           </WidgetWrapper>
           <WidgetWrapper title="微博热搜">
             <WeiboHot />
+          </WidgetWrapper>
+          <WidgetWrapper title="公众号24小时热文">
+            <MPDaily />
+          </WidgetWrapper>
+          {/* <WidgetWrapper compact title="百度翻译">
+            <Fanyi />
+          </WidgetWrapper> */}
+          <WidgetWrapper title="今日天气">
+            <Weather />
+          </WidgetWrapper>
+          <WidgetWrapper compact title="计算器">
+            <Calc />
           </WidgetWrapper>
           <WidgetWrapper title="印象笔记">
             <YinNote />
