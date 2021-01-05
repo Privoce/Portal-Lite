@@ -80,7 +80,7 @@ const Navs = [
         title: '腾讯视频',
         url: '//v.qq.com',
         icon: 'https://v.qq.com/favicon.ico',
-        themeColor: '#Ff9',
+        themeColor: '#96e136',
         popular: true
       },
       {
@@ -99,8 +99,8 @@ const Navs = [
       {
         title: '酷狗',
         url: '//kugou.com',
-        icon: 'https://www.kugou.com/favicon.ico',
-        themeColor: '#fff'
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/kugou.png',
+        themeColor: '#007cd0'
       }
     ]
   },
@@ -111,8 +111,14 @@ const Navs = [
         title: '淘宝',
         url: '//taobao.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/淘宝,TAO,alibaba,1688.png',
-        themeColor: '#FF6900',
+        themeColor: '#fc6000',
         popular: true
+      },
+      {
+        title: '天猫',
+        url: '//tmall.com',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/tmall.png',
+        themeColor: '#e00000'
       },
       {
         title: '京东',

@@ -49,14 +49,14 @@ const StyledWrapper = styled.section`
       overflow: hidden;
       /* 16:9 aspect ratio */
       /* padding-top: 56.25%; */
-      height: 90vh;
+      height: 100%;
       position: relative;
       transition: all 0.5s ease-in-out;
       iframe {
         position: absolute;
         left: 0;
         top: 0;
-        height: 90vh;
+        height: 100%;
         width: 100%;
         border: 0;
       }
@@ -167,8 +167,9 @@ const SizeMap = {
   }
 };
 export default function PreviewModal({ app = {}, resetCurrApp }) {
-  const { url = '', title = '', icon = '', themeColor } = app;
-  const [screenSize, setScreenSize] = useState({ width: '8.16rem', height: 'auto' });
+  const { url = '', title = '', icon = '', themeColor, size = 'pc' } = app;
+  const initialSize = SizeMap[size] || { width: '8.16rem', height: 'auto' };
+  const [screenSize, setScreenSize] = useState(initialSize);
   const [loading, setLoading] = useState(true);
   const [aniEnd, setAniEnd] = useState(false);
 

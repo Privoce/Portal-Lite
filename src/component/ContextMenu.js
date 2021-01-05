@@ -36,14 +36,14 @@ const ContextMenu = ({ left = 0, top = 0, currApp = {}, removeApp }) => {
   };
   return (
     <StyledMenu style={{ left, top }}>
+      <li className="item" onClick={handleOpenNew}>
+        新标签页打开
+      </li>
       <li className="item" onClick={handleRemove}>
         删除
       </li>
       <li className="item" onClick={handleEdit}>
         编辑
-      </li>
-      <li className="item" onClick={handleOpenNew}>
-        新标签页打开
       </li>
     </StyledMenu>
   );

@@ -13,15 +13,19 @@ const Tools = [
         url: 'https://www.photopea.com/',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
         themeColor: '#0b2446',
-        popular: true
+        frame: true,
+        popular: true,
+        size: 'pc'
       },
+
       {
         id: 2333,
         tool: true,
         title: '中国色🇨🇳',
         themeColor: '#f9906f',
         url: 'https://colors.ichuantong.cn/',
-        frame: true
+        frame: true,
+        size: 'pc'
       }
     ]
   },
@@ -41,15 +45,15 @@ const Tools = [
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jisuanqi.png',
         themeColor: '#003461',
         popular: true,
-        frame: true
+        frame: true,
+        size: 'mobile'
       },
       {
         title: 'Markdown编辑',
         url: 'https://www.zybuluo.com/mdeditor',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/file-markdown.png',
         themeColor: '#fff',
-        popular: true,
-        frame: true
+        popular: true
       },
 
       {
@@ -80,6 +84,13 @@ const Tools = [
         url: 'https://www.beejson.com/',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/JSON.png',
         themeColor: '#eee',
+        popular: true
+      },
+      {
+        title: 'Shader编辑器',
+        url: 'https://makepad.dev/',
+        // icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
+        themeColor: '#0b2446',
         popular: true
       }
     ]
