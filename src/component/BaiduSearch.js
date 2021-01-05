@@ -145,11 +145,11 @@ export default function BaiduSearch() {
       }
     };
     if (input && focused) {
-      window.addEventListener('keyup', enterKeyUp);
+      window.addEventListener('keypress', enterKeyUp);
     }
 
     return () => {
-      window.removeEventListener('keyup', enterKeyUp);
+      window.removeEventListener('keypress', enterKeyUp);
     };
   }, [input, focused]);
   return (
