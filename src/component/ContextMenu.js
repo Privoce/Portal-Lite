@@ -26,7 +26,10 @@ const ContextMenu = ({ left = 0, top = 0, currApp = {}, removeApp }) => {
   const { url } = currApp;
   const handleRemove = () => {
     console.log({ currApp });
-    removeApp(currApp);
+    let confirmed = confirm('确定删除？');
+    if (confirmed) {
+      removeApp(currApp);
+    }
   };
   const handleOpenNew = () => {
     window.open(url, '_blank');

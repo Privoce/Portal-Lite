@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Webapps, Tools } from './data';
+import { Webapps, Tools, Widgets } from './data';
 const useContextMenu = () => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ left: 0, top: 0 });
@@ -23,6 +23,7 @@ const useContextMenu = () => {
   }, []);
   return { menuVisible: visible, position, widget, showMenu, hideMenu };
 };
+
 const StorageGithubKey = 'GITHUB_OAUTH_TOKEN';
 const useGithubToken = () => {
   const [token, setToken] = useState(localStorage.getItem(StorageGithubKey) || '');
@@ -42,6 +43,36 @@ const useGithubToken = () => {
     };
   }, []);
   return { token, setToken };
+};
+const LOCAL_WG_KEY = 'WIDGET_LIST';
+const useWidgets = () => {
+  let wgKeys = Object.keys(Widgets);
+  const initialKeys = JSON.parse(localStorage.getItem(LOCAL_WG_KEY)) || wgKeys;
+  const [widgets, setWidgets] = useState(initialKeys);
+  const updateLocalData = (newData) => {
+    localStorage.setItem(LOCAL_WG_KEY, JSON.stringify(newData));
+  };
+  const updateWidgetData = (list) => {
+    setWidgets(list);
+    updateLocalData(list);
+  };
+  const addWidget = (app) => {
+    setWidgets((prev) => {
+      let newData = [...prev, app];
+      updateLocalData(newData);
+      return newData;
+    });
+  };
+  const removeWidget = (key) => {
+    setWidgets((prev) => {
+      let newData = prev.filter((item) => {
+        return item !== key;
+      });
+      updateLocalData(newData);
+      return newData;
+    });
+  };
+  return { widgets, addWidget, removeWidget, updateWidgetData };
 };
 const AppKeyMap = {
   webapp: { localKey: 'WEB_APP_DATA', initalData: Webapps },
@@ -77,4 +108,4 @@ const useAppData = (src = 'webapp') => {
   return { data, addApp, removeApp, updateAppData };
 };
 
-export { useContextMenu, useGithubToken, useAppData };
+export { useContextMenu, useGithubToken, useAppData, useWidgets };

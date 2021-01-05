@@ -41,10 +41,14 @@ const StyledWrapper = styled.div`
       /* overflow: visible; */
       padding: 0 0.2rem;
       .swiper-slide {
+        max-height: 4.2rem;
+        overflow: scroll;
         padding: 0.32rem 0;
+        /* padding-left: 0.2rem; */
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
+
         > div {
           margin-right: 0.44rem;
         }

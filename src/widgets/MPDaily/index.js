@@ -36,7 +36,7 @@ const StyledWrapper = styled.section`
       text-overflow: ellipsis;
       position: relative;
       a {
-        color: #73c991;
+        color: #07c15f;
       }
       &:before {
         position: absolute;

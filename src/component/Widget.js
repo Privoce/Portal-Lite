@@ -67,14 +67,7 @@ const AddTitle = {
   nav: '添加导航',
   tool: '添加工具'
 };
-export default function Widget({
-  type = 'nav',
-  data = {},
-  showMenu = null,
-  // updateCurrAPP,
-  add,
-  ...rest
-}) {
+export default function Widget({ type = 'nav', data = {}, showMenu = null, add, ...rest }) {
   const { themeColor = '#333', icon = '', title = '标题', url = '' } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
@@ -91,7 +84,6 @@ export default function Widget({
       let top = evt.clientY;
       console.log({ left, top });
       showMenu({ position: { left, top }, widget: data });
-      // updateCurrAPP(data);
     }
     return false;
   };

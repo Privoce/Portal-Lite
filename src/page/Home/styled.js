@@ -32,7 +32,7 @@ const StyledWrapper = styled.section`
       cursor: grabbing;
       user-select: none;
     }
-    .widgets {
+    .boxes {
       display: flex;
       flex-wrap: wrap;
       width: 100%;
@@ -51,7 +51,7 @@ const StyledWrapper = styled.section`
       .header {
         margin-bottom: -0.125rem;
       }
-      .widgets {
+      .boxes {
         flex-wrap: nowrap;
         overflow: scroll;
         padding-top: 0.25rem;

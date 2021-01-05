@@ -1,5 +1,12 @@
 import Navs from './component/SwiperTabs/nav_data';
 import AllTools from './component/SwiperTabs/tool_data';
+import WeiboHot from './widgets/WeiboHot';
+import MPDaily from './widgets/MPDaily';
+import Weather from './widgets/Weather';
+import GithubTrending from './widgets/GithubTrending';
+import GithubDashboard from './widgets/GithubDashboard';
+import Calc from './widgets/Calc';
+import YinNote from './widgets/YinNote';
 const Webapps = Navs[0].items;
 
 // {
@@ -9,23 +16,6 @@ const Webapps = Navs[0].items;
 //   url: '//works.yangerxiao.com/do-the-five/'
 // }
 const Tools = AllTools[0].items;
-//   {
-//     id: 93,
-//     tool: true,
-//     title: 'File Transfer',
-//     // icon: './logos/repo.png',
-//     url: '//anonfiles.com/',
-//     themeColor: '#fff',
-//     frame: true
-//   },
-//   {
-//     id: 2333,
-//     tool: true,
-//     title: '中国色🇨🇳',
-//     themeColor: '#f9906f',
-//     url: 'https://colors.ichuantong.cn/',
-//     frame: true
-//   },
 //   {
 //     id: 2332,
 //     tool: true,
@@ -92,4 +82,25 @@ const Tools = AllTools[0].items;
 //     url: 'https://works.yangerxiao.com/strong-password-generator/'
 //   }
 // ];
-export { Webapps, Tools };
+
+const Widgets = {
+  'wb-hot': {
+    title: '微博热搜',
+    comp: <WeiboHot />
+  },
+  'mp-daily-hot': {
+    title: '公众号24小时热文',
+    comp: <MPDaily />
+  },
+  weather: {
+    title: '今日天气',
+
+    comp: <Weather />
+  },
+  'gh-trending': { title: 'Github趋势', comp: <GithubTrending /> },
+  'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
+  calc: { title: '计算器', comp: <Calc />, compact: true },
+  'yin-note': { title: '印象笔记', comp: <YinNote /> }
+};
+
+export { Webapps, Tools, Widgets };
