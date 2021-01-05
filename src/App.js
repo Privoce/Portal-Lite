@@ -1,10 +1,15 @@
+import { lazy, Suspense } from 'react';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './page/Home';
-import OAuth from './page/OAuth';
-import NotFound from './page/NotFound';
+
 import { useGithubToken } from './hooks';
-import 'animate.css';
+import Loading from './component/Loading';
+
+// import 'animate.css';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+const Home = lazy(() => import('./page/Home'));
+const OAuth = lazy(() => import('./page/OAuth'));
+const NotFound = lazy(() => import('./page/NotFound'));
 // import PageTitle from './component/PageTitle';
 function App() {
   const { token } = useGithubToken();
@@ -17,19 +22,21 @@ function App() {
   });
   return (
     <ApolloProvider client={client}>
-      <Router basename={'/'}>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/oauth/:app">
-            <OAuth />
-          </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      </Router>
+      <Suspense fallback={<Loading />}>
+        <Router basename={'/'}>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/oauth/:app">
+              <OAuth />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </Router>
+      </Suspense>
     </ApolloProvider>
   );
 }

@@ -1,20 +1,21 @@
 // import { Link } from 'react-router-dom';
-// import { useState } from 'react';
+import { lazy, Suspense } from 'react';
 // import { DndProvider } from 'react-dnd';
 
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import StyledWrapper from './styled';
+import Loading from '../../component/Loading';
 
-import BSearch from '../../component/BaiduSearch';
 // import Account from '../../component/Account';
 import ContextMenu from '../../component/ContextMenu';
 import { useAppData } from '../../hooks';
 
 import { useContextMenu } from '../../hooks';
 
-import WidgetSection from './WidgetSection';
-import ToolSection from './ToolSection';
-import NavSection from './NavSection';
+const BSearch = lazy(() => import('../../component/BaiduSearch'));
+const WidgetSection = lazy(() => import('./WidgetSection'));
+const ToolSection = lazy(() => import('./ToolSection'));
+const NavSection = lazy(() => import('./NavSection'));
 export default function Home() {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
   const {
@@ -41,18 +42,25 @@ export default function Home() {
   };
 
   return (
-    <StyledWrapper>
-      {/* <Account /> */}
-      {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
-      <div className="search">
-        <BSearch />
-      </div>
-      {/* <NavSection showMenu={showMenu} /> */}
-      <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
-      <ToolSection tools={tools} addTool={addTool} updateTools={updateTools} showMenu={showMenu} />
-      {/* <DndProvider backend={HTML5Backend}> */}
-      <WidgetSection />
-      {/* </DndProvider> */}
-    </StyledWrapper>
+    <Suspense fallback={<Loading />}>
+      <StyledWrapper>
+        {/* <Account /> */}
+        {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
+        <div className="search">
+          <BSearch />
+        </div>
+        {/* <NavSection showMenu={showMenu} /> */}
+        <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
+        <ToolSection
+          tools={tools}
+          addTool={addTool}
+          updateTools={updateTools}
+          showMenu={showMenu}
+        />
+        {/* <DndProvider backend={HTML5Backend}> */}
+        <WidgetSection />
+        {/* </DndProvider> */}
+      </StyledWrapper>
+    </Suspense>
   );
 }

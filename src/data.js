@@ -92,13 +92,13 @@ const Widgets = {
     title: '公众号24小时热文',
     comp: <MPDaily />
   },
+  'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
   weather: {
     title: '今日天气',
 
     comp: <Weather />
   },
   'gh-trending': { title: 'Github趋势', comp: <GithubTrending /> },
-  'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
   calc: { title: '计算器', comp: <Calc />, compact: true },
   'yin-note': { title: '印象笔记', comp: <YinNote /> }
 };
