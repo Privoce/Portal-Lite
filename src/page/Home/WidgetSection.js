@@ -11,7 +11,7 @@ export default function WidgetSection() {
   // const [, drop] = useDrop({ accept: 'box' });
   return (
     <section className="block">
-      <h2 className="header">我的小组件</h2>
+      <h2 className="header">小组件</h2>
       <div className="boxes">
         {widgets.map((w) => {
           const obj = Widgets[w];

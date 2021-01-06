@@ -95,7 +95,7 @@ const Widgets = {
   'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
   weather: {
     title: '今日天气',
-
+    compact: true,
     comp: <Weather />
   },
   'gh-trending': { title: 'Github趋势', comp: <GithubTrending /> },
