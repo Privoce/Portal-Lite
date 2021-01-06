@@ -7,8 +7,8 @@ const StyledDeveloper = styled(StyledCard)`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.1rem;
-    border-bottom: 1px solid #eee;
+    /* margin-bottom: 0.1rem; */
+    /* border-bottom: 1px solid #eee; */
     padding-bottom: 0.15rem;
     .avatar {
       width: 0.6rem;

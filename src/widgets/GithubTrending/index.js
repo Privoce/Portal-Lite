@@ -25,10 +25,10 @@ const StyledWrapper = styled.div`
   .tabs {
     /* z-index: 995; */
     position: absolute;
-    bottom: 0.1rem;
-    left: 0.1rem;
+    bottom: 0.05rem;
+    left: 0.2rem;
     flex-direction: row;
-    border-radius: 8px;
+    border-radius: 5px;
     overflow: hidden;
     border: 1px solid #888;
     margin: 0;
@@ -84,8 +84,10 @@ export default function GithubTrending() {
   }, [type]);
   const handleTabClick = (t) => {
     console.log({ t });
-    setType(t);
-    setLoading(true);
+    if (t !== type) {
+      setType(t);
+      setLoading(true);
+    }
   };
   if (loading) return <Loading />;
   return (

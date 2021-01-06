@@ -104,7 +104,7 @@ const Widgets = {
     compact: true,
     comp: <Weather />
   },
-  'gh-trending': { title: 'Github趋势', comp: <GithubTrending /> },
+  'gh-trending': { title: 'Github趋势', compact: true, comp: <GithubTrending /> },
   calc: { title: '计算器', comp: <Calc />, compact: true },
   'yin-note': { title: '印象笔记', comp: <YinNote /> }
 };

@@ -19,6 +19,7 @@ const StyledWrapper = styled.div`
         top: 5px;
         left: 0;
         width: 100%;
+        padding-left: 0.2rem;
       }
     }
   }

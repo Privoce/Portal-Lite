@@ -1,14 +1,15 @@
-import { useRef, useEffect } from 'react';
+// import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import StyledCard from './card';
 import IconRepo from '../../asset/img/icon.repo.png';
 import IconCoder from '../../asset/img/icon.coder.png';
 
 const StyledRepo = styled(StyledCard)`
+  display: flex;
   .left {
     display: flex;
     flex-direction: column;
-    max-width: 6rem;
+    width: 3rem;
     .title {
       display: flex;
       align-items: center;
@@ -18,12 +19,22 @@ const StyledRepo = styled(StyledCard)`
         width: 0.16rem;
         margin-right: 0.04rem;
       }
+      a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
     .desc {
       color: #666;
       font-size: 0.12rem;
       margin: 0.2rem 0;
       line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 3;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
     .items {
       display: flex;
@@ -84,7 +95,6 @@ const StyledRepo = styled(StyledCard)`
 `;
 
 export default function Repo({ isFirst, repo, ...rest }) {
-  const card = useRef(null);
   const {
     url,
     author,
@@ -97,22 +107,25 @@ export default function Repo({ isFirst, repo, ...rest }) {
     currentPeriodStars,
     description
   } = repo;
-  useEffect(() => {
-    card.current.scrollIntoView();
-  }, []);
+  const handleAvatarError = (evt) => {
+    const { target } = evt;
+    target.src = 'https://gitee.com/zyanggc/oss/raw/master/works/developer.png';
+  };
   return (
-    <StyledRepo ref={card} langColor={`#${languageColor}`} {...rest}>
+    <StyledRepo langColor={`#${languageColor}`} {...rest}>
       <div className="left">
         <h2 className="title">
           <img className="icon" src={IconRepo} alt="repo icon" />
-          <a target="_blank" href={url}>
+          <a target="_blank" title={`${author}/${name}`} href={url}>
             {author}/{name}
           </a>
         </h2>
-        <div className="desc">{description}</div>
+        <div className="desc" title={description}>
+          {description}
+        </div>
         <ul className="items">
           <li className="item lang">{language}</li>
-          <li className="item">✨ {stars}</li>
+          <li className="item">⭐ {stars}</li>
           <li className="item">🍴 {forks}</li>
           <li className="item author">
             <img className="icon" src={IconCoder} alt="头像图标" />
@@ -122,16 +135,16 @@ export default function Repo({ isFirst, repo, ...rest }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={avatar} alt="作者头像" />
+              <img src={avatar} onError={handleAvatarError} alt="作者头像" />
             </a>
           </li>
         </ul>
       </div>
       <div className="right">
         <a target="_blank" className="star" href={url}>
-          去标星
+          标星
         </a>
-        <div className="period_stars">今日新增：{currentPeriodStars}✨</div>
+        <div className="period_stars">今日新增：{currentPeriodStars}⭐</div>
       </div>
     </StyledRepo>
   );
