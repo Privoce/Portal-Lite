@@ -3,6 +3,7 @@ import AllTools from './component/SwiperTabs/tool_data';
 import WeiboHot from './widgets/WeiboHot';
 import MPDaily from './widgets/MPDaily';
 import Weather from './widgets/Weather';
+import Covid from './widgets/Covid';
 import GithubTrending from './widgets/GithubTrending';
 import GithubDashboard from './widgets/GithubDashboard';
 import Calc from './widgets/Calc';
@@ -84,6 +85,11 @@ const Tools = AllTools[0].items;
 // ];
 
 const Widgets = {
+  'covid-info': {
+    title: '国内新冠疫情概况',
+    compact: true,
+    comp: <Covid />
+  },
   'wb-hot': {
     title: '微博热搜',
     comp: <WeiboHot />
