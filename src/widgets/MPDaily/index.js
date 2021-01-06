@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import News from './mock_data';
-// import IconHot from '../../asset/img/icon.hot.png';
+import ErrorTip from '../Common/ErrorTip';
+import Loading from '../Common/Loading';
 
-// import { formatNumber } from '../../util';
 const StyledWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  .loading,
-  .error {
-    font-size: 0.2rem;
-    color: #333;
-  }
   .wrapper {
     padding: 0.02rem;
     margin: 0;
@@ -84,25 +78,22 @@ export default function WeiboHot() {
     };
     getHots();
   }, []);
+  if (loading) return <Loading />;
+  if (errTip) return <ErrorTip tip={errTip} />;
   return (
     <StyledWrapper>
-      {errTip && <div className="error">{errTip}</div>}
-      {loading ? (
-        <div className="loading">数据初始化中...</div>
-      ) : (
-        <ul className="wrapper">
-          {hots.map((n, idx) => {
-            const { title, link } = n;
-            return (
-              <li className="item" key={idx} data-seq={idx + 1}>
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                  {title}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <ul className="wrapper">
+        {hots.map((n, idx) => {
+          const { title, link } = n;
+          return (
+            <li className="item" key={idx} data-seq={idx + 1}>
+              <a href={link} target="_blank" rel="noopener noreferrer">
+                {title}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </StyledWrapper>
   );
 }

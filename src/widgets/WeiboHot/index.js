@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import News from './mock_data';
+import ErrorTip from '../Common/ErrorTip';
+import Loading from '../Common/Loading';
 // import IconHot from '../../asset/img/icon.hot.png';
 
 // import { formatNumber } from '../../util';
@@ -10,11 +11,6 @@ const StyledWrapper = styled.section`
   align-items: center;
   justify-content: center;
   height: 100%;
-  .loading,
-  .error {
-    font-size: 0.2rem;
-    color: #333;
-  }
   .wrapper {
     padding: 0.02rem;
     margin: 0;
@@ -113,37 +109,34 @@ export default function WeiboHot() {
     };
     getHots();
   }, []);
+  if (errTip) return <ErrorTip tip={errTip} />;
+  if (loading) return <Loading />;
   return (
     <StyledWrapper>
-      {errTip && <div className="error">{errTip}</div>}
-      {loading ? (
-        <div className="loading">数据初始化中...</div>
-      ) : (
-        <ul className="wrapper">
-          {hots.map((n, idx) => {
-            const { title, link, hot } = n;
-            return (
-              <li
-                className="item"
-                key={idx}
-                data-seq={idx + 1}
-                data-tag-type={TagMap[hot]}
-                data-tag={hot}
-              >
-                <a href={`https://s.weibo.com${link}`} target="_blank" rel="noopener noreferrer">
-                  {title}
-                  {/* {heat && (
+      <ul className="wrapper">
+        {hots.map((n, idx) => {
+          const { title, link, hot } = n;
+          return (
+            <li
+              className="item"
+              key={idx}
+              data-seq={idx + 1}
+              data-tag-type={TagMap[hot]}
+              data-tag={hot}
+            >
+              <a href={`https://s.weibo.com${link}`} target="_blank" rel="noopener noreferrer">
+                {title}
+                {/* {heat && (
                     <span className="heat">
                       {formatNumber(heat)}
                       <img className="hot" src={IconHot} alt="hot icon" />
                     </span>
                   )} */}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </StyledWrapper>
   );
 }

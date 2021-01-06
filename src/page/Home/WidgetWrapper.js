@@ -43,7 +43,7 @@ const StyledWrapper = styled.div`
       bottom: 0.05rem;
     }
   }
-  .title {
+  > .title {
     width: 100%;
     text-align: center;
     font-size: 0.14rem;

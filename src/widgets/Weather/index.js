@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
+import Loading from '../Common/Loading';
+
 const StyledWrapper = styled.div`
   width: 100% !important;
   height: 100% !important;
@@ -19,9 +21,6 @@ const StyledWrapper = styled.div`
         width: 100%;
       }
     }
-  }
-  .loading {
-    font-size: 0.15rem;
   }
 `;
 export default function Weather() {
@@ -53,9 +52,10 @@ export default function Weather() {
       }, 2000);
     };
   }, []);
+  if (loading) return <Loading />;
   return (
     <StyledWrapper>
-      {loading ? <p className="loading">初始化...</p> : <div id="he-plugin-standard"></div>}
+      <div id="he-plugin-standard"></div>
     </StyledWrapper>
   );
 }

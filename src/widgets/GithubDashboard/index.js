@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 import { format } from 'timeago.js';
+import Loading from '../Common/Loading';
 import GoAuth from '../../component/GoAuth';
 import StyledWrapper from './styled';
 import { useGithubToken } from '../../hooks';
@@ -51,15 +52,16 @@ export default function GithubDashboard() {
       loadRepos();
     }
   }, [userData, loadRepos]);
+  if (userLoading || reposLoading) return <Loading />;
   return token ? (
     <StyledWrapper>
-      {!userLoading && user && (
+      {user && (
         <div className="user">
           <h2 className="username">{user.name}</h2>
           <img className="head" src={user.avatarUrl} alt="用户头像" />
         </div>
       )}
-      {!reposLoading && repos && (
+      {repos && (
         <ul className="list">
           {repos.user.repositories.nodes.map((repo) => {
             const { name, url, updatedAt } = repo;

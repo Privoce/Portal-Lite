@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Developer from './developer';
 import Repo from './repo';
-import Loading from './loading';
+import Loading from '../Common/Loading';
 
 const StyledWrapper = styled.div`
   /* position: relative; */
@@ -87,9 +87,9 @@ export default function GithubTrending() {
     setType(t);
     setLoading(true);
   };
+  if (loading) return <Loading />;
   return (
     <StyledWrapper>
-      {loading && <Loading />}
       <ul className="tabs">
         <li
           onClick={handleTabClick.bind(null, 'repositories')}
