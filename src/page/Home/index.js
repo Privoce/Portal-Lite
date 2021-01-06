@@ -12,6 +12,7 @@ import { useAppData } from '../../hooks';
 
 import { useContextMenu } from '../../hooks';
 
+const Feedback = lazy(() => import('../../component/Feedback'));
 const BSearch = lazy(() => import('../../component/BaiduSearch'));
 const WidgetSection = lazy(() => import('./WidgetSection'));
 const ToolSection = lazy(() => import('./ToolSection'));
@@ -44,6 +45,7 @@ export default function Home() {
   return (
     <Suspense fallback={<Loading />}>
       <StyledWrapper>
+        <Feedback />
         {/* <Account /> */}
         {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
         <div className="search">
