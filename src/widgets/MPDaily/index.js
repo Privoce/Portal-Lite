@@ -25,7 +25,7 @@ const StyledWrapper = styled.section`
       margin-bottom: 0.24rem;
       white-space: nowrap;
       padding-left: 0.3rem;
-      padding-right: 0.4rem;
+      /* padding-right: 0.2rem; */
       overflow: hidden;
       text-overflow: ellipsis;
       position: relative;
@@ -61,7 +61,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function WeiboHot() {
+export default function MPDaily() {
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
