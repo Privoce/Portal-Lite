@@ -90,11 +90,17 @@ const useAppData = (src = 'webapp') => {
     updateLocalData(list);
   };
   const addApp = (app) => {
+    let existed = data.filter((item) => item.url == app.url);
+    if (existed.length != 0) {
+      return { success: false, msg: '地址已存在' };
+    }
+
     setData((prev) => {
       let newData = [...prev, app];
       updateLocalData(newData);
       return newData;
     });
+    return { success: true, data };
   };
   const removeApp = (url) => {
     setData((prev) => {

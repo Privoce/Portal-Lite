@@ -132,10 +132,20 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
       return;
     }
     const { color } = uniqolor.random({
-      saturation: 80,
+      saturation: 100,
       lightness: [70, 80]
     });
-    addApp({ title, url: finalUrl, themeColor: color, ...other_params, tool: type == 'tool' });
+    let { success, msg } = addApp({
+      title,
+      url: finalUrl,
+      themeColor: color,
+      ...other_params,
+      tool: type == 'tool'
+    });
+    if (!success) {
+      alert(msg);
+      return;
+    }
     resetModalVisible();
   };
   const handleInputChange = (evt) => {
