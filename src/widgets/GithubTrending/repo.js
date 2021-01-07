@@ -112,7 +112,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
     target.src = 'https://gitee.com/zyanggc/oss/raw/master/works/developer.png';
   };
   return (
-    <StyledRepo langColor={`#${languageColor}`} {...rest}>
+    <StyledRepo langColor={`${languageColor}`} {...rest}>
       <div className="left">
         <h2 className="title">
           <img className="icon" src={IconRepo} alt="repo icon" />
@@ -121,7 +121,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
           </a>
         </h2>
         <div className="desc" title={description}>
-          {description}
+          {description || '暂无描述'}
         </div>
         <ul className="items">
           <li className="item lang">{language}</li>
@@ -144,7 +144,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
         <a target="_blank" className="star" href={url}>
           标星
         </a>
-        <div className="period_stars">今日新增：{currentPeriodStars}⭐</div>
+        <div className="period_stars">🆕 {currentPeriodStars} ⭐</div>
       </div>
     </StyledRepo>
   );
