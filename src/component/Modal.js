@@ -99,7 +99,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-let other_params = {};
+// let other_params = {};
 export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
@@ -115,6 +115,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     };
   }, []);
   const handleSubmit = () => {
+    console.log({ title });
     let finalUrl = url;
     if (!title) {
       setTip('名称不能为空');
@@ -139,7 +140,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
       title,
       url: finalUrl,
       themeColor: color,
-      ...other_params,
+      // ...other_params,
       tool: type == 'tool'
     });
     if (!success) {
@@ -158,11 +159,14 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     }
   };
   const updateCurrSelect = (item) => {
-    const { title, url, ...rest } = item;
-    other_params = rest;
-    console.log({ title, url });
-    setUrl(url.startsWith('//') ? url.replace('//', '') : url);
-    setTitle(title);
+    console.log({ item });
+    // const { title: itemTitle, url: itemUrl, ...rest } = item;
+    let { success, msg } = addApp(item);
+    if (!success) {
+      alert(msg);
+      return;
+    }
+    resetModalVisible();
   };
   return type ? (
     <ModalWrapper ref={modal}>
