@@ -110,6 +110,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
+let timeoutInt = 0;
 export default function BaiduSearch() {
   const [input, setInput] = useState('');
   const [associates, setAssociates] = useState([]);
@@ -122,18 +123,22 @@ export default function BaiduSearch() {
   };
   useEffect(() => {
     if (input) {
-      fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/baidu/ass?w=${input}`)
-        .then((response) => response.json())
-        .then((resp) => {
-          console.log({ resp });
-          const { code, data } = resp;
-          if (code == 0) {
-            setAssociates(data);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // simple debounce
+      clearTimeout(timeoutInt);
+      timeoutInt = setTimeout(() => {
+        fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/baidu/ass?w=${input}`)
+          .then((response) => response.json())
+          .then((resp) => {
+            console.log({ resp });
+            const { code, data } = resp;
+            if (code == 0) {
+              setAssociates(data);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }, 400);
     } else {
       setAssociates([]);
     }
