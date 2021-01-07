@@ -1103,7 +1103,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.3.1", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.12.5"
   resolved "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.12.5.tgz?cache=0&sync_timestamp=1604441085826&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fruntime%2Fdownload%2F%40babel%2Fruntime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha1-QQ5+SHRB4bNgwpvnFdhw2bmFiC4=
@@ -1634,25 +1634,10 @@
   resolved "https://registry.npm.taobao.org/@types/q/download/@types/q-1.5.4.tgz?cache=0&sync_timestamp=1605055096527&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fq%2Fdownload%2F%40types%2Fq-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha1-FZJUFOCtLNdlv+9YhC9+JqesyyQ=
 
-"@types/react-dom@^16.8.3":
-  version "16.9.10"
-  resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.9.10.tgz#4485b0bec3d41f856181b717f45fd7831101156f"
-  integrity sha1-RIWwvsPUH4VhgbcX9F/XgxEBFW8=
-  dependencies:
-    "@types/react" "^16"
-
 "@types/react@*":
   version "17.0.0"
   resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
   integrity sha1-WvPrf60oBwkvAEahMCt4I+J5Gbg=
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^3.0.2"
-
-"@types/react@^16", "@types/react@^16.8.10":
-  version "16.14.2"
-  resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-16.14.2.tgz#85dcc0947d0645349923c04ccef6018a1ab7538c"
-  integrity sha1-hdzAlH0GRTSZI8BMzvYBihq3U4w=
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -6670,7 +6655,7 @@ prompts@2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -6992,26 +6977,6 @@ react-ga@^3.3.0:
   resolved "https://registry.npm.taobao.org/react-ga/download/react-ga-3.3.0.tgz#c91f407198adcb3b49e2bc5c12b3fe460039b3ca"
   integrity sha1-yR9AcZityztJ4rxcErP+RgA5s8o=
 
-react-gesture-responder@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npm.taobao.org/react-gesture-responder/download/react-gesture-responder-2.1.0.tgz#204606dc23e388d6d51d0f27d4acf7ede2bd10ba"
-  integrity sha1-IEYG3CPjiNbVHQ8n1Kz37eK9ELo=
-  dependencies:
-    "@types/react" "^16.8.10"
-    "@types/react-dom" "^16.8.3"
-    tslib "^1.9.3"
-
-react-grid-dnd@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npm.taobao.org/react-grid-dnd/download/react-grid-dnd-2.1.2.tgz#6e442eb97656b3823a93998a25123a5ed5bcbecc"
-  integrity sha1-bkQuuXZWs4I6k5mKJRI6XtW8vsw=
-  dependencies:
-    "@types/react" "^16.8.10"
-    "@types/react-dom" "^16.8.3"
-    react-spring "9.0.0-beta.8"
-    resize-observer-polyfill "^1.5.1"
-    tslib "^1.9.3"
-
 react-hotjar@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/react-hotjar/download/react-hotjar-2.2.1.tgz#5f06d15a146960262dba612657c828c8b58da8a3"
@@ -7066,14 +7031,6 @@ react-router@5.2.0:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
-
-react-spring@9.0.0-beta.8:
-  version "9.0.0-beta.8"
-  resolved "https://registry.npm.taobao.org/react-spring/download/react-spring-9.0.0-beta.8.tgz#dd4348d3d6dd88ff596b36fa85b3328200914b15"
-  integrity sha1-3UNI09bdiP9Zazb6hbMyggCRSxU=
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    prop-types "^15.5.8"
 
 react@^17.0.1:
   version "17.0.1"
@@ -8114,10 +8071,10 @@ styled-components@^5.2.1:
     shallowequal "^1.1.0"
     supports-color "^5.5.0"
 
-styled-normalize@^8.0.7:
-  version "8.0.7"
-  resolved "https://registry.npm.taobao.org/styled-normalize/download/styled-normalize-8.0.7.tgz#e883bff6a0c59a65a39365a4eb9c6cf48372c61f"
-  integrity sha1-6IO/9qDFmmWjk2Wk65xs9INyxh8=
+styled-reset@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.npm.taobao.org/styled-reset/download/styled-reset-4.3.4.tgz#87b6f43caa3f83a5f9dc63773c13b8bb71efbe69"
+  integrity sha1-h7b0PKo/g6X53GN3PBO4u3Hvvmk=
 
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"

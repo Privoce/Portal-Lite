@@ -49,7 +49,7 @@
     "semver": "7.3.4",
     "style-loader": "2.0.0",
     "styled-components": "^5.2.1",
-    "styled-normalize": "^8.0.7",
+    "styled-reset": "^4.3.4",
     "swiper": "^6.4.5",
     "terser-webpack-plugin": "4.2.3",
     "timeago.js": "^4.0.2",
