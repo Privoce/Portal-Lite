@@ -8,7 +8,6 @@ import Widget from '../Widget';
 
 import Navs from './nav_data';
 import Tools from './tool_data';
-
 const StyledWrapper = styled.div`
   font-size: 0.16rem;
   .tabs {
@@ -92,6 +91,9 @@ export default function SwiperTabs({ source = 'nav', handleSelect }) {
 
       <div className="content">
         <Swiper
+          allowTouchMove={false}
+          // keyboard={true}
+          // grabCursor={true}
           spaceBetween={30}
           onSlideChange={({ activeIndex }) => {
             setCurrIdx(activeIndex);
