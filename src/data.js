@@ -8,6 +8,7 @@ import GithubTrending from './widgets/GithubTrending';
 import GithubDashboard from './widgets/GithubDashboard';
 import Calc from './widgets/Calc';
 import YinNote from './widgets/YinNote';
+import ZhihuHot from './widgets/ZhihuHot';
 const Webapps = Navs[0].items;
 
 // {
@@ -97,6 +98,11 @@ const Widgets = {
   'mp-daily-hot': {
     title: '公众号24小时热文',
     comp: <MPDaily />
+  },
+  'zhihu-hot': {
+    title: '知乎热搜榜',
+    compact: true,
+    comp: <ZhihuHot />
   },
   'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
   weather: {

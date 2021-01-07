@@ -22,7 +22,16 @@ const StyledWrapper = styled.section`
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0.12rem 0.1rem;
+      padding: 0.15rem 0.1rem;
+
+      &:hover {
+        > .num {
+          transform: scale(1.2);
+        }
+        .title {
+          transform: scale(0.8);
+        }
+      }
       .compare {
         font-size: 0.1rem;
         color: #7c7c7c;
@@ -32,11 +41,13 @@ const StyledWrapper = styled.section`
         padding-bottom: 0.1rem;
         font-size: 0.24rem;
         font-weight: 800;
+        transition: all 0.6s ease-in;
       }
       .title {
         padding-bottom: 0.14rem;
         color: #222;
         font-size: 0.18rem;
+        transition: all 0.6s ease-in;
       }
       &.now-comfirmed {
         background-color: #fdf1f1;
@@ -131,11 +142,13 @@ const StyledWrapper = styled.section`
     position: absolute;
     left: 0.1rem;
     bottom: 0.1rem;
-    padding: 0.04rem 0.06rem;
+    padding: 0.05rem 0.06rem;
     border-radius: 0.04rem;
     background-color: rgba(2, 2, 2, 0.3);
     color: #fff;
     font-size: 0.08rem;
+    display: flex;
+    align-items: center;
   }
 `;
 export default function Covid() {

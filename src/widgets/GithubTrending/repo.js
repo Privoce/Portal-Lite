@@ -6,6 +6,9 @@ import IconCoder from '../../asset/img/icon.coder.png';
 
 const StyledRepo = styled(StyledCard)`
   display: flex;
+  &:hover {
+    background-color: #eee;
+  }
   .left {
     display: flex;
     flex-direction: column;

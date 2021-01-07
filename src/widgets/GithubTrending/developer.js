@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import StyledCard from './card';
 
 const StyledDeveloper = styled(StyledCard)`
+  &:hover {
+    background-color: #eee;
+  }
   .profile {
     width: 100%;
     display: flex;
@@ -69,6 +72,7 @@ const StyledDeveloper = styled(StyledCard)`
         }
       }
       .desc {
+        padding-top: 0.06rem;
         font-size: 0.12rem;
         color: #666;
       }
