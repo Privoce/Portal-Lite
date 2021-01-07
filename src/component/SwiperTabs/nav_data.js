@@ -144,6 +144,11 @@ const Navs = [
         themeColor: '#fff'
       },
       {
+        title: '腾讯新闻',
+        url: 'https://news.qq.com/',
+        themeColor: '#5487e8'
+      },
+      {
         title: '新华网',
         url: 'http://xinhuanet.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/xinhuawang.png',
