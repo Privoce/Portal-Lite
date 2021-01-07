@@ -28,6 +28,7 @@ const StyledWrapper = styled.section`
       color: #333;
       line-height: 0.25rem;
       margin-left: 0.25rem;
+      margin-bottom: 0.2rem;
       align-self: flex-start;
       cursor: grabbing;
       user-select: none;

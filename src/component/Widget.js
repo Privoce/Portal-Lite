@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
     background: ${({ bgColor }) => bgColor};
     box-shadow: 0rem 0.08rem 0.3rem 0rem #ececec, 0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5);
     border-radius: 0.04rem;
-    border: 0.01rem solid #e8e8e8;
+    /* border: 0.01rem solid #e8e8e8; */
     transition: all 0.5s;
     img {
       height: 0.4rem;
