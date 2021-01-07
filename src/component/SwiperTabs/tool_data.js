@@ -19,6 +19,14 @@ const Tools = [
       },
 
       {
+        id: 32342,
+        tool: true,
+        title: 'IconFont图标资源',
+        themeColor: '#090822',
+        url: 'https://www.iconfont.cn/'
+      },
+
+      {
         id: 2333,
         tool: true,
         title: '中国色🇨🇳',
