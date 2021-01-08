@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import Developer from './developer';
 import Repo from './repo';
 import Loading from '../Common/Loading';
-
+import IconGithubRepo from '../Common/Icons/GithubRepo';
+import IconDev from '../Common/Icons/Developer';
 const StyledWrapper = styled.div`
   /* position: relative; */
   background: #fff;
@@ -41,6 +42,13 @@ const StyledWrapper = styled.div`
       &.active {
         background-color: #333;
         color: #fff;
+        svg {
+          fill: #eee;
+        }
+      }
+      svg {
+        width: 0.2rem;
+        height: 0.2rem;
       }
     }
   }
@@ -97,13 +105,13 @@ export default function GithubTrending() {
           onClick={handleTabClick.bind(null, 'repositories')}
           className={`tab ${type == 'repositories' && 'active'}`}
         >
-          热门仓库
+          <IconGithubRepo />
         </li>
         <li
           onClick={handleTabClick.bind(null, 'developers')}
           className={`tab ${type == 'developers' && 'active'}`}
         >
-          热门开发者
+          <IconDev />
         </li>
       </ul>
       {type == 'developers' ? <DeveloperList data={devs} /> : <RepoList data={repos} />}

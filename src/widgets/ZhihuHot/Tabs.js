@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import IconClose from './IconClose';
+import IconClose from '../Common/Icons/Close';
 const StyledIcon = styled.div`
   position: absolute;
   left: 0.1rem;

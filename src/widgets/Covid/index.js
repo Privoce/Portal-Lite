@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { format } from 'timeago.js';
 
 import styled from 'styled-components';
-import IconCovid from './IconCovid';
-import IconClose from './IconClose';
+import IconCovid from '../Common/Icons/Covid';
+import IconClose from '../Common/Icons/Close';
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 const StyledWrapper = styled.section`
