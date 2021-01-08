@@ -46,13 +46,9 @@ const StyledWrapper = styled.section`
       }
       &:hover {
         background-color: #eee;
-        transform: scale(1.06);
+        /* transform: scale(1.06); */
         .block .left .title {
           color: rgb(0, 132, 255);
-        }
-        &:before {
-          transform: translateX(-20px) translateY(-50%);
-          /* display: none; */
         }
       }
       &:before {
@@ -68,7 +64,6 @@ const StyledWrapper = styled.section`
         text-align: center;
         width: 0.1rem;
         height: 0.1rem;
-        transition: all 0.8s;
       }
       .block {
         display: flex;

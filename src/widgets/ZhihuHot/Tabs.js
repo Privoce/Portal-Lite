@@ -10,7 +10,7 @@ const StyledIcon = styled.div`
   z-index: 996;
   cursor: pointer;
   display: flex;
-  opacity: 0.5;
+  opacity: 0.4;
   .icon {
     width: 0.2rem;
     height: 0.2rem;
