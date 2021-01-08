@@ -1,7 +1,6 @@
-export default function IconCovid(props) {
+export default function IconClose(props) {
   return (
     <svg
-      {...props}
       t="1609914320607"
       viewBox="0 0 1024 1024"
       version="1.1"
@@ -9,6 +8,7 @@ export default function IconCovid(props) {
       p-id="6262"
       width="32"
       height="32"
+      {...props}
     >
       <path d="M0 0h1024v1024H0z" fill="#D8D8D8" fillOpacity="0" p-id="6263"></path>
       <path
