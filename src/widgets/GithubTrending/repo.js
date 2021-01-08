@@ -110,10 +110,6 @@ export default function Repo({ isFirst, repo, ...rest }) {
     currentPeriodStars,
     description
   } = repo;
-  const handleAvatarError = (evt) => {
-    const { target } = evt;
-    target.src = 'https://gitee.com/zyanggc/oss/raw/master/works/developer.png';
-  };
   return (
     <StyledRepo langColor={`${languageColor}`} {...rest}>
       <div className="left">
@@ -131,14 +127,19 @@ export default function Repo({ isFirst, repo, ...rest }) {
           <li className="item">⭐ {stars}</li>
           <li className="item">🍴 {forks}</li>
           <li className="item author">
-            <img className="icon" src={IconCoder} alt="头像图标" />
+            <img
+              className="icon"
+              data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+              src={IconCoder}
+              alt="头像图标"
+            />
             <a
               className="head"
               href={`http://github.com/${author}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={avatar} onError={handleAvatarError} alt="作者头像" />
+              <img src={avatar} alt="作者头像" />
             </a>
           </li>
         </ul>

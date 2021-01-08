@@ -88,16 +88,15 @@ export default function Developer({ developer = {}, ...rest }) {
     url,
     repo: { repo_name, description }
   } = developer;
-  // gitee.com/zyanggc/oss/raw/master/works/developer.png
-  const handleAvatarError = (evt) => {
-    const { target } = evt;
-    target.src = 'https://gitee.com/zyanggc/oss/raw/master/works/developer.png';
-  };
   return (
     <StyledDeveloper {...rest}>
       <div className="profile">
         <div className="avatar">
-          <img onError={handleAvatarError} src={`${avatar}.sss`} alt="开发者头像" />
+          <img
+            data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+            src={`${avatar}`}
+            alt="开发者头像"
+          />
         </div>
         <div className="call">
           <span className="name"> {name}</span>
