@@ -1,5 +1,4 @@
 import { lazy, Suspense } from 'react';
-
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { useGithubToken } from './hooks';
@@ -11,6 +10,7 @@ const Home = lazy(() => import('./page/Home'));
 const OAuth = lazy(() => import('./page/OAuth'));
 const NotFound = lazy(() => import('./page/NotFound'));
 // import PageTitle from './component/PageTitle';
+
 function App() {
   const { token } = useGithubToken();
   const client = new ApolloClient({
