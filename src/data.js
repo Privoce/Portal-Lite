@@ -104,7 +104,7 @@ const Widgets = {
     compact: true,
     comp: <ZhihuHot />
   },
-  'gh-dashboard': { title: 'Github个人仓库', comp: <GithubDashboard /> },
+  'gh-dashboard': { title: 'Github个人仓库', compact: true, comp: <GithubDashboard /> },
   weather: {
     title: '今日天气',
     compact: true,
