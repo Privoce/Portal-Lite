@@ -56,32 +56,26 @@ export default function Home() {
         <Feedback />
         {/* <Account /> */}
         {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
-        {/* <select
-          name="f"
-          id=""
-          onChange={({ target: { value } }) => {
-            console.log({ value });
-            updateSearch(value);
-          }}
-        >
-          <option value="baidu">b</option>
-          <option value="google">g</option>
-          <option value="bing">b</option>
-        </select> */}
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
           <div className="search">{SearchMap[search]}</div>
         </Suspense>
         {/* <NavSection showMenu={showMenu} /> */}
-        <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
-        <ToolSection
-          tools={tools}
-          addTool={addTool}
-          updateTools={updateTools}
-          showMenu={showMenu}
-        />
-        {/* <DndProvider backend={HTML5Backend}> */}
-        <WidgetSection />
-        {/* </DndProvider> */}
+        <Suspense fallback={<Loading tip="导航模块加载中..." />}>
+          <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
+        </Suspense>
+        <Suspense fallback={<Loading tip="小工具模块加载中..." />}>
+          <ToolSection
+            tools={tools}
+            addTool={addTool}
+            updateTools={updateTools}
+            showMenu={showMenu}
+          />
+        </Suspense>
+        <Suspense fallback={<Loading tip="小组件模块加载中..." />}>
+          {/* <DndProvider backend={HTML5Backend}> */}
+          <WidgetSection />
+          {/* </DndProvider> */}
+        </Suspense>
       </StyledWrapper>
     </Suspense>
   );
