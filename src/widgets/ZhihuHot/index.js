@@ -2,13 +2,18 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
-
+import Tabs from './Tabs';
 const StyledWrapper = styled.section`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
+  .empty {
+    font-size: 0.2rem;
+    color: #666;
+  }
   .wrapper {
     margin: 0;
     list-style: none;
@@ -27,25 +32,43 @@ const StyledWrapper = styled.section`
       position: relative;
       border-bottom: 1px solid #eee;
       transition: all 0.5s;
+      /* overflow: hidden; */
+      &:last-child {
+        margin-bottom: 0.6rem;
+        &:after {
+          content: '没有啦~';
+          color: #aaa;
+          position: absolute;
+          bottom: -0.4rem;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
       &:hover {
         background-color: #eee;
         transform: scale(1.06);
+        .block .left .title {
+          color: rgb(0, 132, 255);
+        }
         &:before {
-          display: none;
+          transform: translateX(-20px) translateY(-50%);
+          /* display: none; */
         }
       }
       &:before {
         position: absolute;
-        left: 0.05rem;
+        left: 0.08rem;
         top: 50%;
         transform: translateY(-50%);
         content: attr(data-seq);
-        font-size: 0.14rem;
+        font-size: 0.12rem;
         font-weight: 400;
         color: #f26e5f;
         line-height: 0.2rem;
         text-align: center;
         width: 0.1rem;
+        height: 0.1rem;
+        transition: all 0.8s;
       }
       .block {
         display: flex;
@@ -104,9 +127,13 @@ export default function ZhihuHot() {
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
+  const [currTab, setCurrTab] = useState('total');
   useEffect(() => {
+    setLoading(true);
     const getHots = async () => {
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/zhihu/hot`);
+      const list = await fetch(
+        `${process.env.REACT_APP_SERVICE_DOMAIN}/service/zhihu/hot/${currTab}`
+      );
       const { code, data, msg } = await list.json();
       setLoading(false);
       if (code != 0) {
@@ -115,37 +142,45 @@ export default function ZhihuHot() {
       }
       setHots(data);
     };
+
     getHots();
-  }, []);
-  if (loading) return <Loading />;
+  }, [currTab]);
+  // if (loading) return <Loading />;
   if (errTip) return <ErrorTip tip={errTip} />;
   return (
     <StyledWrapper>
-      <ul className="wrapper">
-        {hots.map((n, idx) => {
-          const { title, url, intro, id, thumbnail, hot_count } = n;
-          return (
-            <li className="item" key={id} data-seq={idx + 1}>
-              <a className="block" href={url} target="_blank" rel="noopener noreferrer">
-                <div className="left">
-                  <h2 className="title" title={title}>
-                    {title}
-                  </h2>
-                  <p className="intro" title={intro}>
-                    {intro}
-                  </p>
-                  <span className="hot">{hot_count} 万热度</span>
-                </div>
-                {thumbnail && (
-                  <div className="right">
-                    <img src={thumbnail} alt="知乎配图" />
-                  </div>
-                )}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+      {loading && <Loading />}
+      <Tabs currTab={currTab} updateCurrTab={setCurrTab} />
+      {!loading &&
+        (hots.length == 0 ? (
+          <div className="empty">暂无内容，试试其它分类吧~</div>
+        ) : (
+          <ul className="wrapper">
+            {hots.map((n, idx) => {
+              const { title, url, intro, id, thumbnail, hot_count } = n;
+              return (
+                <li className="item" key={id} data-seq={idx + 1}>
+                  <a className="block" href={url} target="_blank" rel="noopener noreferrer">
+                    <div className="left">
+                      <h2 className="title" title={title}>
+                        {title}
+                      </h2>
+                      <p className="intro" title={intro}>
+                        {intro}
+                      </p>
+                      <span className="hot">{hot_count} 万热度</span>
+                    </div>
+                    {thumbnail && (
+                      <div className="right">
+                        <img src={thumbnail} alt="知乎配图" />
+                      </div>
+                    )}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        ))}
     </StyledWrapper>
   );
 }
