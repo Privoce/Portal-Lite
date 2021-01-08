@@ -8,16 +8,23 @@ import Loading from '../../component/Loading';
 
 // import Account from '../../component/Account';
 import ContextMenu from '../../component/ContextMenu';
-import { useAppData } from '../../hooks';
+import { useAppData, useSearchEngine, useContextMenu } from '../../hooks';
 
-import { useContextMenu } from '../../hooks';
-
+const Setting = lazy(() => import('../../component/Setting'));
 const Feedback = lazy(() => import('../../component/Feedback'));
-const BSearch = lazy(() => import('../../component/BaiduSearch'));
+const BaiduSearch = lazy(() => import('../../component/Searchs/Baidu'));
+const GoogleSearch = lazy(() => import('../../component/Searchs/Google'));
+const BingSearch = lazy(() => import('../../component/Searchs/Bing'));
 const WidgetSection = lazy(() => import('./WidgetSection'));
 const ToolSection = lazy(() => import('./ToolSection'));
 const NavSection = lazy(() => import('./NavSection'));
+const SearchMap = {
+  baidu: <BaiduSearch />,
+  google: <GoogleSearch />,
+  bing: <BingSearch />
+};
 export default function Home() {
+  const { search, updateSearch } = useSearchEngine();
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
   const {
     data: navs,
@@ -45,12 +52,25 @@ export default function Home() {
   return (
     <Suspense fallback={<Loading />}>
       <StyledWrapper>
+        <Setting search={search} updateSearch={updateSearch} />
         <Feedback />
         {/* <Account /> */}
         {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
-        <div className="search">
-          <BSearch />
-        </div>
+        {/* <select
+          name="f"
+          id=""
+          onChange={({ target: { value } }) => {
+            console.log({ value });
+            updateSearch(value);
+          }}
+        >
+          <option value="baidu">b</option>
+          <option value="google">g</option>
+          <option value="bing">b</option>
+        </select> */}
+        <Suspense fallback={<Loading />}>
+          <div className="search">{SearchMap[search]}</div>
+        </Suspense>
         {/* <NavSection showMenu={showMenu} /> */}
         <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
         <ToolSection

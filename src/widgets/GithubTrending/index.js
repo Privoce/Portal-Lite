@@ -33,10 +33,14 @@ const StyledWrapper = styled.div`
     overflow: hidden;
     border: 1px solid #888;
     margin: 0;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
     .tab {
       background-color: #fff;
       cursor: pointer;
-      padding: 0.06rem;
+      padding: 0.06rem 0.1rem;
       transition: all 0.5s;
       color: #000;
       &.active {
@@ -47,8 +51,8 @@ const StyledWrapper = styled.div`
         }
       }
       svg {
-        width: 0.2rem;
-        height: 0.2rem;
+        width: 0.18rem;
+        height: 0.18rem;
       }
     }
   }

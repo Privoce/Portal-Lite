@@ -60,16 +60,15 @@ export default function GithubDashboard() {
   } = data;
   return token ? (
     <StyledWrapper>
-      <div className="head">
+      <a href={`https://github.com/${login}/`} target="_blank" className="head">
         <img
-          // onError={handleAvatarError}
           data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
           className="avatar"
           title={login}
           src={`${avatarUrl}`}
           alt="用户头像"
         />
-      </div>
+      </a>
       <ul className="list">
         {nodes
           .filter((n) => !n.isArchived)

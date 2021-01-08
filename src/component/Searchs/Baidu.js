@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { highlightWord } from '../util';
+import { highlightWord } from '../../util';
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;

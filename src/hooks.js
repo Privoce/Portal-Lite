@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Webapps, Tools, Widgets } from './data';
+// 右键菜单
 const useContextMenu = () => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ left: 0, top: 0 });
@@ -23,7 +24,17 @@ const useContextMenu = () => {
   }, []);
   return { menuVisible: visible, position, widget, showMenu, hideMenu };
 };
-
+// 搜索引擎
+const StorageSearchEngine = 'SETTING_SEARCH_ENGINE';
+const useSearchEngine = () => {
+  const [search, setSearch] = useState(localStorage.getItem(StorageSearchEngine) || 'baidu');
+  const update = (val) => {
+    localStorage.setItem(StorageSearchEngine, val);
+    setSearch(val);
+  };
+  return { search, updateSearch: update };
+};
+// GitHub Token
 const StorageGithubKey = 'GITHUB_OAUTH_TOKEN';
 const useGithubToken = () => {
   const [token, setToken] = useState(localStorage.getItem(StorageGithubKey) || '');
@@ -44,6 +55,7 @@ const useGithubToken = () => {
   }, []);
   return { token, setToken };
 };
+// 小组件
 const LOCAL_WG_KEY = 'WIDGET_LIST';
 const useWidgets = () => {
   let wgKeys = Object.keys(Widgets);
@@ -74,6 +86,7 @@ const useWidgets = () => {
   };
   return { widgets, addWidget, removeWidget, updateWidgetData };
 };
+// 导航&小工具
 const AppKeyMap = {
   webapp: { localKey: 'WEB_APP_DATA', initalData: Webapps },
   tool: { localKey: 'WEB_TOOL_DATA', initalData: Tools }
@@ -114,4 +127,4 @@ const useAppData = (src = 'webapp') => {
   return { data, addApp, removeApp, updateAppData };
 };
 
-export { useContextMenu, useGithubToken, useAppData, useWidgets };
+export { useContextMenu, useGithubToken, useAppData, useWidgets, useSearchEngine };

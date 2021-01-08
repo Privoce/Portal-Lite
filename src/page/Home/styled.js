@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
+  position: relative;
   margin: 0 auto;
   padding-bottom: 0.6rem;
   width: 10.5rem;
