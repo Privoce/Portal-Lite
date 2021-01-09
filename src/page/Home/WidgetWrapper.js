@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
   width: 4.87rem;
   .container {
+    overflow: scroll;
     position: relative;
     width: 100%;
     height: 2.34rem;
@@ -11,7 +12,6 @@ const StyledWrapper = styled.div`
     box-shadow: 0rem 0.02rem 0.06rem 0rem rgba(213, 213, 213, 0.5);
     border-radius: 0.05rem;
     border: 0.01rem solid #e8e8e8;
-    /* overflow: hidden; */
     padding: 0.14rem 0.16rem;
     .remove,
     .move {
@@ -50,7 +50,8 @@ const StyledWrapper = styled.div`
     font-weight: 400;
     color: #666666;
     line-height: 0.2rem;
-    margin: 0.15rem 0;
+    margin-top: 0.15rem;
+    margin-bottom: 0.28rem;
   }
   &.l .container {
     height: 4.68rem;

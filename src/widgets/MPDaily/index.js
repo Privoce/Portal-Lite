@@ -13,7 +13,7 @@ const StyledWrapper = styled.section`
     padding: 0.02rem;
     margin: 0;
     list-style: none;
-    overflow: scroll;
+    /* overflow: scroll; */
     /* overscroll-behavior: contain; */
     width: 100%;
     height: 100%;

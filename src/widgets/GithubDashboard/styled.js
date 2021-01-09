@@ -7,8 +7,8 @@ const StyledWrapper = styled.div`
   height: 100%;
   padding: 0.1rem;
   display: flex;
-  position: relative;
-  overflow: hidden;
+  /* position: relative; */
+  /* overflow: hidden; */
   .auth {
     position: absolute;
     top: 0.1rem;
@@ -36,7 +36,7 @@ const StyledWrapper = styled.div`
   .list {
     /* list-style: none; */
     height: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
     display: flex;
     flex-wrap: wrap;
   }

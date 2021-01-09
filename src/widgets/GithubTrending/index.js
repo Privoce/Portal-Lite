@@ -40,7 +40,7 @@ const StyledWrapper = styled.div`
     .tab {
       background-color: #fff;
       cursor: pointer;
-      padding: 0.06rem 0.1rem;
+      padding: 0.02rem 0.14rem;
       transition: all 0.5s;
       color: #000;
       &.active {
@@ -51,8 +51,8 @@ const StyledWrapper = styled.div`
         }
       }
       svg {
-        width: 0.18rem;
-        height: 0.18rem;
+        width: 0.14rem;
+        height: 0.14rem;
       }
     }
   }

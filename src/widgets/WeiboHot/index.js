@@ -11,11 +11,12 @@ const StyledWrapper = styled.section`
   align-items: center;
   justify-content: center;
   height: 100%;
+  /* margin: 0.14rem 0.16rem; */
   .wrapper {
     padding: 0.02rem;
     margin: 0;
     list-style: none;
-    overflow: scroll;
+    /* overflow: scroll; */
     /* overscroll-behavior: contain; */
     width: 100%;
     height: 100%;

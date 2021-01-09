@@ -10,6 +10,8 @@ const StyledIcon = styled.div`
   z-index: 996;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   opacity: 0.4;
   .icon {
     width: 0.2rem;
@@ -17,6 +19,10 @@ const StyledIcon = styled.div`
   }
   &:hover {
     opacity: 1;
+  }
+  .tab_name {
+    margin-top: 0.05rem;
+    font-size: 0.08rem;
   }
 `;
 const StyledWrapper = styled.div`
@@ -111,6 +117,7 @@ export default function Tabs({ currTab, updateCurrTab }) {
             p-id="5561"
           ></path>
         </svg>
+        <span className="tab_name">{tabs.filter((t) => t.identifier == currTab)[0].name}</span>
       </StyledIcon>
     );
   return (
