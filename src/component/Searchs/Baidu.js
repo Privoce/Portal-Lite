@@ -31,7 +31,7 @@ const StyledWrapper = styled.div`
       height: 0.01rem;
       width: 94%;
       background-color: #f5f5f6;
-      z-index: 999;
+      z-index: 888;
       display: none;
     }
     .list {
@@ -49,7 +49,7 @@ const StyledWrapper = styled.div`
       margin-top: -0.06rem;
       left: 0;
       top: 0.5rem;
-      z-index: 996;
+      z-index: 886;
       border-radius: 0 0 0.1rem 0.1rem;
       border: 0.02rem solid #4e6ef3;
       border-top: none;
