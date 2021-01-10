@@ -74,8 +74,8 @@ const StyledWrapper = styled.section`
       width: 4.68rem;
     }
   }
-  @media (min-width: 481px) and (max-width: 768px) {
-    width: 6.4rem;
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
   }
 `;
 
