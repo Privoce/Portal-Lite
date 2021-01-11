@@ -100,7 +100,7 @@ const StyledWrapper = styled.section`
   }
 `;
 // let other_params = {};
-export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
+export default function Modal({ resetModalVisible, addApp }) {
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -139,9 +139,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     let { success, msg } = addApp({
       title,
       url: finalUrl,
-      themeColor: color,
-      // ...other_params,
-      tool: type == 'tool'
+      themeColor: color
     });
     if (!success) {
       alert(msg);
@@ -168,7 +166,7 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
     }
     resetModalVisible();
   };
-  return type ? (
+  return (
     <ModalWrapper ref={modal}>
       <StyledWrapper>
         <div className="modal">
@@ -185,12 +183,12 @@ export default function Modal({ type = 'nav', resetModalVisible, addApp }) {
               {tip && <div className="tip">{tip}</div>}
             </div>
           </div>
-          <SwiperTabs source={type} handleSelect={updateCurrSelect} />
+          <SwiperTabs handleSelect={updateCurrSelect} />
           <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
       </StyledWrapper>
     </ModalWrapper>
-  ) : null;
+  );
 }
 
 const ModalWrapper = ({ children }) => {

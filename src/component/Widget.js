@@ -68,7 +68,7 @@ const AddTitle = {
   tool: '添加工具'
 };
 export default function Widget({ type = 'nav', data = {}, showMenu = null, add, ...rest }) {
-  const { themeColor = '#333', icon = '', title = '标题', url = '' } = data;
+  const { themeColor = '#333', icon = '', title = '标题', url = '', frame } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
     setIco(IconDefault);
@@ -105,7 +105,9 @@ export default function Widget({ type = 'nav', data = {}, showMenu = null, add, 
         )}
       </div>
 
-      <h2 className="title">{add ? AddTitle[type] : title}</h2>
+      <h2 className="title">
+        {add ? AddTitle[type] : title} {frame ? '🖥️' : ''}
+      </h2>
     </StyledWrapper>
   );
 }

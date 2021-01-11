@@ -16,7 +16,6 @@ const BaiduSearch = lazy(() => import('../../component/Searchs/Baidu'));
 const GoogleSearch = lazy(() => import('../../component/Searchs/Google'));
 const BingSearch = lazy(() => import('../../component/Searchs/Bing'));
 const WidgetSection = lazy(() => import('./WidgetSection'));
-const ToolSection = lazy(() => import('./ToolSection'));
 const NavSection = lazy(() => import('./NavSection'));
 const SearchMap = {
   baidu: <BaiduSearch />,
@@ -32,21 +31,10 @@ export default function Home() {
     removeApp: removeNav,
     updateAppData: updateNavs
   } = useAppData();
-  const {
-    data: tools,
-    addApp: addTool,
-    removeApp: removeTool,
-    updateAppData: updateTools
-  } = useAppData('tool');
   const removeApp = (w) => {
     const { url } = w;
     console.log({ w });
-    if (w.tool) {
-      console.log('remove tool');
-      removeTool(url);
-    } else {
-      removeNav(url);
-    }
+    removeNav(url);
   };
 
   return (
@@ -62,14 +50,6 @@ export default function Home() {
         {/* <NavSection showMenu={showMenu} /> */}
         <Suspense fallback={<Loading tip="导航模块加载中..." />}>
           <NavSection navs={navs} addNav={addNav} updateNavs={updateNavs} showMenu={showMenu} />
-        </Suspense>
-        <Suspense fallback={<Loading tip="小工具模块加载中..." />}>
-          <ToolSection
-            tools={tools}
-            addTool={addTool}
-            updateTools={updateTools}
-            showMenu={showMenu}
-          />
         </Suspense>
         <Suspense fallback={<Loading tip="小组件模块加载中..." />}>
           {/* <DndProvider backend={HTML5Backend}> */}

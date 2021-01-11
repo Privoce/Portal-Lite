@@ -31,6 +31,48 @@ const Navs = [
         url: '//fanyi.baidu.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/fanyi.png',
         themeColor: '#4898fc'
+      },
+      {
+        title: '格式转换',
+        url: 'https://cloudconvert.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/transfer.png',
+        themeColor: '#fff',
+        popular: true
+      },
+      {
+        title: '计算器',
+        url: 'https://www.desmos.com/scientific',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jisuanqi.png',
+        themeColor: '#003461',
+        popular: true,
+        frame: true,
+        size: 'mobile'
+      },
+      {
+        title: 'Markdown编辑',
+        url: 'https://www.zybuluo.com/mdeditor',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/file-markdown.png',
+        themeColor: '#fff',
+        popular: true
+      },
+
+      {
+        title: 'ProcessOn流程图',
+        url: 'https://www.processon.com/',
+        themeColor: '#54b9cf'
+      },
+      {
+        title: '图片压缩',
+        url: 'https://squoosh.app/',
+        themeColor: '#FFD902',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/compress.png',
+        popular: true,
+        frame: true
+      },
+      {
+        title: 'PPT搜索',
+        url: 'https://www.slideshare.net/',
+        themeColor: '#F902'
       }
     ]
   },
@@ -101,6 +143,11 @@ const Navs = [
         url: '//kugou.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/kugou.png',
         themeColor: '#007cd0'
+      },
+      {
+        title: 'KTV',
+        url: 'https://useful.tools/karaoke',
+        themeColor: '#F02'
       }
     ]
   },
@@ -158,6 +205,88 @@ const Navs = [
         title: '书籍',
         url: 'https://salttiger.com/',
         themeColor: '#fff'
+      }
+    ]
+  },
+  {
+    title: '实用工具',
+    items: [
+      {
+        title: '色彩选择',
+        url: 'http://color.adobe.com/',
+        // icon: 'https://github.com/favicon.ico',
+        themeColor: '#fff'
+      },
+      {
+        title: 'PhotoShop Online',
+        url: 'https://www.photopea.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
+        themeColor: '#0b2446',
+        frame: true,
+        popular: true,
+        size: 'pc'
+      },
+
+      {
+        id: 32342,
+        tool: true,
+        title: 'IconFont图标资源',
+        themeColor: '#090822',
+        url: 'https://www.iconfont.cn/'
+      },
+
+      {
+        id: 2333,
+        tool: true,
+        title: '中国色🇨🇳',
+        themeColor: '#f9906f',
+        url: 'https://colors.ichuantong.cn/',
+        frame: true,
+        size: 'pc'
+      },
+      {
+        title: 'JSON编辑',
+        url: 'https://www.beejson.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/JSON.png',
+        themeColor: '#eee',
+        popular: true
+      },
+      {
+        title: 'Shader编辑器',
+        url: 'https://makepad.dev/',
+        // icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
+        themeColor: '#0b2446',
+        popular: true
+      },
+      {
+        title: '在线汉语词典',
+        url: 'http://xh.5156edu.com/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/cidian.png',
+        themeColor: '#fff'
+      },
+      // {
+      //   title: '天气预报',
+      //   url: 'https://weather.com/',
+      //   icon: 'https://gitee.com/zyanggc/oss/raw/master/works/weather.png',
+      //   themeColor: '#37aad2'
+      // },
+
+      {
+        title: '图像识别',
+        url: 'https://second-state.github.io/wasm-learning/faas/mobilenet/html/index.html',
+        themeColor: '#FFD098'
+      },
+      {
+        title: '书籍搜索',
+        url: 'http://libgen.rs/',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/book.png',
+        themeColor: '#FFD'
+      },
+      {
+        title: '奶牛快传',
+        url: 'https://cowtransfer.com/',
+        icon: 'https://background.cowtransfer.com/apple-icon-57x57.png',
+        themeColor: '#fb7f7b'
       }
     ]
   }

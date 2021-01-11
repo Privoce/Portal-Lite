@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Widget from '../../component/Widget';
 import Modal from '../../component/Modal';
+import PreviewModal from '../../component/PreviewModal';
 
 export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [currFrame, setCurrFrame] = useState(null);
   const handleNavDragEnd = (result) => {
     console.log({ result });
     const { source, destination } = result;
@@ -20,11 +21,12 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
     updateNavs(navs);
   };
   const handleBoxClick = (w) => {
-    // if (w.frame) {
-    //   setCurrNav(w);
-    // } else {
-    // }
-    window.open(w.url, '_blank');
+    if (w.frame) {
+      console.log({ w });
+      setCurrFrame(w);
+    } else {
+      window.open(w.url, '_blank');
+    }
   };
   return (
     <>
@@ -74,7 +76,15 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
         </DragDropContext>
       </section>
       {modalVisible ? (
-        <Modal type={'nav'} addApp={addNav} resetModalVisible={setModalVisible.bind(null, false)} />
+        <Modal addApp={addNav} resetModalVisible={setModalVisible.bind(null, false)} />
+      ) : null}
+      {currFrame ? (
+        <PreviewModal
+          app={currFrame}
+          resetCurrApp={() => {
+            setCurrFrame(null);
+          }}
+        ></PreviewModal>
       ) : null}
     </>
   );

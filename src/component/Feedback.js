@@ -4,7 +4,7 @@ const StyledWrapper = styled.a`
   position: fixed;
   right: 0.1rem;
   bottom: 0.1rem;
-  z-index: 999;
+  z-index: 996;
 `;
 export default function Feedback() {
   return (

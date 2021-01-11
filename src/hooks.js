@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Webapps, Tools, Widgets } from './data';
+import { Webapps, Widgets } from './data';
 // 右键菜单
 const useContextMenu = () => {
   const [visible, setVisible] = useState(false);
@@ -86,17 +86,13 @@ const useWidgets = () => {
   };
   return { widgets, addWidget, removeWidget, updateWidgetData };
 };
-// 导航&小工具
-const AppKeyMap = {
-  webapp: { localKey: 'WEB_APP_DATA', initalData: Webapps },
-  tool: { localKey: 'WEB_TOOL_DATA', initalData: Tools }
-};
-const useAppData = (src = 'webapp') => {
-  const { localKey, initalData } = AppKeyMap[src];
-  const initialData = JSON.parse(localStorage.getItem(localKey) || 'null') || initalData;
+// 导航
+const NAV_LOCAL_KEY = 'WEB_APP_NAV_DATA';
+const useAppData = () => {
+  const initialData = JSON.parse(localStorage.getItem(NAV_LOCAL_KEY) || 'null') || Webapps;
   const [data, setData] = useState(initialData);
   const updateLocalData = (newData) => {
-    localStorage.setItem(localKey, JSON.stringify(newData));
+    localStorage.setItem(NAV_LOCAL_KEY, JSON.stringify(newData));
   };
   const updateAppData = (list) => {
     setData(list);

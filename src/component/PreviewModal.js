@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import IconPC from '../asset/img/icon.pc.png';
@@ -11,6 +11,15 @@ import IconOpen from '../asset/img/icon.open.png';
 import { getPrefixPath } from '../util';
 
 const modalRoot = document.querySelector('#modal-root');
+
+const AniFadeIn = keyframes`
+from{
+  opacity:0.1;
+}
+to{
+  opacity:1;
+}
+`;
 const StyledWrapper = styled.section`
   position: fixed;
   left: 0;
@@ -21,7 +30,7 @@ const StyledWrapper = styled.section`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.9);
-
+  z-index: 998;
   .modal {
     position: relative;
     border-radius: 0.04rem;
@@ -34,6 +43,7 @@ const StyledWrapper = styled.section`
     border: 1px solid rgba(22, 22, 22, 0.6);
     resize: horizontal;
     background: #fff;
+    animation: ${AniFadeIn} 1s ease-in-out;
     .loading {
       color: ${({ themeColor }) => themeColor};
       z-index: 996;
@@ -82,6 +92,7 @@ const StyledWrapper = styled.section`
     bottom: 0.2rem;
     right: 0.2rem;
     font-size: 0.1rem;
+    z-index: 999;
     .btn {
       background: #fff;
       width: 0.4rem;
@@ -99,6 +110,7 @@ const StyledWrapper = styled.section`
     }
   }
   .close {
+    z-index: 999;
     cursor: pointer;
     width: 0.4rem;
     height: 0.4rem;
@@ -138,6 +150,7 @@ const StyledWrapper = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 999;
     .logo {
       width: 0.5rem;
       height: 0.5rem;

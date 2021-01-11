@@ -7,7 +7,7 @@ import 'swiper/swiper-bundle.min.css';
 import Widget from '../Widget';
 
 import Navs from './nav_data';
-import Tools from './tool_data';
+// import Tools from './tool_data';
 const StyledWrapper = styled.div`
   font-size: 0.16rem;
   .tabs {
@@ -56,11 +56,11 @@ const StyledWrapper = styled.div`
   }
 `;
 // const tabs = ['常用', '办公效率', '社交', '视频音乐', '新闻阅读', '生活', '其它'];
-const DataMap = {
-  tool: Tools,
-  nav: Navs
-};
-export default function SwiperTabs({ source = 'nav', handleSelect }) {
+// const DataMap = {
+//   tool: Tools,
+//   nav: Navs
+// };
+export default function SwiperTabs({ handleSelect }) {
   const [currSwiper, setCurrSwiper] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
   const handleTabClick = ({ target }) => {
@@ -75,7 +75,7 @@ export default function SwiperTabs({ source = 'nav', handleSelect }) {
   return (
     <StyledWrapper>
       <div className="tabs">
-        {DataMap[source].map(({ title }, idx) => {
+        {Navs.map(({ title }, idx) => {
           return (
             <div
               data-idx={idx}
@@ -100,7 +100,7 @@ export default function SwiperTabs({ source = 'nav', handleSelect }) {
           }}
           onSwiper={setCurrSwiper}
         >
-          {DataMap[source].map(({ items }, idx) => {
+          {Navs.map(({ items }, idx) => {
             return (
               <SwiperSlide key={idx}>
                 {items.map((logo) => {
