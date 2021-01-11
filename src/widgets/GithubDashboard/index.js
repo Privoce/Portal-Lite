@@ -49,8 +49,9 @@ export default function GithubDashboard() {
       loadUserData();
     }
   }, [token, loadUserData]);
-  if (loading || !data) return <Loading />;
   console.log('user data', { data });
+  if (!token) return <GoAuth authLink={authLink} />;
+  if (loading || !data) return <Loading />;
   const {
     viewer: {
       avatarUrl,
@@ -58,7 +59,7 @@ export default function GithubDashboard() {
       repositories: { nodes }
     }
   } = data;
-  return token ? (
+  return (
     <StyledWrapper>
       <a href={`https://github.com/${login}/`} target="_blank" className="head">
         <img
@@ -77,7 +78,5 @@ export default function GithubDashboard() {
           })}
       </ul>
     </StyledWrapper>
-  ) : (
-    <GoAuth authLink={authLink} />
   );
 }
