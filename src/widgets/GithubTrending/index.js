@@ -80,7 +80,7 @@ export default function GithubTrending() {
   const [repos, setRepos] = useState([]);
   const [devs, setDevs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [type, setType] = useState('developers');
+  const [type, setType] = useState('repositories');
   useEffect(() => {
     const reqData = async () => {
       const resp = await fetch(`https://hackertab.pupubird.com/${type}`);

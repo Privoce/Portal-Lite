@@ -22,7 +22,7 @@ const StyledWrapper = styled.div`
     /* border: 0.01rem solid #e8e8e8; */
     transition: all 0.5s;
     img {
-      height: 0.4rem;
+      height: 0.36rem;
     }
   }
   &:hover .icon {
