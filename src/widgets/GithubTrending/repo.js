@@ -6,9 +6,6 @@ import IconCoder from '../../asset/img/icon.coder.png';
 
 const StyledRepo = styled(StyledCard)`
   display: flex;
-  &:hover {
-    background-color: #eee;
-  }
   .left {
     display: flex;
     flex-direction: column;
@@ -16,7 +13,7 @@ const StyledRepo = styled(StyledCard)`
     .title {
       display: flex;
       align-items: center;
-      font-size: 0.18rem;
+      font-size: 0.16rem;
       margin: 0;
       .icon {
         width: 0.16rem;
@@ -30,8 +27,8 @@ const StyledRepo = styled(StyledCard)`
     }
     .desc {
       color: #666;
-      font-size: 0.12rem;
-      margin: 0.2rem 0;
+      font-size: 0.11rem;
+      margin: 0.08rem 0;
       line-height: 1.2;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -84,7 +81,7 @@ const StyledRepo = styled(StyledCard)`
     justify-content: space-between;
 
     .star {
-      font-size: 0.14rem;
+      font-size: 0.12rem;
       color: #222;
       padding: 0.04rem 0.08rem;
       border-radius: 5px;
@@ -92,7 +89,7 @@ const StyledRepo = styled(StyledCard)`
       margin-bottom: 0.2rem;
     }
     .period_stars {
-      font-size: 0.14rem;
+      font-size: 0.1rem;
     }
   }
 `;
@@ -123,7 +120,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
           {description || '暂无描述'}
         </div>
         <ul className="items">
-          <li className="item lang">{language}</li>
+          {language && <li className="item lang">{language}</li>}
           <li className="item">⭐ {stars}</li>
           <li className="item">🍴 {forks}</li>
           <li className="item author">

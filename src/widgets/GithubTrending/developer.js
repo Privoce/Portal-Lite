@@ -2,79 +2,80 @@ import styled from 'styled-components';
 import StyledCard from './card';
 
 const StyledDeveloper = styled(StyledCard)`
-  &:hover {
-    background-color: #eee;
-  }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   .profile {
-    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* margin-bottom: 0.1rem; */
-    /* border-bottom: 1px solid #eee; */
-    padding-bottom: 0.15rem;
-    .avatar {
-      width: 0.6rem;
-      height: 0.6rem;
-      border: 1px solid #333;
-      border-radius: 50%;
-      margin: 0;
-      overflow: hidden;
-      img {
-        width: 100%;
-      }
-    }
-    .call {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 34%;
+    margin-right: 0.1rem;
+
+    .info {
       display: flex;
-      flex-direction: column;
-      width: 1.8rem;
-      margin-left: -0.6rem;
-      .name {
-        font-size: 0.2rem;
-        margin-bottom: 0.05rem;
+      .avatar {
+        width: 0.5rem;
+        height: 0.5rem;
+        border: 1px solid #666;
+        border-radius: 50%;
+        margin: 0;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
       }
-      .un {
-        font-size: 0.16rem;
-        color: #666;
+      .call {
+        display: flex;
+        flex-direction: column;
+        /* width: 1.8rem; */
+        margin-left: 0.1rem;
+        .name {
+          font-size: 0.18rem;
+          margin-bottom: 0.05rem;
+          width: 1rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .un {
+          font-size: 0.12rem;
+          color: #666;
+          width: 1rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
-    }
-    .follow {
-      font-size: 0.14rem;
-      color: #222;
-      padding: 0.04rem 0.08rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
     }
   }
   .detail {
     display: flex;
-    flex: 2;
-    justify-content: space-between;
+    /* width: 66%; */
+    /* justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap;
-    /* @media screen and (max-width: 414px) {
-          flex-direction: column;
-        } */
+    flex-wrap: wrap; */
+
     .popular {
       display: flex;
       flex-direction: column;
-    }
-
-    .popular {
-      width: 4rem;
+      /* width: 4rem; */
       /* padding-top: 0.1rem; */
       .repo_name {
         font-size: 0.2rem;
         color: #222;
         margin-bottom: 0.05rem;
-        .label {
-          font-size: 0.16rem;
-        }
       }
       .desc {
-        padding-top: 0.06rem;
+        padding-top: 0.04rem;
         font-size: 0.12rem;
         color: #666;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
       }
     }
   }
@@ -91,25 +92,24 @@ export default function Developer({ developer = {}, ...rest }) {
   return (
     <StyledDeveloper {...rest}>
       <div className="profile">
-        <div className="avatar">
-          <img
-            data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
-            src={`${avatar}`}
-            alt="开发者头像"
-          />
-        </div>
-        <div className="call">
-          <span className="name"> {name}</span>
-          <span className="un"> {username}</span>
-        </div>
-        <a className="follow" href={url} target="_blank">
-          去关注
+        <a className="info" href={url} target="_blank">
+          <div className="avatar">
+            <img
+              data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+              src={`${avatar}`}
+              alt="开发者头像"
+            />
+          </div>
+          <div className="call">
+            <span className="name"> {name}</span>
+            <span className="un"> {username}</span>
+          </div>
         </a>
       </div>
       <div className="detail">
         <div className="popular">
           <div className="repo_name">
-            <span className="label">主要作品：</span>
+            🔥
             <a href={`https://github.com/${username}/${repo_name}`} target="_blank">
               {repo_name}
             </a>
