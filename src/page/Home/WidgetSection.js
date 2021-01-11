@@ -3,7 +3,7 @@
 
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useWidgets } from '../../hooks';
-import WidgetWrapper from './WidgetWrapper';
+import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
 import { Widgets } from '../../data';
 
 export default function WidgetSection() {

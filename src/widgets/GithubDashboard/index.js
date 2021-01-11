@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 import Loading from '../Common/Loading';
-import GoAuth from '../../component/GoAuth';
+import GoAuth from '../Common/GoAuth';
 import StyledWrapper from './styled';
 import { useGithubToken } from '../../hooks';
 const cid = 'f3505bc46977fad4bb33';

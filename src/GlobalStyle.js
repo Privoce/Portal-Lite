@@ -2,6 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 import { reset } from 'styled-reset';
 const GlobalStyle = createGlobalStyle`
   ${reset};
+  *:not(:root):fullscreen{
+    width:auto !important;
+  }
   *{
     box-sizing:border-box;
     outline:none;

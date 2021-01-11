@@ -16,6 +16,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0.6rem 0.8rem;
   .icon {
     width: 1.2rem;
     height: 1.2rem;

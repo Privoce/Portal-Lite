@@ -7,6 +7,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0.4rem 0;
   .tip {
     font-size: 0.14rem;
     font-weight: 400;
