@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 const StyledWrapper = styled.aside`
   position: absolute;
-  right: 0;
+  right: 0.25rem;
   top: 0.1rem;
   display: flex;
   flex-direction: column;
