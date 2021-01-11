@@ -193,7 +193,6 @@ module.exports = function (webpackEnv) {
             },
             compress: {
               drop_console: isEnvProduction,
-              removeComments: true,
               ecma: 5,
               warnings: false,
               // Disabled because of an issue with Uglify breaking seemingly valid code:

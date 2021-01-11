@@ -119,11 +119,16 @@ const StyledWrapper = styled.section`
     }
   }
 `;
+let LOCAL_TAB = localStorage.getItem('SETTING_ZHIHU_HOT_TAB') || 'total';
 export default function ZhihuHot() {
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  const [currTab, setCurrTab] = useState('total');
+  const [currTab, setCurrTab] = useState(LOCAL_TAB);
+  const updateCurrTab = (tab) => {
+    localStorage.setItem('SETTING_ZHIHU_HOT_TAB', tab);
+    setCurrTab(tab);
+  };
   useEffect(() => {
     setLoading(true);
     const getHots = async () => {
@@ -146,7 +151,7 @@ export default function ZhihuHot() {
   return (
     <StyledWrapper>
       {loading && <Loading />}
-      <Tabs currTab={currTab} updateCurrTab={setCurrTab} />
+      <Tabs currTab={currTab} updateCurrTab={updateCurrTab} />
       {!loading &&
         (hots.length == 0 ? (
           <div className="empty">暂无内容，试试其它分类吧~</div>
