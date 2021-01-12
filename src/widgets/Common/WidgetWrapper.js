@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useInView } from 'react-intersection-observer';
 import IconThreeDots from './Icons/ThreeDots';
 import IconClose from './Icons/CircleClose';
 const StyledWrapper = styled.div`
@@ -149,6 +150,8 @@ export default function WidgetWrapper({
 }) {
   const compContainer = useRef(null);
   const [settingVisible, setSettingVisible] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+
   const handleRemove = () => {
     let confirmed = confirm('确定删除？');
     if (confirmed) {
@@ -169,21 +172,8 @@ export default function WidgetWrapper({
       ref={compContainer}
       className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${size}`}
     >
-      <div className="container">
-        {children}
-        {/* <div className="move">
-          <img
-            draggable={false}
-            src="https://gitee.com/zyanggc/oss/raw/master/works/move.png"
-            alt="移动小图标"
-          />
-        </div> */}
-        {/* <div className="remove" onClick={handleRemove}>
-          <img
-            src="https://gitee.com/zyanggc/oss/raw/master/works/alter_delete.png"
-            alt="删除小图标"
-          />
-        </div> */}
+      <div className="container" ref={ref}>
+        {inView ? children : null}
       </div>
       <div className="setting" onClick={toggleSettingListVisible}>
         {settingVisible ? <IconClose width="50%" /> : <IconThreeDots />}

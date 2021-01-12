@@ -6982,6 +6982,11 @@ react-hotjar@^2.2.1:
   resolved "https://registry.npm.taobao.org/react-hotjar/download/react-hotjar-2.2.1.tgz#5f06d15a146960262dba612657c828c8b58da8a3"
   integrity sha1-XwbRWhRpYCYtumEmV8goyLWNqKM=
 
+react-intersection-observer@^8.31.0:
+  version "8.31.0"
+  resolved "https://registry.npm.taobao.org/react-intersection-observer/download/react-intersection-observer-8.31.0.tgz#0ed21aaf93c4c0475b22b0ccaba6169076d01605"
+  integrity sha1-DtIar5PEwEdbIrDMq6YWkHbQFgU=
+
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz?cache=0&sync_timestamp=1603367541403&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-is%2Fdownload%2Freact-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
