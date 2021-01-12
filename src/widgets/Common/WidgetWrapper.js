@@ -6,7 +6,9 @@ const StyledWrapper = styled.div`
   width: 4.87rem;
   position: relative;
   .container {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-y: overlay;
+    overflow-x: hidden;
     position: relative;
     width: 100%;
     max-width: 8rem;
@@ -16,7 +18,38 @@ const StyledWrapper = styled.div`
     border-radius: 0.05rem;
     border: 0.01rem solid #e8e8e8;
     padding: 0.14rem 0.16rem;
-    transition: all 0.5s;
+    transition: all 1s;
+    /* width */
+    &::-webkit-scrollbar {
+      width: 3px;
+
+      /* visibility: hidden; */
+      display: none;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #d8d8d8;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #444;
+    }
+    &:hover {
+      &::-webkit-scrollbar {
+        display: block;
+        /* visibility: visible; */
+      }
+    }
+
     .remove {
       cursor: pointer;
       bottom: 0.05rem;
@@ -77,9 +110,12 @@ const StyledWrapper = styled.div`
   &.l .container {
     height: 4.68rem;
   }
+  &.noscroll .container {
+    overflow: hidden;
+  }
   &.compact .container {
     padding: 0;
-    overflow: scroll;
+    /* overflow: scroll; */
     /* .setting {
       right: 0.1rem;
       top: 0.1rem;
@@ -104,9 +140,7 @@ const StyledWrapper = styled.div`
   }
 `;
 export default function WidgetWrapper({
-  // widgets,
-  // update,
-  // name,
+  disableScroll = false,
   removeWidget,
   title = '组件标题',
   compact,
@@ -131,7 +165,10 @@ export default function WidgetWrapper({
     setSettingVisible((prev) => !prev);
   };
   return (
-    <StyledWrapper ref={compContainer} className={`${compact ? 'compact' : ''} ${size}`}>
+    <StyledWrapper
+      ref={compContainer}
+      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${size}`}
+    >
       <div className="container">
         {children}
         {/* <div className="move">

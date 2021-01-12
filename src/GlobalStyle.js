@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
   html{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior:smooth;
   }
   html,body{
     -webkit-overflow-scrolling: touch;

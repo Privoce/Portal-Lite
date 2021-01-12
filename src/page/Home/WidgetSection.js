@@ -15,10 +15,11 @@ export default function WidgetSection() {
       <div className="boxes">
         {widgets.map((w) => {
           const obj = Widgets[w];
-          const { comp: RealWidget, title, compact = false } = obj;
+          const { comp: RealWidget, title, compact = false, disableScroll } = obj;
           return (
             <WidgetWrapper
               widgets={widgets}
+              disableScroll={disableScroll}
               name={w}
               update={updateWidgetData}
               removeWidget={removeWidget.bind(null, w)}

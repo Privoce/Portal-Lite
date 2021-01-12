@@ -89,6 +89,7 @@ const Widgets = {
   'covid-info': {
     title: '国内新冠疫情概况',
     compact: true,
+    disableScroll: true,
     comp: <Covid />
   },
   'wb-hot': {
@@ -108,11 +109,12 @@ const Widgets = {
   weather: {
     title: '今日天气',
     compact: true,
+    disableScroll: true,
     comp: <Weather />
   },
   'gh-trending': { title: 'Github趋势', compact: true, comp: <GithubTrending /> },
-  calc: { title: '计算器', comp: <Calc />, compact: true },
-  'yin-note': { title: '印象笔记', comp: <YinNote /> }
+  calc: { title: '计算器', comp: <Calc />, disableScroll: true, compact: true },
+  'yin-note': { title: '印象笔记', disableScroll: true, comp: <YinNote /> }
 };
 
 export { Webapps, Tools, Widgets };

@@ -8,7 +8,7 @@ import IconDev from '../Common/Icons/Developer';
 const StyledWrapper = styled.div`
   /* position: relative; */
   background: #fff;
-  overflow: scroll;
+  /* overflow: scroll; */
   /* overscroll-behavior: contain; */
   height: 100%;
   ul {
