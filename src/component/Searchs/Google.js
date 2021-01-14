@@ -4,38 +4,39 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   /* width: 100%; */
   .input {
-    width: 100%;
+    width: 90%;
     position: relative;
     display: flex;
     input {
       width: 100%;
-      border-radius: 0.04rem;
-      border: 0.01rem solid #d0d0d0;
-      padding: 0.1rem 0.16rem;
+      border-radius: 0.22rem;
+      border: 0.01rem solid #d9d9d9;
+      padding: 0.12rem 0.16rem;
       font-size: 0.16rem;
       height: 0.44rem;
       margin-right: 0.2rem;
+      padding-left: 0.5rem;
+      background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/icon.google.search.png');
+      background-repeat: no-repeat;
+      background-size: 0.22rem;
+      background-position: 0.14rem;
       &:focus {
-        border: 0.01rem solid #999999;
+        /* border: 0.01rem solid #999999; */
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
       }
     }
-  }
-  .btn {
-    border-radius: 0.04rem;
-    border: 0.01rem solid #d9d9d9;
-    word-break: keep-all;
-    background-color: #f5f5f5;
-    padding: 0.1rem 0.34rem 0.09rem 0.35rem;
-    font-size: 0.18rem;
-    font-weight: 600;
-    color: #555;
-    line-height: 0.25rem;
-
-    /* &:hover {
-      background-color: #4662d9;
-    } */
+    .clear {
+      width: 0.16rem;
+      height: 0.16rem;
+      cursor: pointer;
+      position: absolute;
+      right: 0.35rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 `;
 // let timeoutInt = 0;
@@ -45,6 +46,9 @@ export default function BaiduSearch() {
   const [focused, setFocused] = useState(false);
   const handleInput = (evt) => {
     setInput(evt.target.value);
+  };
+  const handleClearInput = () => {
+    setInput('');
   };
   const handleFocus = (val = false) => {
     setFocused(val);
@@ -72,10 +76,18 @@ export default function BaiduSearch() {
           onBlur={handleFocus.bind(null, false)}
           onChange={handleInput}
         />
+        {input && (
+          <img
+            onClick={handleClearInput}
+            className="clear"
+            src="https://gitee.com/zyanggc/oss/raw/master/works/icon.google.remove.png"
+            alt="google clear icon"
+          />
+        )}
       </div>
-      <a className="btn" target="_blank" href={`https://google.com/search?q=${input}`}>
+      {/* <a className="btn" target="_blank" href={`https://google.com/search?q=${input}`}>
         Google
-      </a>
+      </a> */}
     </StyledWrapper>
   );
 }
