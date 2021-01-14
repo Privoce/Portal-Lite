@@ -56,9 +56,11 @@ const useGithubToken = () => {
   return { token, setToken };
 };
 // 小组件
-const LOCAL_WG_KEY = 'WIDGET_LIST';
+const LOCAL_WG_KEY = 'WIDGET_LIST_DATA';
 const useWidgets = () => {
-  let wgKeys = Object.keys(Widgets);
+  let wgKeys = Object.entries(Widgets)
+    .filter(([, val]) => val.preset == true)
+    .map(([key]) => key);
   const initialKeys = JSON.parse(localStorage.getItem(LOCAL_WG_KEY)) || wgKeys;
   const [widgets, setWidgets] = useState(initialKeys);
   const updateLocalData = (newData) => {

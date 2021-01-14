@@ -10,111 +10,75 @@ import Calc from './widgets/Calc';
 import YinNote from './widgets/YinNote';
 import ZhihuHot from './widgets/ZhihuHot';
 const Webapps = Navs[0].items;
-
-// {
-//   id: 83,
-//   title: '防疫的五件小事',
-//   themeColor: '#fbf5ea',
-//   url: '//works.yangerxiao.com/do-the-five/'
-// }
 const Tools = AllTools[0].items;
-//   {
-//     id: 2332,
-//     tool: true,
-//     frame: true,
-//     title: 'Github标星统计',
-//     themeColor: '#fbf5ea',
-//     url: 'https://stars.yangerxiao.com/'
-//   },
-
-//   {
-//     id: 212,
-//     tool: true,
-//     frame: true,
-//     title: '生命进程',
-//     themeColor: '#fff',
-//     url: 'https://works.yangerxiao.com/life-progress/'
-//   },
-//   {
-//     id: 234,
-//     tool: true,
-//     title: '呼吸调节器',
-//     themeColor: '#dae6ed',
-//     url: 'https://works.yangerxiao.com/breathe-relaxer/'
-//   },
-//   {
-//     id: 3434,
-//     tool: true,
-//     frame: true,
-//     title: '图片压缩',
-//     themeColor: '#ccd0df',
-//     url: 'https://works.yangerxiao.com/icfe/'
-//   },
-//   {
-//     id: 332,
-//     tool: true,
-//     frame: true,
-//     title: 'Github社交图生成工具',
-//     themeColor: '#f5f5f5',
-//     url:
-//       'https://works.yangerxiao.com/github-social-image-generator/?repo=https://github.com/zerosoul/github-social-image-generator&utm_source=hacpai.com'
-//   },
-//   {
-//     id: 38990,
-//     tool: true,
-//     frame: true,
-//     title: '中文打乱小工具',
-//     themeColor: '#f5f5f5',
-//     url: 'https://works.yangerxiao.com/chinese-word-chaos/'
-//   },
-//   {
-//     id: 113,
-//     tool: true,
-//     frame: true,
-//     title: 'CSS箭头代码生成器',
-//     themeColor: '#1b2f36',
-//     url: 'https://works.yangerxiao.com/css-arrow-generator/'
-//   },
-//   {
-//     id: 1223,
-//     tool: true,
-//     frame: true,
-//     title: '密码生成器',
-//     themeColor: '#4c706a',
-//     url: 'https://works.yangerxiao.com/strong-password-generator/'
-//   }
-// ];
-
 const Widgets = {
   'covid-info': {
     title: '国内新冠疫情概况',
+    description: '快速了解国内每日疫情概况',
     compact: true,
+    preset: true,
     disableScroll: true,
-    comp: <Covid />
+    comp: <Covid />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
   },
   'wb-hot': {
+    preset: true,
     title: '微博热搜',
-    comp: <WeiboHot />
+    description: '微博实时热搜，你想了解的，都在这里！',
+    comp: <WeiboHot />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
   },
   'mp-daily-hot': {
     title: '公众号24小时热文',
-    comp: <MPDaily />
+    description: '公众号实时热文，你想了解的，都在这里！',
+    comp: <MPDaily />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
+    description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
-    comp: <ZhihuHot />
+    comp: <ZhihuHot />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png'
   },
-  'gh-dashboard': { title: 'Github个人仓库', compact: true, comp: <GithubDashboard /> },
+  'gh-dashboard': {
+    title: 'Github个人仓库',
+    description: '通过授权，展现您个人仓库列表，快速预览每个仓库的概况。',
+    compact: true,
+    comp: <GithubDashboard />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
+  },
   weather: {
+    preset: true,
     title: '今日天气',
+    description: '全方位，多角度，为您提供天气信息。',
     compact: true,
     disableScroll: true,
-    comp: <Weather />
+    comp: <Weather />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
   },
-  'gh-trending': { title: 'Github趋势', compact: true, comp: <GithubTrending /> },
-  calc: { title: '计算器', comp: <Calc />, disableScroll: true, compact: true },
-  'yin-note': { title: '印象笔记', disableScroll: true, comp: <YinNote /> }
+  'gh-trending': {
+    title: 'Github趋势',
+    description: 'GitHub趋势榜，有开发者和仓库两大分类，让您不再错过GitHub热门仓库',
+    compact: true,
+    comp: <GithubTrending />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
+  },
+  calc: {
+    title: '计算器',
+    description: '一个科学计算器',
+    comp: <Calc />,
+    disableScroll: true,
+    compact: true,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'
+  },
+  'yin-note': {
+    title: '印象笔记',
+    description: '快速录入印象笔记【暂未开发】',
+    disableScroll: true,
+    comp: <YinNote />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yinxiang.note.png'
+  }
 };
 
 export { Webapps, Tools, Widgets };

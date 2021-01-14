@@ -16,58 +16,6 @@ const StyledWrapper = styled.section`
     padding-bottom: 0.4rem; */
     width: 6.6rem;
   }
-  .block {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    .header {
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-size: 0.16rem;
-      font-weight: 500;
-      color: #333;
-      line-height: 0.25rem;
-      margin-left: 0.25rem;
-      margin-bottom: 0.2rem;
-      align-self: flex-start;
-      cursor: grabbing;
-      user-select: none;
-    }
-    .boxes {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      justify-content: flex-start;
-      padding: 0 0.125rem;
-
-      > div {
-        margin-left: 0.125rem;
-        margin-right: 0.125rem;
-      }
-      &.grid {
-        display: grid;
-      }
-    }
-    &.one_line {
-      .header {
-        margin-bottom: -0.125rem;
-      }
-      .boxes {
-        flex-wrap: nowrap;
-        overflow: scroll;
-        padding-top: 0.25rem;
-      }
-    }
-  }
-  /* .add_widget {
-    position: fixed;
-    bottom: 0.36rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.14rem;
-    font-weight: 400;
-    color: #333;
-    line-height: 0.25rem;
-  } */
   /* 响应式布局 */
   @media (min-width: 320px) and (max-width: 480px) {
     .search {

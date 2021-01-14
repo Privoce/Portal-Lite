@@ -23,7 +23,7 @@ const StyledWrapper = styled.section`
       flex-direction: column;
       align-items: center;
       padding: 0.15rem 0.1rem;
-
+      width: 100%;
       &:hover {
         > .num {
           transform: scale(1.2);

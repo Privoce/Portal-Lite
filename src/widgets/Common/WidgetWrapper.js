@@ -69,7 +69,7 @@ const StyledWrapper = styled.div`
     margin-bottom: 0.28rem;
   }
   .setting {
-    z-index: 997;
+    z-index: 9;
 
     display: flex;
     cursor: pointer;
@@ -86,7 +86,7 @@ const StyledWrapper = styled.div`
     }
   }
   .setting_list {
-    z-index: 996;
+    z-index: 7;
     position: absolute;
     top: 0;
     right: 0;
