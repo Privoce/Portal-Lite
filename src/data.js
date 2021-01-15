@@ -40,7 +40,7 @@ const Widgets = {
     description: '每天一句诗词，根据时间、地点、天气、事件智能推荐',
     compact: true,
     comp: <DailyShici />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png',
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png',
     preset: true
   },
   'zhihu-hot': {

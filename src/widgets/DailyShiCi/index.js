@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import * as jinrishici from 'jinrishici';
 import styled from 'styled-components';
 import ErrorTip from '../Common/ErrorTip';
@@ -17,6 +17,23 @@ const StyledWrapper = styled.section`
     url('//gitee.com/zyanggc/oss/raw/master/works/shici.ddh.png') no-repeat, #eedeb0;
   background-size: 1.5rem auto, 0.5rem auto;
   background-position: left bottom, right bottom;
+  .refresh {
+    padding: 0.04rem;
+    border-radius: 50%;
+    line-height: 1;
+    border: 1px solid #666;
+    position: absolute;
+    top: 0.1rem;
+    left: 0.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.4;
+    font-size: 0.1rem;
+    &:hover {
+      opacity: 1;
+    }
+  }
   .shici {
     display: flex;
     flex-direction: column;
@@ -26,37 +43,11 @@ const StyledWrapper = styled.section`
     background-color: rgba(2, 2, 2, 0.4);
     border-radius: 5px;
     color: #fff;
-    height: 100%;
+    max-height: 100%;
     overflow-y: overlay;
-    /* width */
-    &::-webkit-scrollbar {
-      width: 3px;
-
-      /* visibility: hidden; */
-      display: none;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
     /* Handle */
     &::-webkit-scrollbar-thumb {
-      background: #d8d8d8;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: #444;
-    }
-    &:hover {
-      &::-webkit-scrollbar {
-        display: block;
-        /* visibility: visible; */
-      }
+      background: #333;
     }
     .title {
       font-size: 0.18rem;
@@ -83,12 +74,25 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-
+const WIDGET_LOCAL_SHICI_KEY = 'WIDGET_DAILY_SHICI_LOCAL';
+const localData = localStorage.getItem(WIDGET_LOCAL_SHICI_KEY) || 'null';
+try {
+  let tmp = JSON.parse(localData);
+  // 检查下是否是同一天
+  if (tmp.storedate != new Date().toDateString()) {
+    localStorage.setItem(WIDGET_LOCAL_SHICI_KEY, 'null');
+  }
+} catch (error) {
+  localStorage.setItem(WIDGET_LOCAL_SHICI_KEY, 'null');
+}
 export default function DailyShici() {
-  const [shici, setShici] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const innerLocalData = localStorage.getItem(WIDGET_LOCAL_SHICI_KEY) || 'null';
+  console.log({ innerLocalData });
+  const localShici = JSON.parse(innerLocalData) || null;
+  const [shici, setShici] = useState(localShici);
+  const [loading, setLoading] = useState(!localShici);
   const [errTip, setErrTip] = useState('');
-  useEffect(() => {
+  const getShici = useCallback(() => {
     setLoading(true);
     jinrishici.load(
       (result) => {
@@ -96,6 +100,10 @@ export default function DailyShici() {
         const { status, data } = result;
         if (status == 'success') {
           setShici(data);
+          localStorage.setItem(
+            WIDGET_LOCAL_SHICI_KEY,
+            JSON.stringify({ ...data, storedate: new Date().toDateString() })
+          );
         }
         setLoading(false);
       },
@@ -105,6 +113,11 @@ export default function DailyShici() {
       }
     );
   }, []);
+  useEffect(() => {
+    if (!shici) {
+      getShici();
+    }
+  }, [shici]);
   if (loading) return <Loading />;
   if (errTip) return <ErrorTip tip={errTip} />;
   const {
@@ -129,6 +142,9 @@ export default function DailyShici() {
           })}
         </div>
       </div>
+      <button className="refresh" onClick={getShici}>
+        换
+      </button>
     </StyledWrapper>
   );
 }

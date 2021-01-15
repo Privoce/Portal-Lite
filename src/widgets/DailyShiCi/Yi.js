@@ -3,17 +3,21 @@ import styled from 'styled-components';
 import IconClose from '../Common/Icons/Close';
 const StyledIcon = styled.div`
   position: absolute;
-  left: 0.1rem;
+  left: 0.32rem;
   top: 0.1rem;
   /* width: 0.2rem;
   height: 0.2rem; */
-  z-index: 996;
+  z-index: 885;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   opacity: 0.4;
-  font-size: 0.18rem;
+  font-size: 0.1rem;
+  padding: 0.04rem;
+  border-radius: 50%;
+  line-height: 1;
+  border: 1px solid #666;
   &:hover {
     opacity: 1;
   }
@@ -23,7 +27,7 @@ const StyledWrapper = styled.div`
   padding: 0.2rem;
   background-color: #333;
   color: #fff;
-  z-index: 996;
+  z-index: 885;
   position: absolute;
   left: 0;
   top: 0;
