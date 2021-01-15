@@ -9,6 +9,7 @@ import GithubDashboard from './widgets/GithubDashboard';
 import Calc from './widgets/Calc';
 import YinNote from './widgets/YinNote';
 import ZhihuHot from './widgets/ZhihuHot';
+import DailyShici from './widgets/DailyShiCi';
 const Webapps = Navs[0].items;
 const Tools = AllTools[0].items;
 const Widgets = {
@@ -33,6 +34,14 @@ const Widgets = {
     description: '公众号实时热文，你想了解的，都在这里！',
     comp: <MPDaily />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
+  },
+  'daily-shici': {
+    title: '今日诗词',
+    description: '每天一句诗词，根据时间、地点、天气、事件智能推荐',
+    compact: true,
+    comp: <DailyShici />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png',
+    preset: true
   },
   'zhihu-hot': {
     title: '知乎热搜榜',

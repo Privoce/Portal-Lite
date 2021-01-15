@@ -30,6 +30,7 @@
     "graphql": "^15.4.0",
     "html-webpack-plugin": "4.5.0",
     "identity-obj-proxy": "3.0.0",
+    "jinrishici": "^1.0.6",
     "mini-css-extract-plugin": "1.3.3",
     "pnp-webpack-plugin": "1.6.4",
     "rc-tabs": "^11.7.3",
