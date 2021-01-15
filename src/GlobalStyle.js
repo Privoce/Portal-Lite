@@ -10,11 +10,44 @@ const GlobalStyle = createGlobalStyle`
     outline:none;
     -webkit-text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    /* width */
+    &::-webkit-scrollbar {
+      width: 3px;
+      /* visibility: hidden; */
+      display: none;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #d8d8d8;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #444;
+    }
+    &:hover {
+      &::-webkit-scrollbar {
+        display: block;
+        /* visibility: visible; */
+      }
+    }
   }
   html{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior:smooth;
+  }
+  body{
+    overflow:overlay;
   }
   html,body{
     -webkit-overflow-scrolling: touch;
@@ -26,6 +59,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: -webkit-fill-available;
     min-height: fill-available;
     font-family: PingFangSC-Regular, PingFang SC;
+
   }
   button{
     outline:none;

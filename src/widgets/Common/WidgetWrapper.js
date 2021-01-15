@@ -20,36 +20,6 @@ const StyledWrapper = styled.div`
     border: 0.01rem solid #e8e8e8;
     padding: 0.14rem 0.16rem;
     transition: all 1s;
-    /* width */
-    &::-webkit-scrollbar {
-      width: 3px;
-
-      /* visibility: hidden; */
-      display: none;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background: #d8d8d8;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: #444;
-    }
-    &:hover {
-      &::-webkit-scrollbar {
-        display: block;
-        /* visibility: visible; */
-      }
-    }
 
     .remove {
       cursor: pointer;

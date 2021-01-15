@@ -38,11 +38,11 @@ const StyledWrapper = styled.div`
   .content {
     .swiper-container {
       /* overflow: visible; */
-      padding: 0 0.2rem;
+      /* padding: 0 0.2rem; */
       .swiper-slide {
         max-height: 4.2rem;
-        overflow: scroll;
-        padding: 0.32rem 0;
+        overflow-y: scroll;
+        padding: 0.32rem 0.2rem;
         /* padding-left: 0.2rem; */
         display: flex;
         flex-wrap: wrap;
