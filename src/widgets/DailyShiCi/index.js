@@ -14,7 +14,8 @@ const StyledWrapper = styled.section`
   height: 100%;
   /* background-color: ; */
   background: url('//gitee.com/zyanggc/oss/raw/master/works/shici.chuan.png') no-repeat,
-    url('//gitee.com/zyanggc/oss/raw/master/works/shici.ddh.png') no-repeat, #eedeb0;
+    url('//gitee.com/zyanggc/oss/raw/master/works/shici.ddh.png') no-repeat,
+    url('https://colors.ichuantong.cn/static/media/bg.texture.dd29a028.png'), #eedeb0;
   background-size: 1.5rem auto, 0.5rem auto;
   background-position: left bottom, right bottom;
   .refresh {

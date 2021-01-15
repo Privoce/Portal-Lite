@@ -25,9 +25,9 @@ const StyledWrapper = styled.section`
     padding: 0.1rem 0.2rem 0 0.2rem;
     width: 8.16rem;
     .widgets {
-      padding-top: 0.3rem;
+      margin-top: 0.3rem;
       max-height: 90vh;
-      overflow-y: scroll;
+      overflow-y: overlay;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;

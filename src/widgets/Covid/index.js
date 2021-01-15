@@ -98,7 +98,7 @@ const StyledWrapper = styled.section`
     position: absolute;
     left: 0;
     top: 0;
-    overflow: scroll;
+    overflow: overlay;
     height: 100%;
     width: 100%;
     padding: 0.04rem 0.1rem;
