@@ -17,8 +17,26 @@ const StyledSection = styled.section`
     margin-bottom: 0.64rem;
     > div {
       margin-right: 1.28rem;
-      &:nth-child(6n) {
-        margin-right: 0;
+      @media (min-width: 320px) and (max-width: 480px) {
+        margin-right: 0.5rem;
+      }
+      @media (min-width: 481px) and (max-width: 768px) {
+        margin-right: 1rem;
+      }
+      @media (min-width: 320px) and (max-width: 480px) {
+        &:nth-child(4n) {
+          margin-right: 0;
+        }
+      }
+      @media (min-width: 481px) and (max-width: 768px) {
+        &:nth-child(5n) {
+          margin-right: 0;
+        }
+      }
+      @media (min-width: 768px) {
+        &:nth-child(6n) {
+          margin-right: 0;
+        }
       }
     }
   }

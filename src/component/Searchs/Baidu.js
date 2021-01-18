@@ -19,7 +19,6 @@ const StyledWrapper = styled.div`
       height: 0.44rem;
       &:focus {
         border: 0.02rem solid #4e6ef3;
-        /* border-right: none; */
       }
     }
     .line {

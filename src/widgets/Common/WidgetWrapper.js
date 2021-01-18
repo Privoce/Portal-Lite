@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import IconThreeDots from './Icons/ThreeDots';
-import IconClose from './Icons/CircleClose';
+// import IconClose from './Icons/CircleClose';
 const StyledWrapper = styled.div`
   width: 5.8rem;
   position: relative;
@@ -20,7 +20,7 @@ const StyledWrapper = styled.div`
     box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
     border-radius: 0.24rem;
     border: 0.01rem solid #ececec;
-    padding: 0.14rem 0.16rem;
+    padding: 0.29rem 0.21rem;
     transition: all 1s;
 
     .remove {
@@ -45,12 +45,12 @@ const StyledWrapper = styled.div`
     display: flex;
     cursor: pointer;
     /* visibility: hidden; */
-    width: 0.2rem;
-    height: 0.2rem;
+    width: 0.4rem;
+    height: 0.4rem;
     position: absolute;
-    right: 0.04rem;
-    top: 0;
-    opacity: 0.6;
+    right: 0.1rem;
+    top: 0.04rem;
+    opacity: 0;
     svg {
       width: 100%;
       height: 100%;
@@ -59,16 +59,18 @@ const StyledWrapper = styled.div`
   .setting_list {
     z-index: 7;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 0.4rem;
+    right: 0.2rem;
     display: flex;
     flex-direction: column;
     font-size: 0.14rem;
+    color: #000;
     /* background-color: #fff; */
-    background-color: #eef;
-    padding: 0.14rem 0.2rem 0.12rem 0.12rem;
+    background-color: #fff;
+    padding: 0.14rem;
     user-select: none;
-
+    border-radius: 5px;
+    box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
     .item {
       padding: 0.05rem;
       cursor: pointer;
@@ -78,6 +80,9 @@ const StyledWrapper = styled.div`
         background: rgba(2, 2, 2, 0.6);
       }
     }
+  }
+  &:hover .setting {
+    opacity: 1;
   }
   &.large .container {
     height: 6.74rem;
@@ -147,15 +152,15 @@ export default function WidgetWrapper({
         {inView ? children : null}
       </div>
       <div className="setting" onClick={toggleSettingListVisible}>
-        {settingVisible ? <IconClose width="50%" /> : <IconThreeDots />}
+        <IconThreeDots />
       </div>
       {settingVisible && (
-        <ul className="setting_list">
+        <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           <li className="item" onClick={handleRemove}>
-            移除
+            移除小组件
           </li>
           <li className="item" onClick={handleFullscreen}>
-            全屏
+            全屏显示
           </li>
         </ul>
       )}
