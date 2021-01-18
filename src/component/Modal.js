@@ -5,13 +5,13 @@ import uniqolor from 'uniqolor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import { validateUrl } from '../util';
-// import Widget from '../component/Widget';
 import SwiperTabs from './SwiperTabs';
 
 import IconClose from '../asset/img/icon.close.png';
 
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
+  z-index: 999;
   position: fixed;
   left: 0;
   right: 0;

@@ -1,18 +1,25 @@
 import { useEffect } from 'react';
 // import axios from 'axios';
-import ReactGA from 'react-ga';
 import { hotjar } from 'react-hotjar';
 import BaiduTongji from './component/BaiduTongji';
 
+function gtag() {
+  window.dataLayer.push(arguments);
+}
 export default function InitialConfig() {
   useEffect(() => {
     // set req timeout
     // axios.defaults.timeout = 3000;
     if (process.env.NODE_ENV == 'production') {
-      // 谷歌统计
-      ReactGA.initialize('G-D9W5MTES2G');
-      ReactGA.pageview(window.location.pathname + window.location.search);
-
+      // google 统计
+      const gs = document.createElement('script');
+      gs.async = 1;
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-D9W5MTES2G';
+      const slot = document.getElementsByTagName('script')[0];
+      slot.parentNode.insertBefore(gs, slot);
+      window.dataLayer = window.dataLayer || [];
+      gtag('js', new Date());
+      gtag('config', 'G-D9W5MTES2G');
       // hotjar
       hotjar.initialize(2178003, 6);
     }

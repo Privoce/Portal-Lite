@@ -77,6 +77,7 @@ const Widgets = {
     title: '计算器',
     description: '一个科学计算器',
     comp: <Calc />,
+    size: 'large',
     disableScroll: true,
     compact: true,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'

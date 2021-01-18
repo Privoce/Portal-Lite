@@ -18,9 +18,9 @@ const StyledWrapper = styled.section`
     width: 100%;
     height: 100%;
     .item {
-      font-size: 0.13rem;
-      font-weight: 400;
-      line-height: 0.18rem;
+      font-size: 0.16rem;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
       /* margin-bottom: 0.1rem; */
       margin-bottom: 0.24rem;
       white-space: nowrap;
@@ -30,7 +30,7 @@ const StyledWrapper = styled.section`
       text-overflow: ellipsis;
       position: relative;
       a {
-        color: #07c15f;
+        color: #2ba245;
       }
       &:before {
         position: absolute;

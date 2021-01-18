@@ -169,15 +169,13 @@ const Navs = [
         title: '格式转换',
         url: 'https://cloudconvert.com/',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/transfer.png',
-        themeColor: '#fff',
-        popular: true
+        themeColor: '#fff'
       },
       {
         title: '计算器',
         url: 'https://www.desmos.com/scientific',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jisuanqi.png',
         themeColor: '#003461',
-        popular: true,
         frame: true,
         size: 'mobile'
       },
@@ -185,8 +183,7 @@ const Navs = [
         title: 'Markdown编辑',
         url: 'https://www.zybuluo.com/mdeditor',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/file-markdown.png',
-        themeColor: '#fff',
-        popular: true
+        themeColor: '#fff'
       },
 
       {
@@ -199,7 +196,6 @@ const Navs = [
         url: 'https://squoosh.app/',
         themeColor: '#FFD902',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/compress.png',
-        popular: true,
         frame: true
       },
       {

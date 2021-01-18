@@ -10,15 +10,17 @@ const StyledWrapper = styled.div`
   font-size: 0.2rem;
   position: relative;
   padding-bottom: 0.32rem;
+  width: 1.08rem;
   .icon {
-    width: 1.8rem;
-    height: 1.35rem;
+    width: 1.08rem;
+    height: 1.08rem;
     display: flex;
     justify-content: center;
     align-items: center;
     background: ${({ bgColor }) => bgColor};
-    box-shadow: 0rem 0.08rem 0.3rem 0rem #ececec, 0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5);
-    border-radius: 0.04rem;
+
+    box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
+    border-radius: 0.24rem;
     /* border: 0.01rem solid #e8e8e8; */
     transition: all 0.5s;
     img {
@@ -30,13 +32,13 @@ const StyledWrapper = styled.div`
       0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5), 0rem 0.04rem 0.24rem 0rem #a8a8a8;
   }
   .title {
-    margin: 0.12rem 0 0 0;
+    margin: 0.1rem 0 0 0;
     font-size: 0.14rem;
     font-weight: 400;
-    color: #666;
+    color: #333;
     line-height: 0.2rem;
     text-align: center;
-    width: 1.4rem;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -63,11 +65,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-const AddTitle = {
-  nav: '添加导航',
-  tool: '添加工具'
-};
-export default function Widget({ type = 'nav', data = {}, showMenu = null, add, ...rest }) {
+export default function Nav({ data = {}, showMenu = null, add, ...rest }) {
   const { themeColor = '#333', icon = '', title = '标题', url = '', frame } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
@@ -106,7 +104,7 @@ export default function Widget({ type = 'nav', data = {}, showMenu = null, add, 
       </div>
 
       <h2 className="title">
-        {add ? AddTitle[type] : title} {frame ? '🖥️' : ''}
+        {add ? '添加导航' : title} {frame ? '🖥️' : ''}
       </h2>
     </StyledWrapper>
   );

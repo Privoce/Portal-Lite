@@ -64,9 +64,6 @@ const StyledWrapper = styled.div`
           color: #222;
           cursor: pointer;
           width: 100%;
-          /* &:hover {
-          background-color: #eee;
-        } */
           mark {
             background: none;
             color: #626676;

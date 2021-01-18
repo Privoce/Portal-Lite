@@ -78,39 +78,44 @@ const GlobalStyle = createGlobalStyle`
 
   @media screen and (min-width: 320px){
       html {
-          font-size: 60px;
+          font-size: 50px;
       }
   }
   @media screen and (min-width: 375px){
       html {
-          font-size: 70px;
+          font-size: 55px;
       }
   }
   @media screen and (min-width: 480px){
       html {
-          font-size: 80px;
+          font-size: 60px;
       }
   }
   @media screen and (min-width: 768px){
       html {
-          font-size: 90px;
+          font-size: 65px;
       }
   }
   @media screen and (min-width: 1000px){
       html {
-          font-size: 100px;
+          font-size: 70px;
       }
   }
-  /* @media screen and (min-width: 1200px){
+  @media screen and (min-width: 1200px){
       html {
-          font-size: 110px;
+          font-size: 75px;
       }
   }
   @media screen and (min-width: 1400px){
       html {
-          font-size: 120px;
+          font-size: 80px;
       }
-  } */
+  }
+  @media screen and (min-width: 1920px){
+      html {
+          font-size: 100px;
+      }
+  }
 `;
 
 export default GlobalStyle;

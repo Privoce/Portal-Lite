@@ -13,28 +13,14 @@ const StyledSection = styled.section`
   flex-direction: column;
   width: 100%;
   padding-bottom: 0.6rem;
-  .header {
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-size: 0.16rem;
-    font-weight: 500;
-    color: #333;
-    line-height: 0.25rem;
-    margin-left: 0.25rem;
-    margin-bottom: 0.2rem;
-    align-self: flex-start;
-    cursor: grabbing;
-    user-select: none;
-  }
   .widgets {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     justify-content: flex-start;
-    padding: 0 0.125rem;
 
-    > div {
-      margin-left: 0.125rem;
-      margin-right: 0.125rem;
+    > div:nth-child(odd) {
+      margin-right: 1.28rem;
     }
   }
   .add_widget {
@@ -57,16 +43,16 @@ export default function WidgetSection() {
   };
   return (
     <StyledSection>
-      <h2 className="header">小组件</h2>
       <div className="widgets">
         {widgets.map((w) => {
           const obj = Widgets[w];
-          const { comp: RealWidget, title, compact = false, disableScroll } = obj;
+          const { comp: RealWidget, title, compact = false, disableScroll, size } = obj;
           return (
             <WidgetWrapper
               widgets={widgets}
               disableScroll={disableScroll}
               name={w}
+              size={size}
               update={updateWidgetData}
               removeWidget={removeWidget.bind(null, w)}
               key={w}

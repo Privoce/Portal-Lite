@@ -21,11 +21,13 @@ const StyledWrapper = styled.section`
     width: 100%;
     height: 100%;
     .item {
-      font-size: 0.13rem;
-      font-weight: 400;
-      line-height: 0.18rem;
-      /* margin-bottom: 0.1rem; */
-      margin-bottom: 0.24rem;
+      font-size: 0.15rem;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #1193d7;
+      line-height: 0.21rem;
+
+      margin-bottom: 0.23rem;
       white-space: nowrap;
       padding-left: 0.3rem;
       padding-right: 0.4rem;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/swiper-bundle.min.css';
-import Widget from '../Widget';
+import NavItem from '../NavItem';
 
 import Navs from './nav_data';
 // import Tools from './tool_data';
@@ -50,16 +50,14 @@ const StyledWrapper = styled.div`
 
         > div {
           margin-right: 0.44rem;
+          &:nth-child(5n) {
+            margin-right: 0;
+          }
         }
       }
     }
   }
 `;
-// const tabs = ['常用', '办公效率', '社交', '视频音乐', '新闻阅读', '生活', '其它'];
-// const DataMap = {
-//   tool: Tools,
-//   nav: Navs
-// };
 export default function SwiperTabs({ handleSelect }) {
   const [currSwiper, setCurrSwiper] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
@@ -105,7 +103,7 @@ export default function SwiperTabs({ handleSelect }) {
               <SwiperSlide key={idx}>
                 {items.map((logo) => {
                   return (
-                    <Widget
+                    <NavItem
                       key={logo.title}
                       onClick={handleClick.bind(null, logo)}
                       data={{ ...logo, preset: true }}
