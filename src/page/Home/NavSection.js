@@ -14,14 +14,15 @@ const StyledSection = styled.section`
     grid-column-gap: 1.28rem;
     /* padding: 0 0.125rem; */
     margin-bottom: 0.64rem;
+    justify-items: center;
     @media (min-width: 320px) and (max-width: 860px) {
-      margin-right: 1.6rem;
-      margin-left: 1.6rem;
-      grid-template-columns: repeat(3, 1fr);
-      grid-column-gap: 0.5rem;
-      > div {
+      /* margin-right: 1.6rem;
+      margin-left: 1.6rem; */
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 0;
+      /* > div {
         margin: 0 auto;
-      }
+      } */
     }
   }
 `;

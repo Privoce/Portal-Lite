@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import IconThreeDots from './Icons/ThreeDots';
+import { useWidgetSettings } from '../../hooks';
 // import IconClose from './Icons/CircleClose';
 const StyledWrapper = styled.div`
   width: 5.8rem;
@@ -139,6 +140,7 @@ const SizeMap = {
   mini: '小'
 };
 export default function WidgetWrapper({
+  name,
   disableScroll = false,
   removeWidget,
   title = '组件标题',
@@ -147,11 +149,14 @@ export default function WidgetWrapper({
   children = null
 }) {
   const compContainer = useRef(null);
-  const [currSize, setCurrSize] = useState('middle');
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  const [currSize, setCurrSize] = useState(getWidgetSetting(name, 'size') || 'middle');
   const [settingVisible, setSettingVisible] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-  const updateCurrSize = (val) => {
-    setCurrSize(val);
+  const updateCurrSize = (key, { size }) => {
+    console.log({ key, size });
+    setCurrSize(size);
+    updateWidgetSetting(key, { size });
   };
   const handleRemove = () => {
     let confirmed = confirm('确定删除？');
@@ -192,7 +197,7 @@ export default function WidgetWrapper({
               {size.map((key) => {
                 return (
                   <span
-                    onClick={updateCurrSize.bind(null, key)}
+                    onClick={updateCurrSize.bind(null, name, { size: key })}
                     className={`size ${currSize == key ? 'curr' : ''}`}
                     key={key}
                   >

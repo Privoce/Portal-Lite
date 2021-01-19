@@ -57,6 +57,7 @@ const useGithubToken = () => {
 };
 // 小组件
 const LOCAL_WG_KEY = 'WIDGET_LIST_DATA';
+
 const useWidgets = () => {
   let wgKeys = Object.entries(Widgets)
     .filter(([, val]) => val.preset == true)
@@ -86,7 +87,42 @@ const useWidgets = () => {
       return newData;
     });
   };
+
   return { widgets, addWidget, removeWidget, updateWidgetData };
+};
+// 小组件的本地设置
+const LOCAL_WG_SETTINGS_KEY = 'WIDGET_SETTINGS_DATA';
+const useWidgetSettings = () => {
+  let settings = {};
+  try {
+    settings = JSON.parse(localStorage.getItem(LOCAL_WG_SETTINGS_KEY));
+  } catch (error) {
+    settings = {};
+  }
+  const updateLocalData = (newData) => {
+    localStorage.setItem(LOCAL_WG_SETTINGS_KEY, JSON.stringify(newData));
+  };
+  const [widgetSettings, setWidgetSettings] = useState(settings || {});
+  const updateWidgetSetting = (key, obj) => {
+    let tmp = widgetSettings;
+    if (tmp[key]) {
+      tmp[key] = { ...tmp[key], ...obj };
+    } else {
+      tmp[key] = obj;
+    }
+
+    setWidgetSettings({ ...tmp });
+    updateLocalData(tmp);
+  };
+  const getWidgetSetting = (name, key) => {
+    console.log({ widgetSettings });
+    let obj = widgetSettings[name];
+    if (obj) {
+      return obj[key] ? obj[key] : null;
+    }
+    return null;
+  };
+  return { widgetSettings, getWidgetSetting, updateWidgetSetting };
 };
 // 导航
 const NAV_LOCAL_KEY = 'WEB_APP_NAV_DATA';
@@ -125,4 +161,11 @@ const useAppData = () => {
   return { data, addApp, removeApp, updateAppData };
 };
 
-export { useContextMenu, useGithubToken, useAppData, useWidgets, useSearchEngine };
+export {
+  useContextMenu,
+  useGithubToken,
+  useAppData,
+  useWidgets,
+  useWidgetSettings,
+  useSearchEngine
+};
