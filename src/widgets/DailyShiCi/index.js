@@ -19,7 +19,7 @@ const StyledWrapper = styled.section`
   background-size: 1.5rem auto, 0.5rem auto;
   background-position: left bottom, right bottom;
   .refresh {
-    padding: 0.04rem;
+    padding: 0.05rem;
     border-radius: 50%;
     line-height: 1;
     border: 1px solid #666;
@@ -51,7 +51,7 @@ const StyledWrapper = styled.section`
       background: #333;
     }
     .title {
-      font-size: 0.18rem;
+      font-size: 0.2rem;
       font-weight: 800;
       margin-bottom: 0.08rem;
     }
@@ -65,7 +65,7 @@ const StyledWrapper = styled.section`
       flex-direction: column;
       align-items: center;
       .line {
-        font-size: 0.14rem;
+        font-size: 0.16rem;
         line-height: 1.3;
         margin-bottom: 0.05rem;
         &.famous {

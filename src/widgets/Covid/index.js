@@ -14,14 +14,16 @@ const StyledWrapper = styled.section`
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 0.01rem;
-  grid-row-gap: 0.01rem;
+  grid-template-rows: auto;
+  grid-column-gap: 0.02rem;
+  grid-row-gap: 0.02rem;
   .block {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0.34rem 0.1rem;
     width: 100%;
+    height: 100%;
     &:hover {
       > .num {
         transform: scale(1.2);
@@ -49,37 +51,30 @@ const StyledWrapper = styled.section`
     }
     &.now-comfirmed {
       background-color: #fdf1f1;
-      border-right: 2px solid #fff;
-      border-bottom: 2px solid #fff;
       .num {
         color: #f23a3b;
       }
     }
     &.comfirmed {
       background-color: #fdf1f1;
-      border-right: 2px solid #fff;
       .num {
         color: #cc1e1e;
       }
     }
     &.maybe {
       background-color: #fcf4f0;
-      border-bottom: 2px solid #fff;
       .num {
         color: #ca3f81;
       }
     }
     &.serious {
-      border-right: 2px solid #fff;
       background-color: #faf2f6;
-      border-bottom: 2px solid #fff;
       .num {
         color: #f05926;
       }
     }
     &.heal {
       background-color: #f1f8f4;
-      border-right: 2px solid #fff;
       .num {
         color: #178b50;
       }
@@ -98,7 +93,7 @@ const StyledWrapper = styled.section`
     overflow: overlay;
     height: 100%;
     width: 100%;
-    padding: 0.04rem 0.1rem;
+    padding: 0.06rem 0.24rem;
     background-color: #fff;
     p {
       color: #555;
@@ -115,7 +110,7 @@ const StyledWrapper = styled.section`
     .close_icon {
       position: absolute;
       top: 0.1rem;
-      right: 0.1rem;
+      left: 0.1rem;
       width: 0.2rem;
       height: 0.2rem;
       cursor: pointer;
@@ -143,7 +138,7 @@ const StyledWrapper = styled.section`
     border-radius: 0.04rem;
     background-color: rgba(2, 2, 2, 0.3);
     color: #fff;
-    font-size: 0.08rem;
+    font-size: 0.09rem;
     display: flex;
     align-items: center;
   }
