@@ -1,27 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import IconClose from '../Common/Icons/Close';
-const StyledIcon = styled.div`
-  position: absolute;
-  left: 0.32rem;
-  top: 0.1rem;
-  /* width: 0.2rem;
-  height: 0.2rem; */
-  z-index: 885;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0.4;
-  font-size: 0.1rem;
-  padding: 0.04rem;
-  border-radius: 50%;
-  line-height: 1;
-  border: 1px solid #666;
-  &:hover {
-    opacity: 1;
-  }
-`;
+import Icon from './Icon';
+
 const StyledWrapper = styled.div`
   position: relative;
   padding: 0.2rem;
@@ -43,7 +24,7 @@ const StyledWrapper = styled.div`
     padding: 0.05rem 0.1rem;
     .line {
       font-size: 0.14rem;
-      line-height: 1.3;
+      line-height: 1.5;
       margin-bottom: 0.2rem;
     }
   }
@@ -62,7 +43,12 @@ export default function Tabs({ content }) {
   const toggleTabExpand = () => {
     setTabExpand((prev) => !prev);
   };
-  if (!tabExpand) return <StyledIcon onClick={toggleTabExpand}>译</StyledIcon>;
+  if (!tabExpand)
+    return (
+      <Icon onClick={toggleTabExpand} style={{ left: '.45rem' }}>
+        译
+      </Icon>
+    );
   return (
     <StyledWrapper>
       <IconClose className="icon_close" onClick={toggleTabExpand} />

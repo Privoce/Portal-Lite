@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Yi from './Yi';
+import Icon from './Icon';
 
 const StyledWrapper = styled.section`
   position: relative;
@@ -18,23 +19,6 @@ const StyledWrapper = styled.section`
     url('https://colors.ichuantong.cn/static/media/bg.texture.dd29a028.png'), #eedeb0;
   background-size: 1.5rem auto, 0.5rem auto;
   background-position: left bottom, right bottom;
-  .refresh {
-    padding: 0.05rem;
-    border-radius: 50%;
-    line-height: 1;
-    border: 1px solid #666;
-    position: absolute;
-    top: 0.1rem;
-    left: 0.1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0.4;
-    font-size: 0.1rem;
-    &:hover {
-      opacity: 1;
-    }
-  }
   .shici {
     display: flex;
     flex-direction: column;
@@ -66,7 +50,7 @@ const StyledWrapper = styled.section`
       align-items: center;
       .line {
         font-size: 0.16rem;
-        line-height: 1.3;
+        line-height: 1.5;
         margin-bottom: 0.05rem;
         &.famous {
           font-weight: 800;
@@ -143,9 +127,9 @@ export default function DailyShici() {
           })}
         </div>
       </div>
-      <button className="refresh" onClick={getShici}>
+      <Icon className="refresh" onClick={getShici}>
         换
-      </button>
+      </Icon>
     </StyledWrapper>
   );
 }
