@@ -14,13 +14,20 @@ const StyledSection = styled.section`
   width: 100%;
   padding-bottom: 0.6rem;
   .widgets {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-
-    > div:nth-child(odd) {
-      margin-right: 1.28rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 1.28rem;
+    grid-auto-flow: row dense;
+    grid-auto-rows: 3.62rem;
+    .large {
+      grid-row: auto / span 2;
+    }
+    @media (min-width: 320px) and (max-width: 860px) {
+      grid-template-columns: repeat(1, 1fr);
+      grid-column-gap: 0.5rem;
+      > div {
+        margin: 0 auto;
+      }
     }
   }
   .add_widget {

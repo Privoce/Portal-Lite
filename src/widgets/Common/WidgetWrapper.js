@@ -21,7 +21,7 @@ const StyledWrapper = styled.div`
     border-radius: 0.24rem;
     border: 0.01rem solid #ececec;
     padding: 0.29rem 0.21rem;
-    transition: all 1s;
+    transition: all 0.8s ease-in-out;
 
     .remove {
       cursor: pointer;
@@ -75,9 +75,26 @@ const StyledWrapper = styled.div`
       padding: 0.05rem;
       cursor: pointer;
 
-      &:hover {
+      &:not(.sizes):hover {
         color: #fff;
         background: rgba(2, 2, 2, 0.6);
+      }
+      &.sizes {
+        /* display: flex;
+        justify-content: space-a; */
+        .size {
+          font-size: 0.1rem;
+          border: 1px solid #333;
+          padding: 0.02rem 0.04rem;
+          &:not(:last-child) {
+            margin-right: 0.04rem;
+          }
+          &.curr {
+            background-color: #222;
+            color: #fff;
+            /* border-color: #fff; */
+          }
+        }
       }
     }
   }
@@ -116,18 +133,26 @@ const StyledWrapper = styled.div`
     }
   }
 `;
+const SizeMap = {
+  middle: '中',
+  large: '大',
+  mini: '小'
+};
 export default function WidgetWrapper({
   disableScroll = false,
   removeWidget,
   title = '组件标题',
   compact,
-  size = 'middle',
+  size = null,
   children = null
 }) {
   const compContainer = useRef(null);
+  const [currSize, setCurrSize] = useState('middle');
   const [settingVisible, setSettingVisible] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-
+  const updateCurrSize = (val) => {
+    setCurrSize(val);
+  };
   const handleRemove = () => {
     let confirmed = confirm('确定删除？');
     if (confirmed) {
@@ -146,7 +171,7 @@ export default function WidgetWrapper({
   return (
     <StyledWrapper
       ref={compContainer}
-      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${size}`}
+      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${currSize}`}
     >
       <div className="container" ref={ref}>
         {inView ? children : null}
@@ -162,6 +187,21 @@ export default function WidgetWrapper({
           <li className="item" onClick={handleFullscreen}>
             全屏显示
           </li>
+          {size && (
+            <li className="item sizes">
+              {size.map((key) => {
+                return (
+                  <span
+                    onClick={updateCurrSize.bind(null, key)}
+                    className={`size ${currSize == key ? 'curr' : ''}`}
+                    key={key}
+                  >
+                    {SizeMap[key]}
+                  </span>
+                );
+              })}
+            </li>
+          )}
         </ul>
       )}
       <h2 className="title">{title}</h2>

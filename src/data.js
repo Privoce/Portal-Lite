@@ -26,12 +26,14 @@ const Widgets = {
     preset: true,
     title: '微博热搜',
     description: '微博实时热搜，你想了解的，都在这里！',
+    size: ['middle', 'large'],
     comp: <WeiboHot />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
   },
   'mp-daily-hot': {
     title: '公众号24小时热文',
     description: '公众号实时热文，你想了解的，都在这里！',
+    size: ['middle', 'large'],
     comp: <MPDaily />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
   },
@@ -39,12 +41,14 @@ const Widgets = {
     title: '今日诗词',
     description: '每天一句诗词，根据时间、地点、天气、事件智能推荐',
     compact: true,
+    size: ['middle', 'large'],
     comp: <DailyShici />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png',
     preset: true
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
+    size: ['middle', 'large'],
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
     comp: <ZhihuHot />,
@@ -52,6 +56,7 @@ const Widgets = {
   },
   'gh-dashboard': {
     title: 'Github个人仓库',
+    size: ['middle', 'large'],
     description: '通过授权，展现您个人仓库列表，快速预览每个仓库的概况。',
     compact: true,
     comp: <GithubDashboard />,
@@ -70,6 +75,7 @@ const Widgets = {
     title: 'Github趋势',
     description: 'GitHub趋势榜，有开发者和仓库两大分类，让您不再错过GitHub热门仓库',
     compact: true,
+    size: ['middle', 'large'],
     comp: <GithubTrending />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
   },
@@ -77,7 +83,7 @@ const Widgets = {
     title: '计算器',
     description: '一个科学计算器',
     comp: <Calc />,
-    size: 'large',
+    size: ['middle', 'large'],
     disableScroll: true,
     compact: true,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'

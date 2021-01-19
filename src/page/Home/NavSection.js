@@ -9,34 +9,18 @@ const StyledSection = styled.section`
   flex-direction: column;
   width: 100%;
   .boxes {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 1.28rem;
     /* padding: 0 0.125rem; */
     margin-bottom: 0.64rem;
-    > div {
-      margin-right: 1.28rem;
-      @media (min-width: 320px) and (max-width: 480px) {
-        margin-right: 0.5rem;
-      }
-      @media (min-width: 481px) and (max-width: 768px) {
-        margin-right: 1rem;
-      }
-      @media (min-width: 320px) and (max-width: 480px) {
-        &:nth-child(4n) {
-          margin-right: 0;
-        }
-      }
-      @media (min-width: 481px) and (max-width: 768px) {
-        &:nth-child(5n) {
-          margin-right: 0;
-        }
-      }
-      @media (min-width: 768px) {
-        &:nth-child(6n) {
-          margin-right: 0;
-        }
+    @media (min-width: 320px) and (max-width: 860px) {
+      margin-right: 1.6rem;
+      margin-left: 1.6rem;
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 0.5rem;
+      > div {
+        margin: 0 auto;
       }
     }
   }

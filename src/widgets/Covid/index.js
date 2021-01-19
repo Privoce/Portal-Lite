@@ -9,88 +9,85 @@ import Loading from '../Common/Loading';
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100%;
-  display: flex;
-
-  flex-direction: column;
   font-size: 0.15rem;
   overflow: hidden;
   position: relative;
-  .row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 0.01rem;
+  grid-row-gap: 0.01rem;
+  .block {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.34rem 0.1rem;
     width: 100%;
-    .block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0.34rem 0.1rem;
-      width: 100%;
-      &:hover {
-        > .num {
-          transform: scale(1.2);
-        }
-        .title {
-          transform: scale(0.8);
-        }
-      }
-      .compare {
-        font-size: 0.1rem;
-        color: #7c7c7c;
-        padding-bottom: 0.1rem;
-      }
+    &:hover {
       > .num {
-        padding-bottom: 0.1rem;
-        font-size: 0.24rem;
-        font-weight: 800;
-        transition: all 0.6s ease-in;
+        transform: scale(1.2);
       }
       .title {
-        padding-bottom: 0.14rem;
-        color: #222;
-        font-size: 0.18rem;
-        transition: all 0.6s ease-in;
+        transform: scale(0.8);
       }
-      &.now-comfirmed {
-        background-color: #fdf1f1;
-        border-right: 2px solid #fff;
-        border-bottom: 2px solid #fff;
-        .num {
-          color: #f23a3b;
-        }
+    }
+    .compare {
+      font-size: 0.1rem;
+      color: #7c7c7c;
+      padding-bottom: 0.1rem;
+    }
+    > .num {
+      padding-bottom: 0.1rem;
+      font-size: 0.24rem;
+      font-weight: 800;
+      transition: all 0.6s ease-in;
+    }
+    .title {
+      padding-bottom: 0.14rem;
+      color: #222;
+      font-size: 0.18rem;
+      transition: all 0.6s ease-in;
+    }
+    &.now-comfirmed {
+      background-color: #fdf1f1;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      .num {
+        color: #f23a3b;
       }
-      &.comfirmed {
-        background-color: #fdf1f1;
-        border-right: 2px solid #fff;
-        .num {
-          color: #cc1e1e;
-        }
+    }
+    &.comfirmed {
+      background-color: #fdf1f1;
+      border-right: 2px solid #fff;
+      .num {
+        color: #cc1e1e;
       }
-      &.maybe {
-        background-color: #fcf4f0;
-        border-bottom: 2px solid #fff;
-        .num {
-          color: #ca3f81;
-        }
+    }
+    &.maybe {
+      background-color: #fcf4f0;
+      border-bottom: 2px solid #fff;
+      .num {
+        color: #ca3f81;
       }
-      &.serious {
-        border-right: 2px solid #fff;
-        background-color: #faf2f6;
-        border-bottom: 2px solid #fff;
-        .num {
-          color: #f05926;
-        }
+    }
+    &.serious {
+      border-right: 2px solid #fff;
+      background-color: #faf2f6;
+      border-bottom: 2px solid #fff;
+      .num {
+        color: #f05926;
       }
-      &.heal {
-        background-color: #f1f8f4;
-        border-right: 2px solid #fff;
-        .num {
-          color: #178b50;
-        }
+    }
+    &.heal {
+      background-color: #f1f8f4;
+      border-right: 2px solid #fff;
+      .num {
+        color: #178b50;
       }
-      &.dead {
-        background-color: #f3f6f8;
-        .num {
-          color: #4e5a65;
-        }
+    }
+    &.dead {
+      background-color: #f3f6f8;
+      .num {
+        color: #4e5a65;
       }
     }
   }
@@ -215,51 +212,47 @@ export default function Covid() {
         <IconCovid className="covid_icon" onClick={toggleInfoVisible} />
       )}
       <>
-        <div className="row">
-          <div className="block now-comfirmed">
-            <div className="compare">
-              较上日 <span className="num">{currentConfirmedIncr}</span>
-            </div>
-            <div className="num">{currentConfirmedCount}</div>
-            <div className="title">现有确诊</div>
+        <div className="block now-comfirmed">
+          <div className="compare">
+            较上日 <span className="num">{currentConfirmedIncr}</span>
           </div>
-          <div className="block serious">
-            <div className="compare">
-              较上日 <span className="num">{seriousIncr}</span>
-            </div>
-            <div className="num">{seriousCount}</div>
-            <div className="title">重症病例</div>
-          </div>
-          <div className="block maybe">
-            <div className="compare">
-              较上日 <span className="num">{suspectedIncr}</span>
-            </div>
-            <div className="num">{suspectedCount}</div>
-            <div className="title">疑似感染者</div>
-          </div>
+          <div className="num">{currentConfirmedCount}</div>
+          <div className="title">现有确诊</div>
         </div>
-        <div className="row">
-          <div className="block comfirmed">
-            <div className="compare">
-              较上日 <span className="num">{confirmedIncr}</span>
-            </div>
-            <div className="num">{confirmedCount}</div>
-            <div className="title">累计确诊</div>
+        <div className="block serious">
+          <div className="compare">
+            较上日 <span className="num">{seriousIncr}</span>
           </div>
-          <div className="block heal">
-            <div className="compare">
-              较上日 <span className="num">{curedIncr}</span>
-            </div>
-            <div className="num">{curedCount}</div>
-            <div className="title">累计治愈</div>
+          <div className="num">{seriousCount}</div>
+          <div className="title">重症病例</div>
+        </div>
+        <div className="block maybe">
+          <div className="compare">
+            较上日 <span className="num">{suspectedIncr}</span>
           </div>
-          <div className="block dead">
-            <div className="compare">
-              较上日 <span className="num">{deadIncr}</span>
-            </div>
-            <div className="num">{deadCount}</div>
-            <div className="title">累计死亡</div>
+          <div className="num">{suspectedCount}</div>
+          <div className="title">疑似感染者</div>
+        </div>
+        <div className="block comfirmed">
+          <div className="compare">
+            较上日 <span className="num">{confirmedIncr}</span>
           </div>
+          <div className="num">{confirmedCount}</div>
+          <div className="title">累计确诊</div>
+        </div>
+        <div className="block heal">
+          <div className="compare">
+            较上日 <span className="num">{curedIncr}</span>
+          </div>
+          <div className="num">{curedCount}</div>
+          <div className="title">累计治愈</div>
+        </div>
+        <div className="block dead">
+          <div className="compare">
+            较上日 <span className="num">{deadIncr}</span>
+          </div>
+          <div className="num">{deadCount}</div>
+          <div className="title">累计死亡</div>
         </div>
       </>
     </StyledWrapper>
