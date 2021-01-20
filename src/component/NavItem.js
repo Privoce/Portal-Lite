@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import IconDefault from '../asset/img/icon.logo.png';
-import { getPrefixPath } from '../util';
+import { getDefaultIcon } from '../util';
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Nav({ data = {}, showMenu = null, add, ...rest }) {
+export default function Nav({ data = {}, showMenu = null, add, className, ...rest }) {
   const { themeColor = '#333', icon = '', title = '标题', url = '', frame } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
@@ -88,18 +88,14 @@ export default function Nav({ data = {}, showMenu = null, add, ...rest }) {
 
   return (
     <StyledWrapper
-      className={add && 'add'}
+      className={`inside ${add && 'add'} ${className}`}
       bgColor={themeColor}
       onContextMenu={handleContextMenu}
       {...rest}
     >
       <div className="icon">
         {!add && (
-          <img
-            onError={handleImageError}
-            src={ico ? ico : `${getPrefixPath(url)}favicon.ico`}
-            alt="logo"
-          />
+          <img onError={handleImageError} src={ico ? ico : `${getDefaultIcon(url)}`} alt="logo" />
         )}
       </div>
 

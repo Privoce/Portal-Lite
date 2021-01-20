@@ -8,7 +8,7 @@ import IconPC from '../asset/img/icon.pc.png';
 import IconMobile from '../asset/img/icon.mobile.png';
 import IconFS from '../asset/img/icon.full-screen.png';
 import IconOpen from '../asset/img/icon.open.png';
-import { getPrefixPath } from '../util';
+import { getDefaultIcon } from '../util';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -243,7 +243,7 @@ export default function PreviewModal({ app = {}, resetCurrApp }) {
         <div onClick={resetCurrApp} className="close" />
         <div className="info">
           <div className="logo">
-            <img src={icon ? icon : `${getPrefixPath(url)}favicon.ico`} alt="图标" />
+            <img src={icon ? icon : `${getDefaultIcon(url)}`} alt="图标" />
           </div>
           <h2 className="title">{title}</h2>
         </div>

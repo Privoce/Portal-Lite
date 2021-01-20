@@ -1,13 +1,13 @@
-const getPrefixPath = (url) => {
+const getDefaultIcon = (url) => {
   let iconPrefix = '';
   try {
     let urlObj = new URL(url.startsWith('//') ? `http:${url}` : url);
-    iconPrefix = `${urlObj.origin}${urlObj.pathname}`.endsWith('/') ? url : `${url}/`;
+    iconPrefix = urlObj.origin;
   } catch (error) {
     console.log({ error });
   }
   console.log({ iconPrefix });
-  return iconPrefix;
+  return `${iconPrefix}/favicon.ico`;
 };
 const highlightWord = (list, keyWord = '') => {
   if (!keyWord) return list;
@@ -42,4 +42,4 @@ function validateUrl(value) {
     value
   );
 }
-export { getPrefixPath, splitToChunks, formatNumber, highlightWord, validateUrl };
+export { getDefaultIcon, splitToChunks, formatNumber, highlightWord, validateUrl };
