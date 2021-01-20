@@ -6977,11 +6977,6 @@ react-error-overlay@^6.0.8:
   resolved "https://registry.npm.taobao.org/react-error-overlay/download/react-error-overlay-6.0.8.tgz?cache=0&sync_timestamp=1603462422193&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-error-overlay%2Fdownload%2Freact-error-overlay-6.0.8.tgz#474ed11d04fc6bda3af643447d85e9127ed6b5de"
   integrity sha1-R07RHQT8a9o69kNEfYXpEn7Wtd4=
 
-react-ga@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.npm.taobao.org/react-ga/download/react-ga-3.3.0.tgz#c91f407198adcb3b49e2bc5c12b3fe460039b3ca"
-  integrity sha1-yR9AcZityztJ4rxcErP+RgA5s8o=
-
 react-hotjar@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/react-hotjar/download/react-hotjar-2.2.1.tgz#5f06d15a146960262dba612657c828c8b58da8a3"
