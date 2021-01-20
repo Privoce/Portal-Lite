@@ -41,18 +41,14 @@ const StyledWrapper = styled.div`
       /* padding: 0 0.2rem; */
       .swiper-slide {
         max-height: 4.2rem;
-        overflow-y: scroll;
-        padding: 0.32rem 0.2rem;
+        overflow-y: overlay;
+        padding: 0.32rem 0;
         /* padding-left: 0.2rem; */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-
-        > div {
-          margin-right: 0.44rem;
-          &:nth-child(5n) {
-            margin-right: 0;
-          }
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        justify-items: center;
+        @media screen and (max-width: 414px) {
+          grid-template-columns: repeat(3, 1fr);
         }
       }
     }

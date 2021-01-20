@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 const StyledWrapper = styled.aside`
   position: absolute;
-  right: 0.25rem;
+  right: 0;
   top: 0.1rem;
   display: flex;
   flex-direction: column;
@@ -11,7 +11,7 @@ const StyledWrapper = styled.aside`
     user-select: none;
     z-index: 996;
     cursor: pointer;
-    font-size: 0.14rem;
+    font-size: 0.16rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #999;

@@ -28,9 +28,12 @@ const StyledWrapper = styled.section`
       margin-top: 0.3rem;
       max-height: 90vh;
       overflow-y: overlay;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-items: center;
+      @media screen and (max-width: 414px) {
+        grid-template-columns: repeat(1, 1fr);
+      }
       .widget {
         position: relative;
         width: 3rem;
@@ -42,9 +45,6 @@ const StyledWrapper = styled.section`
         margin-bottom: 0.3rem;
         border-radius: 0.05rem;
         border: 0.01rem solid #eee;
-        &:nth-child(odd) {
-          margin-right: 0.45rem;
-        }
         .add,
         .added {
           display: flex;

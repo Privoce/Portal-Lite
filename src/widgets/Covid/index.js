@@ -136,11 +136,9 @@ const StyledWrapper = styled.section`
     bottom: 0.1rem;
     padding: 0.05rem 0.06rem;
     border-radius: 0.04rem;
-    background-color: rgba(2, 2, 2, 0.3);
+    background-color: rgba(2, 2, 2, 0.5);
     color: #fff;
-    font-size: 0.09rem;
-    display: flex;
-    align-items: center;
+    font-size: 0.1rem;
   }
 `;
 export default function Covid() {
@@ -194,7 +192,7 @@ export default function Covid() {
   return (
     <StyledWrapper>
       <div className="date_time">
-        更新于: {datetimeString} | {format(new Date(updateTime), 'zh_CN')}
+        更新于: {datetimeString}（{format(new Date(updateTime), 'zh_CN')}）
       </div>
       {infoVisible ? (
         <div className="info">
