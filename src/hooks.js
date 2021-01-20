@@ -115,7 +115,7 @@ const useWidgetSettings = () => {
     updateLocalData(tmp);
   };
   const getWidgetSetting = (name, key) => {
-    console.log({ widgetSettings });
+    // console.log({ widgetSettings });
     let obj = widgetSettings[name];
     if (obj) {
       return obj[key] ? obj[key] : null;
@@ -126,17 +126,17 @@ const useWidgetSettings = () => {
 };
 // 导航
 const NAV_LOCAL_KEY = 'WEB_APP_NAV_DATA';
-const useAppData = () => {
+const useNavData = () => {
   const initialData = JSON.parse(localStorage.getItem(NAV_LOCAL_KEY) || 'null') || Webapps;
   const [data, setData] = useState(initialData);
   const updateLocalData = (newData) => {
     localStorage.setItem(NAV_LOCAL_KEY, JSON.stringify(newData));
   };
-  const updateAppData = (list) => {
+  const updateNavs = (list) => {
     setData(list);
     updateLocalData(list);
   };
-  const addApp = (app) => {
+  const addNav = (app) => {
     let existed = data.filter((item) => item.url == app.url);
     if (existed.length != 0) {
       return { success: false, msg: '地址已存在' };
@@ -149,7 +149,7 @@ const useAppData = () => {
     });
     return { success: true, data };
   };
-  const removeApp = (url) => {
+  const removeNav = (url) => {
     setData((prev) => {
       let newData = prev.filter((item) => {
         return item.url !== url;
@@ -158,13 +158,13 @@ const useAppData = () => {
       return newData;
     });
   };
-  return { data, addApp, removeApp, updateAppData };
+  return { data, addNav, removeNav, updateNavs };
 };
 
 export {
   useContextMenu,
   useGithubToken,
-  useAppData,
+  useNavData,
   useWidgets,
   useWidgetSettings,
   useSearchEngine

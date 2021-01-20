@@ -11,6 +11,8 @@ const StyledWrapper = styled.div`
   position: relative;
   padding-bottom: 0.32rem;
   width: 1.08rem;
+  user-select: none;
+
   .icon {
     width: 1.08rem;
     height: 1.08rem;

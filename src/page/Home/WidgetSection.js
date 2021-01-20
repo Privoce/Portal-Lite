@@ -1,12 +1,11 @@
-import { useState } from 'react';
-// import { useDrop } from 'react-dnd';
-
-// import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useWidgets } from '../../hooks';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
 import { Widgets } from '../../data';
 import ModalWidgetList from '../../component/ModalWidgetList';
+import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+
 const StyledSection = styled.section`
   position: relative;
   display: flex;
@@ -48,9 +47,50 @@ export default function WidgetSection() {
   const toggleModalVisible = () => {
     setModalVisible((prev) => !prev);
   };
+  useEffect(() => {
+    let widgetContainer = document.querySelector('#widget-container');
+    Sortable.create(widgetContainer, {
+      handle: '.title',
+      delay: 300,
+      // animation: 500,
+      // easing: 'cubic-bezier(1, 0, 0, 1)',
+      ghostClass: 'ghost',
+      dragClass: 'drag',
+      // Element is chosen
+      onChoose: (/**Event*/ evt) => {
+        console.log('on choose', evt.oldIndex);
+      },
+
+      // Element dragging started
+      onStart: (/**Event*/ evt) => {
+        console.log('on start', evt.oldIndex);
+      },
+      // Element dragging ended
+      onEnd: function (/**Event*/ evt) {
+        const { item, to, from, oldIndex, newIndex } = evt;
+        console.log('on,end', {
+          item,
+          to,
+          from,
+          oldIndex,
+          newIndex
+        });
+        let [tmpItem] = widgets.splice(oldIndex, 1);
+        widgets.splice(newIndex, 0, tmpItem);
+        // console.log({ widgets });
+        updateWidgetData(widgets);
+      },
+      // Called when creating a clone of element
+      onClone: function (/**Event*/ evt) {
+        const { item, clone } = evt;
+        clone.style.opacity = 0.2;
+        console.log('on clone', { item, clone });
+      }
+    });
+  }, []);
   return (
     <StyledSection>
-      <div className="widgets">
+      <div className="widgets" id="widget-container">
         {widgets.map((w) => {
           const obj = Widgets[w];
           const { comp: RealWidget, title, compact = false, disableScroll, size } = obj;

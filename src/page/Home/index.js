@@ -8,7 +8,7 @@ import Loading from '../../component/Loading';
 
 // import Account from '../../component/Account';
 import ContextMenu from '../../component/ContextMenu';
-import { useAppData, useSearchEngine, useContextMenu } from '../../hooks';
+import { useNavData, useSearchEngine, useContextMenu } from '../../hooks';
 
 const Setting = lazy(() => import('../../component/Setting'));
 const Feedback = lazy(() => import('../../component/Feedback'));
@@ -25,13 +25,8 @@ const SearchMap = {
 export default function Home() {
   const { search, updateSearch } = useSearchEngine();
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
-  const {
-    data: navs,
-    addApp: addNav,
-    removeApp: removeNav,
-    updateAppData: updateNavs
-  } = useAppData();
-  const removeApp = (w) => {
+  const { data: navs, addNav, removeNav, updateNavs } = useNavData();
+  const removeCurrNav = (w) => {
     const { url } = w;
     console.log({ w });
     removeNav(url);
@@ -43,7 +38,7 @@ export default function Home() {
         <Setting search={search} updateSearch={updateSearch} />
         <Feedback />
         {/* <Account /> */}
-        {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeApp} />}
+        {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeCurrNav} />}
         <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
           <div className="search">{SearchMap[search]}</div>
         </Suspense>

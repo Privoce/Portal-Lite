@@ -30,6 +30,8 @@ const StyledWrapper = styled.div`
     }
   }
   > .title {
+    /* cursor: move; */
+    cursor: grabbing;
     user-select: none;
     width: 100%;
     text-align: center;
@@ -37,8 +39,8 @@ const StyledWrapper = styled.div`
     font-weight: 400;
     color: #333;
     line-height: 0.2rem;
-    margin-top: 0.1rem;
-    margin-bottom: 0.64rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.64rem;
   }
   .setting {
     z-index: 9;
@@ -169,7 +171,7 @@ export default function WidgetWrapper({
     compContainer.current.requestFullscreen();
     toggleSettingListVisible();
   };
-  console.log({ compact });
+  // console.log({ compact });
   const toggleSettingListVisible = () => {
     setSettingVisible((prev) => !prev);
   };
