@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Nav from '../../component/NavItem';
 import Modal from '../../component/Modal';
 import PreviewModal from '../../component/PreviewModal';
@@ -8,25 +8,28 @@ import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 // import { AutoScroll } from 'sortablejs/modular/sortable.core.esm.js';
 // Sortable.mount(new Swap());
 // Sortable.mount(new AutoScroll(), new Swap());
+console.log('static', Sortable);
+const AniBounceX = keyframes`
+  from{
+    transform:translateX(-10px);
+  }
+  to{
+    transform:translateX(0);
+  }
+`;
 const StyledSection = styled.section`
-  display: flex;
-  flex-direction: column;
   width: 100%;
   .boxes {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: max-content;
     grid-column-gap: 1.28rem;
     /* padding: 0 0.125rem; */
     margin-bottom: 0.64rem;
     justify-items: center;
     @media (min-width: 320px) and (max-width: 860px) {
-      /* margin-right: 1.6rem;
-      margin-left: 1.6rem; */
       grid-template-columns: repeat(4, 1fr);
       grid-column-gap: 0;
-      /* > div {
-        margin: 0 auto;
-      } */
     }
     .box {
       width: 100%;
@@ -35,16 +38,25 @@ const StyledSection = styled.section`
       align-items: center;
       justify-content: center;
       transition: transform 0.5s ease;
+      &.insert_before {
+        animation: ${AniBounceX} 0.5s ease-in-out;
+      }
+      &.insert_after {
+        animation: ${AniBounceX} 0.5s ease-in-out reverse;
+      }
       &.droppable {
         transform: translateX(10px);
       }
       &.ghost {
         opacity: 0.1;
       }
-      &.drag {
+      &.drag,
+      &.choosen {
+        cursor: grabbing;
+        transform: scale(0.9);
         .nav-item:hover .icon {
           box-shadow: none;
-          border: 1px solid #eee;
+          border: 2px solid #eee;
         }
       }
     }
@@ -65,19 +77,48 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
   useEffect(() => {
     let boxContainer = document.querySelector('#nav-container');
     // if (sortable) {
+    //   console.log('existed', sortable);
     //   sortable.destory();
     // }
     sortable = Sortable.create(boxContainer, {
       draggable: '.box',
+      delayOnTouchOnly: true,
+      filter: '.add',
+      invertSwap: true,
       // animation: 500,
       // easing: 'cubic-bezier(1, 0, 0, 1)',
       ghostClass: 'ghost',
+      chosenClass: 'choosen',
       dragClass: 'drag',
       // Element is chosen
       onChoose: (/**Event*/ evt) => {
         console.log('on choose', evt.oldIndex);
       },
-
+      // Element is unchosen
+      onUnchoose: (/**Event*/ evt) => {
+        // same properties as onEnd
+        console.log('on unchoose', evt);
+      },
+      // Event when you move an item in the list or between lists
+      onMove: (/**Event*/ evt) => {
+        const { dragged, related, willInsertAfter } = evt;
+        related.classList.remove('insert_after');
+        related.classList.remove('insert_before');
+        console.log('on move', { dragged, related, willInsertAfter });
+        if (willInsertAfter) {
+          related.classList.add('insert_after');
+        } else {
+          related.classList.add('insert_before');
+        }
+        // evt.draggedRect; // DOMRect {left, top, right, bottom}
+        // evt.relatedRect; // DOMRect
+        // originalEvent.clientY; // mouse position
+        // return false; — for cancel
+        // return -1; — insert before target
+        // return 1; — insert after target
+        // return true; — keep default insertion point based on the direction
+        // return void; — keep default insertion point based on the direction
+      },
       // Element dragging started
       onStart: (/**Event*/ evt) => {
         console.log('on start', evt.oldIndex);
@@ -94,12 +135,12 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
       },
 
       // Called by any change to the list (add / update / remove)
-      onSort: function (/**Event*/ evt) {
+      onSort: (/**Event*/ evt) => {
         // same properties as onEnd
         console.log('on sort', evt);
       },
       // Element dragging ended
-      onEnd: function (/**Event*/ evt) {
+      onEnd: (/**Event*/ evt) => {
         const { item, to, from, oldIndex, newIndex } = evt;
         console.log('on end', {
           item,
@@ -111,7 +152,10 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
         let [tmpItem] = navs.splice(oldIndex, 1);
         navs.splice(newIndex, 0, tmpItem);
         // console.log({ navs });
+
         updateNavs(navs);
+        // 重新初始化
+        // sortable.destory();
       },
       // Called when creating a clone of element
       onClone: function (/**Event*/ evt) {

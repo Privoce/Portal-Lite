@@ -18,9 +18,19 @@ const StyledSection = styled.section`
     grid-column-gap: 1.28rem;
     grid-auto-flow: row dense;
     grid-auto-rows: 3.62rem;
-    .large {
-      grid-row: auto / span 2;
+    > div {
+      transition: transform 0.5s;
+      &.ghost {
+        opacity: 0.1;
+      }
+      &.choosen {
+        transform: scale(0.9);
+      }
+      &.large {
+        grid-row: auto / span 2;
+      }
     }
+
     @media (min-width: 320px) and (max-width: 860px) {
       grid-template-columns: repeat(1, 1fr);
       grid-column-gap: 0.5rem;
@@ -56,6 +66,7 @@ export default function WidgetSection() {
       // easing: 'cubic-bezier(1, 0, 0, 1)',
       ghostClass: 'ghost',
       dragClass: 'drag',
+      chosenClass: 'choosen',
       // Element is chosen
       onChoose: (/**Event*/ evt) => {
         console.log('on choose', evt.oldIndex);
