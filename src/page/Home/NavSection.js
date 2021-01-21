@@ -82,7 +82,8 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
     // }
     sortable = Sortable.create(boxContainer, {
       draggable: '.box',
-      delayOnTouchOnly: true,
+      // delayOnTouchOnly: true,
+      delay: 300,
       filter: '.add',
       invertSwap: true,
       // animation: 500,

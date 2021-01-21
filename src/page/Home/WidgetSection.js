@@ -19,6 +19,7 @@ const StyledSection = styled.section`
     grid-auto-flow: row dense;
     grid-auto-rows: 3.62rem;
     > div {
+      /* user-select: none; */
       transition: transform 0.5s;
       &.ghost {
         opacity: 0.1;
@@ -60,7 +61,7 @@ export default function WidgetSection() {
   useEffect(() => {
     let widgetContainer = document.querySelector('#widget-container');
     Sortable.create(widgetContainer, {
-      handle: '.title',
+      // handle: '.title',
       delay: 300,
       // animation: 500,
       // easing: 'cubic-bezier(1, 0, 0, 1)',
