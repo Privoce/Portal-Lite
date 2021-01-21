@@ -69,6 +69,10 @@ const GlobalStyle = createGlobalStyle`
     background: none;
     cursor:pointer;
   }
+  input,textarea{
+    /* 去除safari内阴影 */
+    -webkit-appearance: none;
+  }
   a{
     text-decoration:none;
   }
