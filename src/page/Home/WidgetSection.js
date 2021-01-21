@@ -8,8 +8,6 @@ import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 const StyledSection = styled.section`
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
   padding-bottom: 0.6rem;
   .widgets {
@@ -106,13 +104,21 @@ export default function WidgetSection() {
       <div className="widgets" id="widget-container">
         {widgets.map((w) => {
           const obj = Widgets[w];
-          const { comp: RealWidget, title, compact = false, disableScroll, size } = obj;
+          const {
+            comp: RealWidget,
+            title,
+            compact = false,
+            disableScroll,
+            sizes,
+            defaultSize
+          } = obj;
           return (
             <WidgetWrapper
               widgets={widgets}
               disableScroll={disableScroll}
               name={w}
-              size={size}
+              defaultSize={defaultSize}
+              sizes={sizes}
               update={updateWidgetData}
               removeWidget={removeWidget.bind(null, w)}
               key={w}

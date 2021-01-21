@@ -10,7 +10,7 @@ const StyledWrapper = styled.section`
   align-items: center;
 
   .search {
-    padding-top: 0.91rem;
+    padding-top: 0.6rem;
     padding-bottom: 0.6rem;
     /* padding-top: 0.4rem;
     padding-bottom: 0.4rem; */

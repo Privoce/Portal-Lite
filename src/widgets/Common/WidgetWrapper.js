@@ -42,10 +42,10 @@ const StyledWrapper = styled.div`
   }
   .setting {
     z-index: 9;
-
     display: flex;
     cursor: pointer;
-    /* visibility: hidden; */
+    background-color: rgba(222, 222, 222, 0.4);
+    border-radius: 50%;
     width: 0.4rem;
     height: 0.4rem;
     position: absolute;
@@ -60,13 +60,12 @@ const StyledWrapper = styled.div`
   .setting_list {
     z-index: 7;
     position: absolute;
-    top: 0.4rem;
+    top: 0.5rem;
     right: 0.2rem;
     display: flex;
     flex-direction: column;
     font-size: 0.14rem;
     color: #000;
-    /* background-color: #fff; */
     background-color: #fff;
     padding: 0.14rem;
     user-select: none;
@@ -145,12 +144,13 @@ export default function WidgetWrapper({
   removeWidget,
   title = '组件标题',
   compact,
-  size = null,
+  defaultSize = 'middle',
+  sizes = null,
   children = null
 }) {
   const compContainer = useRef(null);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [currSize, setCurrSize] = useState(getWidgetSetting(name, 'size') || 'middle');
+  const [currSize, setCurrSize] = useState(getWidgetSetting(name, 'size') || defaultSize);
   const [settingVisible, setSettingVisible] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const updateCurrSize = (key, { size }) => {
@@ -173,6 +173,8 @@ export default function WidgetWrapper({
   const toggleSettingListVisible = () => {
     setSettingVisible((prev) => !prev);
   };
+  // 只有一个size选择也不显示
+  const hasSizes = sizes && sizes.length != 0;
   return (
     <StyledWrapper
       ref={compContainer}
@@ -187,14 +189,14 @@ export default function WidgetWrapper({
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           <li className="item" onClick={handleRemove}>
-            移除小组件
+            移除
           </li>
           <li className="item" onClick={handleFullscreen}>
-            全屏显示
+            全屏
           </li>
-          {size && (
+          {hasSizes && (
             <li className="item sizes">
-              {size.map((key) => {
+              {sizes.map((key) => {
                 return (
                   <span
                     onClick={updateCurrSize.bind(null, name, { size: key })}

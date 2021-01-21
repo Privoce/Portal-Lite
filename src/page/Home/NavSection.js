@@ -25,7 +25,7 @@ const StyledSection = styled.section`
     grid-auto-rows: max-content;
     grid-column-gap: 1.28rem;
     /* padding: 0 0.125rem; */
-    margin-bottom: 0.64rem;
+    margin-bottom: 0.3rem;
     justify-items: center;
     @media (min-width: 320px) and (max-width: 860px) {
       grid-template-columns: repeat(4, 1fr);
