@@ -37,10 +37,10 @@ const StyledWrapper = styled.div`
   width: 100%;
   height: 100%;
   font-size: 0.2rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-items: center;
   .tab {
     font-size: 0.2rem;
     padding: 0.05rem 0.1rem;

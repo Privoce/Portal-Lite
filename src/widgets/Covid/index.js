@@ -93,7 +93,7 @@ const StyledWrapper = styled.section`
     overflow: overlay;
     height: 100%;
     width: 100%;
-    padding: 0.06rem 0.24rem;
+    padding: 0.2rem 0.4rem;
     background-color: #fff;
     p {
       color: #555;
