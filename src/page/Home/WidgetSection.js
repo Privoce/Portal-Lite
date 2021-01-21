@@ -58,6 +58,8 @@ export default function WidgetSection() {
     setModalVisible((prev) => !prev);
   };
   useEffect(() => {
+    // 全局存储
+    window.WIDGET_LIST = widgets;
     let widgetContainer = document.querySelector('#widget-container');
     Sortable.create(widgetContainer, {
       // handle: '.title',
@@ -86,10 +88,15 @@ export default function WidgetSection() {
           oldIndex,
           newIndex
         });
-        let [tmpItem] = widgets.splice(oldIndex, 1);
-        widgets.splice(newIndex, 0, tmpItem);
-        // console.log({ widgets });
-        updateWidgetData(widgets);
+        // 回归原位
+        if (oldIndex == newIndex) return;
+        let tmpWidgets = [...window.WIDGET_LIST];
+        let [tmpItem] = tmpWidgets.splice(oldIndex, 1);
+        if (tmpItem) {
+          tmpWidgets.splice(newIndex, 0, tmpItem);
+          // console.log({ tmpWidgets });
+          updateWidgetData(tmpWidgets);
+        }
       },
       // Called when creating a clone of element
       onClone: function (/**Event*/ evt) {
@@ -98,7 +105,7 @@ export default function WidgetSection() {
         console.log('on clone', { item, clone });
       }
     });
-  }, []);
+  }, [widgets]);
   return (
     <StyledSection>
       <div className="widgets" id="widget-container">

@@ -62,7 +62,7 @@ const StyledSection = styled.section`
     }
   }
 `;
-let sortable = null;
+// let sortable = null;
 export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [currFrame, setCurrFrame] = useState(null);
@@ -75,12 +75,14 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
     }
   };
   useEffect(() => {
+    // 全局存储
+    window.WEBAPP_NAVS = navs;
     let boxContainer = document.querySelector('#nav-container');
     // if (sortable) {
     //   console.log('existed', sortable);
     //   sortable.destory();
     // }
-    sortable = Sortable.create(boxContainer, {
+    Sortable.create(boxContainer, {
       draggable: '.box',
       // delayOnTouchOnly: true,
       delay: 300,
@@ -150,11 +152,16 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
           oldIndex,
           newIndex
         });
-        let [tmpItem] = navs.splice(oldIndex, 1);
-        navs.splice(newIndex, 0, tmpItem);
-        // console.log({ navs });
+        // 回归原位
+        if (oldIndex == newIndex) return;
+        let tmpNavs = [...window.WEBAPP_NAVS];
+        let [tmpItem] = tmpNavs.splice(oldIndex, 1);
+        if (tmpItem) {
+          tmpNavs.splice(newIndex, 0, tmpItem);
+          // console.log({ tmpNavs });
 
-        updateNavs(navs);
+          updateNavs(tmpNavs);
+        }
         // 重新初始化
         // sortable.destory();
       },
@@ -165,7 +172,6 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
         console.log('on clone', { item, clone });
       }
     });
-    console.log({ sortable });
   }, [navs]);
   return (
     <>
