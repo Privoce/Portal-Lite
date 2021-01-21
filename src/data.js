@@ -4,6 +4,7 @@ import WeiboHot from './widgets/WeiboHot';
 import MPDaily from './widgets/MPDaily';
 import Weather from './widgets/Weather';
 import Covid from './widgets/Covid';
+import TimezoneClock from './widgets/TimezoneClock';
 import GithubTrending from './widgets/GithubTrending';
 import GithubDashboard from './widgets/GithubDashboard';
 import Calc from './widgets/Calc';
@@ -21,6 +22,15 @@ const Widgets = {
     disableScroll: true,
     comp: <Covid />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
+  },
+  'timezone-clock': {
+    title: '国际时钟',
+    description: '便捷查看多个时区时间，最多支持添加三个。',
+    compact: true,
+    // preset: true,
+    disableScroll: true,
+    comp: <TimezoneClock />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
   },
   'wb-hot': {
     preset: true,
