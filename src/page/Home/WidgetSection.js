@@ -25,6 +25,7 @@ const StyledSection = styled.section`
         opacity: 0.1;
       }
       &.choosen {
+        cursor: grabbing;
         transform: scale(0.9);
       }
       &.large {

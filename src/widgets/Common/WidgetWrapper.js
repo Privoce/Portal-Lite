@@ -30,8 +30,6 @@ const StyledWrapper = styled.div`
     }
   }
   > .title {
-    /* cursor: move; */
-    cursor: grabbing;
     user-select: none;
     width: 100%;
     text-align: center;
