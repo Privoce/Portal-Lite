@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Clock from 'react-clock';
 import 'react-clock/dist/Clock.css';
 import { utcToZonedTime } from 'date-fns-tz';
+import { format } from 'date-fns';
 // import ErrorTip from '../Common/ErrorTip';
 // import Loading from '../Common/Loading';
 import Timezones from './Timezones';
@@ -75,6 +76,23 @@ const StyledWrapper = styled.section`
         font-size: 0.14rem;
         padding: 0.2rem;
       }
+      .datetime {
+        opacity: 0;
+        transition: opacity 0.5s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .item {
+          font-size: 0.12rem;
+          color: #aaa;
+          line-height: 1.4;
+        }
+      }
+      &:hover {
+        .datetime {
+          opacity: 1;
+        }
+      }
     }
   }
 `;
@@ -132,10 +150,16 @@ export default function TimezoneClock() {
             let hours = localDate.getHours();
             console.log({ hours });
             let night = hours < 6 || hours >= 18;
+            let timeStr = format(localDate, 'pp');
+            let dateStr = format(localDate, 'PPPP');
             return (
               <div className={`clock ${night ? 'dark' : ''}`} key={tz}>
                 <Clock size={window.innerWidth < 860 ? 110 : 120} value={localDate} />
                 <h2 className="city">{city}</h2>
+                <h3 className="datetime">
+                  <span className="item">{dateStr}</span>
+                  <span className="item">{timeStr}</span>
+                </h3>
               </div>
             );
           })}

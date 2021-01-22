@@ -70,7 +70,7 @@ export default function YiYan() {
   const localYiyan = JSON.parse(innerLocalData) || null;
   const [yiyan, setYiyan] = useState(localYiyan);
   const [currCates, setCurrCates] = useState(Object.keys(CateMap));
-  const [inter, setInter] = useState(10 * 60);
+  const [inter, setInter] = useState(60);
   const [loading, setLoading] = useState(!localYiyan);
   const [errTip, setErrTip] = useState('');
   const getYiYan = useCallback(async () => {

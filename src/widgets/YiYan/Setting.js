@@ -34,14 +34,14 @@ const StyledWrapper = styled.div`
         cursor: pointer;
         color: #fff;
         border: 1px solid #fff;
+        &[data-selected='true'] {
+          background: #fff;
+          color: #333;
+        }
       }
       &.intervals {
         .inter {
           margin-right: 0.2rem;
-          &[data-selected='true'] {
-            background: #fff;
-            color: #333;
-          }
         }
       }
       &.cates {
@@ -51,10 +51,6 @@ const StyledWrapper = styled.div`
         justify-items: flex-start;
         .cate {
           padding: 0.05rem 0.1rem;
-          &[data-selected='true'] {
-            background: #fff;
-            color: #333;
-          }
         }
       }
     }
