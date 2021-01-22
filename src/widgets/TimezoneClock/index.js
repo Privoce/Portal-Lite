@@ -34,8 +34,27 @@ const StyledWrapper = styled.section`
       display: flex;
       flex-direction: column;
       align-items: center;
+      .react-clock__hand {
+        .react-clock__second-hand__body {
+          background-color: #ef9829;
+        }
+      }
+      .react-clock__face {
+        background: #fff;
+        border-color: #666;
+        .react-clock__minute-mark .react-clock__mark__body {
+          background-color: #ccc;
+        }
+      }
       &.dark {
+        .react-clock__hand {
+          .react-clock__minute-hand__body,
+          .react-clock__hour-hand__body {
+            background-color: #eef;
+          }
+        }
         .react-clock__face {
+          border-color: #999;
           background: #333436;
           .react-clock__minute-mark {
             .react-clock__mark__body {
@@ -47,18 +66,6 @@ const StyledWrapper = styled.section`
               border-radius: 4px;
               background-color: #fff;
             }
-          }
-        }
-      }
-      .react-clock__face {
-        background: #fff;
-        /* border: none; */
-        .react-clock__minute-mark .react-clock__mark__body {
-          background-color: #ccc;
-        }
-        .react-clock__hand {
-          .react-clock__second-hand__body {
-            background-color: #ef9829;
           }
         }
       }
@@ -127,7 +134,7 @@ export default function TimezoneClock() {
             let night = hours < 6 || hours >= 18;
             return (
               <div className={`clock ${night ? 'dark' : ''}`} key={tz}>
-                <Clock size={120} value={localDate} />
+                <Clock size={window.innerWidth < 860 ? 110 : 120} value={localDate} />
                 <h2 className="city">{city}</h2>
               </div>
             );

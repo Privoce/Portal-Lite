@@ -32,7 +32,7 @@ const StyledWrapper = styled.div`
   height: 100%;
   font-size: 0.2rem;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
   justify-items: center;
 
@@ -88,6 +88,14 @@ const timezones = [
   {
     tz: 'America/Detroit',
     city: '底特律'
+  },
+  {
+    tz: 'Australia/Sydney',
+    city: '悉尼'
+  },
+  {
+    tz: 'Africa/Maputo',
+    city: '马普托'
   }
 ];
 export default function Timezones({ currTimezones, updateTimezones }) {
