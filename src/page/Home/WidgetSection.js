@@ -121,7 +121,6 @@ export default function WidgetSection() {
           } = obj;
           return (
             <WidgetWrapper
-              widgets={widgets}
               disableScroll={disableScroll}
               name={w}
               defaultSize={defaultSize}
