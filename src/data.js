@@ -12,6 +12,7 @@ import YinNote from './widgets/YinNote';
 import ZhihuHot from './widgets/ZhihuHot';
 import DailyShici from './widgets/DailyShiCi';
 import YiYan from './widgets/YiYan';
+import BingDailyPicture from './widgets/BingDailyPicture';
 const Webapps = Navs[0].items;
 const Tools = AllTools[0].items;
 const Widgets = {
@@ -41,7 +42,7 @@ const Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <YiYan />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png'
   },
   'wb-hot': {
     preset: true,
@@ -92,6 +93,16 @@ const Widgets = {
     comp: <Weather />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
   },
+  'bing-daily-pic': {
+    // preset: true,
+    title: '必应壁纸',
+    description: '快速浏览与下载必应高清壁纸',
+    compact: true,
+    disableScroll: true,
+    comp: <BingDailyPicture />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
+  },
+
   'gh-trending': {
     title: 'Github趋势',
     description: 'GitHub趋势榜，有开发者和仓库两大分类，让您不再错过GitHub热门仓库',
