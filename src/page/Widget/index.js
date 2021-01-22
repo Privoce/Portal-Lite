@@ -1,4 +1,4 @@
-// import React from 'react'
+// import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Widgets } from '../../data';
@@ -11,8 +11,7 @@ const StyledWrapper = styled.section`
   > div {
     margin: 0 auto;
   }
-  .title,
-  .setting {
+  .title {
     display: none;
   }
 `;
@@ -26,6 +25,7 @@ export default function Widget() {
   return (
     <StyledWrapper>
       <WidgetWrapper
+        standalone={true}
         disableScroll={disableScroll}
         name={widget}
         defaultSize={defaultSize}

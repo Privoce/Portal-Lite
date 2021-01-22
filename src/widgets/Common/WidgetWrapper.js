@@ -61,7 +61,7 @@ const StyledWrapper = styled.div`
     z-index: 7;
     position: absolute;
     top: 0.5rem;
-    right: 0.2rem;
+    right: 0.12rem;
     display: flex;
     flex-direction: column;
     font-size: 0.14rem;
@@ -72,9 +72,14 @@ const StyledWrapper = styled.div`
     border-radius: 5px;
     box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
     .item {
-      padding: 0.05rem;
       cursor: pointer;
-
+      padding: 0.05rem;
+      a {
+        color: #000;
+        &:hover {
+          color: #fff;
+        }
+      }
       &:not(.sizes):hover {
         color: #fff;
         background: rgba(2, 2, 2, 0.6);
@@ -109,11 +114,6 @@ const StyledWrapper = styled.div`
   }
   &.compact .container {
     padding: 0;
-    /* overflow: scroll; */
-    /* .setting {
-      right: 0.1rem;
-      top: 0.1rem;
-    } */
   }
   &:fullscreen {
     height: 90vh;
@@ -139,6 +139,7 @@ const SizeMap = {
   mini: '小'
 };
 export default function WidgetWrapper({
+  standalone = false,
   name,
   disableScroll = false,
   removeWidget,
@@ -188,12 +189,21 @@ export default function WidgetWrapper({
       </div>
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
-          <li className="item" onClick={handleRemove}>
-            移除
-          </li>
+          {!standalone && (
+            <li className="item" onClick={handleRemove}>
+              移除
+            </li>
+          )}
           <li className="item" onClick={handleFullscreen}>
             全屏
           </li>
+          {!standalone && (
+            <li className="item">
+              <a href={`/widgets/${name}`} target="_blank" rel="noopener noreferrer">
+                新页面打开
+              </a>
+            </li>
+          )}
           {hasSizes && (
             <li className="item sizes">
               {sizes.map((key) => {
