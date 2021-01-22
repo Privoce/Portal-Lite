@@ -11,6 +11,7 @@ import Calc from './widgets/Calc';
 import YinNote from './widgets/YinNote';
 import ZhihuHot from './widgets/ZhihuHot';
 import DailyShici from './widgets/DailyShiCi';
+import YiYan from './widgets/YiYan';
 const Webapps = Navs[0].items;
 const Tools = AllTools[0].items;
 const Widgets = {
@@ -30,6 +31,16 @@ const Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <TimezoneClock />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
+  },
+  yiyan: {
+    title: '一言',
+    description:
+      '简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。 或是感动，或是开心，有或是单纯的回忆。',
+    compact: true,
+    // preset: true,
+    disableScroll: true,
+    comp: <YiYan />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
   },
   'wb-hot': {
