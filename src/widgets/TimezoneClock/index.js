@@ -35,6 +35,9 @@ const StyledWrapper = styled.section`
       display: flex;
       flex-direction: column;
       align-items: center;
+      .react-clock {
+        transition: all 0.6s;
+      }
       .react-clock__hand {
         .react-clock__second-hand__body {
           background-color: #ef9829;
@@ -82,6 +85,7 @@ const StyledWrapper = styled.section`
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: -0.2rem;
         .item {
           font-size: 0.12rem;
           color: #aaa;
@@ -89,6 +93,9 @@ const StyledWrapper = styled.section`
         }
       }
       &:hover {
+        .react-clock {
+          transform: translateY(-10px);
+        }
         .datetime {
           opacity: 1;
         }
