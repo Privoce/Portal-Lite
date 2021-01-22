@@ -7,6 +7,7 @@ import Loading from './component/Loading';
 // import 'animate.css';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 const Home = lazy(() => import('./page/Home'));
+const Widget = lazy(() => import('./page/Widget'));
 const OAuth = lazy(() => import('./page/OAuth'));
 const NotFound = lazy(() => import('./page/NotFound'));
 // import PageTitle from './component/PageTitle';
@@ -27,6 +28,9 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route exact path="/widgets/:widget">
+              <Widget />
             </Route>
             <Route exact path="/oauth/:app">
               <OAuth />
