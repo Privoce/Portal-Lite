@@ -70,7 +70,7 @@ export default function YiYan() {
   const localYiyan = JSON.parse(innerLocalData) || null;
   const [yiyan, setYiyan] = useState(localYiyan);
   const [currCates, setCurrCates] = useState(Object.keys(CateMap));
-  const [inter, setInter] = useState(60);
+  const [inter, setInter] = useState(0);
   const [loading, setLoading] = useState(!localYiyan);
   const [errTip, setErrTip] = useState('');
   const getYiYan = useCallback(async () => {
@@ -101,9 +101,11 @@ export default function YiYan() {
     }
   }, [yiyan]);
   useEffect(() => {
-    InterInt = setInterval(() => {
-      getYiYan();
-    }, inter * 1000);
+    if (inter != 0) {
+      InterInt = setInterval(() => {
+        getYiYan();
+      }, inter * 1000);
+    }
     return () => {
       clearInterval(InterInt);
     };

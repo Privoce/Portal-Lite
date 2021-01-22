@@ -67,6 +67,10 @@ const StyledWrapper = styled.div`
 
 const InterMap = [
   {
+    inter: 0,
+    label: '手动更新'
+  },
+  {
     inter: 10,
     label: '10秒'
   },
@@ -117,7 +121,7 @@ export default function Tabs({ currCates, updateCurrCates, currInter, updateInte
     <StyledWrapper>
       <IconClose className="icon_close" onClick={toggleTabExpand} />
       <div className="set">
-        <h2 className="title">刷新间隔</h2>
+        <h2 className="title">更新间隔</h2>
         <div className="content intervals">
           {InterMap.map(({ inter, label }) => {
             return (
