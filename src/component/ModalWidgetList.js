@@ -26,7 +26,7 @@ const StyledWrapper = styled.section`
     .widgets {
       /* margin-top: 0.3rem; */
       padding: 0.3rem 0.2rem;
-      max-height: 90vh;
+      max-height: 95vh;
       overflow-y: overlay;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -106,9 +106,6 @@ const StyledWrapper = styled.section`
             opacity: 1;
           }
         }
-        &.placeholder {
-          border: none;
-        }
       }
     }
     .close {
@@ -172,7 +169,6 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
                 </li>
               );
             })}
-            {Object.entries(Widgets).length % 2 == 1 && <li className="widget placeholder"></li>}
           </ul>
           <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
