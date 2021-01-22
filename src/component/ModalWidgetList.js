@@ -22,14 +22,14 @@ const StyledWrapper = styled.section`
     background: #fff;
     border-radius: 0.04rem;
     /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
-    padding: 0.1rem 0.2rem 0 0.2rem;
-    width: 8.16rem;
+    width: 10rem;
     .widgets {
-      margin-top: 0.3rem;
+      /* margin-top: 0.3rem; */
+      padding: 0.3rem 0.2rem;
       max-height: 90vh;
       overflow-y: overlay;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       justify-items: center;
       @media screen and (max-width: 414px) {
         grid-template-columns: repeat(1, 1fr);
@@ -45,6 +45,7 @@ const StyledWrapper = styled.section`
         margin-bottom: 0.3rem;
         border-radius: 0.05rem;
         border: 0.01rem solid #eee;
+        transition: all 0.6s;
         .add,
         .added {
           display: flex;
@@ -80,17 +81,18 @@ const StyledWrapper = styled.section`
           user-select: none;
           transition: opacity 0.5s;
           .title {
-            font-size: 0.22rem;
+            font-size: 0.24rem;
             font-weight: 800;
             margin-bottom: 0.2rem;
           }
           .desc {
             padding: 0 0.2rem;
             line-height: 1.4;
-            font-size: 0.1rem;
+            font-size: 0.12rem;
           }
         }
         &:hover {
+          transform: scale(1.1);
           box-shadow: 0rem 0.08rem 0.16rem 0rem #ececec,
             0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5), 0rem 0.04rem 0.24rem 0rem #a8a8a8;
 
