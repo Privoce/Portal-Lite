@@ -106,11 +106,11 @@ const Widgets = {
   'douban-topic-hot': {
     // preset: true,
     title: '豆瓣24小时话题',
-    description: '豆瓣24小时热门话题',
+    description: '直达豆瓣24小时热门话题',
     // compact: true,
     // disableScroll: true,
     comp: <DoubanHotTopics />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png'
   },
 
   'gh-trending': {

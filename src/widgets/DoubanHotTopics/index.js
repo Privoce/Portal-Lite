@@ -20,13 +20,17 @@ const StyledWrapper = styled.section`
       .link {
         padding: 0.15rem;
         border-radius: 4px;
-        border: 1px solid rgb(59, 169, 77, 0.5);
+        border: 1px solid rgb(59, 169, 77, 0.3);
         color: #3ba94d;
         display: flex;
         flex-direction: column;
+        &:hover {
+          border-color: #3ba94d;
+        }
         .txt {
           margin-bottom: 0.1rem;
-          &:before {
+          &:before,
+          &:after {
             content: '#';
           }
         }
