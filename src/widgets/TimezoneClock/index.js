@@ -127,7 +127,6 @@ try {
 export default function TimezoneClock() {
   const [date, setDate] = useState(new Date());
   const [timezones, setTimezones] = useState(initialData);
-  console.log({ timezones });
   const updateCurrTimezones = (tzs) => {
     localStorage.setItem(locaKey, JSON.stringify(tzs));
     setTimezones(tzs);
@@ -153,9 +152,9 @@ export default function TimezoneClock() {
           {timezones.map((item) => {
             const { tz, city } = item;
             const localDate = utcToZonedTime(date.getTime(), tz);
-            console.log({ localDate });
+            // console.log({ localDate });
             let hours = localDate.getHours();
-            console.log({ hours });
+            // console.log({ hours });
             let night = hours < 6 || hours >= 18;
             let timeStr = format(localDate, 'pp');
             let dateStr = format(localDate, 'PPPP');

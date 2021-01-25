@@ -10,12 +10,10 @@ const StyledWrapper = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: fit-content;
   /* margin: 0.14rem 0.16rem; */
   .wrapper {
     padding: 0.02rem;
-    margin: 0;
-    list-style: none;
     /* overflow: scroll; */
     /* overscroll-behavior: contain; */
     width: 100%;
@@ -27,13 +25,15 @@ const StyledWrapper = styled.section`
       color: #1193d7;
       line-height: 0.21rem;
 
-      margin-bottom: 0.23rem;
       white-space: nowrap;
       padding-left: 0.3rem;
       padding-right: 0.4rem;
       overflow: hidden;
       text-overflow: ellipsis;
       position: relative;
+      &:not(:last-child) {
+        margin-bottom: 0.23rem;
+      }
       a {
         color: #0178b6;
         .heat {

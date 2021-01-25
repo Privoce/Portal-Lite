@@ -71,7 +71,11 @@ export default function WidgetSection() {
       chosenClass: 'choosen',
       // Element is chosen
       onChoose: (/**Event*/ evt) => {
-        console.log('on choose', evt.oldIndex);
+        console.log('on choose', evt);
+      },
+      // Element is unchosen
+      onUnchoose: (/**Event*/ evt) => {
+        console.log('on unchoose', evt.oldIndex);
       },
 
       // Element dragging started
@@ -81,7 +85,7 @@ export default function WidgetSection() {
       // Element dragging ended
       onEnd: function (/**Event*/ evt) {
         const { item, to, from, oldIndex, newIndex } = evt;
-        console.log('on,end', {
+        console.log('on end', {
           item,
           to,
           from,
@@ -101,6 +105,7 @@ export default function WidgetSection() {
       // Called when creating a clone of element
       onClone: function (/**Event*/ evt) {
         const { item, clone } = evt;
+        // item.classList.add('cloned');
         clone.style.opacity = 0.2;
         console.log('on clone', { item, clone });
       }

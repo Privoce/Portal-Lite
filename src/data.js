@@ -10,6 +10,7 @@ import GithubDashboard from './widgets/GithubDashboard';
 import Calc from './widgets/Calc';
 import YinNote from './widgets/YinNote';
 import ZhihuHot from './widgets/ZhihuHot';
+import DoubanHotTopics from './widgets/DoubanHotTopics';
 import DailyShici from './widgets/DailyShiCi';
 import YiYan from './widgets/YiYan';
 import BingDailyPicture from './widgets/BingDailyPicture';
@@ -100,6 +101,15 @@ const Widgets = {
     compact: true,
     disableScroll: true,
     comp: <BingDailyPicture />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
+  },
+  'douban-topic-hot': {
+    // preset: true,
+    title: '豆瓣24小时话题',
+    description: '豆瓣24小时热门话题',
+    // compact: true,
+    // disableScroll: true,
+    comp: <DoubanHotTopics />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
   },
 
