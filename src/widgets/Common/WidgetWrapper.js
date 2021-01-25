@@ -38,9 +38,10 @@ const StyledWrapper = styled.div`
     color: #333;
     line-height: 0.2rem;
     padding-top: 0.1rem;
-    padding-bottom: 0.64rem;
+    padding-bottom: 0.24rem;
+    /* padding-bottom: 0.64rem; */
   }
-  .setting {
+  > .setting {
     z-index: 9;
     display: flex;
     cursor: pointer;
@@ -57,7 +58,7 @@ const StyledWrapper = styled.div`
       height: 100%;
     }
   }
-  .setting_list {
+  > .setting_list {
     z-index: 7;
     position: absolute;
     top: 0.5rem;
@@ -115,6 +116,24 @@ const StyledWrapper = styled.div`
   &.compact .container {
     padding: 0;
   }
+  &[type='search'],
+  &[type='nav'] {
+    width: 100%;
+    .container {
+      background: none;
+      height: 100%;
+      width: 100%;
+      max-width: none;
+      overflow: visible;
+      border: none;
+      border-radius: none;
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
   &:fullscreen {
     height: 90vh;
     display: flex;
@@ -143,6 +162,7 @@ const SizeMap = {
   mini: '小'
 };
 export default function WidgetWrapper({
+  type = 'widget',
   standalone = false,
   name,
   disableScroll = false,
@@ -183,16 +203,19 @@ export default function WidgetWrapper({
   return (
     <StyledWrapper
       ref={compContainer}
-      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${currSize} ${
-        hasSizes && sizes.includes('large') ? 'largable' : ''
-      }`}
+      className={`widget ${compact ? 'compact' : ''} ${
+        disableScroll ? 'noscroll' : ''
+      }  ${currSize} ${hasSizes && sizes.includes('large') ? 'largable' : ''}`}
+      type={type}
     >
       <div className="container" ref={ref}>
         {inView ? children : null}
       </div>
-      <div className="setting" onClick={toggleSettingListVisible}>
-        <IconThreeDots />
-      </div>
+      {type == 'widget' && (
+        <div className="setting" onClick={toggleSettingListVisible}>
+          <IconThreeDots />
+        </div>
+      )}
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {!standalone && (
@@ -227,7 +250,7 @@ export default function WidgetWrapper({
           )}
         </ul>
       )}
-      <h2 className="title">{title}</h2>
+      {type == 'widget' && <h2 className="title">{title}</h2>}
     </StyledWrapper>
   );
 }

@@ -39,7 +39,7 @@ const StyledWrapper = styled.section`
         width: 3rem;
         height: 1.44rem;
         transition: background-size 0.5s;
-        background-size: cover;
+        background-size: 100%;
         background-repeat: no-repeat;
         background-position: center;
         margin-bottom: 0.3rem;

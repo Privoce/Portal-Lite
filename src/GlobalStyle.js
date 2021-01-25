@@ -50,6 +50,10 @@ const GlobalStyle = createGlobalStyle`
   }
   body{
     overflow:overlay;
+    transition:background-image 1s;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   html,body{
     -webkit-overflow-scrolling: touch;
@@ -77,7 +81,7 @@ const GlobalStyle = createGlobalStyle`
     text-decoration:none;
   }
   #root{
-    background:#fff;
+    /* background:#fff; */
     /* max-width:750px; */
         margin: 0 auto;
   }

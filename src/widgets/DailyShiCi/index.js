@@ -35,7 +35,7 @@ const StyledWrapper = styled.section`
       background: #333;
     }
     .title {
-      font-size: 0.2rem;
+      font-size: 0.25rem;
       font-weight: 800;
       margin-bottom: 0.08rem;
     }
@@ -49,7 +49,7 @@ const StyledWrapper = styled.section`
       flex-direction: column;
       align-items: center;
       .line {
-        font-size: 0.16rem;
+        font-size: 0.2rem;
         line-height: 1.5;
         margin-bottom: 0.05rem;
         &.famous {

@@ -15,8 +15,8 @@ const StyledSection = styled.section`
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 1.28rem;
     grid-auto-flow: row dense;
-    grid-auto-rows: 3.62rem;
-    > div {
+    grid-auto-rows: auto;
+    > .widget {
       /* user-select: none; */
       transition: transform 0.5s;
       &.ghost {
@@ -29,13 +29,25 @@ const StyledSection = styled.section`
       &.large {
         grid-row: auto / span 2;
       }
+      &[type='nav'] {
+        grid-area: auto / span 2;
+      }
+      &[type='search'] {
+        grid-area: span 1 / span 2;
+      }
     }
 
     @media (min-width: 320px) and (max-width: 860px) {
-      grid-template-columns: repeat(1, 1fr);
+      grid-template-columns: 1fr;
       grid-column-gap: 0.5rem;
-      > div {
+      > .widget {
         margin: 0 auto;
+        &[type='nav'] {
+          grid-area: auto / auto;
+        }
+        &[type='search'] {
+          grid-area: span 1 / auto;
+        }
       }
     }
   }
@@ -116,16 +128,10 @@ export default function WidgetSection() {
       <div className="widgets" id="widget-container">
         {widgets.map((w) => {
           const obj = Widgets[w];
-          const {
-            comp: RealWidget,
-            title,
-            compact = false,
-            disableScroll,
-            sizes,
-            defaultSize
-          } = obj;
+          const { type, comp, title, compact = false, disableScroll, sizes, defaultSize } = obj;
           return (
             <WidgetWrapper
+              type={type}
               disableScroll={disableScroll}
               name={w}
               defaultSize={defaultSize}
@@ -136,7 +142,7 @@ export default function WidgetSection() {
               compact={compact}
               title={title}
             >
-              {RealWidget}
+              {comp({ name: w })}
             </WidgetWrapper>
           );
         })}

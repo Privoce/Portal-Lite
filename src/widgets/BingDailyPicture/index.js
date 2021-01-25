@@ -4,9 +4,12 @@ import SwiperCore, { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/swiper-bundle.min.css';
+import { useWidgetSettings } from '../../hooks';
+
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import IconDownload from '../Common/Icons/Download';
+import IconWall from '../Common/Icons/Wall';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination]);
 const StyledWrapper = styled.section`
@@ -16,7 +19,7 @@ const StyledWrapper = styled.section`
     .swiper-pagination,
     .swiper-button-next,
     .swiper-button-prev,
-    .swiper-wrapper .swiper-slide .pic .download {
+    .swiper-wrapper .swiper-slide .pic .opts {
       opacity: 0;
     }
     .swiper-wrapper {
@@ -32,14 +35,32 @@ const StyledWrapper = styled.section`
             height: 100%;
             object-fit: cover;
           }
-          .download {
+          .opts {
             position: absolute;
             top: 0.2rem;
             left: 0.2rem;
             display: flex;
-            .icon {
+            .opt {
+              display: flex;
+              /* background-color: #eee;
+              border-radius: 50%;
               width: 0.32rem;
               height: 0.32rem;
+              align-items: center;
+              justify-content: center; */
+              &:not(:last-child) {
+                margin-right: 0.1rem;
+              }
+              .icon {
+                cursor: pointer;
+                width: 0.32rem;
+                height: 0.32rem;
+              }
+              /* &.wall {
+                width: 0.2rem;
+                height: 0.2rem;
+                padding: 0.1rem;
+              } */
             }
           }
           .cr {
@@ -64,7 +85,7 @@ const StyledWrapper = styled.section`
       .swiper-pagination,
       .swiper-button-next,
       .swiper-button-prev,
-      .swiper-wrapper .swiper-slide .pic .download {
+      .swiper-wrapper .swiper-slide .pic .opts {
         opacity: 0.8;
       }
       .swiper-slide .pic .cr {
@@ -73,10 +94,13 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function BingDailyPicture() {
+export default function BingDailyPicture({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [pics, setPics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
+  const [currWallpaper, setCurrWallpaper] = useState(getWidgetSetting(name, 'bg'));
+
   useEffect(() => {
     const getPics = async () => {
       const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/bing/wp/7`);
@@ -90,6 +114,17 @@ export default function BingDailyPicture() {
     };
     getPics();
   }, []);
+  const handleSetBG = (url) => {
+    setCurrWallpaper(url);
+    updateWidgetSetting(name, {
+      bg: url
+    });
+  };
+  useEffect(() => {
+    if (currWallpaper) {
+      document.body.style.backgroundImage = `url(${currWallpaper})`;
+    }
+  }, [currWallpaper]);
   if (loading) return <Loading />;
   if (errTip) return <ErrorTip tip={errTip} />;
   return (
@@ -117,14 +152,24 @@ export default function BingDailyPicture() {
           return (
             <SwiperSlide key={url}>
               <div className="pic">
-                <a
-                  target="_blank"
-                  href={`//cn.bing.com${url}`}
-                  download={true}
-                  className="download"
-                >
-                  <IconDownload className="icon" />
-                </a>
+                <div className="opts">
+                  <div
+                    className="opt wall"
+                    title="设置为壁纸"
+                    onClick={handleSetBG.bind(null, `//cn.bing.com${url}`)}
+                  >
+                    <IconWall className="icon" />
+                  </div>
+                  <a
+                    target="_blank"
+                    href={`//cn.bing.com${url}`}
+                    download={true}
+                    title="下载"
+                    className="opt download"
+                  >
+                    <IconDownload className="icon" />
+                  </a>
+                </div>
                 <img className="img" src={`//cn.bing.com${url}&w=600`} alt="必应壁纸" />
                 <div className="cr">
                   <p className="txt">{copyright}</p>
