@@ -29,6 +29,7 @@ const StyledWrapper = styled.section`
           position: relative;
           .img {
             width: 100%;
+            height: 100%;
             object-fit: cover;
           }
           .download {

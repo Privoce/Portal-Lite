@@ -125,6 +125,7 @@ const Widgets = {
     title: '计算器',
     description: '一个科学计算器',
     comp: <Calc />,
+    defaultSize: 'large',
     sizes: ['middle', 'large'],
     disableScroll: true,
     compact: true,

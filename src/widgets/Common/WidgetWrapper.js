@@ -121,11 +121,15 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     .container {
       height: fit-content;
       width: fit-content;
       min-height: 2.4rem;
       min-width: 4.87rem;
+    }
+    &.largable .container {
+      height: 6.74rem;
     }
     .setting,
     .setting_list {
@@ -179,7 +183,9 @@ export default function WidgetWrapper({
   return (
     <StyledWrapper
       ref={compContainer}
-      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${currSize}`}
+      className={`${compact ? 'compact' : ''} ${disableScroll ? 'noscroll' : ''}  ${currSize} ${
+        hasSizes && sizes.includes('large') ? 'largable' : ''
+      }`}
     >
       <div className="container" ref={ref}>
         {inView ? children : null}
