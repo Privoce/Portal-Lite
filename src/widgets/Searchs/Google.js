@@ -7,7 +7,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   /* width: 100%; */
   .input {
-    width: 90%;
+    width: 100%;
     position: relative;
     display: flex;
     input {
@@ -17,7 +17,6 @@ const StyledWrapper = styled.div`
       padding: 0.12rem 0.16rem;
       font-size: 0.16rem;
       height: 0.44rem;
-      margin-right: 0.2rem;
       padding-left: 0.5rem;
       background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/icon.google.search.png');
       background-repeat: no-repeat;

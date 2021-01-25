@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Nav from '../../component/NavItem';
-import Modal from '../../component/Modal';
-import PreviewModal from '../../component/PreviewModal';
-// import Sortable, { Swap, AutoScroll } from 'sortablejs';
+import Nav from './NavItem';
+import Modal from './Modal';
+import ContextMenu from './ContextMenu';
+
+import { useNavData, useContextMenu } from '../../hooks';
+
+import PreviewModal from './PreviewModal';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
-// import { AutoScroll } from 'sortablejs/modular/sortable.core.esm.js';
-// Sortable.mount(new Swap());
-// Sortable.mount(new AutoScroll(), new Swap());
 console.log('static', Sortable);
 const AniBounceX = keyframes`
   from{
@@ -25,7 +25,7 @@ const StyledSection = styled.section`
     grid-auto-rows: max-content;
     grid-column-gap: 1.28rem;
     /* padding: 0 0.125rem; */
-    margin-bottom: 0.3rem;
+    /* margin-bottom: 0.3rem; */
     justify-items: center;
     @media (min-width: 320px) and (max-width: 860px) {
       grid-template-columns: repeat(4, 1fr);
@@ -63,9 +63,16 @@ const StyledSection = styled.section`
   }
 `;
 // let sortable = null;
-export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
+export default function NavSection() {
+  const { menuVisible, position, widget, showMenu } = useContextMenu(false);
+  const { data: navs, addNav, removeNav, updateNavs } = useNavData();
   const [modalVisible, setModalVisible] = useState(false);
   const [currFrame, setCurrFrame] = useState(null);
+  const removeCurrNav = (w) => {
+    const { url } = w;
+    console.log({ w });
+    removeNav(url);
+  };
   const handleBoxClick = (w) => {
     if (w.frame) {
       console.log({ w });
@@ -176,6 +183,7 @@ export default function NavSection({ navs, addNav, updateNavs, showMenu }) {
   return (
     <>
       <StyledSection>
+        {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeCurrNav} />}
         <ul className="boxes" id={'nav-container'}>
           {navs.map((s) => {
             return (

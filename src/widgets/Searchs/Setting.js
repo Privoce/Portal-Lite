@@ -7,9 +7,7 @@ const StyledWrapper = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  @media (min-width: 320px) and (max-width: 860px) {
-    right: 0.2rem;
-  }
+
   .setting {
     user-select: none;
     z-index: 996;

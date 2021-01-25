@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import uniqolor from 'uniqolor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
-import { validateUrl } from '../util';
+import { validateUrl } from '../../util';
 import SwiperTabs from './SwiperTabs';
 
-import IconClose from '../asset/img/icon.close.png';
+import IconClose from '../../asset/img/icon.close.png';
 
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`

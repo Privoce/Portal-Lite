@@ -12,7 +12,6 @@ const StyledWrapper = styled.div`
     display: flex;
     input {
       width: 100%;
-
       border-radius: 0.06rem;
       border: 0.01rem solid #ababab;
 

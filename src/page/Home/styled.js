@@ -9,13 +9,6 @@ const StyledWrapper = styled.section`
   flex-direction: column;
   align-items: center;
 
-  .search {
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem;
-    /* padding-top: 0.4rem;
-    padding-bottom: 0.4rem; */
-    width: 6.6rem;
-  }
   /* 响应式布局 */
   @media (min-width: 320px) and (max-width: 480px) {
     .search {

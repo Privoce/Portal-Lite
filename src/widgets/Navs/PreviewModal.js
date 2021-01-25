@@ -4,11 +4,11 @@ import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
-import IconPC from '../asset/img/icon.pc.png';
-import IconMobile from '../asset/img/icon.mobile.png';
-import IconFS from '../asset/img/icon.full-screen.png';
-import IconOpen from '../asset/img/icon.open.png';
-import { getDefaultIcon } from '../util';
+import IconPC from '../../asset/img/icon.pc.png';
+import IconMobile from '../../asset/img/icon.mobile.png';
+import IconFS from '../../asset/img/icon.full-screen.png';
+import IconOpen from '../../asset/img/icon.open.png';
+import { getDefaultIcon } from '../../util';
 
 const modalRoot = document.querySelector('#modal-root');
 
