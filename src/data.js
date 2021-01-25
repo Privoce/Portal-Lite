@@ -64,7 +64,7 @@ const Widgets = {
         <NavBlock {...props} />
       </Suspense>
     ),
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png'
   },
   'covid-info': {
     title: '国内新冠疫情概况',
