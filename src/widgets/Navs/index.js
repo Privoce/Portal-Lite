@@ -63,7 +63,7 @@ const StyledSection = styled.section`
   }
 `;
 // let sortable = null;
-export default function NavSection() {
+export default function Navs() {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
   const { data: navs, addNav, removeNav, updateNavs } = useNavData();
   const [modalVisible, setModalVisible] = useState(false);

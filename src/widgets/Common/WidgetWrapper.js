@@ -42,6 +42,9 @@ const StyledWrapper = styled.div`
     /* padding-bottom: 0.64rem; */
   }
   > .setting {
+    position: absolute;
+    right: 0.1rem;
+    top: 0.04rem;
     z-index: 9;
     display: flex;
     cursor: pointer;
@@ -49,9 +52,6 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     width: 0.4rem;
     height: 0.4rem;
-    position: absolute;
-    right: 0.1rem;
-    top: 0.04rem;
     opacity: 0;
     svg {
       width: 100%;
@@ -119,6 +119,13 @@ const StyledWrapper = styled.div`
   &[type='search'],
   &[type='nav'] {
     width: 100%;
+    > .setting {
+      right: -0.5rem;
+      top: 0;
+    }
+    > .setting_list {
+      right: 0;
+    }
     .container {
       background: none;
       height: 100%;
@@ -211,11 +218,11 @@ export default function WidgetWrapper({
       <div className="container" ref={ref}>
         {inView ? children : null}
       </div>
-      {type == 'widget' && (
-        <div className="setting" onClick={toggleSettingListVisible}>
-          <IconThreeDots />
-        </div>
-      )}
+      {/* {type == 'widget' && ( */}
+      <div className="setting" onClick={toggleSettingListVisible}>
+        <IconThreeDots />
+      </div>
+      {/* )} */}
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {!standalone && (

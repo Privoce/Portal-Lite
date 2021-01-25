@@ -9,6 +9,7 @@ import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 const StyledSection = styled.section`
   position: relative;
   width: 100%;
+  padding-top: 0.2rem;
   padding-bottom: 0.6rem;
   .widgets {
     display: grid;

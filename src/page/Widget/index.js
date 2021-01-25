@@ -8,11 +8,11 @@ const StyledWrapper = styled.section`
   height: 100vh;
   display: flex;
   align-items: center;
-  > div {
+  .widget {
     margin: 0 auto;
-  }
-  .title {
-    display: none;
+    > .title {
+      display: none;
+    }
   }
 `;
 export default function Widget() {
@@ -21,10 +21,11 @@ export default function Widget() {
   const obj = Widgets[widget] || null;
 
   if (!obj) return '小组件不存在';
-  const { comp: RealWidget, title, compact = false, disableScroll, sizes, defaultSize } = obj;
+  const { comp, title, compact = false, disableScroll, sizes, defaultSize, type } = obj;
   return (
     <StyledWrapper>
       <WidgetWrapper
+        type={type}
         standalone={true}
         disableScroll={disableScroll}
         name={widget}
@@ -35,7 +36,7 @@ export default function Widget() {
         compact={compact}
         title={title}
       >
-        {RealWidget}
+        {comp({ name: widget })}
       </WidgetWrapper>
     </StyledWrapper>
   );
