@@ -5,9 +5,11 @@ import Loading from '../../component/Loading';
 
 // import Account from '../../component/Account';
 
-const Feedback = lazy(() => import('../../component/Feedback'));
+const Feedback = lazy(() =>
+  import(/* webpackChunkName: "block.feedback" */ '../../component/Feedback')
+);
 
-const WidgetSection = lazy(() => import('./WidgetSection'));
+const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ './WidgetSection'));
 
 export default function Home() {
   return (

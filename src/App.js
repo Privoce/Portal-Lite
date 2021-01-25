@@ -6,10 +6,10 @@ import Loading from './component/Loading';
 
 // import 'animate.css';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-const Home = lazy(() => import('./page/Home'));
-const Widget = lazy(() => import('./page/Widget'));
-const OAuth = lazy(() => import('./page/OAuth'));
-const NotFound = lazy(() => import('./page/NotFound'));
+const Home = lazy(() => import(/* webpackChunkName: "page.home" */ './page/Home'));
+const Widget = lazy(() => import(/* webpackChunkName: "page.widget" */ './page/Widget'));
+const OAuth = lazy(() => import(/* webpackChunkName: "page.oauth" */ './page/OAuth'));
+const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
 
 function App() {

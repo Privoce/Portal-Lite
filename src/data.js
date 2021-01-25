@@ -1,21 +1,40 @@
+import { lazy, Suspense } from 'react';
 import Navs from './widgets/Navs/SwiperTabs/nav_data';
 import AllTools from './widgets/Navs/SwiperTabs/tool_data';
-import WeiboHot from './widgets/WeiboHot';
-import MPDaily from './widgets/MPDaily';
-import Weather from './widgets/Weather';
-import Covid from './widgets/Covid';
-import TimezoneClock from './widgets/TimezoneClock';
-import GithubTrending from './widgets/GithubTrending';
-import GithubDashboard from './widgets/GithubDashboard';
-import Calc from './widgets/Calc';
-import YinNote from './widgets/YinNote';
-import ZhihuHot from './widgets/ZhihuHot';
-import DoubanHotTopics from './widgets/DoubanHotTopics';
-import DailyShici from './widgets/DailyShiCi';
-import YiYan from './widgets/YiYan';
-import BingDailyPicture from './widgets/BingDailyPicture';
-import Searchs from './widgets/Searchs';
-import NavBlock from './widgets/Navs';
+import Loading from './component/Loading';
+const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
+const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
+const WeiboHot = lazy(() =>
+  import(/* webpackChunkName: "widget.weibo.hot" */ './widgets/WeiboHot')
+);
+const MPDaily = lazy(() => import(/* webpackChunkName: "widget.mp.daily" */ './widgets/MPDaily'));
+const Weather = lazy(() => import(/* webpackChunkName: "widget.weather" */ './widgets/Weather'));
+const Covid = lazy(() => import(/* webpackChunkName: "widget.covid" */ './widgets/Covid'));
+const TimezoneClock = lazy(() =>
+  import(/* webpackChunkName: "widget.timezone.clock" */ './widgets/TimezoneClock')
+);
+const GithubTrending = lazy(() =>
+  import(/* webpackChunkName: "widget.github.trend" */ './widgets/GithubTrending')
+);
+const GithubDashboard = lazy(() =>
+  import(/* webpackChunkName: "widget.github.repos" */ './widgets/GithubDashboard')
+);
+const ZhihuHot = lazy(() =>
+  import(/* webpackChunkName: "widget.zhihu.hot" */ './widgets/ZhihuHot')
+);
+const DoubanHotTopics = lazy(() =>
+  import(/* webpackChunkName: "widget.douban.topics" */ './widgets/DoubanHotTopics')
+);
+const YiYan = lazy(() => import(/* webpackChunkName: "widget.yiyan" */ './widgets/YiYan'));
+const DailyShici = lazy(() =>
+  import(/* webpackChunkName: "widget.daily.shici" */ './widgets/DailyShiCi')
+);
+const BingDailyPicture = lazy(() =>
+  import(/* webpackChunkName: "widget.bing.pics" */ './widgets/BingDailyPicture')
+);
+const Calc = lazy(() => import(/* webpackChunkName: "widget.calc" */ './widgets/Calc'));
+const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './widgets/YinNote'));
+
 const Webapps = Navs[0].items;
 const Tools = AllTools[0].items;
 const Widgets = {
@@ -26,7 +45,11 @@ const Widgets = {
     compact: true,
     preset: true,
     disableScroll: true,
-    comp: (props = {}) => <Searchs {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <Searchs {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png'
   },
   navs: {
@@ -36,7 +59,11 @@ const Widgets = {
     compact: true,
     preset: true,
     disableScroll: true,
-    comp: (props = {}) => <NavBlock {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <NavBlock {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
   },
   'covid-info': {
@@ -45,7 +72,11 @@ const Widgets = {
     compact: true,
     preset: true,
     disableScroll: true,
-    comp: (props = {}) => <Covid {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <Covid {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
   },
   'timezone-clock': {
@@ -54,7 +85,11 @@ const Widgets = {
     compact: true,
     // preset: true,
     disableScroll: true,
-    comp: (props = {}) => <TimezoneClock {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <TimezoneClock {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
   },
   yiyan: {
@@ -64,7 +99,11 @@ const Widgets = {
     compact: true,
     // preset: true,
     disableScroll: true,
-    comp: (props = {}) => <YiYan {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <YiYan {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png'
   },
   'wb-hot': {
@@ -73,14 +112,22 @@ const Widgets = {
     description: '微博实时热搜，你想了解的，都在这里！',
     defaultSize: 'large',
     sizes: ['middle', 'large'],
-    comp: (props = {}) => <WeiboHot {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <WeiboHot {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
   },
   'mp-daily-hot': {
     title: '公众号24小时热文',
     description: '公众号实时热文，你想了解的，都在这里！',
     sizes: ['middle', 'large'],
-    comp: (props = {}) => <MPDaily {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <MPDaily {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
   },
   'daily-shici': {
@@ -88,7 +135,11 @@ const Widgets = {
     description: '每天一句诗词，根据时间、地点、天气、事件智能推荐',
     compact: true,
     sizes: ['middle', 'large'],
-    comp: (props = {}) => <DailyShici {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <DailyShici {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png'
   },
   'zhihu-hot': {
@@ -96,7 +147,11 @@ const Widgets = {
     sizes: ['middle', 'large'],
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
-    comp: (props = {}) => <ZhihuHot {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <ZhihuHot {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png'
   },
   'gh-dashboard': {
@@ -104,7 +159,11 @@ const Widgets = {
     sizes: ['middle', 'large'],
     description: '通过授权，展现您个人仓库列表，快速预览每个仓库的概况。',
     compact: true,
-    comp: (props = {}) => <GithubDashboard {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <GithubDashboard {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
   },
   weather: {
@@ -113,7 +172,11 @@ const Widgets = {
     description: '全方位，多角度，为您提供天气信息。',
     compact: true,
     disableScroll: true,
-    comp: (props = {}) => <Weather {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <Weather {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
   },
   'bing-daily-pic': {
@@ -122,7 +185,11 @@ const Widgets = {
     description: '快速浏览与下载必应高清壁纸',
     compact: true,
     disableScroll: true,
-    comp: (props = {}) => <BingDailyPicture {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <BingDailyPicture {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
   },
   'douban-topic-hot': {
@@ -131,7 +198,11 @@ const Widgets = {
     description: '直达豆瓣24小时热门话题',
     // compact: true,
     // disableScroll: true,
-    comp: (props = {}) => <DoubanHotTopics {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <DoubanHotTopics {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png'
   },
 
@@ -140,13 +211,21 @@ const Widgets = {
     description: 'GitHub趋势榜，有开发者和仓库两大分类，让您不再错过GitHub热门仓库',
     compact: true,
     sizes: ['middle', 'large'],
-    comp: (props = {}) => <GithubTrending {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <GithubTrending {...props} />
+      </Suspense>
+    ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
   },
   calc: {
     title: '计算器',
     description: '一个科学计算器',
-    comp: (props = {}) => <Calc {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <Calc {...props} />
+      </Suspense>
+    ),
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     disableScroll: true,
@@ -157,7 +236,11 @@ const Widgets = {
     title: '印象笔记',
     description: '快速录入印象笔记【暂未开发】',
     disableScroll: true,
-    comp: (props = {}) => <YinNote {...props} />,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <YinNote {...props} />
+      </Suspense>
+    ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yinxiang.note.png'
   }
 };
