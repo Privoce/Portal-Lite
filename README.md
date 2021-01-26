@@ -1,11 +1,23 @@
 # 有点东西
 
+## 是什么
+
+一个小组件导航站点
+
+## 特性
+
+- 自定义搜索引擎
+- 添加导航
+- 添加小组件
+- 一切均是组件
+
 ## 预览
 
-![preview image](/demo/home.png 'home page')
+![preview image](demo/home.png 'home page')
 
 ## 迭代计划
 
 - 个人中心-账号系统
+- 数据导出与导入
 - 小组件开源
 - 自研小组件
