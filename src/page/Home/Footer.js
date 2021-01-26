@@ -11,9 +11,9 @@ export default function Footer() {
   return (
     <StyledFooter>
       <div className="txt">
-        © 2020 - 2021 Made by{' '}
-        <a href="https://yangerxiao.com/" target="_blank">
-          Tristan
+        © 2020 - 2021 Provided by{' '}
+        <a href="//privoce.com/#our-team" target="_blank">
+          Privoce
         </a>{' '}
         with ❤️
       </div>
