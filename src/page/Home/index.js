@@ -1,8 +1,9 @@
 // import { Link } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import ForkMeOnGithub from 'fork-me-on-github';
 import StyledWrapper from './styled';
 import Loading from '../../component/Loading';
-
+import Footer from './Footer';
 // import Account from '../../component/Account';
 
 const Feedback = lazy(() =>
@@ -14,6 +15,12 @@ const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ 
 export default function Home() {
   return (
     <Suspense fallback={<Loading />}>
+      <ForkMeOnGithub
+        repo="https://github.com/Privoce/Portal-Lite-China"
+        colorBackground="#4e6ef3"
+        colorOctocat="white"
+        side="left"
+      />
       <StyledWrapper>
         <Feedback />
         {/* <Account /> */}
@@ -24,6 +31,7 @@ export default function Home() {
           {/* </DndProvider> */}
         </Suspense>
       </StyledWrapper>
+      <Footer />
     </Suspense>
   );
 }
