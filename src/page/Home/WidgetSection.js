@@ -25,7 +25,7 @@ const StyledSection = styled.section`
       }
       &.choosen {
         cursor: grabbing;
-        transform: scale(0.9);
+        transform: scale(0.98);
       }
       &.large {
         grid-row: auto / span 2;

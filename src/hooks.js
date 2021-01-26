@@ -56,7 +56,7 @@ const useGithubToken = () => {
   return { token, setToken };
 };
 // 小组件
-const LOCAL_WG_KEY = 'WIDGET_LIST_DATA';
+const LOCAL_WG_KEY = 'WIDGET_LOCAL_DATA';
 
 const useWidgets = () => {
   let wgKeys = Object.entries(Widgets)

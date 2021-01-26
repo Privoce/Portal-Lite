@@ -113,7 +113,7 @@ export default function Timezones({ currTimezones, updateTimezones }) {
       updateTimezones(currTimezones.filter((c) => c.tz != tz));
     } else {
       if (currTimezones.length == 3) {
-        alert('最多设置三个');
+        alert('最多三个，请先去掉一个');
         return;
       }
       let newTZ = timezones.find((t) => t.tz == tz);

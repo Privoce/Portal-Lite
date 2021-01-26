@@ -79,11 +79,37 @@ const Widgets = {
     ),
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
   },
+  'wb-hot': {
+    preset: true,
+    title: '微博热搜',
+    description: '微博实时热搜，你想了解的，都在这里！',
+    defaultSize: 'large',
+    sizes: ['middle', 'large'],
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <WeiboHot {...props} />
+      </Suspense>
+    ),
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
+  },
+  weather: {
+    preset: true,
+    title: '今日天气',
+    description: '全方位，多角度，为您提供天气信息。',
+    compact: true,
+    disableScroll: true,
+    comp: (props = {}) => (
+      <Suspense fallback={<Loading />}>
+        <Weather {...props} />
+      </Suspense>
+    ),
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
+  },
   'timezone-clock': {
     title: '国际时钟',
     description: '便捷查看多个时区时间，最多支持添加三个。',
     compact: true,
-    // preset: true,
+    preset: true,
     disableScroll: true,
     comp: (props = {}) => (
       <Suspense fallback={<Loading />}>
@@ -106,19 +132,7 @@ const Widgets = {
     ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png'
   },
-  'wb-hot': {
-    preset: true,
-    title: '微博热搜',
-    description: '微博实时热搜，你想了解的，都在这里！',
-    defaultSize: 'large',
-    sizes: ['middle', 'large'],
-    comp: (props = {}) => (
-      <Suspense fallback={<Loading />}>
-        <WeiboHot {...props} />
-      </Suspense>
-    ),
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
-  },
+
   'mp-daily-hot': {
     title: '公众号24小时热文',
     description: '公众号实时热文，你想了解的，都在这里！',
@@ -166,19 +180,7 @@ const Widgets = {
     ),
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
   },
-  weather: {
-    preset: true,
-    title: '今日天气',
-    description: '全方位，多角度，为您提供天气信息。',
-    compact: true,
-    disableScroll: true,
-    comp: (props = {}) => (
-      <Suspense fallback={<Loading />}>
-        <Weather {...props} />
-      </Suspense>
-    ),
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
-  },
+
   'bing-daily-pic': {
     // preset: true,
     title: '必应壁纸',
