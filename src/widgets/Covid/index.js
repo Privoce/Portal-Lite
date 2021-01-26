@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { format } from 'timeago.js';
-
+import fetchp from 'fetch-jsonp';
 import styled from 'styled-components';
 import IconCovid from '../Common/Icons/Covid';
-import IconClose from '../Common/Icons/Close';
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
+import Block from './Block';
+import List from './List';
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100%;
@@ -13,109 +13,10 @@ const StyledWrapper = styled.section`
   overflow: hidden;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
   grid-column-gap: 0.02rem;
   grid-row-gap: 0.02rem;
-  .block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.34rem 0.1rem;
-    width: 100%;
-    height: 100%;
-    &:hover {
-      > .num {
-        transform: scale(1.2);
-      }
-      .title {
-        transform: scale(0.8);
-      }
-    }
-    .compare {
-      font-size: 0.1rem;
-      color: #7c7c7c;
-      padding-bottom: 0.1rem;
-    }
-    > .num {
-      padding-bottom: 0.1rem;
-      font-size: 0.24rem;
-      font-weight: 800;
-      transition: all 0.6s ease-in;
-    }
-    .title {
-      padding-bottom: 0.14rem;
-      color: #222;
-      font-size: 0.18rem;
-      transition: all 0.6s ease-in;
-    }
-    &.now-comfirmed {
-      background-color: #fdf1f1;
-      .num {
-        color: #f23a3b;
-      }
-    }
-    &.comfirmed {
-      background-color: #fdf1f1;
-      .num {
-        color: #cc1e1e;
-      }
-    }
-    &.maybe {
-      background-color: #fcf4f0;
-      .num {
-        color: #ca3f81;
-      }
-    }
-    &.serious {
-      background-color: #faf2f6;
-      .num {
-        color: #f05926;
-      }
-    }
-    &.heal {
-      background-color: #f1f8f4;
-      .num {
-        color: #178b50;
-      }
-    }
-    &.dead {
-      background-color: #f3f6f8;
-      .num {
-        color: #4e5a65;
-      }
-    }
-  }
-  .info {
-    position: absolute;
-    left: 0;
-    top: 0;
-    overflow: overlay;
-    height: 100%;
-    width: 100%;
-    padding: 0.2rem 0.4rem;
-    background-color: #fff;
-    p {
-      color: #555;
-      margin: 0.1rem 0;
-      line-height: 1.4;
-      font-size: 0.12rem;
-      text-align: justify;
-      &:first-child {
-        font-weight: 800;
-        font-size: 0.18rem;
-        color: #222;
-      }
-    }
-    .close_icon {
-      position: absolute;
-      top: 0.1rem;
-      left: 0.1rem;
-      width: 0.2rem;
-      height: 0.2rem;
-      cursor: pointer;
-    }
-  }
   .covid_icon {
     display: none;
     position: absolute;
@@ -141,112 +42,116 @@ const StyledWrapper = styled.section`
     font-size: 0.1rem;
   }
 `;
+// http://health.people.com.cn/GB/26466/431463/431576/index.html
 export default function Covid() {
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  const [infoVisible, setInfoVisible] = useState(false);
+  const [listVisible, setListVisible] = useState(false);
   const [data, setData] = useState(null);
-  const toggleInfoVisible = () => {
-    setInfoVisible((prev) => !prev);
+  const toggleListVisible = () => {
+    setListVisible((prev) => !prev);
   };
   useEffect(() => {
     const getData = async () => {
-      const resp = await fetch(`https://lab.isaaclin.cn/nCoV/api/overall?latest=true`);
-      const { results, success } = await resp.json();
-      setLoading(false);
-      if (!success) {
+      const resp = await fetchp(`http://43.250.238.179:9090/showData`);
+      const { data } = await resp.json();
+      if (!data) {
+        setLoading(false);
         setErrTip('⚠️接口出错啦⚠️');
         return;
       }
-      setData(results[0]);
+      setData(data);
+      setLoading(false);
       // console.log({ info });
     };
     getData();
   }, []);
-  const {
-    note1,
-    note2,
-    note3,
-    remark1,
-    remark2,
-    remark3,
-    confirmedCount,
-    confirmedIncr,
-    curedCount,
-    curedIncr,
-    deadCount,
-    deadIncr,
-    currentConfirmedCount,
-    currentConfirmedIncr,
-    suspectedCount,
-    suspectedIncr,
-    seriousIncr,
-    seriousCount,
-    updateTime
-  } = data || {};
   if (errTip) return <ErrorTip tip={errTip} />;
   if (loading) return <Loading />;
-  const datetimeString = `${new Date(updateTime).toLocaleDateString('zh')} ${new Date(
-    updateTime
-  ).toLocaleTimeString('zh')}`;
+  const {
+    times,
+    gntotal,
+    deathtotal,
+    sustotal,
+    curetotal,
+    jwsrNum,
+    asymptomNum,
+    econNum,
+    heconNum,
+    add_daily: {
+      addcon,
+      addsus,
+      adddeath,
+      addcure,
+      addecon_new,
+      addhecon_new,
+      addjwsr,
+      addasymptom
+    },
+    list
+  } = data || {};
+  const blocks = [
+    {
+      type: 'confirmed',
+      title: '累计确诊',
+      num: gntotal,
+      cNum: addcon
+    },
+    {
+      type: 'heal',
+      title: '累计治愈',
+      num: curetotal,
+      cNum: addcure
+    },
+    {
+      type: 'dead',
+      title: '累计死亡',
+      num: deathtotal,
+      cNum: adddeath
+    },
+    {
+      type: 'maybe',
+      title: '现存疑似',
+      num: sustotal,
+      cNum: addsus
+    },
+    {
+      type: 'now-confirmed',
+      title: '现存确诊',
+      num: econNum,
+      cNum: addecon_new
+    },
+    {
+      type: 'serious',
+      title: '现存重症',
+      num: heconNum,
+      cNum: addhecon_new
+    },
+    {
+      type: 'jwsr',
+      title: '境外输入',
+      num: jwsrNum,
+      cNum: addjwsr
+    },
+    {
+      type: 'asym',
+      title: '现存无症状',
+      num: asymptomNum,
+      cNum: addasymptom
+    }
+  ];
   return (
     <StyledWrapper>
-      <div className="date_time">
-        更新于: {datetimeString}（{format(new Date(updateTime), 'zh_CN')}）
-      </div>
-      {infoVisible ? (
-        <div className="info">
-          {[note1, note2, note3, remark1, remark2, remark3].map((n) => {
-            return <p key={n}>{n}</p>;
-          })}
-          <IconClose className="close_icon" onClick={toggleInfoVisible} />
-        </div>
+      <div className="date_time">{times}</div>
+      {listVisible ? (
+        <List data={list} toggleListVisible={toggleListVisible} />
       ) : (
-        <IconCovid className="covid_icon" onClick={toggleInfoVisible} />
+        <IconCovid className="covid_icon" onClick={toggleListVisible} />
       )}
       <>
-        <div className="block now-comfirmed">
-          <div className="compare">
-            较上日 <span className="num">{currentConfirmedIncr}</span>
-          </div>
-          <div className="num">{currentConfirmedCount}</div>
-          <div className="title">现有确诊</div>
-        </div>
-        <div className="block serious">
-          <div className="compare">
-            较上日 <span className="num">{seriousIncr}</span>
-          </div>
-          <div className="num">{seriousCount}</div>
-          <div className="title">重症病例</div>
-        </div>
-        <div className="block maybe">
-          <div className="compare">
-            较上日 <span className="num">{suspectedIncr}</span>
-          </div>
-          <div className="num">{suspectedCount}</div>
-          <div className="title">疑似感染者</div>
-        </div>
-        <div className="block comfirmed">
-          <div className="compare">
-            较上日 <span className="num">{confirmedIncr}</span>
-          </div>
-          <div className="num">{confirmedCount}</div>
-          <div className="title">累计确诊</div>
-        </div>
-        <div className="block heal">
-          <div className="compare">
-            较上日 <span className="num">{curedIncr}</span>
-          </div>
-          <div className="num">{curedCount}</div>
-          <div className="title">累计治愈</div>
-        </div>
-        <div className="block dead">
-          <div className="compare">
-            较上日 <span className="num">{deadIncr}</span>
-          </div>
-          <div className="num">{deadCount}</div>
-          <div className="title">累计死亡</div>
-        </div>
+        {blocks.map((block) => {
+          return <Block key={block.type} data={block} />;
+        })}
       </>
     </StyledWrapper>
   );
