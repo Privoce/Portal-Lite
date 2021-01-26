@@ -33,13 +33,6 @@ const StyledWrapper = styled.aside`
       border-radius: 0.04rem;
       .block {
         /* margin-bottom: 0.45rem; */
-        .title {
-          font-size: 0.16rem;
-          font-weight: 800;
-          color: #333333;
-          line-height: 0.22rem;
-          margin-bottom: 0.14rem;
-        }
         .opts {
           display: flex;
           .opt {
@@ -53,16 +46,6 @@ const StyledWrapper = styled.aside`
             }
           }
         }
-      }
-      .submit_btn {
-        padding: 0.06rem 0.32rem;
-        background: #4e6df2;
-        border-radius: 0.04rem;
-
-        font-size: 0.16rem;
-        font-weight: 500;
-        color: #ffffff;
-        line-height: 0.22rem;
       }
     }
   }
@@ -95,7 +78,6 @@ export default function Setting({ search, updateSearch }) {
         <div className="modal_wrapper">
           <div className="modal">
             <div className="block">
-              <h2 className="title">搜索设置 </h2>
               <ul className="opts">
                 <li
                   className="opt"
@@ -123,9 +105,6 @@ export default function Setting({ search, updateSearch }) {
                 </li>
               </ul>
             </div>
-            {/* <button className="submit_btn" onClick={handleSave}>
-              保存
-            </button> */}
           </div>
         </div>
       ) : null}

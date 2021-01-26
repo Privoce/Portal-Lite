@@ -19,11 +19,12 @@ const AniBounceX = keyframes`
 `;
 const StyledSection = styled.section`
   width: 100%;
+  padding: 0.1rem 0;
   .boxes {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-auto-rows: max-content;
-    grid-column-gap: 1.28rem;
+    grid-column-gap: 0.58rem;
     /* padding: 0 0.125rem; */
     /* margin-bottom: 0.3rem; */
     justify-items: center;

@@ -14,7 +14,7 @@ const StyledSection = styled.section`
   .widgets {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 1.28rem;
+    grid-column-gap: 0.58rem;
     grid-auto-flow: row dense;
     grid-auto-rows: auto;
     > .widget {

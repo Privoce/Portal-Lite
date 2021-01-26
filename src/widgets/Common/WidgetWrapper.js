@@ -5,7 +5,7 @@ import IconThreeDots from './Icons/ThreeDots';
 import { useWidgetSettings } from '../../hooks';
 // import IconClose from './Icons/CircleClose';
 const StyledWrapper = styled.div`
-  width: 5.8rem;
+  width: 6.2rem;
   position: relative;
   /* overflow: hidden; */
   .container {
@@ -14,7 +14,7 @@ const StyledWrapper = styled.div`
     overflow-x: hidden;
     position: relative;
     width: 100%;
-    max-width: 8rem;
+    /* max-width: 8rem; */
     height: 3.1rem;
 
     background: #ffffff;
@@ -124,7 +124,7 @@ const StyledWrapper = styled.div`
       top: 0;
     }
     > .setting_list {
-      right: 0;
+      right: -0.4rem;
     }
     .container {
       background: none;
@@ -133,11 +133,13 @@ const StyledWrapper = styled.div`
       max-width: none;
       overflow: visible;
       border: none;
-      border-radius: none;
       box-shadow: none;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    &.setting .container {
+      border: 1px dashed #ececec;
     }
   }
 
@@ -212,7 +214,9 @@ export default function WidgetWrapper({
       ref={compContainer}
       className={`widget ${compact ? 'compact' : ''} ${
         disableScroll ? 'noscroll' : ''
-      }  ${currSize} ${hasSizes && sizes.includes('large') ? 'largable' : ''}`}
+      }  ${currSize} ${hasSizes && sizes.includes('large') ? 'largable' : ''} ${
+        settingVisible ? 'setting' : ''
+      }`}
       type={type}
     >
       <div className="container" ref={ref}>
