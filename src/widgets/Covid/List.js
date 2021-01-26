@@ -8,7 +8,7 @@ const StyledWrapper = styled.div`
   overflow: overlay;
   height: 100%;
   width: 100%;
-  padding: 0.1rem 0.2rem;
+  padding: 0.1rem 0.4rem;
   padding-top: 0;
   background-color: #fff;
   user-select: none;

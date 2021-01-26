@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import fetchp from 'fetch-jsonp';
 import styled from 'styled-components';
 import IconCovid from '../Common/Icons/Covid';
 import ErrorTip from '../Common/ErrorTip';
@@ -53,7 +52,7 @@ export default function Covid() {
   };
   useEffect(() => {
     const getData = async () => {
-      const resp = await fetchp(`http://43.250.238.179:9090/showData`);
+      const resp = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/covid`);
       const { data } = await resp.json();
       if (!data) {
         setLoading(false);
