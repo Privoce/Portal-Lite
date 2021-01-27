@@ -49,7 +49,6 @@ const StyledWrapper = styled.section`
         .add,
         .added {
           display: flex;
-
           border-radius: 50%;
           background-color: #fff;
           box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
@@ -59,8 +58,6 @@ const StyledWrapper = styled.section`
           position: absolute;
           bottom: 0.1rem;
           right: 0.1rem;
-          opacity: 0;
-          transition: opacity 0.8s;
           img {
             width: 100%;
             height: 100%;
@@ -95,15 +92,8 @@ const StyledWrapper = styled.section`
           transform: scale(1.1);
           box-shadow: 0rem 0.08rem 0.16rem 0rem #ececec,
             0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5), 0rem 0.04rem 0.24rem 0rem #a8a8a8;
-
-          /* background-size: 90%; */
-          /* background-color: none; */
           .intro {
             opacity: 0;
-          }
-          .add,
-          .added {
-            opacity: 1;
           }
         }
       }
