@@ -5,6 +5,7 @@ import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Yi from './Yi';
 import Icon from './Icon';
+import { useWidgetSettings } from '../../hooks';
 
 const StyledWrapper = styled.section`
   position: relative;
@@ -59,23 +60,11 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-const WIDGET_LOCAL_SHICI_KEY = 'WIDGET_DAILY_SHICI_LOCAL';
-const localData = localStorage.getItem(WIDGET_LOCAL_SHICI_KEY) || 'null';
-try {
-  let tmp = JSON.parse(localData);
-  // 检查下是否是同一天
-  if (tmp.storedate != new Date().toDateString()) {
-    localStorage.setItem(WIDGET_LOCAL_SHICI_KEY, 'null');
-  }
-} catch (error) {
-  localStorage.setItem(WIDGET_LOCAL_SHICI_KEY, 'null');
-}
-export default function DailyShici() {
-  const innerLocalData = localStorage.getItem(WIDGET_LOCAL_SHICI_KEY) || 'null';
-  console.log({ innerLocalData });
-  const localShici = JSON.parse(innerLocalData) || null;
-  const [shici, setShici] = useState(localShici);
-  const [loading, setLoading] = useState(!localShici);
+export default function DailyShici({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  let localData = getWidgetSetting(name);
+  const [shici, setShici] = useState(localData);
+  const [loading, setLoading] = useState(!localData);
   const [errTip, setErrTip] = useState('');
   const getShici = useCallback(() => {
     setLoading(true);
@@ -85,10 +74,7 @@ export default function DailyShici() {
         const { status, data } = result;
         if (status == 'success') {
           setShici(data);
-          localStorage.setItem(
-            WIDGET_LOCAL_SHICI_KEY,
-            JSON.stringify({ ...data, storedate: new Date().toDateString() })
-          );
+          updateWidgetSetting(name, { local: { ...data, storedate: new Date().toDateString() } });
         }
         setLoading(false);
       },

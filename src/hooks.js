@@ -103,7 +103,7 @@ const useWidgetSettings = () => {
     localStorage.setItem(LOCAL_WG_SETTINGS_KEY, JSON.stringify(newData));
   };
   const [widgetSettings, setWidgetSettings] = useState(settings || {});
-  const updateWidgetSetting = (key, obj) => {
+  const updateWidgetSetting = (key = 'common', obj) => {
     let tmp = widgetSettings;
     if (tmp[key]) {
       tmp[key] = { ...tmp[key], ...obj };
@@ -114,7 +114,7 @@ const useWidgetSettings = () => {
     setWidgetSettings({ ...tmp });
     updateLocalData(tmp);
   };
-  const getWidgetSetting = (name, key) => {
+  const getWidgetSetting = (name = 'common', key = 'local') => {
     // console.log({ widgetSettings });
     let obj = widgetSettings[name];
     if (obj) {

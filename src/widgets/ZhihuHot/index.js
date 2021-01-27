@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Tabs from './Tabs';
+import { useWidgetSettings } from '../../hooks';
+
 const StyledWrapper = styled.section`
   position: relative;
   display: flex;
@@ -17,23 +19,17 @@ const StyledWrapper = styled.section`
   .wrapper {
     margin: 0;
     list-style: none;
-    /* overflow-x: hidden; */
-    /* overflow-y: scroll; */
-    /* overscroll-behavior: contain; */
     width: 100%;
     height: 100%;
     .item {
-      /* margin: 0 0.1rem; */
       font-size: 0.13rem;
       font-weight: 400;
       line-height: 0.18rem;
-      /* margin-bottom: 0.1rem; */
       padding: 0.14rem 0.18rem;
       padding-left: 0.3rem;
       position: relative;
       border-bottom: 1px solid #eee;
       transition: all 0.5s;
-      /* overflow: hidden; */
       &:last-child {
         margin-bottom: 0.6rem;
         &:after {
@@ -47,7 +43,6 @@ const StyledWrapper = styled.section`
       }
       &:hover {
         background-color: #eee;
-        /* transform: scale(1.06); */
         .block .left .title {
           color: rgb(0, 132, 255);
         }
@@ -107,7 +102,6 @@ const StyledWrapper = styled.section`
         }
         .right {
           flex: 1;
-          /* width: 0.5rem; */
           img {
             width: 100%;
             border-radius: 5px;
@@ -119,14 +113,14 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-let LOCAL_TAB = localStorage.getItem('SETTING_ZHIHU_HOT_TAB') || 'total';
-export default function ZhihuHot() {
+export default function ZhihuHot({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  const [currTab, setCurrTab] = useState(LOCAL_TAB);
+  const [currTab, setCurrTab] = useState(getWidgetSetting(name, 'tab') || 'total');
   const updateCurrTab = (tab) => {
-    localStorage.setItem('SETTING_ZHIHU_HOT_TAB', tab);
+    updateWidgetSetting(name, { tab });
     setCurrTab(tab);
   };
   useEffect(() => {

@@ -7,6 +7,8 @@ import { format } from 'date-fns';
 // import ErrorTip from '../Common/ErrorTip';
 // import Loading from '../Common/Loading';
 import Timezones from './Timezones';
+import { useWidgetSettings } from '../../hooks';
+
 // http://worldtimeapi.org/api/ip 根据IP地址获取当地时间
 // http://worldtimeapi.org/api/timezone 获取时区列表
 const StyledWrapper = styled.section`
@@ -117,18 +119,12 @@ let initialData = [
     city: '底特律'
   }
 ];
-let locaKey = 'SETTING_TIMEZONE_CLOCK';
-try {
-  let localData = localStorage.getItem(locaKey);
-  initialData = JSON.parse(localData) || initialData;
-} catch (error) {
-  console.log({ error });
-}
-export default function TimezoneClock() {
+export default function TimezoneClock({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState(initialData);
+  const [timezones, setTimezones] = useState(getWidgetSetting(name, 'tzs') || initialData);
   const updateCurrTimezones = (tzs) => {
-    localStorage.setItem(locaKey, JSON.stringify(tzs));
+    updateWidgetSetting(name, { tzs });
     setTimezones(tzs);
   };
 

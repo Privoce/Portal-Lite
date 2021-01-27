@@ -5,6 +5,7 @@ import Loading from '../Common/Loading';
 import Setting from './Setting';
 import Icon from './Icon';
 import { CateMap } from './const';
+import { useWidgetSettings } from '../../hooks';
 
 const StyledWrapper = styled.section`
   position: relative;
@@ -53,25 +54,14 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-const WIDGET_LOCAL_YIYAN_KEY = 'WIDGET_YIYAN_LOCAL';
-const localData = localStorage.getItem(WIDGET_LOCAL_YIYAN_KEY) || 'null';
-try {
-  let tmp = JSON.parse(localData);
-  // 检查下是否是同一天
-  if (tmp.storedate != new Date().toDateString()) {
-    localStorage.setItem(WIDGET_LOCAL_YIYAN_KEY, 'null');
-  }
-} catch (error) {
-  localStorage.setItem(WIDGET_LOCAL_YIYAN_KEY, 'null');
-}
 let InterInt = 0;
-export default function YiYan() {
-  const innerLocalData = localStorage.getItem(WIDGET_LOCAL_YIYAN_KEY) || 'null';
-  const localYiyan = JSON.parse(innerLocalData) || null;
-  const [yiyan, setYiyan] = useState(localYiyan);
+export default function YiYan({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  let localData = getWidgetSetting(name, 'local');
+  const [yiyan, setYiyan] = useState(localData);
   const [currCates, setCurrCates] = useState(Object.keys(CateMap));
   const [inter, setInter] = useState(0);
-  const [loading, setLoading] = useState(!localYiyan);
+  const [loading, setLoading] = useState(!localData);
   const [errTip, setErrTip] = useState('');
   const getYiYan = useCallback(async () => {
     let catesStr = currCates
@@ -82,17 +72,14 @@ export default function YiYan() {
     try {
       const list = await fetch(`https://v1.hitokoto.cn/?${catesStr}&encode=json`);
       const resp = (await list.json()) || null;
-      localStorage.setItem(
-        WIDGET_LOCAL_YIYAN_KEY,
-        JSON.stringify({ ...resp, storedate: new Date().toDateString() })
-      );
+      updateWidgetSetting(name, { local: { ...resp, storedate: new Date().toDateString() } });
       setYiyan(resp);
       setLoading(false);
     } catch (error) {
       setErrTip('出错了~');
       return;
     }
-  }, [currCates]);
+  }, [currCates, name]);
   useEffect(() => {
     if (!yiyan) {
       // 先清除间隔计时

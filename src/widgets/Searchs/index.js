@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { useSearchEngine } from '../../hooks';
 import Loading from '../../component/Loading';
+import { useWidgetSettings } from '../../hooks';
 
 const BaiduSearch = lazy(() => import('./Baidu'));
 const GoogleSearch = lazy(() => import('./Google'));
@@ -17,7 +18,7 @@ const StyledWrapper = styled.section`
   justify-content: center; */
   padding: 0.4rem 0 0.5rem 0;
   position: relative;
-  width: 45%;
+  width: 6rem;
   .setting {
     visibility: hidden;
   }
@@ -41,12 +42,17 @@ const StyledWrapper = styled.section`
   }
 `;
 
-export default function Searchs() {
-  const { search, updateSearch } = useSearchEngine();
+export default function Searchs({ name }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  const { search, updateSearch } = useSearchEngine(getWidgetSetting(name, 'local'));
+  const refresh = (s) => {
+    updateWidgetSetting(name, { local: s });
+    updateSearch(s);
+  };
   return (
     <StyledWrapper>
       <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
-        <Setting search={search} updateSearch={updateSearch} />
+        <Setting search={search} updateSearch={refresh} />
         <div className="search">{SearchMap[search]}</div>
       </Suspense>
     </StyledWrapper>

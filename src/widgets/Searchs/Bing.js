@@ -33,6 +33,7 @@ const StyledWrapper = styled.div`
       height: 0.25rem;
       background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/icon.search.png');
       background-size: contain;
+      background-repeat: no-repeat;
     }
     .drop_list {
       position: absolute;
