@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Loading from '../Common/Loading';
 import GoAuth from '../Common/GoAuth';
 import StyledWrapper from './styled';
@@ -45,22 +44,7 @@ const GET_USER_DATA = gql`
 `;
 export default function GithubDashboard() {
   const { token } = useToken();
-  const client = new ApolloClient({
-    uri: 'https://api.github.com/graphql',
-    cache: new InMemoryCache(),
-    headers: {
-      Authorization: `bearer ${token}`
-    }
-  });
-  const [loadUserData, { loading, data }] = useLazyQuery(GET_USER_DATA, {
-    client: client,
-    onCompleted: (ddd) => {
-      console.log({ ddd });
-    },
-    onError: (err) => {
-      console.log({ err });
-    }
-  });
+  const [loadUserData, { loading, data }] = useLazyQuery(GET_USER_DATA);
   useEffect(() => {
     if (token) {
       loadUserData();
