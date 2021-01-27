@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import IconThreeDots from './Icons/ThreeDots';
+import ErrorBoundary from './ErrorBoundary';
 import { useWidgetSettings } from '../../hooks';
 // import IconClose from './Icons/CircleClose';
 const StyledWrapper = styled.div`
@@ -220,7 +221,7 @@ export default function WidgetWrapper({
       type={type}
     >
       <div className="container" ref={ref}>
-        {inView ? children : null}
+        <ErrorBoundary>{inView ? children : null}</ErrorBoundary>
       </div>
       {/* {type == 'widget' && ( */}
       <div className="setting" onClick={toggleSettingListVisible}>

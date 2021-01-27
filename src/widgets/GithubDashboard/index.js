@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Loading from '../Common/Loading';
 import GoAuth from '../Common/GoAuth';
 import StyledWrapper from './styled';
@@ -52,7 +52,15 @@ export default function GithubDashboard() {
       Authorization: `bearer ${token}`
     }
   });
-  const [loadUserData, { loading, data }] = useLazyQuery(GET_USER_DATA);
+  const [loadUserData, { loading, data }] = useLazyQuery(GET_USER_DATA, {
+    client: client,
+    onCompleted: (ddd) => {
+      console.log({ ddd });
+    },
+    onError: (err) => {
+      console.log({ err });
+    }
+  });
   useEffect(() => {
     if (token) {
       loadUserData();
@@ -69,25 +77,23 @@ export default function GithubDashboard() {
     }
   } = data;
   return (
-    <ApolloProvider client={client}>
-      <StyledWrapper>
-        <a href={`https://github.com/${login}/`} target="_blank" className="head">
-          <img
-            data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
-            className="avatar"
-            title={login}
-            src={`${avatarUrl}`}
-            alt="用户头像"
-          />
-        </a>
-        <ul className="list">
-          {nodes
-            .filter((n) => !n.isArchived)
-            .map((repo) => {
-              return <Card key={repo.url} {...repo} />;
-            })}
-        </ul>
-      </StyledWrapper>
-    </ApolloProvider>
+    <StyledWrapper>
+      <a href={`https://github.com/${login}/`} target="_blank" className="head">
+        <img
+          data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+          className="avatar"
+          title={login}
+          src={`${avatarUrl}`}
+          alt="用户头像"
+        />
+      </a>
+      <ul className="list">
+        {nodes
+          .filter((n) => !n.isArchived)
+          .map((repo) => {
+            return <Card key={repo.url} {...repo} />;
+          })}
+      </ul>
+    </StyledWrapper>
   );
 }
