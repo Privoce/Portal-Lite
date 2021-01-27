@@ -54,6 +54,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
+const SwiperLocalActivityKey = 'Swiper_Local_Activity_Key';
 export default function SwiperTabs({ handleSelect }) {
   const [currSwiper, setCurrSwiper] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
@@ -62,6 +63,7 @@ export default function SwiperTabs({ handleSelect }) {
     const { idx } = target.dataset;
     currSwiper.slideTo(Number(idx));
     setCurrIdx(idx);
+    localStorage.setItem(SwiperLocalActivityKey, idx);
   };
   const handleClick = (item) => {
     handleSelect(item);
@@ -92,7 +94,13 @@ export default function SwiperTabs({ handleSelect }) {
           onSlideChange={({ activeIndex }) => {
             setCurrIdx(activeIndex);
           }}
-          onSwiper={setCurrSwiper}
+          onSwiper={(sw) => {
+            const localActivityIdx = localStorage.getItem(SwiperLocalActivityKey);
+            if (localActivityIdx) {
+              sw.slideTo(Number(localActivityIdx));
+            }
+            setCurrSwiper(sw);
+          }}
         >
           {Navs.map(({ items }, idx) => {
             return (
