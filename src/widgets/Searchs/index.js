@@ -1,6 +1,5 @@
-import { lazy, Suspense } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import { useSearchEngine } from '../../hooks';
 import Loading from '../../component/Loading';
 import { useWidgetSettings } from '../../hooks';
 
@@ -44,10 +43,10 @@ const StyledWrapper = styled.section`
 
 export default function Searchs({ name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const { search, updateSearch } = useSearchEngine(getWidgetSetting(name, 'local'));
+  const [search, setSearch] = useState(getWidgetSetting(name) || 'baidu');
   const refresh = (s) => {
     updateWidgetSetting(name, { local: s });
-    updateSearch(s);
+    setSearch(s);
   };
   return (
     <StyledWrapper>

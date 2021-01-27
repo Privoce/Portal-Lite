@@ -4,7 +4,7 @@ import Nav from './NavItem';
 import Modal from './Modal';
 import ContextMenu from './ContextMenu';
 
-import { useNavData, useContextMenu } from '../../hooks';
+import { useNavData, useContextMenu } from './hooks';
 
 import PreviewModal from './PreviewModal';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
