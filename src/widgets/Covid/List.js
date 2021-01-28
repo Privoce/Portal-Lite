@@ -17,10 +17,12 @@ const StyledWrapper = styled.div`
     width: 100%;
     text-align: left;
     thead {
-      z-index: 10;
-      border-bottom: 1px solid #ccc;
+      position: relative;
+      z-index: 8;
       tr {
         th {
+          border-bottom: 1px solid #ccc;
+
           background: #fff;
           position: sticky;
           top: 0;
@@ -30,19 +32,14 @@ const StyledWrapper = styled.div`
       }
     }
     tbody tr {
-      /* position: relative; */
-      /* padding: 0.04rem 0; */
-      /* &:nth-child(even) {
-        background-color: #eee;
-      } */
       &.expandable {
         cursor: pointer;
         > .name {
-          z-index: 8;
+          /* z-index: 8; */
           position: relative;
           &:before {
             position: absolute;
-            left: -0.1rem;
+            left: -0.18rem;
             content: '⬇️';
           }
         }

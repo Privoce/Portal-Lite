@@ -4,6 +4,7 @@ const StyledWrapper = styled.section`
   position: relative;
   margin: 0 auto;
   padding-bottom: 0.6rem;
+  padding-top: 0.4rem;
   width: 13rem;
   display: flex;
   flex-direction: column;
@@ -16,7 +17,7 @@ const StyledWrapper = styled.section`
     }
   }
   @media (min-width: 320px) and (max-width: 768px) {
-    width: 100%;
+    width: 95%;
   }
 `;
 

@@ -15,7 +15,7 @@ const SearchMap = {
 const StyledWrapper = styled.section`
   /* display: flex;
   justify-content: center; */
-  padding: 0.4rem 0 0.5rem 0;
+  padding: 0 0 0.5rem 0;
   position: relative;
   width: 6rem;
   .setting {

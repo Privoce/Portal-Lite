@@ -42,11 +42,14 @@ const StyledSection = styled.section`
       grid-template-columns: 1fr;
       grid-column-gap: 0.5rem;
       > .widget {
+        width: 96%;
         margin: 0 auto;
         &[type='nav'] {
+          /* width: 100%; */
           grid-area: auto / auto;
         }
         &[type='search'] {
+          /* width: 100%; */
           grid-area: span 1 / auto;
         }
       }

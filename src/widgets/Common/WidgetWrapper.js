@@ -121,11 +121,12 @@ const StyledWrapper = styled.div`
   &[type='nav'] {
     width: 100%;
     > .setting {
-      right: -0.5rem;
-      top: 0;
+      right: 0;
+      top: -0.5rem;
     }
     > .setting_list {
-      right: -0.4rem;
+      top: 0;
+      right: 0;
     }
     .container {
       background: none;
@@ -139,9 +140,9 @@ const StyledWrapper = styled.div`
       justify-content: center;
       align-items: center;
     }
-    &.setting .container {
+    /* &.setting .container {
       border: 1px dashed #ececec;
-    }
+    } */
   }
 
   &:fullscreen {
@@ -193,8 +194,8 @@ export default function WidgetWrapper({
     setCurrSize(size);
     updateWidgetSetting(key, { size });
   };
-  const handleRemove = () => {
-    let confirmed = confirm('确定删除？');
+  const handleRemove = (widgetName) => {
+    let confirmed = confirm(`确定移除小组件：${widgetName}？`);
     if (confirmed) {
       removeWidget();
     }
@@ -231,7 +232,7 @@ export default function WidgetWrapper({
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {!standalone && (
-            <li className="item" onClick={handleRemove}>
+            <li className="item" onClick={handleRemove.bind(null, title)}>
               移除
             </li>
           )}
