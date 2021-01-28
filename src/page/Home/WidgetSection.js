@@ -42,8 +42,10 @@ const StyledSection = styled.section`
       grid-template-columns: 1fr;
       grid-column-gap: 0.5rem;
       > .widget {
-        width: 96%;
         margin: 0 auto;
+        .container {
+          width: 96%;
+        }
         &[type='nav'] {
           /* width: 100%; */
           grid-area: auto / auto;
