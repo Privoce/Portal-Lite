@@ -22,14 +22,15 @@ const StyledWrapper = styled.section`
     background: #fff;
     border-radius: 0.04rem;
     /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
-    width: 10rem;
+    width: fit-content;
     .widgets {
       /* margin-top: 0.3rem; */
       padding: 0.3rem 0.2rem;
       max-height: 95vh;
       overflow-y: overlay;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 0.2rem;
       justify-items: center;
       @media screen and (max-width: 414px) {
         grid-template-columns: repeat(1, 1fr);
