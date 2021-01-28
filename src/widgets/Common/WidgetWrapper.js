@@ -151,7 +151,7 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    background-color: #fff;
     .container {
       height: fit-content;
       width: fit-content;
