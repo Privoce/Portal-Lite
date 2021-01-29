@@ -83,7 +83,10 @@ const GlobalStyle = createGlobalStyle`
   #root{
     /* background:#fff; */
     /* max-width:750px; */
-        margin: 0 auto;
+    margin: 0 auto;
+    .fork-me-on-github{
+      font-size:0;
+    }
   }
 
   @media screen and (min-width: 320px){
