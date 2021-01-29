@@ -39,6 +39,22 @@
 
 快速查看国内&美国最新新冠疫情发展数据
 
+### 国际时钟
+
+![widget calc](demo/screenshoots/widget.world.clock.png)
+
+### 天气小组件
+
+![widget weather](demo/screenshoots/widget.weather.png)
+
+### Github 个人仓库列表
+
+![widget github repos](demo/screenshoots/widget.github.repo.png)
+
+### 科学计算器
+
+![widget calc](demo/screenshoots/widget.calc.png)
+
 ### 热搜类小组件
 
 #### 微博热搜
@@ -76,22 +92,6 @@
 #### 必应壁纸
 
 ![widget bing pics](demo/screenshoots/widget.bing.pics.png)
-
-### 科学计算器
-
-![widget calc](demo/screenshoots/widget.calc.png)
-
-### 国际时钟
-
-![widget calc](demo/screenshoots/widget.world.clock.png)
-
-### 天气小组件
-
-![widget weather](demo/screenshoots/widget.weather.png)
-
-### Github 个人仓库列表
-
-![widget github repos](demo/screenshoots/widget.github.repo.png)
 
 通过授权，列出个人的仓库列表
 
