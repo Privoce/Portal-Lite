@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useWidgets } from '../../hooks';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
 import { Widgets } from '../../data';
-import ModalWidgetList from '../../component/ModalWidgetList';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 const StyledSection = styled.section`
@@ -57,24 +55,8 @@ const StyledSection = styled.section`
       }
     }
   }
-  .add_widget {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.14rem;
-    font-weight: 400;
-    color: #333;
-    line-height: 0.25rem;
-  }
 `;
-export default function WidgetSection() {
-  const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
-  const [modalVisible, setModalVisible] = useState(false);
-  // const [, drop] = useDrop({ accept: 'box' });
-  const toggleModalVisible = () => {
-    setModalVisible((prev) => !prev);
-  };
+export default function WidgetSection({ widgets, updateWidgetData, removeWidget }) {
   useEffect(() => {
     // 全局存储
     window.WIDGET_LIST = widgets;
@@ -153,16 +135,6 @@ export default function WidgetSection() {
           );
         })}
       </div>
-      <button onClick={toggleModalVisible} className="add_widget">
-        添加小组件
-      </button>
-      {modalVisible && (
-        <ModalWidgetList
-          addedWidgets={widgets}
-          addWidget={addWidget}
-          resetModalVisible={toggleModalVisible}
-        />
-      )}
     </StyledSection>
   );
 }

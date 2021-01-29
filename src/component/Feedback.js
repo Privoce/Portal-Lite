@@ -2,9 +2,17 @@ import styled from 'styled-components';
 
 const StyledWrapper = styled.a`
   position: fixed;
-  right: 0.1rem;
-  bottom: 0.1rem;
+  right: 0.15rem;
+  bottom: 0.15rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 0.1rem;
   z-index: 996;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 5px #333;
 `;
 export default function Feedback() {
   return (

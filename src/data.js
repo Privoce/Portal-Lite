@@ -68,7 +68,7 @@ const Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png'
   },
   'covid-info': {
-    title: '🇨🇳国内新冠疫情概况',
+    title: '🇨🇳 国内新冠疫情概况',
     description: '快速了解国内每日疫情概况',
     compact: true,
     preset: true,
@@ -81,7 +81,7 @@ const Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
   },
   'us-covid-info': {
-    title: '🇺🇸美国新冠疫情概况',
+    title: '🇺🇸 美国新冠疫情概况',
     description: '快速了解美利坚每日疫情概况',
     compact: true,
     disableScroll: true,
