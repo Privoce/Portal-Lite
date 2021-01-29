@@ -27,6 +27,7 @@ const StyledWrapper = styled.section`
       /* margin-top: 0.3rem; */
       padding: 0.3rem 0.2rem;
       max-height: 95vh;
+      overflow-y: scroll;
       overflow-y: overlay;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
