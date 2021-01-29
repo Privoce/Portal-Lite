@@ -16,7 +16,7 @@
 
 ## 预览
 
-![preview image](demo/home.png 'home page')
+![preview image](demo/home.v3.png 'home page')
 
 ## 组件库
 
