@@ -1,5 +1,5 @@
 // import { useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Widgets } from '../../data';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
@@ -10,20 +10,27 @@ const StyledWrapper = styled.section`
   align-items: center;
   .widget {
     margin: 0 auto;
-    > .title {
-      display: none;
+  }
+  &.third {
+    .widget {
+      > .title {
+        display: none;
+      }
     }
   }
 `;
 export default function Widget() {
   const { widget } = useParams();
-  console.log({ widget });
+  const { search } = useLocation();
+  let from = new URLSearchParams(search).get('from');
+  console.log({ widget, from });
+  // console.log(location);
   const obj = Widgets[widget] || null;
 
   if (!obj) return '小组件不存在';
   const { comp, title, compact = false, disableScroll, sizes, defaultSize, type } = obj;
   return (
-    <StyledWrapper>
+    <StyledWrapper className={from}>
       <WidgetWrapper
         type={type}
         standalone={true}

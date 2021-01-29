@@ -241,7 +241,7 @@ export default function WidgetWrapper({
           </li>
           {!standalone && (
             <li className="item">
-              <a href={`/widgets/${name}`} target="_blank" rel="noopener noreferrer">
+              <a href={`/widgets/${name}?from=home`} target="_blank" rel="noopener noreferrer">
                 新页面打开
               </a>
             </li>

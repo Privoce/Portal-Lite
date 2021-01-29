@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 
 import ReactDOM from 'react-dom';
+import 'url-search-params-polyfill';
 import InitialConfig from './InitialConfig';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
