@@ -18,10 +18,10 @@ const StyledWrapper = styled.section`
   grid-template-rows: 1fr 1fr;
   grid-column-gap: 0.01rem;
   grid-row-gap: 0.01rem;
-  background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/logo.america.png');
+  /* background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/logo.america.png');
   background-size: 100%;
   background-repeat: no-repeat;
-  background-position-y: -2px;
+  background-position-y: -2px; */
   .covid_icon {
     display: none;
     position: absolute;
@@ -51,7 +51,9 @@ const getPreviousDate = (date) => {
   let yyyy = date.getFullYear();
   let MM = date.getMonth() + 1;
   let dd = date.getDate() - 1;
-  return `${yyyy}-${MM < 10 ? `0${MM}` : MM}-${dd}`;
+  let finalStr = `${yyyy}-${MM < 10 ? `0${MM}` : MM}-${dd}`;
+  console.log({ finalStr });
+  return finalStr;
 };
 // http://health.people.com.cn/GB/26466/431463/431576/index.html
 export default function USCovid() {
@@ -126,7 +128,7 @@ export default function USCovid() {
   ];
   return (
     <StyledWrapper>
-      <div className="date_time">{date}</div>
+      <div className="date_time">截止日期：{date}</div>
       {/* {listVisible ? (
         <List data={list} toggleListVisible={toggleListVisible} />
       ) : (

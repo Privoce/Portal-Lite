@@ -35,37 +35,37 @@ const StyledWrapper = styled.div`
     transition: all 0.6s ease-in;
   }
   &.confirmed {
-    background-color: rgba(253, 241, 241, 0.95);
+    background-color: rgba(253, 241, 241);
     .num {
       color: #cc1e1e;
     }
   }
   &.maybe {
-    background-color: rgba(252, 244, 240, 0.95);
+    background-color: rgba(252, 244, 240);
     .num {
       color: #ca3f81;
     }
   }
   &.serious {
-    background-color: rgba(250, 242, 246, 0.95);
+    background-color: rgba(250, 242, 246);
     .num {
       color: #f05926;
     }
   }
   &.testing {
-    background-color: rgba(241, 248, 244, 0.95);
+    background-color: rgba(241, 248, 244);
     .num {
       color: #178b50;
     }
   }
   &.dead {
-    background-color: rgba(243, 246, 248, 0.95);
+    background-color: rgba(243, 246, 248);
     .num {
       color: #4e5a65;
     }
   }
   &.hospital {
-    background-color: rgba(243, 246, 240, 0.95);
+    background-color: rgba(243, 246, 240);
     .num {
       color: #fe6b23;
     }
