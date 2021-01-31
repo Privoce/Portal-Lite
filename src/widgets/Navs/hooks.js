@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Webapps } from '../../data';
+import { useWidgetSettings } from '../../hooks';
+
 // 导航
-const NAV_LOCAL_KEY = 'WEB_APP_NAV_DATA';
-const useNavData = () => {
-  const initialData = JSON.parse(localStorage.getItem(NAV_LOCAL_KEY) || 'null') || Webapps;
+const useNavData = (widgetName = '') => {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  const initialData = getWidgetSetting(widgetName) || Webapps;
   const [data, setData] = useState(initialData);
-  const updateLocalData = (newData) => {
-    localStorage.setItem(NAV_LOCAL_KEY, JSON.stringify(newData));
-  };
   const updateNavs = (list) => {
     setData(list);
-    updateLocalData(list);
+    updateWidgetSetting(widgetName, { local: list });
   };
   const addNav = (app) => {
     let existed = data.filter((item) => item.url == app.url);
@@ -20,7 +19,7 @@ const useNavData = () => {
 
     setData((prev) => {
       let newData = [...prev, app];
-      updateLocalData(newData);
+      updateWidgetSetting(widgetName, { local: newData });
       return newData;
     });
     return { success: true, data };
@@ -30,7 +29,7 @@ const useNavData = () => {
       let newData = prev.filter((item) => {
         return item.url !== url;
       });
-      updateLocalData(newData);
+      updateWidgetSetting(widgetName, { local: newData });
       return newData;
     });
   };

@@ -7,7 +7,6 @@ import { useNavData, useContextMenu } from './hooks';
 
 import PreviewModal from './PreviewModal';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
-console.log('static', Sortable);
 const StyledSection = styled.section`
   width: 100%;
   padding: 0.1rem 0;
@@ -48,7 +47,7 @@ const StyledSection = styled.section`
 `;
 export default function Navs({ name }) {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
-  const { data: navs, addNav, removeNav, updateNavs } = useNavData();
+  const { data: navs, addNav, removeNav, updateNavs } = useNavData(name);
   const [modalVisible, setModalVisible] = useState(false);
   const [currFrame, setCurrFrame] = useState(null);
   const removeCurrNav = (w) => {
