@@ -6,6 +6,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import { validateUrl } from '../../util';
 import SwiperTabs from './SwiperTabs';
+import { useWidgetSettings } from '../../hooks';
 
 import IconClose from '../../asset/img/icon.close.png';
 
@@ -100,11 +101,13 @@ const StyledWrapper = styled.section`
   }
 `;
 // let other_params = {};
-export default function Modal({ resetModalVisible, addApp }) {
+export default function Modal({ resetModalVisible, addApp, widgetName = '' }) {
+  const { getWidgetSetting } = useWidgetSettings();
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const modal = useRef(null);
+
   useEffect(() => {
     let modalEle = modal || modal.current;
     if (modalEle) {
@@ -166,6 +169,7 @@ export default function Modal({ resetModalVisible, addApp }) {
     }
     resetModalVisible();
   };
+  let localActiveTab = getWidgetSetting(widgetName, 'swiper_tab');
   return (
     <ModalWrapper ref={modal}>
       <StyledWrapper>
@@ -183,7 +187,11 @@ export default function Modal({ resetModalVisible, addApp }) {
               {tip && <div className="tip">{tip}</div>}
             </div>
           </div>
-          <SwiperTabs handleSelect={updateCurrSelect} />
+          <SwiperTabs
+            handleSelect={updateCurrSelect}
+            widgetName={widgetName}
+            activeTab={localActiveTab}
+          />
           <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
       </StyledWrapper>

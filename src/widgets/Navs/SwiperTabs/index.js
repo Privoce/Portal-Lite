@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/swiper-bundle.min.css';
 import NavItem from '../NavItem';
+import { useWidgetSettings } from '../../../hooks';
 
 import Navs from './nav_data';
 // import Tools from './tool_data';
@@ -54,8 +55,8 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-const SwiperLocalActivityKey = 'Swiper_Local_Activity_Key';
-export default function SwiperTabs({ handleSelect }) {
+export default function SwiperTabs({ widgetName, handleSelect, activeTab = null }) {
+  const { updateWidgetSetting } = useWidgetSettings();
   const [currSwiper, setCurrSwiper] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
   const handleTabClick = ({ target }) => {
@@ -63,7 +64,7 @@ export default function SwiperTabs({ handleSelect }) {
     const { idx } = target.dataset;
     currSwiper.slideTo(Number(idx));
     setCurrIdx(idx);
-    localStorage.setItem(SwiperLocalActivityKey, idx);
+    updateWidgetSetting(widgetName, { swiper_tab: idx });
   };
   const handleClick = (item) => {
     handleSelect(item);
@@ -95,9 +96,8 @@ export default function SwiperTabs({ handleSelect }) {
             setCurrIdx(activeIndex);
           }}
           onSwiper={(sw) => {
-            const localActivityIdx = localStorage.getItem(SwiperLocalActivityKey);
-            if (localActivityIdx) {
-              sw.slideTo(Number(localActivityIdx));
+            if (activeTab) {
+              sw.slideTo(Number(activeTab));
             }
             setCurrSwiper(sw);
           }}
