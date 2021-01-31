@@ -11,7 +11,10 @@ import { useWidgets } from '../../hooks';
 // import Account from '../../component/Account';
 
 const Feedback = lazy(() =>
-  import(/* webpackChunkName: "block.feedback" */ '../../component/Feedback')
+  import(/* webpackChunkName: "aside.feedback" */ '../../component/Feedback')
+);
+const Setting = lazy(() =>
+  import(/* webpackChunkName: "aside.setting" */ '../../component/Setting/index')
 );
 
 const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ './WidgetSection'));
@@ -32,6 +35,7 @@ export default function Home() {
         side="left"
       />
 
+      <Setting />
       <Feedback />
       <StyledWrapper>
         {/* <Account /> */}

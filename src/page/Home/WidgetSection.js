@@ -69,19 +69,6 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
       ghostClass: 'ghost',
       dragClass: 'drag',
       chosenClass: 'choosen',
-      // Element is chosen
-      onChoose: (/**Event*/ evt) => {
-        console.log('on choose', evt);
-      },
-      // Element is unchosen
-      onUnchoose: (/**Event*/ evt) => {
-        console.log('on unchoose', evt.oldIndex);
-      },
-
-      // Element dragging started
-      onStart: (/**Event*/ evt) => {
-        console.log('on start', evt.oldIndex);
-      },
       // Element dragging ended
       onEnd: function (/**Event*/ evt) {
         const { item, to, from, oldIndex, newIndex } = evt;

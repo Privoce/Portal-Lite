@@ -186,13 +186,13 @@ export default function WidgetWrapper({
 }) {
   const compContainer = useRef(null);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [currSize, setCurrSize] = useState(getWidgetSetting(name, 'size') || defaultSize);
+  const [currSize, setCurrSize] = useState(getWidgetSetting({ name, key: 'size' }) || defaultSize);
   const [settingVisible, setSettingVisible] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const updateCurrSize = (key, { size }) => {
     console.log({ key, size });
     setCurrSize(size);
-    updateWidgetSetting(key, { size });
+    updateWidgetSetting({ name: key, key: 'size', data: size });
   };
   const handleRemove = (widgetName) => {
     let confirmed = confirm(`确定移除小组件：${widgetName}？`);

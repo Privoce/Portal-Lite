@@ -26,12 +26,12 @@ const StyledWrapper = styled.section`
     .widgets {
       /* margin-top: 0.3rem; */
       padding: 0.3rem 0.2rem;
-      max-height: 95vh;
+      max-height: 100vh;
       overflow-y: scroll;
       overflow-y: overlay;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-gap: 0.2rem;
+      grid-gap: 0.15rem;
       justify-items: center;
       @media screen and (max-width: 414px) {
         grid-template-columns: repeat(1, 1fr);
@@ -44,7 +44,6 @@ const StyledWrapper = styled.section`
         background-size: 100%;
         background-repeat: no-repeat;
         background-position: center;
-        margin-bottom: 0.3rem;
         border-radius: 0.05rem;
         border: 0.01rem solid #eee;
         transition: all 0.6s;

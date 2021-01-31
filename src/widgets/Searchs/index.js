@@ -43,9 +43,9 @@ const StyledWrapper = styled.section`
 
 export default function Searchs({ name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [search, setSearch] = useState(getWidgetSetting(name) || 'baidu');
+  const [search, setSearch] = useState(getWidgetSetting({ name }) || 'baidu');
   const refresh = (s) => {
-    updateWidgetSetting(name, { local: s });
+    updateWidgetSetting({ name, data: s });
     setSearch(s);
   };
   return (

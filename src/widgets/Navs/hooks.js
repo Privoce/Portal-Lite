@@ -5,11 +5,11 @@ import { useWidgetSettings } from '../../hooks';
 // 导航
 const useNavData = (widgetName = '') => {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const initialData = getWidgetSetting(widgetName) || Webapps;
+  const initialData = getWidgetSetting({ name: widgetName }) || Webapps;
   const [data, setData] = useState(initialData);
   const updateNavs = (list) => {
     setData(list);
-    updateWidgetSetting(widgetName, { local: list });
+    updateWidgetSetting({ name: widgetName, data: list });
   };
   const addNav = (app) => {
     let existed = data.filter((item) => item.url == app.url);
@@ -19,7 +19,7 @@ const useNavData = (widgetName = '') => {
 
     setData((prev) => {
       let newData = [...prev, app];
-      updateWidgetSetting(widgetName, { local: newData });
+      updateWidgetSetting({ name: widgetName, data: newData });
       return newData;
     });
     return { success: true, data };
@@ -29,7 +29,7 @@ const useNavData = (widgetName = '') => {
       let newData = prev.filter((item) => {
         return item.url !== url;
       });
-      updateWidgetSetting(widgetName, { local: newData });
+      updateWidgetSetting({ name: widgetName, data: newData });
       return newData;
     });
   };

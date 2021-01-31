@@ -64,7 +64,7 @@ export default function SwiperTabs({ widgetName, handleSelect, activeTab = null 
     const { idx } = target.dataset;
     currSwiper.slideTo(Number(idx));
     setCurrIdx(idx);
-    updateWidgetSetting(widgetName, { swiper_tab: idx });
+    updateWidgetSetting({ name: widgetName, key: 'swiper_tab', data: idx });
   };
   const handleClick = (item) => {
     handleSelect(item);

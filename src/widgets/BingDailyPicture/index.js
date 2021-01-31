@@ -94,12 +94,12 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function BingDailyPicture({ name }) {
+export default function BingDailyPicture() {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [pics, setPics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  const [currWallpaper, setCurrWallpaper] = useState(getWidgetSetting(name, 'bg'));
+  const [currWallpaper, setCurrWallpaper] = useState(getWidgetSetting({ key: 'bg' }));
 
   useEffect(() => {
     const getPics = async () => {
@@ -116,8 +116,9 @@ export default function BingDailyPicture({ name }) {
   }, []);
   const handleSetBG = (url) => {
     setCurrWallpaper(url);
-    updateWidgetSetting(name, {
-      bg: url
+    updateWidgetSetting({
+      key: 'bg',
+      data: url
     });
   };
   useEffect(() => {

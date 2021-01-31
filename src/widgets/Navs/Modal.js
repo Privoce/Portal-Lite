@@ -169,7 +169,7 @@ export default function Modal({ resetModalVisible, addApp, widgetName = '' }) {
     }
     resetModalVisible();
   };
-  let localActiveTab = getWidgetSetting(widgetName, 'swiper_tab');
+  let localActiveTab = getWidgetSetting({ name: widgetName, key: 'swiper_tab' });
   return (
     <ModalWrapper ref={modal}>
       <StyledWrapper>

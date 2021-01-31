@@ -1,13 +1,16 @@
 // import { useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import BackHome from './BackHome';
 import { Widgets } from '../../data';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   .widget {
     margin: 0 auto;
   }
@@ -45,6 +48,7 @@ export default function Widget() {
       >
         {comp({ name: widget })}
       </WidgetWrapper>
+      {from == 'home' && <BackHome />}
     </StyledWrapper>
   );
 }

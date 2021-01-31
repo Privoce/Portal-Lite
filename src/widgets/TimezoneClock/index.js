@@ -122,9 +122,9 @@ let initialData = [
 export default function TimezoneClock({ name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState(getWidgetSetting(name, 'tzs') || initialData);
+  const [timezones, setTimezones] = useState(getWidgetSetting({ name, key: 'tzs' }) || initialData);
   const updateCurrTimezones = (tzs) => {
-    updateWidgetSetting(name, { tzs });
+    updateWidgetSetting({ key: 'tzs', name, data: tzs });
     setTimezones(tzs);
   };
 

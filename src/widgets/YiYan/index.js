@@ -57,7 +57,7 @@ const StyledWrapper = styled.section`
 let InterInt = 0;
 export default function YiYan({ name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  let localData = getWidgetSetting(name, 'local');
+  let localData = getWidgetSetting({ name });
   const [yiyan, setYiyan] = useState(localData);
   const [currCates, setCurrCates] = useState(Object.keys(CateMap));
   const [inter, setInter] = useState(0);
@@ -72,7 +72,7 @@ export default function YiYan({ name }) {
     try {
       const list = await fetch(`https://v1.hitokoto.cn/?${catesStr}&encode=json`);
       const resp = (await list.json()) || null;
-      updateWidgetSetting(name, { local: { ...resp, storedate: new Date().toDateString() } });
+      updateWidgetSetting({ name, data: { ...resp, storedate: new Date().toDateString() } });
       setYiyan(resp);
       setLoading(false);
     } catch (error) {

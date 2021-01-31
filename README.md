@@ -36,7 +36,6 @@
 
 ![widget covid](demo/screenshoots/widget.covid.data.png)
 ![widget covid](demo/screenshoots/widget.usa.covid.png)
-
 快速查看国内&美国最新新冠疫情发展数据
 
 ### 国际时钟
@@ -50,6 +49,7 @@
 ### Github 个人仓库列表
 
 ![widget github repos](demo/screenshoots/widget.github.repo.png)
+通过授权，列出个人的仓库列表
 
 ### 科学计算器
 
@@ -85,15 +85,12 @@
 
 #### 一言
 
-![widget daily shichi](demo/screenshoots/widget.yiyan.png)
-
+![widget daily yiyan](demo/screenshoots/widget.yiyan.png)
 每天一句话
 
 #### 必应壁纸
 
 ![widget bing pics](demo/screenshoots/widget.bing.pics.png)
-
-通过授权，列出个人的仓库列表
 
 ## 迭代计划
 

@@ -118,9 +118,9 @@ export default function ZhihuHot({ name }) {
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  const [currTab, setCurrTab] = useState(getWidgetSetting(name, 'tab') || 'total');
+  const [currTab, setCurrTab] = useState(getWidgetSetting({ name, key: 'tab' }) || 'total');
   const updateCurrTab = (tab) => {
-    updateWidgetSetting(name, { tab });
+    updateWidgetSetting({ name, key: 'tab', data: tab });
     setCurrTab(tab);
   };
   useEffect(() => {

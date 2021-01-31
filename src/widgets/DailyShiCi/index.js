@@ -62,7 +62,7 @@ const StyledWrapper = styled.section`
 `;
 export default function DailyShici({ name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  let localData = getWidgetSetting(name);
+  let localData = getWidgetSetting({ name });
   const [shici, setShici] = useState(localData);
   const [loading, setLoading] = useState(!localData);
   const [errTip, setErrTip] = useState('');
@@ -74,7 +74,7 @@ export default function DailyShici({ name }) {
         const { status, data } = result;
         if (status == 'success') {
           setShici(data);
-          updateWidgetSetting(name, { local: { ...data, storedate: new Date().toDateString() } });
+          updateWidgetSetting({ name, data: { ...data, storedate: new Date().toDateString() } });
         }
         setLoading(false);
       },
