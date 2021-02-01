@@ -6,6 +6,11 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { saveAs } from 'file-saver';
 import IconClose from '../../asset/img/icon.close.png';
 import { useWidgetSettings } from '../../hooks';
+import IconClear from './icons/Clear';
+import IconExport from './icons/Export';
+import IconImport from './icons/Import';
+import IconReset from './icons/Reset';
+import IconMsg from './icons/Message';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
   z-index: 999;
@@ -26,9 +31,13 @@ const StyledWrapper = styled.section`
     /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
     width: fit-content;
     .tip {
-      font-size: 0.16rem;
-      color: #999;
-      margin-top: 0.2rem;
+      font-size: 0.12rem;
+      color: #aaa;
+      margin-top: 0.5rem;
+      &:before {
+        content: 'ℹ️';
+        padding-right: 0.06rem;
+      }
     }
     .settings {
       display: flex;
@@ -37,19 +46,31 @@ const StyledWrapper = styled.section`
         display: flex;
         &:not(:last-child) {
           margin-bottom: 0.2rem;
+          padding-bottom: 0.2rem;
+          border-bottom: 1px dashed #eee;
         }
         .btn {
+          display: flex;
           background-color: #5072f0;
           color: #fff;
           font-size: 0.18rem;
           border-radius: 4px;
           border: 1px solid #fff;
           padding: 0.1rem 0.15rem;
+          align-items: center;
+          > svg {
+            margin-left: 0.05rem;
+            width: 0.2rem;
+            height: 0.2rem;
+          }
           &:not(:last-child) {
             margin-right: 0.15rem;
           }
           &.reset {
             background-color: #f88070;
+          }
+          &.feedback {
+            background-color: #2b7cfb;
           }
           &.import {
             position: relative;
@@ -142,25 +163,40 @@ export default function Modal({ closeModal }) {
         <div className="modal">
           <ul className="settings">
             <li className="setting">
-              <button className="btn export" disabled={!widgetSettings} onClick={handleExport}>
-                导出数据
-              </button>
-              <button className="btn import">
-                导入数据
-                <input type="file" accept="application/*" onChange={handleFileImport}></input>
-              </button>
-            </li>
-            <li className="setting">
               <button
                 className="btn clearBg"
                 disabled={!currPageBg}
                 onClick={handleResetBackground}
               >
-                清除背景图
+                清除背景
+                <IconClear />
               </button>
-              <button className="btn reset" onClick={handleReset}>
+            </li>
+            <li className="setting">
+              <button className="btn export" disabled={!widgetSettings} onClick={handleExport}>
+                导出数据
+                <IconExport />
+              </button>
+              <button className="btn import">
+                导入数据
+                <IconImport />
+                <input type="file" accept="application/*" onChange={handleFileImport}></input>
+              </button>
+            </li>
+
+            <li className="setting">
+              <button className="btn reset" disabled={!widgetSettings} onClick={handleReset}>
                 重置全部
+                <IconReset />
               </button>
+              <a
+                className="btn feedback"
+                href={'https://support.qq.com/product/303691'}
+                target="_blank"
+              >
+                反馈
+                <IconMsg />
+              </a>
             </li>
             {/* <li className="setting">
               <button className="btn langs">多语言设置</button>

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Modal from './Modal';
 const StyledWrapper = styled.button`
   position: fixed;
-  right: 0.9rem;
-  bottom: 0.15rem;
+  right: 0.1rem;
+  bottom: 0.1rem;
   width: 0.6rem;
   height: 0.6rem;
   background-color: #fff;

@@ -9,10 +9,6 @@ import OpenButton from './OpenButton';
 import { useWidgets } from '../../hooks';
 
 // import Account from '../../component/Account';
-
-const Feedback = lazy(() =>
-  import(/* webpackChunkName: "aside.feedback" */ '../../component/Feedback')
-);
 const Setting = lazy(() =>
   import(/* webpackChunkName: "aside.setting" */ '../../component/Setting/index')
 );
@@ -36,7 +32,6 @@ export default function Home() {
       />
 
       <Setting />
-      <Feedback />
       <StyledWrapper>
         {/* <Account /> */}
 

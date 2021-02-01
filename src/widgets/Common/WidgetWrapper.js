@@ -9,6 +9,9 @@ const StyledWrapper = styled.div`
   width: 6.2rem;
   position: relative;
   /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .container {
     overflow-y: scroll;
     overflow-y: overlay;
@@ -154,7 +157,7 @@ const StyledWrapper = styled.div`
     background-color: #fff;
     .container {
       height: fit-content;
-      width: fit-content;
+      max-width: 8rem;
       min-height: 2.4rem;
       min-width: 4.87rem;
     }
