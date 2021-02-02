@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { utcToZonedTime } from 'date-fns-tz';
-import { subDays } from 'date-fns';
+import { subDays, format } from 'date-fns';
 
 // import IconCovid from '../Common/Icons/Covid';
 import ErrorTip from '../Common/ErrorTip';
@@ -49,16 +49,6 @@ const StyledWrapper = styled.section`
     font-size: 0.1rem;
   }
 `;
-const getPreviousDate = (date) => {
-  // 减一天
-  let newDate = subDays(date, 1);
-  let yyyy = newDate.getFullYear();
-  let MM = newDate.getMonth() + 1;
-  let dd = newDate.getDate();
-  let finalStr = `${yyyy}-${MM < 10 ? `0${MM}` : MM}-${dd}`;
-  console.log({ finalStr });
-  return finalStr;
-};
 // http://health.people.com.cn/GB/26466/431463/431576/index.html
 export default function USCovid() {
   const [loading, setLoading] = useState(true);
@@ -72,7 +62,10 @@ export default function USCovid() {
     const USDate = utcToZonedTime(new Date().getTime(), 'America/New_York');
     const getData = async () => {
       const resp = await fetch(
-        `https://api.covidtracking.com/v2beta/us/daily/${getPreviousDate(USDate)}.json`
+        `https://api.covidtracking.com/v2beta/us/daily/${format(
+          subDays(USDate, 1),
+          'yyyy-MM-dd'
+        )}.json`
       );
       const { data } = await resp.json();
       if (!data) {
