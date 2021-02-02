@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
 import { utcToZonedTime } from 'date-fns-tz';
+import { subDays } from 'date-fns';
 
 // import IconCovid from '../Common/Icons/Covid';
 import ErrorTip from '../Common/ErrorTip';
@@ -48,9 +50,11 @@ const StyledWrapper = styled.section`
   }
 `;
 const getPreviousDate = (date) => {
-  let yyyy = date.getFullYear();
-  let MM = date.getMonth() + 1;
-  let dd = date.getDate() - 1;
+  // 减一天
+  let newDate = subDays(date, 1);
+  let yyyy = newDate.getFullYear();
+  let MM = newDate.getMonth() + 1;
+  let dd = newDate.getDate();
   let finalStr = `${yyyy}-${MM < 10 ? `0${MM}` : MM}-${dd}`;
   console.log({ finalStr });
   return finalStr;
