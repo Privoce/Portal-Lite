@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, Children, cloneElement, Suspense } from 'react';
 import styled from 'styled-components';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
 import { Widgets } from '../../data';
+import Loading from '../../component/Loading';
+
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 const StyledSection = styled.section`
@@ -117,7 +119,14 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
               compact={compact}
               title={title}
             >
-              {comp({ name: w })}
+              <Suspense fallback={<Loading />}>
+                {Children.map(comp, (child) =>
+                  cloneElement(child, {
+                    name: w
+                  })
+                )}
+              </Suspense>
+              {/* {comp({ name: w })} */}
             </WidgetWrapper>
           );
         })}
