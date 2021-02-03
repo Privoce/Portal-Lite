@@ -25,6 +25,9 @@ const ZhihuHot = lazy(() =>
 const DoubanHotTopics = lazy(() =>
   import(/* webpackChunkName: "widget.douban.topics" */ './widgets/DoubanHotTopics')
 );
+const TodayInHistory = lazy(() =>
+  import(/* webpackChunkName: "widget.douban.topics" */ './widgets/TodayInHistory')
+);
 const YiYan = lazy(() => import(/* webpackChunkName: "widget.yiyan" */ './widgets/YiYan'));
 const PetPics = lazy(() => import(/* webpackChunkName: "widget.pet.pics" */ './widgets/PetPics'));
 const DailyShici = lazy(() =>
@@ -192,6 +195,16 @@ const Widgets = {
     comp: <DoubanHotTopics />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png',
     created: '2021-01-19'
+  },
+  'today-in-history': {
+    // preset: true,
+    title: '历史上的今天',
+    description: '历史上的今天，发生了哪些著名事件呢？',
+    compact: true,
+    // disableScroll: true,
+    comp: <TodayInHistory />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',
+    created: '2021-03-03'
   },
 
   'gh-trending': {

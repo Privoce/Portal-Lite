@@ -45,19 +45,6 @@ const StyledWrapper = styled.section`
         text-align: center;
         width: 0.1rem;
       }
-      &:after {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        content: attr(data-tag);
-        font-size: 0.12rem;
-        color: #ffffff;
-        line-height: 0.17rem;
-        border-radius: 0.02rem;
-        width: 0.18rem;
-        text-align: center;
-      }
     }
   }
 `;
