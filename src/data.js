@@ -9,6 +9,9 @@ const WeiboHot = lazy(() =>
 const MPDaily = lazy(() => import(/* webpackChunkName: "widget.mp.daily" */ './widgets/MPDaily'));
 const Weather = lazy(() => import(/* webpackChunkName: "widget.weather" */ './widgets/Weather'));
 const Covid = lazy(() => import(/* webpackChunkName: "widget.covid" */ './widgets/Covid'));
+const LifeProgress = lazy(() =>
+  import(/* webpackChunkName: "widget.life.progress" */ './widgets/LifeProgress')
+);
 const USCovid = lazy(() => import(/* webpackChunkName: "widget.uscovid" */ './widgets/USCovid'));
 const TimezoneClock = lazy(() =>
   import(/* webpackChunkName: "widget.timezone.clock" */ './widgets/TimezoneClock')
@@ -225,6 +228,17 @@ const Widgets = {
     disableScroll: true,
     compact: true,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'
+  },
+  'life-progress': {
+    title: '生命进程计算器',
+    description: '计算您还能活多久，又名：焦虑制造器。😥',
+    comp: <LifeProgress />,
+    defaultSize: 'large',
+    // sizes: ['middle', 'large'],
+    disableScroll: true,
+    compact: true,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.life.progress.png',
+    created: '2021-02-03'
   },
   'yin-note': {
     title: '印象笔记',
