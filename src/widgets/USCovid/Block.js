@@ -100,34 +100,19 @@ const addDots = (num) => {
 export default function Block({ type, title, data }) {
   const {
     value,
-    calculated: {
-      change_from_prior_day,
-      population_percent,
-      seven_day_change_percent,
-      seven_day_average
-    }
+    calculated: { change_from_prior_day, population_percent, seven_day_change_percent }
   } = data;
   return (
     <StyledWrapper key={type} className={`block ${type}`}>
       <div className="compare">
         较上日{' '}
         <span className="num">
-          {Number(change_from_prior_day) > 0 ? `+${change_from_prior_day}` : change_from_prior_day}
+          {Number(change_from_prior_day) > 0 ? `+ ${change_from_prior_day}` : change_from_prior_day}
         </span>
       </div>
       <div className="num">{addDots(value)}</div>
       <div className="title">{title}</div>
       <div className="others">
-        {seven_day_average && (
-          <dl>
-            <dt>七日均增</dt>
-            <dd>
-              {seven_day_average > 0
-                ? `+${addDots(seven_day_average)}`
-                : addDots(seven_day_average)}
-            </dd>
-          </dl>
-        )}
         <dl>
           <dt>人口占比</dt>
           <dd>{population_percent}%</dd>
