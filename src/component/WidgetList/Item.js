@@ -69,7 +69,7 @@ const StyledRecent = styled.div`
   height: 0.4rem;
   position: absolute;
   left: 0;
-  top: 0;
+  top: -1px;
   background: linear-gradient(135deg, transparent 20%, #fff 30%, #fff 45%, transparent 45%);
   svg {
     width: 100%;

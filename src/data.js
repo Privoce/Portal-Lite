@@ -26,6 +26,7 @@ const DoubanHotTopics = lazy(() =>
   import(/* webpackChunkName: "widget.douban.topics" */ './widgets/DoubanHotTopics')
 );
 const YiYan = lazy(() => import(/* webpackChunkName: "widget.yiyan" */ './widgets/YiYan'));
+const PetPics = lazy(() => import(/* webpackChunkName: "widget.pet.pics" */ './widgets/PetPics'));
 const DailyShici = lazy(() =>
   import(/* webpackChunkName: "widget.daily.shici" */ './widgets/DailyShiCi')
 );
@@ -127,6 +128,16 @@ const Widgets = {
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png',
     created: '2021-01-18',
     updated: '2021-01-27'
+  },
+  'pet-pics': {
+    title: '宠物图集',
+    description: '萌宠图：猫猫狗狗以及可爱的小鸟',
+    compact: true,
+    // preset: true,
+    disableScroll: true,
+    comp: <PetPics />,
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.pet.pics.png',
+    created: '2021-02-3'
   },
 
   'mp-daily-hot': {
