@@ -6,13 +6,18 @@ const StyledG = createGlobalStyle`
   h1,h2,h3{
     color:#eee !important;
   }
+  input,textarea{
+    border-color:#666 !important;
+    background: #333 !important;
+    color: #eee !important;
+  }
   .widget[type='widget'] .container{
     background-color:#333;
     border-color:#666;
     box-shadow:0rem 0rem 0.08rem 0rem #999;
   }
   .modal{
-    background:#333;
+    background:#333 !important;
     .tabs .tab{
       color:#eee;
     }
@@ -24,6 +29,9 @@ const StyledG = createGlobalStyle`
     .icon{
       box-shadow:none;
     }
+  }
+  .list .item .txt{
+    color:#aaa;
   }
 }
 `;

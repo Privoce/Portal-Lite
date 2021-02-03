@@ -14,7 +14,6 @@ const StyledWrapper = styled.section`
   position: relative;
   overflow: hidden;
   > .title {
-    background: #fff;
     font-weight: 800;
     font-size: 0.3rem;
     color: #555;
@@ -42,10 +41,9 @@ const StyledWrapper = styled.section`
     z-index: 2;
     height: 100%;
     overflow: scroll;
+    overflow: overlay;
     .item {
       cursor: pointer;
-
-      /* margin-bottom: 0.1rem; */
       margin-bottom: 0.02rem;
       position: relative;
       font-size: 0.16rem;
@@ -55,17 +53,15 @@ const StyledWrapper = styled.section`
 
       &:hover {
         background-color: #f26e5f;
-        color: #fff;
         .date {
           color: #eee;
         }
         .txt {
+          color: #fff;
           transform: translateX(5px);
         }
       }
       .txt {
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
         white-space: nowrap;
         /* padding-right: 0.2rem; */
         overflow: hidden;
