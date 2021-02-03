@@ -55,6 +55,10 @@
 
 ![widget calc](demo/screenshoots/widget.calc.png)
 
+### 人生进程计算器
+
+![widget life progress](demo/screenshoots/widget.life.progress.png)
+
 ### 热搜类小组件
 
 #### 微博热搜
@@ -87,6 +91,10 @@
 
 ![widget daily yiyan](demo/screenshoots/widget.yiyan.png)
 每天一句话
+
+#### 历史上的今天
+
+![widget today in history](demo/screenshoots/widget.today.in.history.png)
 
 #### 必应壁纸
 
