@@ -1,9 +1,11 @@
-// import { useRef } from 'react';
+import { Children, cloneElement, Suspense } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import BackHome from './BackHome';
 import { Widgets } from '../../data';
 import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
+import Loading from '../../component/Loading';
+
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100vh;
@@ -46,7 +48,13 @@ export default function Widget() {
         compact={compact}
         title={title}
       >
-        {comp({ name: widget })}
+        <Suspense fallback={<Loading />}>
+          {Children.map(comp, (child) =>
+            cloneElement(child, {
+              name: widget
+            })
+          )}
+        </Suspense>
       </WidgetWrapper>
       {from == 'home' && <BackHome />}
     </StyledWrapper>
