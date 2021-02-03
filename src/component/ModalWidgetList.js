@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react';
+// import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+// import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Widgets } from '../data';
 import IconClose from '../asset/img/icon.close.png';
 
@@ -114,22 +114,22 @@ const StyledWrapper = styled.section`
 `;
 // let other_params = {};
 export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
-  const modal = useRef(null);
-  useEffect(() => {
-    let modalEle = modal || modal.current;
-    if (modalEle) {
-      disableBodyScroll(modalEle);
-    }
-    return () => {
-      enableBodyScroll(modalEle);
-    };
-  }, []);
+  // const modal = useRef(null);
+  // useEffect(() => {
+  //   let modalEle = modal || modal.current;
+  //   if (modalEle) {
+  //     disableBodyScroll(modalEle);
+  //   }
+  //   return () => {
+  //     enableBodyScroll(modalEle);
+  //   };
+  // }, []);
   const handleAddClick = (w) => {
     addWidget(w);
     resetModalVisible();
   };
   return (
-    <ModalWrapper ref={modal}>
+    <ModalWrapper>
       <StyledWrapper>
         <div className="modal">
           <ul className="widgets">
