@@ -4,7 +4,7 @@ import ForkMeOnGithub from 'fork-me-on-github';
 import StyledWrapper from './styled';
 import Loading from '../../component/Loading';
 import Footer from './Footer';
-import ModalWidgetList from '../../component/ModalWidgetList';
+import ModalWidgetList from '../../component/WidgetList';
 import OpenButton from './OpenButton';
 import { useWidgets } from '../../hooks';
 

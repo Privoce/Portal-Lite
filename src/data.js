@@ -46,7 +46,9 @@ const Widgets = {
     preset: true,
     disableScroll: true,
     comp: <Searchs />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png',
+    created: '2020-12-14',
+    updated: '2020-12-24'
   },
   navs: {
     type: 'nav',
@@ -56,7 +58,9 @@ const Widgets = {
     preset: true,
     disableScroll: true,
     comp: <NavBlock />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png',
+    created: '2020-12-12',
+    updated: '2020-12-18'
   },
   'covid-info': {
     title: '🇨🇳 国内新冠疫情概况',
@@ -65,7 +69,9 @@ const Widgets = {
     preset: true,
     disableScroll: true,
     comp: <Covid />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png',
+    created: '2020-12-24',
+    updated: '2020-12-28'
   },
   'us-covid-info': {
     title: '🇺🇸 美国新冠疫情概况',
@@ -73,7 +79,9 @@ const Widgets = {
     compact: true,
     disableScroll: true,
     comp: <USCovid />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.usa.covid.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.usa.covid.png',
+    created: '2021-02-01',
+    updated: '2021-02-02'
   },
   'wb-hot': {
     preset: true,
@@ -82,7 +90,9 @@ const Widgets = {
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <WeiboHot />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png'
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
+    created: '2020-12-17',
+    updated: '2020-12-28'
   },
   weather: {
     preset: true,
@@ -91,7 +101,9 @@ const Widgets = {
     compact: true,
     disableScroll: true,
     comp: <Weather />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png'
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png',
+    created: '2020-12-04',
+    updated: '2020-12-23'
   },
   'timezone-clock': {
     title: '国际时钟',
@@ -100,7 +112,9 @@ const Widgets = {
     preset: true,
     disableScroll: true,
     comp: <TimezoneClock />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png',
+    created: '2021-01-18',
+    updated: '2021-02-02'
   },
   yiyan: {
     title: '一言',
@@ -110,7 +124,9 @@ const Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <YiYan />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png'
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png',
+    created: '2021-01-18',
+    updated: '2021-01-27'
   },
 
   'mp-daily-hot': {
@@ -152,7 +168,9 @@ const Widgets = {
     compact: true,
     disableScroll: true,
     comp: <BingDailyPicture />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png'
+    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png',
+    created: '2021-01-18',
+    updated: '2021-01-27'
   },
   'douban-topic-hot': {
     // preset: true,
@@ -161,7 +179,8 @@ const Widgets = {
     // compact: true,
     // disableScroll: true,
     comp: <DoubanHotTopics />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png',
+    created: '2021-01-19'
   },
 
   'gh-trending': {
