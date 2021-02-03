@@ -12,6 +12,7 @@ const StyledItem = styled.li`
   border-radius: 0.05rem;
   border: 0.01rem solid #eee;
   transition: all 0.6s;
+  overflow: hidden;
   .add,
   .added {
     display: flex;

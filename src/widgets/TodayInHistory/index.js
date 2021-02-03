@@ -101,12 +101,13 @@ const StyledWrapper = styled.section`
     background: #fff;
     padding: 0.12rem;
     overflow: scroll;
+    overflow: overlay;
     overscroll-behavior: contain;
     article {
       > .title {
         font-size: 0.22rem;
         font-weight: 800;
-        padding-bottom: 0.15rem;
+        padding: 0.2rem 0 0.15rem 0;
         text-align: center;
       }
       > p {

@@ -36,18 +36,13 @@ const StyledWrapper = styled.section`
             object-fit: cover;
           }
           .opts {
+            z-index: 99;
             position: absolute;
             top: 0.2rem;
             left: 0.2rem;
             display: flex;
             .opt {
               display: flex;
-              /* background-color: #eee;
-              border-radius: 50%;
-              width: 0.32rem;
-              height: 0.32rem;
-              align-items: center;
-              justify-content: center; */
               &:not(:last-child) {
                 margin-right: 0.1rem;
               }
@@ -56,11 +51,6 @@ const StyledWrapper = styled.section`
                 width: 0.32rem;
                 height: 0.32rem;
               }
-              /* &.wall {
-                width: 0.2rem;
-                height: 0.2rem;
-                padding: 0.1rem;
-              } */
             }
           }
           .cr {

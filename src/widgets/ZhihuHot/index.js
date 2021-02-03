@@ -157,7 +157,7 @@ export default function ZhihuHot({ name }) {
                 <li className="item" key={id} data-seq={idx + 1}>
                   <a className="block" href={url} target="_blank" rel="noopener noreferrer">
                     <div className="left">
-                      <h2 className="title" title={title}>
+                      <h2 className="title darkmode-ignore" title={title}>
                         {title}
                       </h2>
                       <p className="intro" title={intro}>

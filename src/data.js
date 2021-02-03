@@ -201,6 +201,7 @@ const Widgets = {
     title: '历史上的今天',
     description: '历史上的今天，发生了哪些著名事件呢？',
     compact: true,
+    sizes: ['middle', 'large'],
     // disableScroll: true,
     comp: <TodayInHistory />,
     screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',

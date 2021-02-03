@@ -3221,6 +3221,11 @@ dargs@^7.0.0:
   resolved "https://registry.npm.taobao.org/dargs/download/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
   integrity sha1-BAFcQd4Ly2nshAUPPZvgyvjW1cw=
 
+darkmode-js@^1.5.7:
+  version "1.5.7"
+  resolved "https://registry.npm.taobao.org/darkmode-js/download/darkmode-js-1.5.7.tgz#b260ff671d67e021446ac8bade458e08338f6410"
+  integrity sha1-smD/Zx1n4CFEasi63kWOCDOPZBA=
+
 date-fns-tz@^1.0.12:
   version "1.0.12"
   resolved "https://registry.npm.taobao.org/date-fns-tz/download/date-fns-tz-1.0.12.tgz#2d680e1099767775cff7a30eac34362d52639fed"

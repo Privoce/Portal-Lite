@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from 'react';
 import ForkMeOnGithub from 'fork-me-on-github';
 import StyledWrapper from './styled';
 import Loading from '../../component/Loading';
+import Darkmode from '../../component/Darkmode';
 import Footer from './Footer';
 import ModalWidgetList from '../../component/WidgetList';
 import OpenButton from './OpenButton';
@@ -54,6 +55,7 @@ export default function Home() {
         />
       )}
       <Footer />
+      <Darkmode />
     </Suspense>
   );
 }
