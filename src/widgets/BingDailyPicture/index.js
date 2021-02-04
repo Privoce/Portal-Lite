@@ -114,6 +114,10 @@ export default function BingDailyPicture() {
   useEffect(() => {
     if (currWallpaper) {
       document.body.style.backgroundImage = `url(${currWallpaper})`;
+      let dmbg = document.querySelector('.darkmode-background');
+      if (dmbg) {
+        dmbg.style.backgroundImage = `url(${currWallpaper})`;
+      }
     }
   }, [currWallpaper]);
   if (loading) return <Loading />;

@@ -15,6 +15,9 @@ const StyledG = createGlobalStyle`
     background-color:#333;
     border-color:#666;
     box-shadow:0rem 0rem 0.08rem 0rem #999;
+     .list .item .txt{
+      color:#aaa;
+    }
   }
   .modal{
     background:#333 !important;
@@ -25,13 +28,15 @@ const StyledG = createGlobalStyle`
       border-color: #999;
     }
   }
-  .inside,.inside:hover{
-    .icon{
-      box-shadow:none;
+  .widget[type='nav'] .container{
+    .inside,.inside:hover{
+      .icon{
+        box-shadow:none;
+      }
+      .title{
+        text-shadow: 0 0 5px #000;
+      }
     }
-  }
-  .list .item .txt{
-    color:#aaa;
   }
 }
 `;
@@ -39,10 +44,10 @@ const StyledButton = styled.button`
   position: fixed;
   left: 0.1rem;
   bottom: 0.1rem;
-  font-size: 0.25rem;
+  font-size: 0.22rem;
   padding: 0.12rem;
-  width: 0.4rem;
-  height: 0.4rem;
+  width: 0.45rem;
+  height: 0.45rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
