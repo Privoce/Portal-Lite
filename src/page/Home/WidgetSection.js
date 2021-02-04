@@ -1,15 +1,14 @@
-import { useEffect, Children, cloneElement, Suspense } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
+import WidgetWrapper from '../../widgets/Common/Wrapper';
 import { Widgets } from '../../data';
-import Loading from '../../component/Loading';
 
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 const StyledSection = styled.section`
   position: relative;
   width: 100%;
-  padding-top: 0.2rem;
+  /* padding-top: 0.2rem; */
   padding-bottom: 0.6rem;
   .widgets {
     display: grid;
@@ -105,9 +104,19 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
       <div className="widgets" id="widget-container">
         {widgets.map((w) => {
           const obj = Widgets[w];
-          const { type, comp, title, compact = false, disableScroll, sizes, defaultSize } = obj;
+          const {
+            type,
+            comp,
+            enableSetting,
+            title,
+            compact = false,
+            disableScroll,
+            sizes,
+            defaultSize
+          } = obj;
           return (
             <WidgetWrapper
+              enableSetting={enableSetting}
               type={type}
               disableScroll={disableScroll}
               name={w}
@@ -119,14 +128,14 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
               compact={compact}
               title={title}
             >
-              <Suspense fallback={<Loading />}>
+              {/* <Suspense fallback={<Loading />}>
                 {Children.map(comp, (child) =>
                   cloneElement(child, {
                     name: w
                   })
                 )}
-              </Suspense>
-              {/* {comp({ name: w })} */}
+              </Suspense> */}
+              {comp}
             </WidgetWrapper>
           );
         })}

@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import BackHome from './BackHome';
 import { Widgets } from '../../data';
-import WidgetWrapper from '../../widgets/Common/WidgetWrapper';
+import WidgetWrapper from '../../widgets/Common/Wrapper';
 import Loading from '../../component/Loading';
 
 const StyledWrapper = styled.section`

@@ -49,6 +49,7 @@ const Widgets = {
     type: 'search',
     title: '搜索引擎',
     description: '百度、谷歌、必应',
+    enableSetting: true,
     compact: true,
     preset: true,
     disableScroll: true,
@@ -115,6 +116,7 @@ const Widgets = {
   'timezone-clock': {
     title: '国际时钟',
     description: '便捷查看多个时区时间，最多支持添加三个。',
+    enableSetting: true,
     compact: true,
     preset: true,
     disableScroll: true,
@@ -138,6 +140,7 @@ const Widgets = {
   'pet-pics': {
     title: '宠物图集',
     description: '萌宠图：猫猫狗狗以及可爱的小鸟',
+    enableSetting: true,
     compact: true,
     // preset: true,
     disableScroll: true,
@@ -163,6 +166,7 @@ const Widgets = {
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
+    enableSetting: true,
     sizes: ['middle', 'large'],
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,

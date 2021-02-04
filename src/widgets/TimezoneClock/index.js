@@ -4,10 +4,9 @@ import Clock from 'react-clock';
 import 'react-clock/dist/Clock.css';
 import { utcToZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
-// import ErrorTip from '../Common/ErrorTip';
-// import Loading from '../Common/Loading';
-import Timezones from './Timezones';
+// import Timezones from './Timezones';
 import { useWidgetSettings } from '../../hooks';
+import Setting from './Setting';
 
 // http://worldtimeapi.org/api/ip 根据IP地址获取当地时间
 // http://worldtimeapi.org/api/timezone 获取时区列表
@@ -135,38 +134,46 @@ export default function TimezoneClock({ name }) {
       clearInterval(interval);
     };
   }, []);
+  // useEffect(() => {
+  //   initialWidgetSetting(
+  //     <Setting currTimezones={timezones} updateTimezones={updateCurrTimezones} />
+  //   );
+  // }, []);
   // if (loading) return <Loading />;
   // if (errTip) return <ErrorTip tip={errTip} />;
   return (
-    <StyledWrapper>
-      {/* {loading && <Loading />} */}
-      <Timezones currTimezones={timezones} updateTimezones={updateCurrTimezones} />
-      {timezones.length == 0 ? (
-        <div className="empty">快去添加一个时钟吧！</div>
-      ) : (
-        <div className="clocks">
-          {timezones.map((item) => {
-            const { tz, city } = item;
-            const localDate = utcToZonedTime(date.getTime(), tz);
-            // console.log({ localDate });
-            let hours = localDate.getHours();
-            // console.log({ hours });
-            let night = hours < 6 || hours >= 18;
-            let timeStr = format(localDate, 'pp');
-            let dateStr = format(localDate, 'PPPP');
-            return (
-              <div className={`clock ${night ? 'dark' : ''}`} key={tz}>
-                <Clock size={window.innerWidth < 860 ? 110 : 120} value={localDate} />
-                <h2 className="city">{city}</h2>
-                <h3 className="datetime">
-                  <span className="item">{dateStr}</span>
-                  <span className="item">{timeStr}</span>
-                </h3>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </StyledWrapper>
+    <>
+      <Setting name={name} currTimezones={timezones} updateTimezones={updateCurrTimezones} />
+      <StyledWrapper>
+        {/* {loading && <Loading />} */}
+        {/* <Timezones currTimezones={timezones} updateTimezones={updateCurrTimezones} /> */}
+        {timezones.length == 0 ? (
+          <div className="empty">快去添加一个时钟吧！</div>
+        ) : (
+          <div className="clocks">
+            {timezones.map((item) => {
+              const { tz, city } = item;
+              const localDate = utcToZonedTime(date.getTime(), tz);
+              // console.log({ localDate });
+              let hours = localDate.getHours();
+              // console.log({ hours });
+              let night = hours < 6 || hours >= 18;
+              let timeStr = format(localDate, 'pp');
+              let dateStr = format(localDate, 'PPPP');
+              return (
+                <div className={`clock ${night ? 'dark' : ''}`} key={tz}>
+                  <Clock size={window.innerWidth < 860 ? 110 : 120} value={localDate} />
+                  <h2 className="city">{city}</h2>
+                  <h3 className="datetime">
+                    <span className="item">{dateStr}</span>
+                    <span className="item">{timeStr}</span>
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </StyledWrapper>
+    </>
   );
 }

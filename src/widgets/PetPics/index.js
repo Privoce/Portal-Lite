@@ -62,7 +62,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function PetPics({ name }) {
+export default function PetPics({ name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localPics = getWidgetSetting({ name, key: 'pics' });
   const [pet, setPet] = useState(getWidgetSetting({ name, key: 'pet' }) || 'shibes');
@@ -89,33 +89,40 @@ export default function PetPics({ name }) {
   if (loading) return <Loading />;
   if (errTip) return <ErrorTip tip={errTip} />;
   return (
-    <StyledWrapper>
-      <Pets currPet={pet} updatePet={setPet} />
-      <Swiper
-        autoplay={{
-          delay: 1000
-        }}
-        navigation
-        pagination={{ clickable: true }}
-        keyboard={true}
-        loop={true}
-        spaceBetween={30}
-        onSwiper={(mySwiper) => {
-          mySwiper.update();
-        }}
-      >
-        {pics.map((url) => {
-          return (
-            <SwiperSlide key={url}>
-              <div className="pic" style={{ backgroundImage: `url(${url})` }}>
-                <div className="img">
-                  <img src={url} alt="宠物图" />
+    <>
+      <Pets
+        currPet={pet}
+        updatePet={setPet}
+        name={name}
+        toggleWidgetSettingVisible={toggleWidgetSettingVisible}
+      />
+      <StyledWrapper>
+        <Swiper
+          autoplay={{
+            delay: 1000
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          keyboard={true}
+          loop={true}
+          spaceBetween={30}
+          onSwiper={(mySwiper) => {
+            mySwiper.update();
+          }}
+        >
+          {pics.map((url) => {
+            return (
+              <SwiperSlide key={url}>
+                <div className="pic" style={{ backgroundImage: `url(${url})` }}>
+                  <div className="img">
+                    <img src={url} alt="宠物图" />
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-    </StyledWrapper>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </StyledWrapper>
+    </>
   );
 }

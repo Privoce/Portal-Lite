@@ -15,7 +15,7 @@ const SearchMap = {
 const StyledWrapper = styled.section`
   /* display: flex;
   justify-content: center; */
-  padding: 0 0 0.5rem 0;
+  padding: 0.4rem 0;
   position: relative;
   width: 6rem;
   .setting {
@@ -41,7 +41,7 @@ const StyledWrapper = styled.section`
   }
 `;
 
-export default function Searchs({ name }) {
+export default function Searchs({ name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [search, setSearch] = useState(getWidgetSetting({ name }) || 'baidu');
   const refresh = (s) => {
@@ -49,11 +49,18 @@ export default function Searchs({ name }) {
     setSearch(s);
   };
   return (
-    <StyledWrapper>
-      <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
-        <Setting search={search} updateSearch={refresh} />
-        <div className="search">{SearchMap[search]}</div>
-      </Suspense>
-    </StyledWrapper>
+    <>
+      <Setting
+        name={name}
+        toggleWidgetSettingVisible={toggleWidgetSettingVisible}
+        search={search}
+        updateSearch={refresh}
+      />
+      <StyledWrapper>
+        <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
+          <div className="search">{SearchMap[search]}</div>
+        </Suspense>
+      </StyledWrapper>
+    </>
   );
 }

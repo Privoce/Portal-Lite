@@ -113,7 +113,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function ZhihuHot({ name }) {
+export default function ZhihuHot({ name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -143,39 +143,46 @@ export default function ZhihuHot({ name }) {
   // if (loading) return <Loading />;
   if (errTip) return <ErrorTip tip={errTip} />;
   return (
-    <StyledWrapper>
-      {loading && <Loading />}
-      <Tabs currTab={currTab} updateCurrTab={updateCurrTab} />
-      {!loading &&
-        (hots.length == 0 ? (
-          <div className="empty">暂无内容，试试其它分类吧~</div>
-        ) : (
-          <ul className="wrapper">
-            {hots.map((n, idx) => {
-              const { title, url, intro, id, thumbnail, hot_count } = n;
-              return (
-                <li className="item" key={id} data-seq={idx + 1}>
-                  <a className="block" href={url} target="_blank" rel="noopener noreferrer">
-                    <div className="left">
-                      <h2 className="title darkmode-ignore" title={title}>
-                        {title}
-                      </h2>
-                      <p className="intro" title={intro}>
-                        {intro}
-                      </p>
-                      <span className="hot">{hot_count} 万热度</span>
-                    </div>
-                    {thumbnail && (
-                      <div className="right">
-                        <img src={thumbnail} alt="知乎配图" />
+    <>
+      <Tabs
+        name={name}
+        toggleWidgetSettingVisible={toggleWidgetSettingVisible}
+        currTab={currTab}
+        updateCurrTab={updateCurrTab}
+      />
+      <StyledWrapper>
+        {loading && <Loading />}
+        {!loading &&
+          (hots.length == 0 ? (
+            <div className="empty">暂无内容，试试其它分类吧~</div>
+          ) : (
+            <ul className="wrapper">
+              {hots.map((n, idx) => {
+                const { title, url, intro, id, thumbnail, hot_count } = n;
+                return (
+                  <li className="item" key={id} data-seq={idx + 1}>
+                    <a className="block" href={url} target="_blank" rel="noopener noreferrer">
+                      <div className="left">
+                        <h2 className="title darkmode-ignore" title={title}>
+                          {title}
+                        </h2>
+                        <p className="intro" title={intro}>
+                          {intro}
+                        </p>
+                        <span className="hot">{hot_count} 万热度</span>
                       </div>
-                    )}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        ))}
-    </StyledWrapper>
+                      {thumbnail && (
+                        <div className="right">
+                          <img src={thumbnail} alt="知乎配图" />
+                        </div>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
+      </StyledWrapper>
+    </>
   );
 }
