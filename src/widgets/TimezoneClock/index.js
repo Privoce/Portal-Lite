@@ -134,13 +134,6 @@ export default function TimezoneClock({ name }) {
       clearInterval(interval);
     };
   }, []);
-  // useEffect(() => {
-  //   initialWidgetSetting(
-  //     <Setting currTimezones={timezones} updateTimezones={updateCurrTimezones} />
-  //   );
-  // }, []);
-  // if (loading) return <Loading />;
-  // if (errTip) return <ErrorTip tip={errTip} />;
   return (
     <>
       <Setting name={name} currTimezones={timezones} updateTimezones={updateCurrTimezones} />

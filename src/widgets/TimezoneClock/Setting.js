@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 
@@ -70,7 +70,7 @@ const timezones = [
     city: '马普托'
   }
 ];
-export default function Timezones({ name, currTimezones, updateTimezones }) {
+function Timezones({ name, currTimezones, updateTimezones }) {
   // const [tzs, setTzs] = useState(currTimezones);
   const handleUpdate = ({ target }) => {
     const {
@@ -121,3 +121,7 @@ export default function Timezones({ name, currTimezones, updateTimezones }) {
     document.querySelector(`#widget-${name}-setting`)
   );
 }
+
+export default memo(Timezones, (prevProps, nextProps) => {
+  return JSON.stringify(prevProps.currTimezones) === JSON.stringify(nextProps.currTimezones);
+});
