@@ -129,7 +129,7 @@ export default function Modal({ resetModalVisible, addApp, widgetName = '' }) {
       return;
     }
     if (!url.startsWith('http')) {
-      finalUrl = `//${url}`;
+      finalUrl = `http://${url}`;
     }
     if (!validateUrl(finalUrl)) {
       setTip('请输入正确的地址');

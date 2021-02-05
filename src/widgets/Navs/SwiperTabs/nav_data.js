@@ -5,7 +5,7 @@ const Navs = [
       {
         id: 'weibo',
         title: '微博',
-        url: '//weibo.com',
+        url: 'https://weibo.com',
         icon: './logos/wb.png',
         themeColor: '#FFD902',
         popular: true
@@ -13,14 +13,14 @@ const Navs = [
       {
         id: 'zhihu',
         title: '知乎',
-        url: '//zhihu.com',
+        url: 'https://zhihu.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/zhihu.logo.png',
         themeColor: '#0083FF'
       },
       {
         id: 'douban',
         title: '豆瓣',
-        url: '//douban.com',
+        url: 'https://douban.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/douban.logo.png',
         themeColor: '#00C145'
       }
@@ -32,7 +32,7 @@ const Navs = [
       {
         id: 'bilibili',
         title: '哔哩哔哩',
-        url: '//bilibili.com',
+        url: 'https://bilibili.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/bilibili.logo.png',
         themeColor: '#FF7997',
         popular: true
@@ -40,7 +40,7 @@ const Navs = [
       {
         id: 'youku',
         title: '优酷',
-        url: '//youku.com',
+        url: 'https://youku.com',
         icon: 'https://img.alicdn.com/tfs/TB1WeJ9Xrj1gK0jSZFuXXcrHpXa-195-195.png',
         themeColor: '#fff',
         popular: true
@@ -48,7 +48,7 @@ const Navs = [
       {
         id: 'qq_v',
         title: '腾讯视频',
-        url: '//v.qq.com',
+        url: 'https://v.qq.com',
         icon: 'https://v.qq.com/favicon.ico',
         themeColor: '#fff',
         popular: true
@@ -56,7 +56,7 @@ const Navs = [
       {
         id: 'iqiyi',
         title: '爱奇艺',
-        url: '//iqiyi.com',
+        url: 'https://iqiyi.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/aiqiyi.png',
         themeColor: '#07D302',
         popular: true
@@ -64,14 +64,14 @@ const Navs = [
       {
         id: 'net_music',
         title: '网易云音乐',
-        url: '//music.163.com',
+        url: 'https://music.163.com',
         icon: 'https://s1.music.126.net/style/favicon.ico?v20180823',
         themeColor: '#FB0000'
       },
       {
         id: 'kugou',
         title: '酷狗',
-        url: '//kugou.com',
+        url: 'https://kugou.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/kugou.logo.png',
         themeColor: '#0094FF'
       },
@@ -89,7 +89,7 @@ const Navs = [
       {
         id: 'taobao',
         title: '淘宝',
-        url: '//taobao.com',
+        url: 'https://taobao.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/taobao.logo.png',
         themeColor: '#FF5900',
         popular: true
@@ -97,14 +97,14 @@ const Navs = [
       {
         id: 'tmall',
         title: '天猫',
-        url: '//tmall.com',
+        url: 'https://tmall.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/tmall.logo.png',
         themeColor: '#FF0017'
       },
       {
         id: 'jd',
         title: '京东',
-        url: '//jd.com',
+        url: 'https://jd.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jd.logo.png',
         themeColor: '#EF0011'
       },
@@ -123,7 +123,7 @@ const Navs = [
       {
         id: 'huxiu',
         title: '虎嗅网',
-        url: '//huxiu.com',
+        url: 'https://huxiu.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/huxiuwang2.png',
         themeColor: '#fff',
         popular: true
@@ -149,21 +149,21 @@ const Navs = [
       {
         id: 'github',
         title: 'Github',
-        url: '//github.com',
+        url: 'https://github.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/GitHub.png',
         themeColor: '#fff'
       },
       {
         id: 'shimoo',
         title: '石墨文档',
-        url: '//shimo.im',
+        url: 'https://shimo.im',
         icon: 'https://shimo.im/favicon.ico',
         themeColor: '#f6f6f6'
       },
       {
         id: 'yinxiang',
         title: '印象笔记',
-        url: '//yinxiang.com',
+        url: 'https://yinxiang.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/yinxiang.logo.png',
         themeColor: '#00C51F'
       },
@@ -177,7 +177,7 @@ const Navs = [
       {
         id: 'baidu_t',
         title: '百度翻译',
-        url: '//fanyi.baidu.com',
+        url: 'https://fanyi.baidu.com',
         icon: 'https://gitee.com/zyanggc/oss/raw/master/works/fanyi.png',
         themeColor: '#4898fc'
       },

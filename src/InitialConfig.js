@@ -6,11 +6,14 @@ import BaiduTongji from './component/BaiduTongji';
 function gtag() {
   window.dataLayer.push(arguments);
 }
+const isExt = process.env.REACT_APP_CHROME_EXT == 'true';
+const isProd = process.env.NODE_ENV == 'production';
+const loadCollector = isProd && !isExt;
 export default function InitialConfig() {
   useEffect(() => {
     // set req timeout
     // axios.defaults.timeout = 3000;
-    if (process.env.NODE_ENV == 'production') {
+    if (loadCollector) {
       // google 统计
       const gs = document.createElement('script');
       gs.async = 1;
@@ -36,5 +39,5 @@ export default function InitialConfig() {
     window.addEventListener('error', handleError, true);
     return () => {};
   }, []);
-  return <>{process.env.NODE_ENV == 'production' && <BaiduTongji />}</>;
+  return <>{loadCollector && <BaiduTongji />}</>;
 }

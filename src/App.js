@@ -21,10 +21,11 @@ function App() {
       Authorization: `bearer ${token}`
     }
   });
+  const basePath = process.env.REACT_APP_CHROME_EXT == 'true' ? '/index.html' : '/';
   return (
     <ApolloProvider client={client}>
       <Suspense fallback={<Loading />}>
-        <Router basename={'/'}>
+        <Router basename={basePath}>
           <Switch>
             <Route exact path="/">
               <Home />

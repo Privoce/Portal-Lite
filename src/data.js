@@ -44,7 +44,7 @@ const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './w
 
 const Webapps = Navs[0].items;
 const Tools = AllTools[0].items;
-const Widgets = {
+let Widgets = {
   searchs: {
     type: 'search',
     title: '搜索引擎',
@@ -98,18 +98,19 @@ const Widgets = {
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <WeiboHot />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
     created: '2020-12-17',
     updated: '2020-12-28'
   },
   weather: {
+    loadType: 'script',
     preset: true,
     title: '今日天气',
     description: '全方位，多角度，为您提供天气信息。',
     compact: true,
     disableScroll: true,
     comp: <Weather />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.weather.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.weather.png',
     created: '2020-12-04',
     updated: '2020-12-23'
   },
@@ -133,7 +134,7 @@ const Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <YiYan />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png',
     created: '2021-01-18',
     updated: '2021-01-27'
   },
@@ -145,7 +146,7 @@ const Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <PetPics />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.pet.pics.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.pet.pics.png',
     created: '2021-02-3'
   },
 
@@ -154,7 +155,7 @@ const Widgets = {
     description: '公众号实时热文，你想了解的，都在这里！',
     sizes: ['middle', 'large'],
     comp: <MPDaily />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
   },
   'daily-shici': {
     title: '今日诗词',
@@ -162,7 +163,7 @@ const Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <DailyShici />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png'
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
@@ -171,7 +172,7 @@ const Widgets = {
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
     comp: <ZhihuHot />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png'
   },
   'gh-dashboard': {
     title: 'Github个人仓库',
@@ -179,7 +180,7 @@ const Widgets = {
     description: '通过授权，展现您个人仓库列表，快速预览每个仓库的概况。',
     compact: true,
     comp: <GithubDashboard />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
   },
 
   'bing-daily-pic': {
@@ -189,7 +190,7 @@ const Widgets = {
     compact: true,
     disableScroll: true,
     comp: <BingDailyPicture />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png',
     created: '2021-01-18',
     updated: '2021-01-27'
   },
@@ -211,7 +212,7 @@ const Widgets = {
     sizes: ['middle', 'large'],
     // disableScroll: true,
     comp: <TodayInHistory />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',
     created: '2021-03-03'
   },
 
@@ -221,9 +222,10 @@ const Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <GithubTrending />,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
   },
   calc: {
+    loadType: 'iframe',
     title: '计算器',
     description: '一个科学计算器',
     comp: <Calc />,
@@ -231,9 +233,10 @@ const Widgets = {
     sizes: ['middle', 'large'],
     disableScroll: true,
     compact: true,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'
   },
   'life-progress': {
+    loadType: 'iframe',
     title: '生命进程计算器',
     description: '计算您还能活多久，又名：焦虑制造器。😥',
     comp: <LifeProgress />,
@@ -241,7 +244,7 @@ const Widgets = {
     // sizes: ['middle', 'large'],
     disableScroll: true,
     compact: true,
-    screenshot: '//gitee.com/zyanggc/oss/raw/master/works/widget.life.progress.png',
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.life.progress.png',
     created: '2021-02-03'
   },
   'yin-note': {
@@ -252,5 +255,12 @@ const Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yinxiang.note.png'
   }
 };
-
+// 过滤掉不适合在浏览器扩展里加载的小组件
+if (process.env.REACT_APP_CHROME_EXT == 'true') {
+  Widgets = Object.fromEntries(
+    Object.entries(Widgets).filter(([, obj]) => {
+      return !['script'].includes(obj.loadType);
+    })
+  );
+}
 export { Webapps, Tools, Widgets };

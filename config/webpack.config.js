@@ -20,7 +20,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const appPackageJson = require(paths.appPackageJson);
-
+const isExt = process.env.REACT_APP_CHROME_EXT;
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
@@ -147,7 +147,7 @@ module.exports = function (webpackEnv) {
         : paths.appIndexJs,
     output: {
       // The build folder.
-      path: isEnvProduction ? paths.appBuild : undefined,
+      path: isEnvProduction ? (isExt ? paths.extBuild : paths.appBuild) : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -253,9 +253,6 @@ module.exports = function (webpackEnv) {
         .map((ext) => `.${ext}`)
         .filter((ext) => useTypeScript || !ext.includes('ts')),
       alias: {
-        // Support React Native Web
-        // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-        'react-native': 'react-native-web',
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
           'react-dom$': 'react-dom/profiling',

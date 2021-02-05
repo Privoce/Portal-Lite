@@ -1,25 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "name": "Portal China Lite",
+  "short_name": "Portal",
+  "description": "Widget your life!",
+  "version": "1.0",
+  "manifest_version": 2,
+  "homepage_url": "https://nicegoodthings.com/",
+  "permissions": ["management", "*://*/"],
+  "content_security_policy": "script-src 'self' 'sha256-Ex00FwOehjspvQrnhZeD0fLw8G/NrNGuVNz9f6e2aLM='; object-src 'self'; img-src https: data: http: chrome:;",
+  "icons": {
+    "16": "/favicon-16x16.png",
+    "32": "/favicon-32x32.png",
+    "48": "/android-chrome-192x192.png",
+    "128": "/android-chrome-192x192.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "/index.html"
+  }
 }

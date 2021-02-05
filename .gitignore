@@ -10,6 +10,8 @@
 
 # production
 /build
+/cxt
+/cxt.zip
 
 # misc
 .DS_Store

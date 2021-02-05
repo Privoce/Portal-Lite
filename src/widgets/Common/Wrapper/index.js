@@ -13,6 +13,7 @@ const SizeMap = {
   large: '大',
   mini: '小'
 };
+const isExt = process.env.REACT_APP_CHROME_EXT == 'true';
 export default function WidgetWrapper({
   type = 'widget',
   enableSetting = false,
@@ -115,8 +116,16 @@ export default function WidgetWrapper({
           </li>
           {!standalone && (
             <li className="item">
-              <a href={`/widgets/${name}?from=home`} target="_blank" rel="noopener noreferrer">
-                新页面打开
+              <a
+                href={`${
+                  isExt
+                    ? `https://nicegoodthings.com/widgets/${name}?from=home`
+                    : `/widgets/${name}?from=home`
+                }`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isExt ? '独立网页打开' : '新页面打开'}
               </a>
             </li>
           )}

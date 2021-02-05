@@ -69,7 +69,9 @@
   "homepage": "https://nicegoodthings.com",
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "start:cxt": "REACT_APP_CHROME_EXT=true node scripts/start.js",
+    "build:cxt": "REACT_APP_CHROME_EXT=true node scripts/build.js"
   },
   "browserslist": {
     "production": [
