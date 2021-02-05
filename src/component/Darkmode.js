@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Darkmode from 'darkmode-js';
 import styled, { createGlobalStyle } from 'styled-components';
+import { useWidgetSettings } from '../hooks';
 const StyledG = createGlobalStyle`
 .darkmode--activated{
   h1,h2,h3{
@@ -61,18 +62,25 @@ const StyledButton = styled.button`
   }
 `;
 const options = {
-  mixColor: '#fff', // default: '#fff'
-  backgroundColor: '#fff', // default: '#fff'
-  saveInCookies: false, // default: true,
-  autoMatchOsTheme: true // default: true
+  // mixColor: '#fff', // default: '#fff'
+  // backgroundColor: '#fff', // default: '#fff'
+  // saveInCookies: false, // default: true,
+  // autoMatchOsTheme: true // default: true
 };
 const dm = new Darkmode(options);
 export default function Dark() {
+  const { getWidgetSetting } = useWidgetSettings();
   const [dark, setDark] = useState(dm.isActivated);
 
   const toggleDarkmode = () => {
-    dm.toggle();
-    setDark(dm.isActivated);
+    let pageBg = getWidgetSetting({ key: 'bg' });
+    if (!pageBg) {
+      dm.toggle();
+      setDark(dm.isActivated);
+    } else {
+      setDark((prev) => !prev);
+      document.body.classList.toggle('darkmode--activated');
+    }
   };
   return (
     <>

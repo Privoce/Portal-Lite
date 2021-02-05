@@ -115,8 +115,12 @@ export default function BingDailyPicture() {
     if (currWallpaper) {
       document.body.style.backgroundImage = `url(${currWallpaper})`;
       let dmbg = document.querySelector('.darkmode-background');
+      let dmlayer = document.querySelector('.darkmode-layer');
       if (dmbg) {
-        dmbg.style.backgroundImage = `url(${currWallpaper})`;
+        dmbg.remove();
+      }
+      if (dmlayer) {
+        dmbg.remove();
       }
     }
   }, [currWallpaper]);
@@ -151,13 +155,13 @@ export default function BingDailyPicture() {
                   <div
                     className="opt wall"
                     title="设置为壁纸"
-                    onClick={handleSetBG.bind(null, `//cn.bing.com${url}`)}
+                    onClick={handleSetBG.bind(null, `https://cn.bing.com${url}`)}
                   >
                     <IconWall className="icon" />
                   </div>
                   <a
                     target="_blank"
-                    href={`//cn.bing.com${url}`}
+                    href={`https://cn.bing.com${url}`}
                     download={true}
                     title="下载"
                     className="opt download"
@@ -165,7 +169,7 @@ export default function BingDailyPicture() {
                     <IconDownload className="icon" />
                   </a>
                 </div>
-                <img className="img" src={`//cn.bing.com${url}&w=600`} alt="必应壁纸" />
+                <img className="img" src={`https://cn.bing.com${url}&w=600`} alt="必应壁纸" />
                 <div className="cr">
                   <p className="txt">{copyright}</p>
                 </div>
