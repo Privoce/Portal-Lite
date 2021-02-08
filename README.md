@@ -100,6 +100,10 @@
 
 ![widget bing pics](demo/screenshoots/widget.bing.pics.png)
 
+#### 亲戚关系计算器
+
+![widget relationship calc](demo/screenshoots/widget.relationship.calc.png)
+
 ## 迭代计划
 
 - 浏览器插件化：赋能更多的可能性
