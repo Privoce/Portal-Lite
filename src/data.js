@@ -16,6 +16,9 @@ const USCovid = lazy(() => import(/* webpackChunkName: "widget.uscovid" */ './wi
 const TimezoneClock = lazy(() =>
   import(/* webpackChunkName: "widget.timezone.clock" */ './widgets/TimezoneClock')
 );
+const RelationshipCalc = lazy(() =>
+  import(/* webpackChunkName: "widget.relationship.calc" */ './widgets/RelationshipCalc')
+);
 const GithubTrending = lazy(() =>
   import(/* webpackChunkName: "widget.github.trend" */ './widgets/GithubTrending')
 );
@@ -113,6 +116,20 @@ let Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.weather.png',
     created: '2020-12-04',
     updated: '2020-12-23'
+  },
+  'relationship-calc': {
+    title: '👨‍👩‍👧‍👦 亲戚关系计算器',
+    description:
+      '放假回家过年时，往往会搞不清楚哪位亲戚应该喊什么称呼，很是尴尬。亲戚关系计算器帮你避免这种尴尬！',
+    // enableSetting: true,
+    defaultSize: 'large',
+    sizes: ['large'],
+    compact: true,
+    preset: true,
+    disableScroll: true,
+    comp: <RelationshipCalc />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.relationship.calc.png',
+    created: '2021-02-08'
   },
   'timezone-clock': {
     title: '国际时钟',

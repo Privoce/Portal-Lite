@@ -103,7 +103,8 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
     <StyledSection>
       <div className="widgets" id="widget-container">
         {widgets.map((w) => {
-          const obj = Widgets[w];
+          const obj = Widgets[w] || null;
+          if (!obj) return null;
           const {
             type,
             comp,
