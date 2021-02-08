@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import IconTip from './IconTip';
 const StyledItem = styled.li`
   position: relative;
-  width: 3rem;
+  width: 100%;
   height: 1.44rem;
   transition: background-size 0.5s;
   background-size: 100%;
@@ -89,8 +89,9 @@ const Recents = {
     </StyledRecent>
   )
 };
+// https://gitee.com/zyanggc/oss/raw/master/works/icon.check.png
 export default function Item({ data, addWidget }) {
-  const { title, description, added, screenshot, recent } = data;
+  const { title, description, screenshot, recent } = data;
   return (
     <StyledItem className="widget" style={{ backgroundImage: `url(${screenshot})` }}>
       <div className="intro">
@@ -98,21 +99,12 @@ export default function Item({ data, addWidget }) {
         <p className="desc">{description}</p>
         {recent ? Recents[recent.type] : null}
       </div>
-      {added ? (
-        <div className="added" title="已新增">
-          <img
-            src="https://gitee.com/zyanggc/oss/raw/master/works/icon.check.png"
-            alt="已新增组件小图标"
-          />
-        </div>
-      ) : (
-        <div className="add" onClick={addWidget}>
-          <img
-            src="https://gitee.com/zyanggc/oss/raw/master/works/icon.add.png"
-            alt="新增组件小图标"
-          />
-        </div>
-      )}
+      <div className="add" onClick={addWidget}>
+        <img
+          src="https://gitee.com/zyanggc/oss/raw/master/works/icon.add.png"
+          alt="新增组件小图标"
+        />
+      </div>
     </StyledItem>
   );
 }
