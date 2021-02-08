@@ -59,7 +59,7 @@ export default function WidgetWrapper({
     });
   }, []);
   // 只有一个size选择也不显示
-  const hasSizes = sizes && sizes.length != 0;
+  const hasSizes = sizes && sizes.length > 1;
   return (
     <StyledWrapper
       ref={compContainer}
