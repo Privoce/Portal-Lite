@@ -7,6 +7,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   .container {
+    user-select: none;
     overflow-y: scroll;
     overflow-y: overlay;
     overflow-x: hidden;
