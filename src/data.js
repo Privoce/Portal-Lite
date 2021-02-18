@@ -125,7 +125,7 @@ let Widgets = {
     defaultSize: 'large',
     sizes: ['large'],
     compact: true,
-    preset: true,
+    // preset: true,
     disableScroll: true,
     comp: <RelationshipCalc />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.relationship.calc.png',
