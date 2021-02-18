@@ -25,12 +25,14 @@ export default function Home() {
   };
   return (
     <Suspense fallback={<Loading />}>
-      <ForkMeOnGithub
-        repo="https://github.com/Privoce/Portal-Lite-China"
-        colorBackground="#4e6ef3"
-        colorOctocat="white"
-        side="left"
-      />
+      {process.env.REACT_APP_CHROME_EXT != 'true' && (
+        <ForkMeOnGithub
+          repo="https://github.com/Privoce/Portal-Lite-China"
+          colorBackground="#4e6ef3"
+          colorOctocat="white"
+          side="left"
+        />
+      )}
 
       <Setting />
       <StyledWrapper>
