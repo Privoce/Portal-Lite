@@ -26,6 +26,7 @@ const StyledWrapper = styled.section`
     .desc {
       font-size: 0.22rem;
       padding: 0.08rem 0;
+      line-height: 1.3;
     }
     .result {
       .prefix {
@@ -120,10 +121,12 @@ export default function Relationship() {
   const [calls, setCalls] = useState([]);
   const [result, setResult] = useState(null);
   const [option, setOption] = useState({ sex: 1, reverse: false });
+  const [currSex, setCurrSex] = useState(1);
   const handleCallClick = ({ target }) => {
-    const { call } = target.dataset;
+    const { call, sex } = target.dataset;
     console.log({ target, call });
     setResult(null);
+    setCurrSex(sex);
     setCalls((prev) => {
       return [...prev, call];
     });
@@ -147,6 +150,9 @@ export default function Relationship() {
       let { reverse } = prev;
       return { sex: val, reverse };
     });
+    if (calls.length == 0) {
+      setCurrSex(val);
+    }
     // handleCalc();
   };
   const handleCalc = () => {
@@ -197,8 +203,11 @@ export default function Relationship() {
       </div>
       <div className="btns">
         {Calls.map((c) => {
-          const { txt, val } = c;
-          let disabled = (txt == '夫' && sex == 1) || (txt == '妻' && sex == 0);
+          const { txt, val, sex } = c;
+          const { sex: optSex } = option;
+          let disableFu = (calls.length == 0 && optSex == 1) || currSex == 1;
+          let disableQi = (calls.length == 0 && optSex == 0) || currSex == 0;
+          let disabled = (txt == '夫' && disableFu) || (txt == '妻' && disableQi);
           return (
             <button
               key={val}
@@ -206,6 +215,7 @@ export default function Relationship() {
               onClick={handleCallClick}
               className="btn"
               data-call={val}
+              data-sex={sex}
             >
               {txt}
             </button>
