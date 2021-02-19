@@ -203,7 +203,7 @@ export default function Relationship() {
       </div>
       <div className="btns">
         {Calls.map((c) => {
-          const { txt, val, sex, www2 } = c;
+          const { txt, val, sex, ee } = c;
           const { sex: optSex } = option;
           let disableFu = (calls.length == 0 && optSex == 1) || currSex == 1;
           let disableQi = (calls.length == 0 && optSex == 0) || currSex == 0;
