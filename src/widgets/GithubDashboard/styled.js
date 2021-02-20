@@ -2,13 +2,10 @@ import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
   font-size: 0.12rem;
-  overflow: scroll;
-  /* overscroll-behavior: contain; */
+  overflow: auto;
   height: 100%;
   padding: 0.1rem;
   display: flex;
-  /* position: relative; */
-  /* overflow: hidden; */
   .auth {
     position: absolute;
     top: 0.1rem;
@@ -34,9 +31,7 @@ const StyledWrapper = styled.div`
     }
   }
   .list {
-    /* list-style: none; */
     height: 100%;
-    /* overflow: scroll; */
     display: flex;
     flex-wrap: wrap;
   }
