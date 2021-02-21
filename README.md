@@ -4,7 +4,12 @@
 
 ## 是什么
 
-一个类似苹果小组件的 Web 版的小组件库，实质上就是一个站点。
+一个类似苹果小组件的 Web 版的小组件库，目前有两个版本：
+
+- 网站版：[http://nicegoodthings.com/](http://nicegoodthings.com/)
+- 谷歌浏览器插件版：[chrome web store](https://chrome.google.com/webstore/detail/%E6%9C%89%E7%82%B9%E4%B8%9C%E8%A5%BF-portal%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en&authuser=1)
+
+> 通过 chrome web store 安装插件需要科学上网，如果条件不允许，可以去右侧 [Release](https://github.com/Privoce/Portal-Lite-China/releases)下载 zip 包本地安装。（需打开开发者模式，参考教程：[在谷歌浏览器 chrome 中离线安装.crx 扩展程序的三种方法](http://www.cnplugins.com/tool/three-methods-to-install-crx.html)）
 
 ## 特性
 
@@ -106,7 +111,7 @@
 
 ## 迭代计划
 
-- 浏览器插件化：赋能更多的可能性
+- ~~浏览器插件化：赋能更多的可能性~~
 - 个人中心-账号体系
 - ~~本地数据导出与导入~~
 - 小组件开源方案
