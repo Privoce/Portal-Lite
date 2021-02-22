@@ -25,8 +25,10 @@ const StyledWrapper = styled.section`
     border-radius: 0.04rem;
     /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
     width: fit-content;
+    max-height: 90vh;
     max-width: 90vw;
     padding-top: 0.2rem;
+    overflow: auto;
     .widgets {
       /* border-bottom: 1px solid #efefef; */
       margin-bottom: 0.2rem;
@@ -115,6 +117,13 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
     addWidget(w);
     // resetModalVisible();
   };
+  const handleMaskClick = (evt) => {
+    console.log({ evt });
+    let { target } = evt;
+    if (target.classList.contains('wrapper')) {
+      resetModalVisible();
+    }
+  };
   const taggedWidgets = Object.entries(Widgets).map(([key, widget]) => {
     const added = addedWidgets.includes(key);
     return { key, added, ...widget };
@@ -123,11 +132,11 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
   const unAddedWidgets = taggedWidgets.filter((w) => !w.added);
   return (
     <ModalWrapper>
-      <StyledWrapper>
+      <StyledWrapper className="wrapper" onClick={handleMaskClick}>
         <div className="modal">
           {addedItems.length ? (
             <div className="widgets">
-              <h2 className="title">已添加小组件 🛍️</h2>
+              <h2 className="title">已添加的小组件 🛍️</h2>
               <ul className="list added">
                 {addedItems.map(({ key, title, description }) => {
                   return (
@@ -141,7 +150,7 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
           ) : null}
           {unAddedWidgets.length ? (
             <div className="widgets">
-              <h2 className="title">未添加小组件 🛒</h2>
+              <h2 className="title">未添加的小组件 🛒</h2>
               <ul className="list">
                 {unAddedWidgets.map(
                   ({ key, title, description, screenshot, created, updated, added }) => {
