@@ -1,12 +1,12 @@
 {
-  "name": "有点东西 Portal个人主页 ",
+  "name": "Widget Portal",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
-  "permissions": [],
-  "content_security_policy": "script-src 'self' 'sha256-Ex00FwOehjspvQrnhZeD0fLw8G/NrNGuVNz9f6e2aLM='; object-src 'self'; img-src https: data: http: chrome:;",
+  "permissions": ["tabs", "https://nicegoodthings.com/*"],
+  "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
   "icons": {
     "16": "/favicon-16x16.png",
     "32": "/favicon-32x32.png",
@@ -15,5 +15,19 @@
   },
   "chrome_url_overrides": {
     "newtab": "/index.html"
-  }
+  },
+  "background": {
+    "scripts": ["./crx/bg.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://nicegoodthings.com/*"],
+      "js": ["./crx/content_script.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "快速添加导航",
+    "default_popup": "./crx/popup/index.html"
+  },
+  "options_page": "./crx/option.html"
 }
