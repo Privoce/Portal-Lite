@@ -3961,10 +3961,10 @@ darkmode-js@^1.5.7:
   resolved "https://registry.npm.taobao.org/darkmode-js/download/darkmode-js-1.5.7.tgz#b260ff671d67e021446ac8bade458e08338f6410"
   integrity sha1-smD/Zx1n4CFEasi63kWOCDOPZBA=
 
-date-fns-tz@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npm.taobao.org/date-fns-tz/download/date-fns-tz-1.1.1.tgz#2e0dfcc62cc5b7b5fa7ea620f11a5e7f63a7ed75"
-  integrity sha1-Lg38xizFt7X6fqYg8Rpef2On7XU=
+date-fns-tz@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npm.taobao.org/date-fns-tz/download/date-fns-tz-1.1.2.tgz#893c73026e20a8ae1bfb0c565dd2972df723776e"
+  integrity sha1-iTxzAm4gqK4b+wxWXdKXLfcjd24=
 
 date-fns@^2.17.0:
   version "2.17.0"
@@ -4470,10 +4470,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-prettier@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.npm.taobao.org/eslint-config-prettier/download/eslint-config-prettier-7.2.0.tgz#f4a4bd2832e810e8cc7c1411ec85b3e85c0c53f9"
-  integrity sha1-9KS9KDLoEOjMfBQR7IWz6FwMU/k=
+eslint-config-prettier@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npm.taobao.org/eslint-config-prettier/download/eslint-config-prettier-8.0.0.tgz#024d661444319686c588c8849c8da33815dbdb1c"
+  integrity sha1-Ak1mFEQxlobFiMiEnI2jOBXb2xw=
 
 eslint-plugin-react-hooks@^4.2.0:
   version "4.2.0"
@@ -5500,10 +5500,10 @@ human-signals@^1.1.1:
   resolved "https://registry.npm.taobao.org/human-signals/download/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha1-xbHNFPUK6uCatsWf5jujOV/k36M=
 
-husky@^5.0.9:
-  version "5.0.9"
-  resolved "https://registry.npm.taobao.org/husky/download/husky-5.0.9.tgz#6d38706643d66ed395bcd4ee952d02e3f15eb3a3"
-  integrity sha1-bThwZkPWbtOVvNTulS0C4/Fes6M=
+husky@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.npm.taobao.org/husky/download/husky-5.1.0.tgz#68b1148523acc838af0655ead71bf4671adb9f93"
+  integrity sha1-aLEUhSOsyDivBlXq1xv0Zxrbn5M=
 
 iconv-lite@0.4.24:
   version "0.4.24"
