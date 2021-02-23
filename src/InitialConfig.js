@@ -6,9 +6,8 @@ import BaiduTongji from './component/BaiduTongji';
 function gtag() {
   window.dataLayer.push(arguments);
 }
-const isExt = process.env.REACT_APP_CHROME_EXT == 'true';
 const isProd = process.env.NODE_ENV == 'production';
-const loadCollector = isProd && !isExt;
+const loadCollector = isProd && !window.IS_CHROME_EXT;
 export default function InitialConfig() {
   useEffect(() => {
     // set req timeout

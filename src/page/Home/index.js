@@ -11,7 +11,10 @@ import { useWidgets } from '../../hooks';
 
 // import Account from '../../component/Account';
 const Setting = lazy(() =>
-  import(/* webpackChunkName: "aside.setting" */ '../../component/Setting/index')
+  import(/* webpackChunkName: "aside.setting" */ '../../component/Setting')
+);
+const Profile = lazy(() =>
+  import(/* webpackChunkName: "aside.profile" */ '../../component/Profile')
 );
 
 const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ './WidgetSection'));
@@ -25,7 +28,7 @@ export default function Home() {
   };
   return (
     <Suspense fallback={<Loading />}>
-      {process.env.REACT_APP_CHROME_EXT != 'true' && (
+      {window.IS_CHROME_EXT && (
         <ForkMeOnGithub
           repo="https://github.com/Privoce/Portal-Lite-China"
           colorBackground="#4e6ef3"
@@ -34,6 +37,7 @@ export default function Home() {
         />
       )}
 
+      <Profile />
       <Setting />
       <StyledWrapper>
         {/* <Account /> */}

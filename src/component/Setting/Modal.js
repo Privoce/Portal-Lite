@@ -69,9 +69,9 @@ const StyledWrapper = styled.section`
           &.reset {
             background-color: #f88070;
           }
-          &.feedback {
+          /* &.feedback {
             background-color: #2b7cfb;
-          }
+          } */
           &.import {
             position: relative;
             cursor: pointer;

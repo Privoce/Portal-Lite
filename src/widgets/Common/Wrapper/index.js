@@ -13,7 +13,7 @@ const SizeMap = {
   large: '大',
   mini: '小'
 };
-const isExt = process.env.REACT_APP_CHROME_EXT == 'true';
+const isExt = window.IS_CHROME_EXT;
 export default function WidgetWrapper({
   type = 'widget',
   enableSetting = false,

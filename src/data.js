@@ -273,7 +273,7 @@ let Widgets = {
   }
 };
 // 过滤掉不适合在浏览器扩展里加载的小组件
-if (process.env.REACT_APP_CHROME_EXT == 'true') {
+if (window.IS_CHROME_EXT) {
   Widgets = Object.fromEntries(
     Object.entries(Widgets).filter(([, obj]) => {
       return !['script'].includes(obj.loadType);
