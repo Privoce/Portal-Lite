@@ -2,10 +2,10 @@
   "name": "Widget Portal",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
-  "permissions": ["tabs", "https://nicegoodthings.com/*"],
+  "permissions": ["tabs", "https://nicegoodthings.com/*", "https://api.yangerxiao.com/*"],
   "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
   "icons": {
     "16": "/favicon-16x16.png",
