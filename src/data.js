@@ -109,15 +109,14 @@ let Widgets = {
     updated: '2020-12-28'
   },
   'google-calendar': {
-    preset: true,
     title: '谷歌日历',
-    description: '快捷管你您的谷歌日历日程',
+    description: '快捷查看您的谷歌日历日程',
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <GoogleCalendar />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
-    created: '2021-02-27',
-    updated: '2021-02-27'
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
+    created: '2021-02-24',
+    updated: '2021-02-24'
   },
   weather: {
     loadType: 'script',

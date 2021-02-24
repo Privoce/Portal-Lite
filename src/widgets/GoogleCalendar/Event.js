@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const StyledEvent = styled.li`
   font-size: 0.16rem;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.05rem;
   width: 99%;
 
