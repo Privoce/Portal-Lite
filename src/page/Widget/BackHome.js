@@ -5,7 +5,9 @@ import styled from 'styled-components';
 const StyledLink = styled.div`
   cursor: pointer;
   margin-top: 0.5rem;
-  position: relative;
+  position: fixed;
+  right: 0.1rem;
+  bottom: 0.1rem;
   display: flex;
   width: 0.5rem;
   height: 0.5rem;

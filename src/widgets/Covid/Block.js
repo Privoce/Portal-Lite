@@ -24,13 +24,13 @@ const StyledWrapper = styled.div`
     padding-bottom: 0.1rem;
     font-size: 0.24rem;
     font-weight: 800;
-    transition: all 0.6s ease-in;
+    transition: all 0.5s ease-in;
   }
   .title {
     padding-bottom: 0.14rem;
     color: #222;
     font-size: 0.18rem;
-    transition: all 0.6s ease-in;
+    transition: all 0.5s ease-in;
   }
   &.now-confirmed {
     background-color: #fdf1f1;

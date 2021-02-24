@@ -28,7 +28,7 @@ export default function Home() {
   };
   return (
     <Suspense fallback={<Loading />}>
-      {window.IS_CHROME_EXT && (
+      {!window.IS_CHROME_EXT && (
         <ForkMeOnGithub
           repo="https://github.com/Privoce/Portal-Lite-China"
           colorBackground="#4e6ef3"
@@ -36,7 +36,7 @@ export default function Home() {
           side="left"
         />
       )}
-      {/* 暂时只在web端加载 */}
+      {/* 暂时只在web端加载profile */}
       {!window.IS_CHROME_EXT && <Profile />}
       <Setting />
       <StyledWrapper>

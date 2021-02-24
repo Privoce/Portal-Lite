@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+
 import useAuthing from './useAuthing';
 import LogoIcon from '../../asset/img/icon.logo.png';
 
@@ -37,6 +39,7 @@ const StyledWrapper = styled.section`
 
 export default function AuthingPage() {
   const { localKey } = useAuthing();
+  const history = useHistory();
   const [isExt] = useState(window.IS_CHROME_EXT);
   useEffect(() => {
     let code = new URLSearchParams(location.search).get('code');
@@ -49,7 +52,7 @@ export default function AuthingPage() {
       }, 2000);
     } else {
       setTimeout(() => {
-        location.href = '/';
+        history.push('/');
       }, 2000);
     }
   }, []);

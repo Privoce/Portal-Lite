@@ -11,7 +11,7 @@
 # production
 /build
 /crx
-/crx.zip
+/crx*.zip
 
 # misc
 /.idea
