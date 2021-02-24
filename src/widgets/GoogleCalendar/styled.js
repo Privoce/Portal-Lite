@@ -31,6 +31,24 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    .item {
+      width: 100%;
+      position: relative;
+      > .title {
+        font-size: 0.2rem;
+        color: #ccc;
+        margin-top: 0.2rem;
+        padding-bottom: 0.1rem;
+        position: sticky;
+        top: 0;
+        background: #fff;
+      }
+      > .evts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   }
 `;
 

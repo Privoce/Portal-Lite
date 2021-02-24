@@ -109,8 +109,8 @@ let Widgets = {
     updated: '2020-12-28'
   },
   'google-calendar': {
-    title: '谷歌日历',
-    description: '快捷查看您的谷歌日历日程',
+    title: '谷歌行事历',
+    description: '快捷查看您的谷歌行事历',
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <GoogleCalendar />,
