@@ -27,13 +27,23 @@ const StyledWrapper = styled.div`
     padding: 0.11rem 0.46rem;
   }
 `;
-export default function GoAuth({ authLink = '' }) {
+export default function GoAuth({ auth = '' }) {
+  let isF = typeof auth === 'function';
+  const handleClick = () => {
+    auth();
+  };
   return (
     <StyledWrapper>
       <p className="tip">暂未授权，点击进行授权</p>
-      <a className="btn" href={authLink} target="_blank" rel="noopener noreferrer">
-        去授权
-      </a>
+      {isF ? (
+        <button className="btn" onClick={handleClick}>
+          去授权
+        </button>
+      ) : (
+        <a className="btn" href={auth} target="_blank" rel="noopener noreferrer">
+          去授权
+        </a>
+      )}
     </StyledWrapper>
   );
 }

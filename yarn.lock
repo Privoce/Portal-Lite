@@ -5101,6 +5101,11 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+gapi-script@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/gapi-script/download/gapi-script-1.1.0.tgz#4b15cf019f3e8b146206df107f72ead952ea68d6"
+  integrity sha1-SxXPAZ8+ixRiBt8Qf3Lq2VLqaNY=
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.2"
   resolved "https://registry.npm.taobao.org/gensync/download/gensync-1.0.0-beta.2.tgz?cache=0&sync_timestamp=1603829667876&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgensync%2Fdownload%2Fgensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"

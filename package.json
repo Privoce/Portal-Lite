@@ -33,6 +33,7 @@
     "file-saver": "^2.0.5",
     "fork-me-on-github": "^1.0.6",
     "fs-extra": "^9.1.0",
+    "gapi-script": "^1.1.0",
     "graphql": "^15.5.0",
     "html-webpack-plugin": "4.5.1",
     "identity-obj-proxy": "3.0.0",

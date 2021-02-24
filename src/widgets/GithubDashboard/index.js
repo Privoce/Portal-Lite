@@ -51,7 +51,7 @@ export default function GithubDashboard() {
     }
   }, [token, loadUserData]);
   console.log('user data', { data });
-  if (!token) return <GoAuth authLink={authLink} />;
+  if (!token) return <GoAuth auth={authLink} />;
   if (loading || !data) return <Loading />;
   const {
     viewer: {

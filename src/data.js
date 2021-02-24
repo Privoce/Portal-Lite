@@ -12,6 +12,9 @@ const Covid = lazy(() => import(/* webpackChunkName: "widget.covid" */ './widget
 const LifeProgress = lazy(() =>
   import(/* webpackChunkName: "widget.life.progress" */ './widgets/LifeProgress')
 );
+const GoogleCalendar = lazy(() =>
+  import(/* webpackChunkName: "widget.google.calendar" */ './widgets/GoogleCalendar')
+);
 const USCovid = lazy(() => import(/* webpackChunkName: "widget.uscovid" */ './widgets/USCovid'));
 const TimezoneClock = lazy(() =>
   import(/* webpackChunkName: "widget.timezone.clock" */ './widgets/TimezoneClock')
@@ -104,6 +107,17 @@ let Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
     created: '2020-12-17',
     updated: '2020-12-28'
+  },
+  'google-calendar': {
+    preset: true,
+    title: '谷歌日历',
+    description: '快捷管你您的谷歌日历日程',
+    defaultSize: 'large',
+    sizes: ['middle', 'large'],
+    comp: <GoogleCalendar />,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
+    created: '2021-02-27',
+    updated: '2021-02-27'
   },
   weather: {
     loadType: 'script',
