@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { gapi, loadAuth2 } from 'gapi-script';
-import { format, formatRFC3339 } from 'date-fns';
+import { format } from 'date-fns';
 
 import Loading from '../Common/Loading';
 import GoAuth from '../Common/GoAuth';
@@ -86,9 +86,7 @@ export default function MyAgenda() {
               let { id } = items.find((it) => it.primary);
               gapi.client
                 .request({
-                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${formatRFC3339(
-                    new Date()
-                  )}`
+                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}`
                 })
                 .then((resp) => {
                   console.log({ resp });

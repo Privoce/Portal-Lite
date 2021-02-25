@@ -17,7 +17,8 @@ const StyledEvent = styled.li`
   &.today {
     color: #fff;
     background-color: #5c46e3;
-    .link .content .desc {
+    .link .content .desc,
+    .link .content .title {
       color: #eee;
     }
   }
