@@ -13,13 +13,15 @@ const scopes = 'https://www.googleapis.com/auth/calendar';
 window.GOOGLE_AUTH = null;
 const groupEvents = (evts) => {
   let items = evts.map((evt) => {
-    const { start, end, summary, description, htmlLink } = evt;
+    const { start, end, summary, description, htmlLink, attachments, location } = evt;
     return {
       htmlLink,
-      start: start.dateTime,
-      end: end.dateTime,
+      start: start.dateTime || start.date,
+      end: end.dateTime || end.date,
       summary,
-      description
+      description,
+      attachments,
+      location
     };
   });
   let group = {};
@@ -83,7 +85,7 @@ export default function GoogleCalendar() {
               let { id } = items.find((it) => it.primary);
               gapi.client
                 .request({
-                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true`
+                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30`
                 })
                 .then((resp) => {
                   console.log({ resp });
@@ -112,7 +114,7 @@ export default function GoogleCalendar() {
   };
   const handleTodayClick = () => {
     let list = listEle.current;
-    list.querySelector('.today').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    list.querySelector('.today').scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
   if (!token) return <GoAuth auth={getGoogleAuth} />;
   if (loading || !groups) return <Loading />;
