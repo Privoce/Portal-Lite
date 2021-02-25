@@ -1,6 +1,4 @@
 import { lazy } from 'react';
-import Navs from './widgets/Navs/SwiperTabs/nav_data';
-import AllTools from './widgets/Navs/SwiperTabs/tool_data';
 const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
 const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
 const WeiboHot = lazy(() =>
@@ -12,8 +10,8 @@ const Covid = lazy(() => import(/* webpackChunkName: "widget.covid" */ './widget
 const LifeProgress = lazy(() =>
   import(/* webpackChunkName: "widget.life.progress" */ './widgets/LifeProgress')
 );
-const GoogleCalendar = lazy(() =>
-  import(/* webpackChunkName: "widget.google.calendar" */ './widgets/GoogleCalendar')
+const MyAgenda = lazy(() =>
+  import(/* webpackChunkName: "widget.my.agenda" */ './widgets/MyAgenda')
 );
 const USCovid = lazy(() => import(/* webpackChunkName: "widget.uscovid" */ './widgets/USCovid'));
 const TimezoneClock = lazy(() =>
@@ -48,16 +46,14 @@ const BingDailyPicture = lazy(() =>
 const Calc = lazy(() => import(/* webpackChunkName: "widget.calc" */ './widgets/Calc'));
 const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './widgets/YinNote'));
 
-const Webapps = Navs[0].items;
-const Tools = AllTools[0].items;
 let Widgets = {
   searchs: {
+    preset: true,
     type: 'search',
     title: '搜索引擎',
     description: '百度、谷歌、必应',
     enableSetting: true,
     compact: true,
-    preset: true,
     disableScroll: true,
     comp: <Searchs />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png',
@@ -65,11 +61,11 @@ let Widgets = {
     updated: '2020-12-24'
   },
   navs: {
+    preset: true,
     type: 'nav',
     title: '导航',
     description: '页面导航集合地',
     compact: true,
-    preset: true,
     disableScroll: true,
     comp: <NavBlock />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png',
@@ -98,7 +94,6 @@ let Widgets = {
     updated: '2021-02-02'
   },
   'wb-hot': {
-    preset: true,
     title: '微博热搜',
     description: '微博实时热搜，你想了解的，都在这里！',
     defaultSize: 'large',
@@ -108,12 +103,13 @@ let Widgets = {
     created: '2020-12-17',
     updated: '2020-12-28'
   },
-  'google-calendar': {
-    title: '谷歌行事历',
-    description: '快捷查看您的谷歌行事历',
+  'my-agenda': {
+    preset: true,
+    title: '我的日程',
+    description: '快捷查看您的日常日程，目前仅支持谷歌日历',
     defaultSize: 'large',
     sizes: ['middle', 'large'],
-    comp: <GoogleCalendar />,
+    comp: <MyAgenda />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
     created: '2021-02-24',
     updated: '2021-02-24'
@@ -134,11 +130,9 @@ let Widgets = {
     title: '👨‍👩‍👧‍👦 亲戚关系计算器',
     description:
       '放假回家过年时，往往会搞不清楚哪位亲戚应该喊什么称呼，很是尴尬。亲戚关系计算器帮你避免这种尴尬！',
-    // enableSetting: true,
     defaultSize: 'large',
     sizes: ['large'],
     compact: true,
-    // preset: true,
     disableScroll: true,
     comp: <RelationshipCalc />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.relationship.calc.png',
@@ -149,7 +143,7 @@ let Widgets = {
     description: '便捷查看多个时区时间，最多支持添加三个。',
     enableSetting: true,
     compact: true,
-    preset: true,
+    // preset: true,
     disableScroll: true,
     comp: <TimezoneClock />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png',
@@ -173,7 +167,6 @@ let Widgets = {
     description: '萌宠图：猫猫狗狗以及可爱的小鸟',
     enableSetting: true,
     compact: true,
-    // preset: true,
     disableScroll: true,
     comp: <PetPics />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.pet.pics.png',
@@ -214,7 +207,6 @@ let Widgets = {
   },
 
   'bing-daily-pic': {
-    // preset: true,
     title: '必应壁纸',
     description: '快速浏览与下载必应高清壁纸',
     compact: true,
@@ -225,22 +217,17 @@ let Widgets = {
     updated: '2021-01-27'
   },
   'douban-topic-hot': {
-    // preset: true,
     title: '豆瓣24小时话题',
     description: '直达豆瓣24小时热门话题',
-    // compact: true,
-    // disableScroll: true,
     comp: <DoubanHotTopics />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png',
     created: '2021-01-19'
   },
   'today-in-history': {
-    // preset: true,
     title: '历史上的今天',
     description: '历史上的今天，发生了哪些著名事件呢？',
     compact: true,
     sizes: ['middle', 'large'],
-    // disableScroll: true,
     comp: <TodayInHistory />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',
     created: '2021-03-03'
@@ -293,4 +280,4 @@ if (window.IS_CHROME_EXT) {
     })
   );
 }
-export { Webapps, Tools, Widgets };
+export { Widgets };

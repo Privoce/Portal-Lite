@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Webapps } from '../../data';
+// import Navs from './SwiperTabs/nav_data';
 import { useWidgetSettings } from '../../hooks';
 
 // 导航
 const useNavData = (widgetName = '') => {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const initialData = getWidgetSetting({ name: widgetName }) || Webapps;
+  const initialData = getWidgetSetting({ name: widgetName }) || [];
   const [data, setData] = useState(initialData);
   const updateNavs = (list) => {
     setData(list);

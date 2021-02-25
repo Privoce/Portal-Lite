@@ -92,11 +92,9 @@ export default function WidgetWrapper({
           </>
         </ErrorBoundary>
       </div>
-      {/* {type == 'widget' && ( */}
       <div className="setting" onClick={toggleSettingListVisible}>
         <IconThreeDots />
       </div>
-      {/* )} */}
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {enableSetting && (
@@ -104,8 +102,6 @@ export default function WidgetWrapper({
               设置
             </li>
           )}
-          {/* )} */}
-          {/* )} */}
           {!standalone && (
             <li className="item" onClick={handleRemove.bind(null, title)}>
               移除
