@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { gapi, loadAuth2 } from 'gapi-script';
-import { format } from 'date-fns';
+import { format, formatRFC3339 } from 'date-fns';
 
 import Loading from '../Common/Loading';
 import GoAuth from '../Common/GoAuth';
@@ -33,7 +33,8 @@ const groupEvents = (evts) => {
   });
   return group;
 };
-export default function GoogleCalendar() {
+const calendarListAPI = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
+export default function MyAgenda() {
   const listEle = useRef(null);
   const { token, updateToken } = useToken();
   // const [events, setEvents] = useState(null);
@@ -73,7 +74,7 @@ export default function GoogleCalendar() {
         .then(() => {
           // 3. Initialize and make the API request.
           return gapi.client.request({
-            path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList'
+            path: calendarListAPI
           });
         })
         .then(
@@ -85,7 +86,9 @@ export default function GoogleCalendar() {
               let { id } = items.find((it) => it.primary);
               gapi.client
                 .request({
-                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30`
+                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${formatRFC3339(
+                    new Date()
+                  )}`
                 })
                 .then((resp) => {
                   console.log({ resp });

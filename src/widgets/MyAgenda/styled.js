@@ -42,13 +42,13 @@ const StyledWrapper = styled.div`
         position: sticky;
         top: 0;
         background: #fff;
-        z-index: 9;
+        z-index: 2;
       }
       > .evts {
         display: flex;
         flex-direction: column;
         align-items: center;
-        z-index: 8;
+        z-index: 1;
       }
     }
   }
