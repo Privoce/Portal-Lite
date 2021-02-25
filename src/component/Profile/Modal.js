@@ -48,7 +48,18 @@ const StyledWrapper = styled.section`
       tfoot {
         margin-top: 0.2rem;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
+        align-items: center;
+        .logout_btn {
+          display: flex;
+          background-color: #f88070;
+          color: #fff;
+          font-size: 0.18rem;
+          border-radius: 4px;
+          border: 1px solid #fff;
+          padding: 0.1rem 0.15rem;
+          align-items: center;
+        }
       }
     }
     .close {
@@ -64,9 +75,16 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function Modal({ closeModal, data = {} }) {
+export default function Modal({ closeModal, updateUserInfo, data = {} }) {
   const { username, phone, email, photo } = data;
   console.log({ data });
+  const handleLogout = () => {
+    if (confirm('确定退出？')) {
+      window.AUTHING_CLIENT.logout();
+      updateUserInfo(null);
+      closeModal();
+    }
+  };
   return (
     <ModalWrapper>
       <StyledWrapper>
@@ -81,7 +99,7 @@ export default function Modal({ closeModal, data = {} }) {
               </tr>
               <tr>
                 <td>用户名</td>
-                <td>{username}</td>
+                <td>{username || '暂未设置'}</td>
               </tr>
               {phone && (
                 <tr>
@@ -100,6 +118,9 @@ export default function Modal({ closeModal, data = {} }) {
               <a target="_blank" href="https://portal-lite-china.authing.cn/u">
                 编辑资料
               </a>
+              <button className="logout_btn" onClick={handleLogout}>
+                退出登录
+              </button>
             </tfoot>
           </table>
           <img src={IconClose} onClick={closeModal} className="close" />

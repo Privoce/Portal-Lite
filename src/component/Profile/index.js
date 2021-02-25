@@ -13,10 +13,20 @@ export default function Profile() {
   // const { username } = userInfo || {};
   return (
     <>
-      <AuthIcon updateUserInfo={setUserInfo} openModal={toggleSettingModalVisible} />
+      <AuthIcon
+        user={userInfo}
+        updateUserInfo={setUserInfo}
+        openModal={toggleSettingModalVisible}
+      />
       {/* <StyledWrapper onClick={toggleSettingModalVisible}>
       </StyledWrapper> */}
-      {visible ? <Modal data={userInfo} closeModal={toggleSettingModalVisible} /> : null}
+      {visible ? (
+        <Modal
+          data={userInfo}
+          closeModal={toggleSettingModalVisible}
+          updateUserInfo={setUserInfo}
+        />
+      ) : null}
     </>
   );
 }

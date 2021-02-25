@@ -29,7 +29,7 @@ export default function InitialConfig() {
       console.log('全局错误捕捉', evt);
       const { target } = evt;
       // 处理图片加载出错
-      if (target.tagName.toUpperCase() === 'IMG') {
+      if (target?.tagName?.toUpperCase() === 'IMG') {
         target.src =
           target.dataset.default ||
           'https://gitee.com/zyanggc/oss/raw/master/works/loading.error.png';
