@@ -36,8 +36,7 @@ export default function Home() {
           side="left"
         />
       )}
-      {/* 暂时只在web端加载profile */}
-      {!window.IS_CHROME_EXT && <Profile />}
+      <Profile />
       <Setting />
       <StyledWrapper>
         {/* <Account /> */}
