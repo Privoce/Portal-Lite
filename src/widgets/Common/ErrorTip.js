@@ -7,7 +7,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fdf1f1;
+  background: ${({ bg }) => bg};
   flex-direction: column;
   .icon {
     margin-top: -0.2rem;
@@ -18,9 +18,9 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default function ErrorTip({ tip = '接口出错啦~~~' }) {
+export default function ErrorTip({ tip = '接口出错啦~~~', bg = '#fdf1f1' }) {
   return (
-    <StyledWrapper>
+    <StyledWrapper bg={bg}>
       <svg
         t="1609919540489"
         className="icon"

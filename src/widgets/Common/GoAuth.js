@@ -22,12 +22,15 @@ const StyledWrapper = styled.div`
     font-size: 0.16rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
-    color: #ffffff;
+    color: #fff;
     line-height: 0.22rem;
     padding: 0.11rem 0.46rem;
+    &[disabled] {
+      background: #aaa;
+    }
   }
 `;
-export default function GoAuth({ auth = '' }) {
+export default function GoAuth({ txt = '去授权', auth = '', disabled = false }) {
   let isF = typeof auth === 'function';
   const handleClick = () => {
     auth();
@@ -36,12 +39,12 @@ export default function GoAuth({ auth = '' }) {
     <StyledWrapper>
       <p className="tip">暂未授权，点击进行授权</p>
       {isF ? (
-        <button className="btn" onClick={handleClick}>
-          去授权
+        <button disabled={disabled} className="btn" onClick={handleClick}>
+          {txt}
         </button>
       ) : (
         <a className="btn" href={auth} target="_blank" rel="noopener noreferrer">
-          去授权
+          {txt}
         </a>
       )}
     </StyledWrapper>

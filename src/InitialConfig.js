@@ -26,7 +26,7 @@ export default function InitialConfig() {
       hotjar.initialize(2178003, 6);
     }
     const handleError = (evt) => {
-      console.log('全局错误捕捉', evt);
+      console.log('全局图片错误捕捉', evt);
       const { target } = evt;
       // 处理图片加载出错
       if (target?.tagName?.toUpperCase() === 'IMG') {
@@ -36,7 +36,9 @@ export default function InitialConfig() {
       }
     };
     window.addEventListener('error', handleError, true);
-    return () => {};
+    return () => {
+      window.removeEventListener('error', handleError, true);
+    };
   }, []);
   return <>{loadCollector && <BaiduTongji />}</>;
 }

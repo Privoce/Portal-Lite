@@ -1,151 +1,92 @@
-import { useEffect, useState, useRef } from 'react';
-import { gapi, loadAuth2 } from 'gapi-script';
+import { useRef } from 'react';
 import { format } from 'date-fns';
 
-import Loading from '../Common/Loading';
+import IconUpdate from '../Common/Icons/Update';
 import GoAuth from '../Common/GoAuth';
+import ErrorTip from '../Common/ErrorTip';
 import StyledWrapper from './styled';
-import useToken from './useToken';
+import useGoogleAuth from './useGoogleAuth';
 import Event from './Event';
+import AddEvent from './AddEvent';
 
-const cid = process.env.REACT_APP_GOOGLE_CALENDAR_CID;
-const scopes = 'https://www.googleapis.com/auth/calendar';
-window.GOOGLE_AUTH = null;
-const groupEvents = (evts) => {
-  let items = evts.map((evt) => {
-    const { start, end, summary, description, htmlLink, attachments, location } = evt;
-    return {
-      htmlLink,
-      start: start.dateTime || start.date,
-      end: end.dateTime || end.date,
-      summary,
-      description,
-      attachments,
-      location
-    };
-  });
-  let group = {};
-  items.forEach((itm) => {
-    let { start } = itm;
-    let dateKey = format(new Date(start), 'PPPP');
-    let tmp = group[dateKey];
-    group[dateKey] = tmp ? [...tmp, itm] : [itm];
-  });
-  return group;
-};
-const calendarListAPI = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
 export default function MyAgenda() {
   const listEle = useRef(null);
-  const { token, updateToken } = useToken();
-  // const [events, setEvents] = useState(null);
-  const [groups, setGroups] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const wtf = async () => {
-      window.GOOGLE_AUTH = await loadAuth2(gapi, cid, scopes);
-      // let inst = auth2.getAuthInstance();
-      window.GOOGLE_AUTH.isSignedIn.listen((isSignIn) => {
-        console.log({ isSignIn });
-        if (isSignIn) {
-          updateToken(1);
-        } else {
-          updateToken('');
-        }
-      });
-      let user = window.GOOGLE_AUTH.currentUser.get();
-      let isAuthorized = user.hasGrantedScopes(scopes);
-      if (isAuthorized) {
-        // auth2.disconnect();
-        console.log('authed!');
-        updateToken(1);
-      }
-    };
-    wtf();
-  }, []);
-  useEffect(() => {
-    function start() {
-      // 2. Initialize the JavaScript client library.
-      gapi.client
-        .init({
-          // clientId and scope are optional if auth is not required.
-          clientId: cid,
-          scope: scopes
-        })
-        .then(() => {
-          // 3. Initialize and make the API request.
-          return gapi.client.request({
-            path: calendarListAPI
-          });
-        })
-        .then(
-          (response) => {
-            console.log({ response });
-            const { status, result } = response;
-            if (status == 200) {
-              const { items } = result;
-              let { id } = items.find((it) => it.primary);
-              gapi.client
-                .request({
-                  path: `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}`
-                })
-                .then((resp) => {
-                  console.log({ resp });
-                  const { status, result } = resp;
-                  if (status == 200) {
-                    const { items } = result;
-                    setGroups(groupEvents(items));
-                    setLoading(false);
-                  }
-                });
-            }
-            console.log(response.result);
-          },
-          (reason) => {
-            console.log('Error: ' + reason.result.error.message);
-          }
-        );
-    }
-    if (token) {
-      gapi.load('client', start);
-    }
-  }, [token]);
+  const {
+    auth,
+    signedIn,
+    loading,
+    error,
+    groupEvents,
+    calendars,
+    syncData,
+    addEvent
+  } = useGoogleAuth();
   // 去授权
   const getGoogleAuth = () => {
-    window.GOOGLE_AUTH.signIn();
+    auth.signIn();
+  };
+  const handleSyncData = () => {
+    syncData();
   };
   const handleTodayClick = () => {
-    let list = listEle.current;
-    list.querySelector('.today').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    let todayBlock = listEle.current.querySelector('.today');
+    todayBlock?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
-  if (!token) return <GoAuth auth={getGoogleAuth} />;
-  if (loading || !groups) return <Loading />;
+
+  if (error) return <ErrorTip tip={error} bg="transparent" />;
+  if (!signedIn)
+    return <GoAuth txt={!auth && '初始化中...'} disabled={!auth} auth={getGoogleAuth} />;
   return (
     <StyledWrapper>
       <div className="topbar">
         <div className="today">
-          <button onClick={handleTodayClick} className="btn">
+          <button disabled={loading} onClick={handleTodayClick} className="btn">
             Today
           </button>
-          <span className="date">{new Date().toLocaleDateString()}</span>
+          <span className="date">{format(new Date(), 'PPPP')}</span>
+          <button disabled={loading} onClick={handleSyncData} className="update">
+            <IconUpdate color={loading ? '#aaa' : '#5c4ddf'} bgColor="transparent" />
+          </button>
+          <AddEvent
+            calendar={(calendars || []).find((c) => c.primary == true)}
+            addEvent={addEvent}
+          />
         </div>
         {/* <a className="link" href="http://baidu.com" target="_blank" rel="noopener noreferrer">
           link
         </a> */}
       </div>
-      <ul className="list" ref={listEle}>
-        {Object.entries(groups).map(([dateKey, events]) => {
-          return (
-            <li className="item" key={dateKey}>
-              <h3 className="title">{dateKey}</h3>
-              <ul className="evts">
-                {events.map((evt) => {
-                  return <Event key={evt.summary} data={evt} />;
-                })}
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
+      {loading ? (
+        <div className="loading">正在获取日程数据，请耐心等候...</div>
+      ) : (
+        <ul className="list" ref={listEle}>
+          {Object.entries(groupEvents).map(([dateKey, events]) => {
+            return (
+              <li className="item" key={dateKey}>
+                <h3 className="title">{dateKey}</h3>
+                <ul className="evts">
+                  {events.map((evt) => {
+                    return <Event key={evt.summary} data={evt} />;
+                  })}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {calendars && (
+        <ul className="calendars">
+          {calendars.map((c) => {
+            const { summary, description, id, backgroundColor } = c;
+            return (
+              <li className="calendar" title={description} key={id}>
+                <span className="sqr" style={{ background: backgroundColor }}></span>
+                <span className="title">{summary}</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </StyledWrapper>
   );
 }

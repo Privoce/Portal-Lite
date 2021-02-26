@@ -14,6 +14,7 @@ const StyledEvent = styled.li`
   padding: 0.2rem 0.12rem;
   margin-bottom: 0.15rem;
   position: relative;
+  border-left: 0.14rem solid ${({ borderLeftColor }) => borderLeftColor};
   &.today {
     color: #fff;
     background-color: #5c46e3;
@@ -99,14 +100,26 @@ const getText = (htmlText) => {
   return tmpText;
 };
 export default function Event({ data = mock }) {
-  const { summary, start, end, htmlLink, description, location, attachments = [] } = data;
+  const {
+    isAllDay,
+    backgroundColor,
+    summary,
+    start,
+    end,
+    htmlLink,
+    description,
+    location,
+    attachments = []
+  } = data;
   return (
-    <StyledEvent className={isToday(new Date(start)) && 'today'}>
+    <StyledEvent borderLeftColor={backgroundColor} className={isToday(new Date(start)) && 'today'}>
       <a className="link" href={htmlLink} target="_blank" rel="noopener noreferrer">
-        <div className="time_span">
-          <span className="start">{format(new Date(start), 'p')}</span>
-          <span className="end">{format(new Date(end), 'p')}</span>
-        </div>
+        {!isAllDay && (
+          <div className="time_span">
+            <span className="start">{format(new Date(start), 'p')}</span>
+            <span className="end">{format(new Date(end), 'p')}</span>
+          </div>
+        )}
         <article className="content">
           <h2 className="title">{summary}</h2>
           {description && (
