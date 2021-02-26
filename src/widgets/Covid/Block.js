@@ -4,7 +4,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.34rem 0.1rem;
+  justify-content: space-evenly;
   width: 100%;
   height: 100%;
   &:hover {
@@ -18,16 +18,13 @@ const StyledWrapper = styled.div`
   .compare {
     font-size: 0.1rem;
     color: #7c7c7c;
-    padding-bottom: 0.1rem;
   }
   > .num {
-    padding-bottom: 0.1rem;
     font-size: 0.24rem;
     font-weight: 800;
     transition: all 0.5s ease-in;
   }
   .title {
-    padding-bottom: 0.14rem;
     color: #222;
     font-size: 0.18rem;
     transition: all 0.5s ease-in;

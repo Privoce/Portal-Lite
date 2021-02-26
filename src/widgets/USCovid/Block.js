@@ -4,7 +4,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.15rem 0.1rem;
+  justify-content: space-evenly;
   width: 100%;
   height: 100%;
 
@@ -17,22 +17,20 @@ const StyledWrapper = styled.div`
     }
   }
   .compare {
+    padding-top: 0.1rem;
     font-size: 0.1rem;
     color: #7c7c7c;
-    padding-bottom: 0.1rem;
   }
   > .num {
-    padding-bottom: 0.1rem;
     font-size: 0.24rem;
     font-weight: 800;
-    transition: all 0.6s ease-in;
+    transition: all 0.2s ease-in;
     font-family: sans-serif;
   }
   .title {
-    padding-bottom: 0.14rem;
     color: #222;
     font-size: 0.18rem;
-    transition: all 0.6s ease-in;
+    transition: all 0.2s ease-in;
   }
   &.confirmed {
     background-color: rgba(253, 241, 241);

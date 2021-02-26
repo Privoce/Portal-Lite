@@ -36,6 +36,7 @@ const StyledWrapper = styled.section`
       background: #333;
     }
     .title {
+      color: inherit;
       font-size: 0.25rem;
       font-weight: 800;
       margin-bottom: 0.08rem;

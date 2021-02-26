@@ -18,7 +18,6 @@ const StyledItem = styled.li`
     display: flex;
     border-radius: 50%;
     background-color: #fff;
-    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
     cursor: pointer;
     width: 0.3rem;
     height: 0.3rem;
@@ -45,20 +44,20 @@ const StyledItem = styled.li`
     user-select: none;
     transition: opacity 0.5s;
     .title {
+      color: inherit;
       font-size: 0.24rem;
       font-weight: 800;
       margin-bottom: 0.2rem;
     }
     .desc {
+      color: inherit;
       padding: 0 0.2rem;
       line-height: 1.4;
       font-size: 0.12rem;
     }
   }
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0rem 0.08rem 0.16rem 0rem #ececec,
-      0rem 0.02rem 0.04rem 0rem rgba(213, 213, 213, 0.5), 0rem 0.04rem 0.24rem 0rem #a8a8a8;
+    transform: scale(1.05);
     .intro {
       opacity: 0;
     }

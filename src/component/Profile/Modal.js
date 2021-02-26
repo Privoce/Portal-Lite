@@ -45,21 +45,21 @@ const StyledWrapper = styled.section`
           font-weight: 800;
         }
       }
-      tfoot {
-        margin-top: 0.2rem;
+    }
+    .opts {
+      margin-top: 0.2rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .logout_btn {
         display: flex;
-        justify-content: space-around;
+        background-color: #f88070;
+        color: #fff;
+        font-size: 0.18rem;
+        border-radius: 4px;
+        border: 1px solid #fff;
+        padding: 0.1rem 0.15rem;
         align-items: center;
-        .logout_btn {
-          display: flex;
-          background-color: #f88070;
-          color: #fff;
-          font-size: 0.18rem;
-          border-radius: 4px;
-          border: 1px solid #fff;
-          padding: 0.1rem 0.15rem;
-          align-items: center;
-        }
       }
     }
     .close {
@@ -114,15 +114,15 @@ export default function Modal({ closeModal, updateUserInfo, data = {} }) {
                 </tr>
               )}
             </tbody>
-            <tfoot>
-              <a target="_blank" href="https://portal-lite-china.authing.cn/u">
-                编辑资料
-              </a>
-              <button className="logout_btn" onClick={handleLogout}>
-                退出登录
-              </button>
-            </tfoot>
           </table>
+          <div className="opts">
+            <a target="_blank" href="https://portal-lite-china.authing.cn/u">
+              编辑资料
+            </a>
+            <button className="logout_btn" onClick={handleLogout}>
+              退出登录
+            </button>
+          </div>
           <img src={IconClose} onClick={closeModal} className="close" />
         </div>
       </StyledWrapper>
