@@ -6,6 +6,7 @@ const formatEvents = (evts, calendars) => {
   let items = evts
     .map((evt) => {
       const {
+        id,
         start,
         end,
         summary,
@@ -19,6 +20,7 @@ const formatEvents = (evts, calendars) => {
       let { email } = creator || organizer || {};
       const { backgroundColor, foregroundColor } = calendars.find(({ id }) => id == email) || {};
       return {
+        id,
         foregroundColor,
         backgroundColor,
         calendarId: email,
@@ -215,22 +217,25 @@ const useGoogleAuth = () => {
       method: 'POST',
       params: { text }
     });
+    let data = {};
     if (status == 200) {
-      let { foregroundColor, backgroundColor, id } = calendars.find((c) => c.primary == true);
+      let { foregroundColor, backgroundColor, id: cid } = calendars.find((c) => c.primary == true);
       let { start, end } = result;
-      let { htmlLink, summary } = result;
-      let newGroup = addToGroup(groupEvents, {
+      let { id, htmlLink, summary } = result;
+      data = {
+        id,
         foregroundColor,
         backgroundColor,
-        calendarId: id,
+        calendarId: cid,
         htmlLink,
         start: start?.dateTime || start?.date,
         end: end?.dateTime || end?.date,
         summary
-      });
+      };
+      let newGroup = addToGroup(groupEvents, data);
       setGroupEvents({ ...newGroup });
     }
-    return { success: status == 200, msg: statusText };
+    return { success: status == 200, msg: statusText, data };
   };
   return {
     auth,

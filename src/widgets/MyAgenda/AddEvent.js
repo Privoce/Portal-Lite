@@ -67,13 +67,18 @@ export default function AddEvent({ calendar = null, addEvent }) {
   };
   const handleSubmitEvent = async () => {
     setPending(true);
-    let { success, msg } = await addEvent(input);
+    let {
+      success,
+      msg,
+      data: { id }
+    } = await addEvent(input);
     if (!success) {
       alert(msg);
     }
     setPending(false);
     setPanelVisible(false);
     setInput('');
+    document.querySelector(`#e-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     // console.log({ add_event });
   };
   return (

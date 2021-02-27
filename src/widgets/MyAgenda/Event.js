@@ -101,6 +101,7 @@ const getText = (htmlText) => {
 };
 export default function Event({ data = mock }) {
   const {
+    id,
     isAllDay,
     backgroundColor,
     summary,
@@ -112,7 +113,11 @@ export default function Event({ data = mock }) {
     attachments = []
   } = data;
   return (
-    <StyledEvent borderLeftColor={backgroundColor} className={isToday(new Date(start)) && 'today'}>
+    <StyledEvent
+      id={`e-${id}`}
+      borderLeftColor={backgroundColor}
+      className={isToday(new Date(start)) && 'today'}
+    >
       <a className="link" href={htmlLink} target="_blank" rel="noopener noreferrer">
         {!isAllDay && (
           <div className="time_span">
