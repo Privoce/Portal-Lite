@@ -78,6 +78,8 @@ const StyledWrapper = styled.div`
     margin: 0.05rem 0.21rem;
     border-radius: 5px;
     border: 1px solid #eee;
+    background: #fff;
+    z-index: 99;
     .calendar {
       display: flex;
       margin-right: 0.15rem;
