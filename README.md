@@ -120,3 +120,5 @@
 ## 反馈
 
 有任何问题，欢迎[issue](https://github.com/Privoce/Portal-Lite-China/issues)，或者加开发者微信：yanggc_2013
+
+![weixin QR image(demo/wx.qr.jpg)
