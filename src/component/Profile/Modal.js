@@ -1,6 +1,8 @@
 // import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import { useAuthing } from '@authing/react-ui-components';
+import { appId } from './config';
 import IconClose from '../../asset/img/icon.close.png';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
@@ -47,6 +49,7 @@ const StyledWrapper = styled.section`
       }
     }
     .opts {
+      font-size: 0.2rem;
       margin-top: 0.2rem;
       display: flex;
       justify-content: space-around;
@@ -76,11 +79,12 @@ const StyledWrapper = styled.section`
   }
 `;
 export default function Modal({ closeModal, updateUserInfo, data = {} }) {
+  const { authClient } = useAuthing({ appId });
   const { username, phone, email, photo } = data;
   console.log({ data });
   const handleLogout = () => {
     if (confirm('确定退出？')) {
-      window.AUTHING_CLIENT.logout();
+      authClient.logout();
       updateUserInfo(null);
       closeModal();
     }

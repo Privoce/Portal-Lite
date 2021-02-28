@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-// import AuthingSSO from '@authing/sso';
 import { AuthingGuard } from '@authing/react-ui-components';
 // 引入 css 文件
 import '@authing/react-ui-components/lib/index.min.css';
+import { appId, GuardConfig } from './config';
 const StyledIcon = styled.div`
   cursor: pointer;
   position: fixed;
@@ -37,20 +37,6 @@ const StyledIcon = styled.div`
     }
   }
 `;
-const appId = '6034a70af621af721e5320b9';
-const appDomain = 'portal-lite-china.authing.cn';
-// const auth = new AuthingSSO({
-//   appId,
-//   appDomain
-// });
-const config = {
-  mode: 'modal',
-  isSSO: true,
-  appDomain,
-  logo: 'https://nicegoodthings.com/apple-touch-icon.png',
-  title: 'Portal',
-  socialConnections: ['github']
-};
 export default function AuthIcon({ user, openModal, updateUserInfo }) {
   const [guardVisible, setGuardVisible] = useState(false);
   const handleIconClick = () => {
@@ -64,8 +50,6 @@ export default function AuthIcon({ user, openModal, updateUserInfo }) {
     }
   };
   const handleGuardLoad = async (authClient) => {
-    // 全局使用
-    window.AUTHING_CLIENT = authClient;
     let currUser = await authClient.getCurrentUser();
     // console.log({ authingResp });
     // const { userInfo, session } = authingResp;
@@ -79,9 +63,9 @@ export default function AuthIcon({ user, openModal, updateUserInfo }) {
     setGuardVisible(false);
   };
   const handleReg = (user) => {
-    // console.log('reg user', user);
-    updateUserInfo(user);
-    setGuardVisible(false);
+    console.log('reg user', user);
+    // updateUserInfo(user);
+    // setGuardVisible(false);
   };
   const handleGuardClose = () => {
     setGuardVisible(false);
@@ -97,7 +81,7 @@ export default function AuthIcon({ user, openModal, updateUserInfo }) {
         onLogin={handleGuardLogin}
         onLoad={handleGuardLoad}
         appId={appId}
-        config={config}
+        config={GuardConfig}
       />
       <StyledIcon className="icon" onClick={handleIconClick}>
         <span className={`status ${user_str ? '' : 'not_login'}`}>{user_str || '未登录'}</span>
