@@ -71,6 +71,7 @@ const StyledEvent = styled.li`
       top: 0;
       right: 0;
       display: flex;
+      visibility: hidden;
       .opt {
         padding: 0;
         width: 0.2rem;
@@ -123,7 +124,7 @@ const StyledEvent = styled.li`
     }
   }
   &:hover .content > .opts {
-    display: flex;
+    visibility: visible;
   }
 `;
 const mock = {
@@ -191,6 +192,7 @@ export default function Event({ deleteEvent, data = mock }) {
       )}
       <article className="content">
         <div className="opts">
+          {/* TO DO: 3D transform */}
           {!readOnly && (
             <button
               disabled={removing}
