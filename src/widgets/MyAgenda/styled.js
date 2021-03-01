@@ -67,32 +67,7 @@ const StyledWrapper = styled.div`
       }
     }
   }
-  .calendars {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    width: fit-content;
-    display: flex;
-    padding: 0.05rem;
-    margin: 0.05rem 0.21rem;
-    border-radius: 5px;
-    border: 1px solid #eee;
-    background: #fff;
-    z-index: 99;
-    .calendar {
-      display: flex;
-      margin-right: 0.15rem;
-      .sqr {
-        width: 0.2rem;
-        height: 0.2rem;
-        margin-right: 0.1rem;
-      }
-      .title {
-        font-size: 0.14rem;
-      }
-    }
-  }
+
   .loading {
     font-size: 0.2rem;
     height: 100%;

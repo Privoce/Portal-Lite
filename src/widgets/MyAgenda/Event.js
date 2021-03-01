@@ -1,9 +1,19 @@
-// import React from 'react'
+import { useState } from 'react';
 // import { format } from 'timeago.js';
 import { format, isToday } from 'date-fns';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Linkify from 'linkifyjs/react';
 import IconLocation from './IconLocation';
+import IconLink from './IconLink';
+import IconDelete from './IconDelete';
+const AniFading = keyframes`
+  from {
+    opacity:1;
+  }
+  to {
+    opacity:0;
+  }
+`;
 const StyledEvent = styled.li`
   font-size: 0.16rem;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -14,7 +24,11 @@ const StyledEvent = styled.li`
   padding: 0.2rem 0.12rem;
   margin-bottom: 0.15rem;
   position: relative;
-  border-left: 0.14rem solid ${({ borderLeftColor }) => borderLeftColor};
+  border-left: 0.14rem solid ${({ themeColor }) => themeColor};
+  display: flex;
+  &.removing {
+    animation: ${AniFading} 1s infinite alternate;
+  }
   &.today {
     color: #fff;
     background-color: #5c46e3;
@@ -23,57 +37,93 @@ const StyledEvent = styled.li`
       color: #eee;
     }
   }
-  .link {
+  .time_span {
     display: flex;
+    flex-direction: column;
+    margin-right: 0.2rem;
+    white-space: nowrap;
+    /* color: #eee; */
+    .start {
+      margin-bottom: 0.1rem;
+    }
+  }
+  .content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 100%;
-    color: inherit;
-    .time_span {
-      display: flex;
-      flex-direction: column;
-      margin-right: 0.2rem;
-      white-space: nowrap;
-      /* color: #eee; */
-      .start {
-        margin-bottom: 0.1rem;
+    .title {
+      font-size: 0.2rem;
+      font-weight: 800;
+      margin-bottom: 0.08rem;
+    }
+    .desc {
+      font-size: 0.12rem;
+      color: #999;
+      line-height: 1.5;
+      a {
+        color: #eee;
+        text-decoration: underline;
       }
     }
-    .content {
+    > .opts {
+      position: absolute;
+      top: 0;
+      right: 0;
       display: flex;
-      flex-direction: column;
-      .title {
-        font-size: 0.2rem;
-        font-weight: 800;
-        margin-bottom: 0.08rem;
+      .opt {
+        padding: 0;
+        width: 0.2rem;
+        height: 0.2rem;
+        &:not(:last-child) {
+          margin-right: 0.1rem;
+        }
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+        &.link svg {
+          fill: ${({ themeColor }) => themeColor};
+        }
       }
-      .desc {
-        font-size: 0.12rem;
-        color: #999;
-        line-height: 1.5;
-        a {
-          color: #eee;
-          text-decoration: underline;
+    }
+
+    .aside {
+      display: flex;
+      margin-top: 0.12rem;
+      > .block {
+        display: flex;
+        padding: 0.04rem 0.08rem 0.04rem 0;
+        &:not(:last-child) {
+          border-right: 1px solid #eee;
+        }
+        &:not(:first-child) {
+          padding-left: 0.06rem;
+        }
+        &.atts {
+          .att {
+            .link {
+              display: flex;
+              .icon {
+                width: 0.2rem;
+                height: 0.2rem;
+              }
+            }
+            &:not(:last-child) {
+              margin-right: 0.08rem;
+            }
+          }
+        }
+        &.location {
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }
   }
-  .aside {
-    position: absolute;
-    right: 0;
-    top: 0;
+  &:hover .content > .opts {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    .atts {
-      display: flex;
-      .att {
-        padding: 0.05rem;
-      }
-    }
-    .location {
-      padding: 0.05rem;
-    }
   }
 `;
 const mock = {
@@ -99,10 +149,13 @@ const getText = (htmlText) => {
   console.log('after:', tmpText);
   return tmpText;
 };
-export default function Event({ data = mock }) {
+export default function Event({ deleteEvent, data = mock }) {
+  const [removing, setRemoving] = useState(false);
   const {
     id,
+    calendarId,
     isAllDay,
+    readOnly = true,
     backgroundColor,
     summary,
     start,
@@ -112,56 +165,96 @@ export default function Event({ data = mock }) {
     location,
     attachments = []
   } = data;
+  const asideVisible = attachments.length || location;
+  const handleEventDelete = async ({ currentTarget }) => {
+    const { eid, cid } = currentTarget.dataset;
+    if (confirm('Are you sure to remove this event?')) {
+      setRemoving(true);
+      let { success, msg } = await deleteEvent({ eid, cid });
+      if (!success) {
+        alert(msg);
+      }
+      setRemoving(false);
+    }
+  };
   return (
     <StyledEvent
       id={`e-${id}`}
-      borderLeftColor={backgroundColor}
-      className={isToday(new Date(start)) && 'today'}
+      themeColor={backgroundColor}
+      className={`${removing ? 'removing' : ''} ${isToday(new Date(start)) && 'today'}`}
     >
-      <a className="link" href={htmlLink} target="_blank" rel="noopener noreferrer">
-        {!isAllDay && (
-          <div className="time_span">
-            <span className="start">{format(new Date(start), 'p')}</span>
-            <span className="end">{format(new Date(end), 'p')}</span>
+      {!isAllDay && (
+        <div className="time_span">
+          <span className="start">{format(new Date(start), 'p')}</span>
+          <span className="end">{format(new Date(end), 'p')}</span>
+        </div>
+      )}
+      <article className="content">
+        <div className="opts">
+          {!readOnly && (
+            <button
+              disabled={removing}
+              onClick={handleEventDelete}
+              className="opt delete"
+              data-eid={id}
+              data-cid={calendarId}
+            >
+              <IconDelete />
+            </button>
+          )}
+          <a
+            href={htmlLink}
+            title="Jump to event detail"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opt link"
+          >
+            <IconLink />
+          </a>
+        </div>
+        <h2 className="title">{summary}</h2>
+        {description && (
+          <div className="desc">
+            <Linkify options={{ ignoreTags: ['a'] }}>{getText(description)}</Linkify>
           </div>
         )}
-        <article className="content">
-          <h2 className="title">{summary}</h2>
-          {description && (
-            <div className="desc">
-              <Linkify options={{ ignoreTags: ['a'] }}>{getText(description)}</Linkify>
+        {asideVisible && (
+          <div className="aside">
+            {/* {attachments && ( */}
+            <div className="block atts">
+              {attachments.map((att) => {
+                const { fileId, fileUrl, title, iconLink } = att;
+                return (
+                  <span className="att" key={fileId}>
+                    <a
+                      className="link"
+                      href={fileUrl}
+                      title={title}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img className="icon" src={iconLink} alt="file icon" />
+                    </a>
+                  </span>
+                );
+              })}
             </div>
-          )}
-        </article>
-      </a>
-      <div className="aside">
-        {/* {attachments && ( */}
-        <ul className="atts">
-          {attachments.map((att) => {
-            const { fileId, fileUrl, title, iconLink } = att;
-            return (
-              <li className="att" key={fileId}>
-                <a href={fileUrl} title={title} target="_blank" rel="noopener noreferrer">
-                  <img src={iconLink} alt="file icon" />
+            {/* )} */}
+            {location && (
+              <div className="block location">
+                <a
+                  title={location}
+                  href={`https://www.google.com/maps?q=${location}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <IconLocation />
                 </a>
-              </li>
-            );
-          })}
-        </ul>
-        {/* )} */}
-        <div className="location">
-          {location && (
-            <a
-              title={location}
-              href={`https://www.google.com/maps?q=${location}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconLocation />
-            </a>
-          )}
-        </div>
-      </div>
+              </div>
+            )}
+          </div>
+        )}
+      </article>
     </StyledEvent>
   );
 }

@@ -8,6 +8,7 @@ import StyledWrapper from './styled';
 import useGoogleAuth from './useGoogleAuth';
 import Event from './Event';
 import AddEvent from './AddEvent';
+import Setting from './Setting';
 
 export default function MyAgenda() {
   const listEle = useRef(null);
@@ -19,7 +20,8 @@ export default function MyAgenda() {
     groupEvents,
     calendars,
     syncData,
-    addEvent
+    addEvent,
+    removeEvent
   } = useGoogleAuth();
   // 去授权
   const getGoogleAuth = () => {
@@ -34,8 +36,7 @@ export default function MyAgenda() {
   };
 
   if (error) return <ErrorTip tip={error} bg="transparent" />;
-  if (!signedIn)
-    return <GoAuth txt={!auth && '初始化中...'} disabled={!auth} auth={getGoogleAuth} />;
+  if (!signedIn) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
   return (
     <StyledWrapper>
       <div className="topbar">
@@ -47,9 +48,12 @@ export default function MyAgenda() {
           <button disabled={loading} onClick={handleSyncData} className="update">
             <IconUpdate color={loading ? '#aaa' : '#5c4ddf'} bgColor="transparent" />
           </button>
-          <AddEvent
-            calendar={(calendars || []).find((c) => c.primary == true)}
-            addEvent={addEvent}
+          <AddEvent calendar={calendars.find((c) => c.primary == true)} addEvent={addEvent} />
+          <Setting
+            calendars={calendars.map((c) => {
+              return { ...c, checked: true };
+            })}
+            // addEvent={addEvent}
           />
         </div>
         {/* <a className="link" href="http://baidu.com" target="_blank" rel="noopener noreferrer">
@@ -61,27 +65,15 @@ export default function MyAgenda() {
       ) : (
         <ul className="list" ref={listEle}>
           {Object.entries(groupEvents).map(([dateKey, events]) => {
+            if (events.length == 0) return null;
             return (
               <li className="item" key={dateKey}>
                 <h3 className="title">{dateKey}</h3>
                 <ul className="evts">
                   {events.map((evt) => {
-                    return <Event key={evt.summary} data={evt} />;
+                    return <Event key={evt.summary} data={evt} deleteEvent={removeEvent} />;
                   })}
                 </ul>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {calendars && (
-        <ul className="calendars">
-          {calendars.map((c) => {
-            const { summary, description, id, backgroundColor } = c;
-            return (
-              <li className="calendar" title={description} key={id}>
-                <span className="sqr" style={{ background: backgroundColor }}></span>
-                <span className="title">{summary}</span>
               </li>
             );
           })}

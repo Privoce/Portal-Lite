@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { gapi, loadAuth2 } from 'gapi-script';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 const formatEvents = (evts, calendars) => {
   console.log({ calendars });
   let items = evts
@@ -18,12 +18,14 @@ const formatEvents = (evts, calendars) => {
         organizer
       } = evt;
       let { email } = creator || organizer || {};
-      const { backgroundColor, foregroundColor } = calendars.find(({ id }) => id == email) || {};
+      const { id: calendarId, backgroundColor, foregroundColor, readOnly } =
+        calendars.find(({ id }) => id == email) || {};
       return {
         id,
         foregroundColor,
         backgroundColor,
-        calendarId: email,
+        calendarId,
+        readOnly,
         htmlLink,
         isAllDay: !!start?.date,
         start: start?.dateTime || start?.date,
@@ -70,7 +72,7 @@ const useGoogleAuth = () => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [calendars, setCalendars] = useState(null);
+  const [calendars, setCalendars] = useState([]);
   const [groupEvents, setGroupEvents] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -145,8 +147,24 @@ const useGoogleAuth = () => {
         // let { id } = items.find((it) => it.primary);
         setCalendars(
           items.map((c) => {
-            let { id, summary, description, backgroundColor, foregroundColor, primary } = c;
-            return { id, summary, description, backgroundColor, foregroundColor, primary };
+            let {
+              id,
+              summary,
+              description,
+              backgroundColor,
+              foregroundColor,
+              primary,
+              accessRole
+            } = c;
+            return {
+              id,
+              summary,
+              description,
+              backgroundColor,
+              foregroundColor,
+              primary,
+              readOnly: accessRole == 'reader' ? true : accessRole == 'owner' ? false : true
+            };
           })
         );
       } else {
@@ -174,7 +192,10 @@ const useGoogleAuth = () => {
     const fetchEventList = async () => {
       let paths = calendars.map(({ id }) => {
         let encodeID = encodeURIComponent(id);
-        return `https://www.googleapis.com/calendar/v3/calendars/${encodeID}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}`;
+        return `https://www.googleapis.com/calendar/v3/calendars/${encodeID}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}&&timeMax=${addDays(
+          new Date(),
+          30
+        ).toISOString()}`;
       });
       let promises = paths.map((p) => {
         // let path = `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}`;
@@ -205,7 +226,8 @@ const useGoogleAuth = () => {
         setError('拉取日程数据异常');
       }
     };
-    if (calendars) {
+    // 有日历数据则去拉取events
+    if (calendars.length) {
       fetchEventList();
     }
   }, [calendars]);
@@ -237,10 +259,30 @@ const useGoogleAuth = () => {
     }
     return { success: status == 200, msg: statusText, data };
   };
+  const removeEvent = async ({ cid, eid }) => {
+    let path = `https://www.googleapis.com/calendar/v3/calendars/${cid}/events/${eid}`;
+    // let path = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/quickAdd`;
+    let { status, statusText } = await gapi.client.request({
+      path,
+      method: 'DELETE'
+    });
+    if (status == 204) {
+      let newGroup = Object.fromEntries(
+        Object.entries(groupEvents).map(([date, list]) => {
+          let tmps = list.filter((evt) => evt.id !== eid);
+          return [date, tmps];
+        })
+      );
+      setGroupEvents(newGroup);
+      console.log({ newGroup });
+    }
+    return { success: status == 204, msg: statusText };
+  };
   return {
     auth,
     syncData: fetchCalendarList,
     addEvent,
+    removeEvent,
     signedIn,
     loading,
     error,
