@@ -1,5 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const AniRotate = keyframes`
+from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+
+`;
 const StyledWrapper = styled.div`
   font-size: 0.12rem;
   height: 100%;
@@ -27,8 +36,10 @@ const StyledWrapper = styled.div`
         svg {
           width: 0.28rem;
           height: 0.28rem;
-          /* width: 100%;
-          height: 100%; */
+          transform-origin: center;
+          &.reloading {
+            animation: ${AniRotate} 1s infinite linear;
+          }
         }
       }
       .date {

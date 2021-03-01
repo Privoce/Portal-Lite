@@ -72,7 +72,9 @@ const useGoogleAuth = () => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
+  const [checkedCalendars, setCheckedCalendars] = useState([]);
   const [groupEvents, setGroupEvents] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -145,28 +147,30 @@ const useGoogleAuth = () => {
       if (calendarResp.status == 200) {
         const { items } = calendarResp.result;
         // let { id } = items.find((it) => it.primary);
-        setCalendars(
-          items.map((c) => {
-            let {
-              id,
-              summary,
-              description,
-              backgroundColor,
-              foregroundColor,
-              primary,
-              accessRole
-            } = c;
-            return {
-              id,
-              summary,
-              description,
-              backgroundColor,
-              foregroundColor,
-              primary,
-              readOnly: accessRole == 'reader' ? true : accessRole == 'owner' ? false : true
-            };
-          })
-        );
+        let initialCalendars = items.map((c) => {
+          let {
+            id,
+            summary,
+            description,
+            backgroundColor,
+            foregroundColor,
+            primary,
+            accessRole
+          } = c;
+          // 首次load均设置checked为true
+          return {
+            id,
+            summary,
+            description,
+            backgroundColor,
+            foregroundColor,
+            checked: true,
+            primary,
+            readOnly: accessRole == 'reader' ? true : accessRole == 'owner' ? false : true
+          };
+        });
+        setCalendars(initialCalendars);
+        setCheckedCalendars(initialCalendars);
       } else {
         setLoading(false);
         setError('拉取日历列表数据异常');
@@ -190,7 +194,7 @@ const useGoogleAuth = () => {
   }, [signedIn]);
   useEffect(() => {
     const fetchEventList = async () => {
-      let paths = calendars.map(({ id }) => {
+      let paths = checkedCalendars.map(({ id }) => {
         let encodeID = encodeURIComponent(id);
         return `https://www.googleapis.com/calendar/v3/calendars/${encodeID}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}&&timeMax=${addDays(
           new Date(),
@@ -206,6 +210,7 @@ const useGoogleAuth = () => {
       });
       console.log({ paths });
       try {
+        setReloadEvents(true);
         const resps = await Promise.all(promises);
 
         let events = [];
@@ -219,18 +224,20 @@ const useGoogleAuth = () => {
         let tmps = formatEvents(events, calendars);
         console.log({ tmps });
         setGroupEvents(tmps);
+        setReloadEvents(false);
         setLoading(false);
       } catch (error) {
         console.log('pull events error', error);
+        setReloadEvents(false);
         setLoading(false);
         setError('拉取日程数据异常');
       }
     };
     // 有日历数据则去拉取events
-    if (calendars.length) {
+    if (checkedCalendars.length) {
       fetchEventList();
     }
-  }, [calendars]);
+  }, [checkedCalendars]);
   const addEvent = async (text) => {
     let path = `https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd`;
     // let path = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/quickAdd`;
@@ -278,6 +285,11 @@ const useGoogleAuth = () => {
     }
     return { success: status == 204, msg: statusText };
   };
+  const updateCalendars = (calendars) => {
+    setCalendars(calendars);
+    let checkeds = calendars.filter((c) => c.checked == true);
+    setCheckedCalendars(checkeds);
+  };
   return {
     auth,
     syncData: fetchCalendarList,
@@ -285,9 +297,11 @@ const useGoogleAuth = () => {
     removeEvent,
     signedIn,
     loading,
+    reloading: reloadEvents,
     error,
     groupEvents,
-    calendars
+    calendars,
+    updateCalendars
   };
 };
 

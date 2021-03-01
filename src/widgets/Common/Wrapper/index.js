@@ -92,9 +92,12 @@ export default function WidgetWrapper({
           </>
         </ErrorBoundary>
       </div>
-      <div className="setting" onClick={toggleSettingListVisible}>
-        <IconThreeDots />
-      </div>
+      {/* 小组件内部设置可见判断,避免关闭按钮的UI冲突 */}
+      {!widgetSettingVisible && (
+        <div className="setting" onClick={toggleSettingListVisible}>
+          <IconThreeDots />
+        </div>
+      )}
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {enableSetting && (

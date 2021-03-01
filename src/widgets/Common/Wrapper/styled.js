@@ -38,11 +38,11 @@ const StyledWrapper = styled.div`
       &.hidden {
         visibility: hidden;
       }
-      .close {
+      > .close {
         z-index: 11;
         position: absolute;
-        right: 0.1rem;
-        top: 0.1rem;
+        right: 0.14rem;
+        top: 0.14rem;
         width: 0.2rem;
         height: 0.2rem;
         cursor: pointer;

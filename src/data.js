@@ -110,6 +110,7 @@ let Widgets = {
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <MyAgenda />,
+    enableSetting: true,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
     created: '2021-02-24',
     updated: '2021-02-24'
