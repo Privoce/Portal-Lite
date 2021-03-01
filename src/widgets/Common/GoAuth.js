@@ -30,11 +30,12 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function GoAuth({ txt = '去授权', auth = '', disabled = false }) {
+export default function GoAuth({ auth = '', disabled = false }) {
   let isF = typeof auth === 'function';
   const handleClick = () => {
     auth();
   };
+  const txt = disabled ? '初始化中...' : '去授权';
   return (
     <StyledWrapper>
       <p className="tip">暂未授权，点击进行授权</p>
