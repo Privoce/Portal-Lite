@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AuthingGuard } from '@authing/react-ui-components';
 // 引入 css 文件
 import '@authing/react-ui-components/lib/index.min.css';
 import { appId, GuardConfig } from './config';
+import { useWidgetSettings } from '../../hooks';
 const StyledIcon = styled.div`
   cursor: pointer;
   position: fixed;
@@ -37,8 +38,49 @@ const StyledIcon = styled.div`
     }
   }
 `;
-export default function AuthIcon({ user, openModal, updateUserInfo }) {
+export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }) {
+  const { widgetSettings, importWidgetSettings } = useWidgetSettings();
   const [guardVisible, setGuardVisible] = useState(false);
+  const [auth, setAuth] = useState(null);
+  useEffect(() => {
+    const syncWidgetData = async () => {
+      let { status } = await auth.checkLoginStatus();
+      if (!status) return;
+      setSyncing(true);
+      let localData = widgetSettings;
+      let [cloudData = null] = await auth.listUdv('widget_data');
+      console.log({ localData, cloudData });
+      if (!localData) {
+        if (cloudData && cloudData.value) {
+          // 云端数据存在
+          importWidgetSettings(cloudData.value);
+          // location.reload();
+        }
+      } else {
+        if (!cloudData) {
+          // 云端数据不存在
+          await auth.setUdv('widget_data', JSON.stringify(localData));
+        } else {
+          let cloudObj = JSON.parse(cloudData.value);
+          let localDate = new Date(localData.timestamp || new Date().getTime());
+          let cloudDate = new Date(cloudObj.timestamp || null);
+          if (localDate - cloudDate > 0) {
+            // 本地数据较新
+            await auth.setUdv('widget_data', JSON.stringify(localData));
+          } else {
+            // 云端数据较新
+            importWidgetSettings(cloudData.value);
+            // location.reload();
+          }
+        }
+      }
+      // await auth.setUdv('widget_data', JSON.stringify(localData));
+      setSyncing(false);
+    };
+    if (auth && user) {
+      syncWidgetData();
+    }
+  }, [auth, user]);
   const handleIconClick = () => {
     if (user) {
       // 已登录的逻辑
@@ -57,16 +99,19 @@ export default function AuthIcon({ user, openModal, updateUserInfo }) {
       setGuardVisible(false);
       updateUserInfo(currUser);
     }
+    setAuth(authClient);
   };
-  const handleGuardLogin = (user) => {
+  const handleGuardLogin = async (user) => {
+    console.log('login', { user });
     updateUserInfo(user);
     setGuardVisible(false);
   };
-  const handleReg = (user) => {
-    console.log('reg user', user);
-    // updateUserInfo(user);
-    // setGuardVisible(false);
-  };
+  // const handleReg = (user, auth) => {
+  //   console.log('reg user', user);
+  //   setAuth(auth);
+  //   // updateUserInfo(user);
+  //   // setGuardVisible(false);
+  // };
   const handleGuardClose = () => {
     setGuardVisible(false);
   };
@@ -76,7 +121,7 @@ export default function AuthIcon({ user, openModal, updateUserInfo }) {
     <>
       <AuthingGuard
         visible={guardVisible}
-        onRegister={handleReg}
+        // onRegister={handleReg}
         onClose={handleGuardClose}
         onLogin={handleGuardLogin}
         onLoad={handleGuardLoad}

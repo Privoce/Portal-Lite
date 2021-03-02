@@ -2549,6 +2549,11 @@
   resolved "https://registry.npm.taobao.org/@ungap/global-this/download/@ungap/global-this-0.4.2.tgz#bc59a79799862e3e0cf647c090fd3f3f2285cf56"
   integrity sha1-vFmnl5mGLj4M9kfAkP0/PyKFz1Y=
 
+"@use-it/event-listener@^0.1.2":
+  version "0.1.6"
+  resolved "https://registry.npm.taobao.org/@use-it/event-listener/download/@use-it/event-listener-0.1.6.tgz#5776274fec72f3f25af9ead1898e7f45bc435812"
+  integrity sha1-V3YnT+xy8/Ja+erRiY5/RbxDWBI=
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.npm.taobao.org/@webassemblyjs/ast/download/@webassemblyjs/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
@@ -9892,6 +9897,13 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-persisted-state@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.npm.taobao.org/use-persisted-state/download/use-persisted-state-0.3.3.tgz#5e0f2236967cec7c34de33abc07ae6818e7c7451"
+  integrity sha1-Xg8iNpZ87Hw03jOrwHrmgY58dFE=
+  dependencies:
+    "@use-it/event-listener" "^0.1.2"
 
 use@^3.1.0:
   version "3.1.1"

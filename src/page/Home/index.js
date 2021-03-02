@@ -21,7 +21,7 @@ const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ 
 
 export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
-
+  const [syncing, setSyncing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModalVisible = () => {
     setModalVisible((prev) => !prev);
@@ -36,19 +36,18 @@ export default function Home() {
           side="left"
         />
       )}
-      <Profile />
+      <Profile setSyncing={setSyncing} />
       <Setting />
       <StyledWrapper>
         {/* <Account /> */}
 
         <Suspense fallback={<Loading tip="小组件模块加载中..." />}>
-          {/* <DndProvider backend={HTML5Backend}> */}
           <WidgetSection
+            reloading={syncing}
             widgets={widgets}
             removeWidget={removeWidget}
             updateWidgetData={updateWidgetData}
           />
-          {/* </DndProvider> */}
         </Suspense>
       </StyledWrapper>
       <OpenButton openWidgetListModal={toggleModalVisible} />

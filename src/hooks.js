@@ -1,4 +1,8 @@
-import { useState } from 'react';
+// import { createLocalStorageStateHook } from 'use-local-storage-state';
+import createPersistedState from 'use-persisted-state';
+import { useState, useCallback } from 'react';
+import { useAuthing } from '@authing/react-ui-components';
+
 import { Widgets } from './data';
 
 // 小组件
@@ -34,17 +38,28 @@ const useWidgets = () => {
 };
 // 小组件的本地设置
 const LOCAL_WG_SETTINGS_KEY = 'WIDGET_SETTINGS_DATA';
+const useLocalSettings = createPersistedState(LOCAL_WG_SETTINGS_KEY);
+const defaultGetParams = { key: 'local', name: 'common' };
+
+// const useLocalSettings = createLocalStorageStateHook(LOCAL_WG_SETTINGS_KEY, null);
 const useWidgetSettings = () => {
-  let settings = null;
-  try {
-    settings = JSON.parse(localStorage.getItem(LOCAL_WG_SETTINGS_KEY));
-  } catch (error) {
-    console.log({ error });
-  }
-  const updateLocalData = (newData) => {
-    localStorage.setItem(LOCAL_WG_SETTINGS_KEY, JSON.stringify(newData));
+  const [widgetSettings, setWidgetSettings] = useLocalSettings();
+  const { authClient } = useAuthing({ appId: '6034a70af621af721e5320b9' });
+  const updateLocalData = async (newData) => {
+    // if(!newData){
+
+    // }else{
+
+    // 加个时间戳
+    newData.timestamp = new Date().getTime();
+    setWidgetSettings({ ...newData });
+    // }
+    // 如果已登录，同步数据到云端
+    let { status } = await authClient.checkLoginStatus();
+    if (status) {
+      authClient.setUdv('widget_data', JSON.stringify(newData));
+    }
   };
-  const [widgetSettings, setWidgetSettings] = useState(settings);
   let defaultUpdateParams = { name: 'common', key: 'local', data: null };
   const updateWidgetSetting = (params = defaultUpdateParams) => {
     const { key, name, data } = Object.assign({}, defaultUpdateParams, params);
@@ -56,45 +71,36 @@ const useWidgetSettings = () => {
       tmp[name] = { [key]: data };
     }
 
-    setWidgetSettings({ ...tmp });
     updateLocalData(tmp);
   };
-  let defaultGetParams = { key: 'local', name: 'common' };
-
-  const getWidgetSetting = (params = defaultGetParams) => {
-    const { key, name } = Object.assign({}, defaultGetParams, params);
-    if (!widgetSettings) return null;
-    // console.log({ widgetSettings });
-    let obj = widgetSettings[name];
-    if (obj) {
-      return obj[key] ? obj[key] : null;
-    }
-    return null;
-  };
+  const getWidgetSetting = useCallback(
+    (params = defaultGetParams) => {
+      const { key, name } = Object.assign({}, defaultGetParams, params);
+      if (!widgetSettings) return null;
+      // console.log({ widgetSettings });
+      let obj = widgetSettings[name];
+      if (obj) {
+        return obj[key] ? obj[key] : null;
+      }
+      return null;
+    },
+    [widgetSettings]
+  );
   const clearWidgetSettings = () => {
     // console.log({ widgetSettings });
-    setWidgetSettings(null);
-    localStorage.removeItem(LOCAL_WG_SETTINGS_KEY);
+    updateLocalData(null);
   };
   const importWidgetSettings = (content) => {
     // console.log({ widgetSettings });
-    setWidgetSettings(JSON.parse(content));
-    localStorage.setItem(LOCAL_WG_SETTINGS_KEY, content);
-  };
-  const getLocalWidgetSettings = () => {
-    // console.log({ widgetSettings });
-    let localData = JSON.parse(localStorage.getItem(LOCAL_WG_SETTINGS_KEY));
-    return localData;
+    updateLocalData(JSON.parse(content));
   };
 
   return {
     widgetSettings,
     getWidgetSetting,
-    getLocalWidgetSettings,
     updateWidgetSetting,
     importWidgetSettings,
     clearWidgetSettings
   };
 };
-
 export { useWidgets, useWidgetSettings };

@@ -4,12 +4,11 @@ import WidgetWrapper from '../../widgets/Common/Wrapper';
 import { Widgets } from '../../data';
 
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
-
 const StyledSection = styled.section`
   position: relative;
   width: 100%;
-  /* padding-top: 0.2rem; */
   padding-bottom: 0.6rem;
+
   .widgets {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -57,7 +56,15 @@ const StyledSection = styled.section`
     }
   }
 `;
-export default function WidgetSection({ widgets, updateWidgetData, removeWidget }) {
+const StyledReloading = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.2rem;
+`;
+export default function WidgetSection({ reloading, widgets, updateWidgetData, removeWidget }) {
   useEffect(() => {
     // 全局存储
     window.WIDGET_LIST = widgets;
@@ -129,14 +136,7 @@ export default function WidgetSection({ widgets, updateWidgetData, removeWidget 
               compact={compact}
               title={title}
             >
-              {/* <Suspense fallback={<Loading />}>
-                {Children.map(comp, (child) =>
-                  cloneElement(child, {
-                    name: w
-                  })
-                )}
-              </Suspense> */}
-              {comp}
+              {reloading ? <StyledReloading>重载中...</StyledReloading> : comp}
             </WidgetWrapper>
           );
         })}

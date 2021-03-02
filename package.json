@@ -64,6 +64,7 @@
     "uniqolor": "^1.0.1",
     "url-loader": "4.1.1",
     "url-search-params-polyfill": "^8.1.0",
+    "use-persisted-state": "^0.3.3",
     "web-vitals": "^1.1.0",
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.2",

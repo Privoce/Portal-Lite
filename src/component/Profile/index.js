@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from './Modal';
 import AuthIcon from './AuthIcon';
-export default function Profile() {
+export default function Profile({ setSyncing }) {
   const [visible, setVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const toggleSettingModalVisible = () => {
@@ -14,6 +14,7 @@ export default function Profile() {
   return (
     <>
       <AuthIcon
+        setSyncing={setSyncing}
         user={userInfo}
         updateUserInfo={setUserInfo}
         openModal={toggleSettingModalVisible}
