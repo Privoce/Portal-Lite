@@ -15,6 +15,8 @@ const StyledWrapper = styled.div`
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     z-index: 99;
+    max-height: 90%;
+    overflow: auto;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -36,50 +38,53 @@ const StyledWrapper = styled.div`
         &:not(:last-child) {
           border-bottom: 1px dashed #eee;
         }
-        > .title {
-          cursor: pointer;
-          position: relative;
+        .top {
           display: flex;
           align-items: center;
-          padding: 0.05rem 0.1rem;
-          border-radius: 4px;
-          .check {
+          > .title {
+            cursor: pointer;
             position: relative;
-            width: 0.2rem;
-            height: 0.2rem;
-            border-radius: 50%;
-            border: 1px solid #fff;
-            margin-right: 0.1rem;
-            &:before {
-              content: '';
-              transform: rotateX(180deg);
-              position: absolute;
-              top: -0.02rem;
-              font-size: 0.22rem;
-              color: #eee;
+            display: flex;
+            align-items: center;
+            padding: 0.05rem 0.1rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            .check {
+              position: relative;
+              width: 0.2rem;
+              height: 0.2rem;
+              border-radius: 50%;
+              border: 1px solid #fff;
+              margin-right: 0.1rem;
+              &:before {
+                content: '';
+                transform: rotateX(180deg);
+                position: absolute;
+                top: -0.02rem;
+                font-size: 0.22rem;
+                color: #eee;
+              }
+              &.checked:before {
+                content: 'ヘ';
+              }
             }
-            &.checked:before {
-              content: 'ヘ';
+            .txt {
+              font-weight: 800;
+              line-height: 1.4;
+              font-size: 0.18rem;
             }
           }
-          .txt {
-            font-weight: 800;
-            line-height: 1.4;
-            font-size: 0.18rem;
-          }
-          &.readonly:after {
+          .flag {
+            margin-left: 0.1rem;
             font-size: 0.08rem;
-            content: 'Read Only';
-            position: absolute;
-            top: 50%;
-            right: -0.6rem;
-            transform: translateY(-50%);
             padding: 0.03rem 0.06rem;
             border-radius: 4px;
             background: #aaa;
             color: #fff;
+            white-space: nowrap;
           }
         }
+
         > .desc {
           line-height: 1.4;
           margin-top: 0.1rem;
@@ -122,18 +127,21 @@ export default function AddEvent({ name, calendars = [], updateCalendars }) {
               } = c;
               return (
                 <li className="calendar" key={id}>
-                  <h3
-                    data-cid={id}
-                    onClick={toggleCheck}
-                    className={`title ${readOnly ? 'readonly' : ''}`}
-                    style={{ backgroundColor, color: foregroundColor }}
-                  >
-                    <i
-                      style={{ backgroundColor }}
-                      className={`check ${checked ? 'checked' : ''}`}
-                    ></i>
-                    <span className="txt">{summary}</span>
-                  </h3>
+                  <div className="top">
+                    <h3
+                      data-cid={id}
+                      onClick={toggleCheck}
+                      className={`title ${readOnly ? 'readonly' : ''}`}
+                      style={{ backgroundColor, color: foregroundColor }}
+                    >
+                      <i
+                        style={{ backgroundColor }}
+                        className={`check ${checked ? 'checked' : ''}`}
+                      ></i>
+                      <span className="txt">{summary}</span>
+                    </h3>
+                    {readOnly && <i className="flag">Read Only</i>}
+                  </div>
                   {description && <p className="desc">{description}</p>}
                 </li>
               );
