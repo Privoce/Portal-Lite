@@ -125,6 +125,10 @@ const GlobalStyle = createGlobalStyle`
           font-size: 100px;
       }
   }
+  .react-loading-skeleton{
+    font-size:.4rem;
+    line-height:1.5;
+  }
 `;
 
 export default GlobalStyle;

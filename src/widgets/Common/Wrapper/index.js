@@ -5,7 +5,8 @@ import { useLanguage } from 'uselanguage';
 import IconThreeDots from '../Icons/ThreeDots';
 import ErrorBoundary from './ErrorBoundary';
 import StyledWrapper from './styled';
-import Loading from '../../../component/Loading';
+import Skeleton from 'react-loading-skeleton';
+
 import IconClose from '../Icons/Close';
 
 import { useWidgetSettings } from '../../../hooks';
@@ -31,12 +32,10 @@ export default function WidgetWrapper({
 }) {
   const {
     language: {
-      words: {
-        widget: { opts: lang },
-        widgets
-      }
+      words: { widget: lang, widgets }
     }
   } = useLanguage();
+  const { opts: settingLang } = lang;
   const compContainer = useRef(null);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [currSize, setCurrSize] = useState(getWidgetSetting({ name, key: 'size' }) || defaultSize);
@@ -85,7 +84,7 @@ export default function WidgetWrapper({
         <ErrorBoundary>
           <>
             {inView ? (
-              <Suspense fallback={<Loading />}>
+              <Suspense fallback={<Skeleton count={4} />}>
                 {Children.map(children, (child) =>
                   cloneElement(child, {
                     lang: widgets[name],
@@ -114,16 +113,16 @@ export default function WidgetWrapper({
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {enableSetting && (
             <li className="item" onClick={toggleWidgetSettingVisible}>
-              {lang.setting}
+              {settingLang.setting}
             </li>
           )}
           {!standalone && (
             <li className="item" onClick={handleRemove.bind(null, title)}>
-              {lang.remove}
+              {settingLang.remove}
             </li>
           )}
           <li className="item" onClick={handleFullscreen}>
-            {lang.fullscreen}
+            {settingLang.fullscreen}
           </li>
           {!standalone && (
             <li className="item">
@@ -136,7 +135,7 @@ export default function WidgetWrapper({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {isExt ? lang.open.standalone : lang.open.newTab}
+                {isExt ? settingLang.open.standalone : settingLang.open.newTab}
               </a>
             </li>
           )}
@@ -157,7 +156,7 @@ export default function WidgetWrapper({
           )}
         </ul>
       )}
-      {type == 'widget' && <h2 className="title">{title}</h2>}
+      {type == 'widget' && <h2 className="title">{widgets[name]?.title || title}</h2>}
     </StyledWrapper>
   );
 }

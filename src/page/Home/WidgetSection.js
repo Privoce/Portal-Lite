@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import Skeleton from 'react-loading-skeleton';
 import WidgetWrapper from '../../widgets/Common/Wrapper';
 import { Widgets } from '../../data';
 
@@ -55,14 +56,6 @@ const StyledSection = styled.section`
       }
     }
   }
-`;
-const StyledReloading = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.2rem;
 `;
 export default function WidgetSection({ reloading, widgets, updateWidgetData, removeWidget }) {
   useEffect(() => {
@@ -136,7 +129,7 @@ export default function WidgetSection({ reloading, widgets, updateWidgetData, re
               compact={compact}
               title={title}
             >
-              {reloading ? <StyledReloading>重载中...</StyledReloading> : comp}
+              {reloading ? <Skeleton count={5} /> : comp}
             </WidgetWrapper>
           );
         })}

@@ -25,8 +25,9 @@ const en = {
       }
     },
     widget: {
+      loading: 'Loading',
       goAuth: {
-        initializing: 'Initializing...',
+        initializing: 'Initializing',
         tip: 'Not yet authorized',
         btnTxt: 'Authorize'
       },
@@ -43,6 +44,7 @@ const en = {
     },
     widgets: {
       navs: {
+        title: 'Nav',
         modal: {
           placeholder: {
             name: 'title',
@@ -50,12 +52,47 @@ const en = {
           },
           add: 'Add'
         },
+        cateTitle: {
+          popular: '常用',
+          social: '社交',
+          media: '视频音乐',
+          shopping: '购物',
+          news: '新闻阅读',
+          office: '办公效率',
+          tool: '使用工具'
+        },
         addNav: 'Add'
       },
       searchs: {
+        title: 'Search',
         baidu: 'Baidu',
         bing: 'Bing',
         google: 'Google'
+      },
+      ['us-covid-info']: {
+        title: '🇺🇸 Covid Info Of USA',
+        closingDate: 'Closing Date',
+        comparePrev: 'Prior Day',
+        populationPercent: 'Population Percent',
+        sevenDayChange: 'Seven Day Change Percent',
+        blockTitle: {
+          confirmed: 'Accumulative Total',
+          verifying: 'Verifying',
+          death: 'Accumulative Death',
+          hospital: 'In Hospital',
+          icu: 'ICU',
+          ventilator: 'On Ventilator'
+        }
+      },
+      ['my-agenda']: {
+        title: 'My Agenda',
+        locale: 'en-US',
+        fetching: 'Fetching remote data, wait moment please...',
+        today: 'Today',
+        addEvent: {
+          addTo: 'Add To',
+          submit: 'Submit'
+        }
       }
     }
   }

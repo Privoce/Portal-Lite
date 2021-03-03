@@ -3,7 +3,7 @@ import { lazy, Suspense, useState } from 'react';
 import ForkMeOnGithub from 'fork-me-on-github';
 import { useLanguage } from 'uselanguage';
 import StyledWrapper from './styled';
-import Loading from '../../component/Loading';
+import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
 import Footer from './Footer';
 import ModalWidgetList from '../../component/WidgetList';
@@ -29,7 +29,7 @@ export default function Home() {
     setModalVisible((prev) => !prev);
   };
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Skeleton count={10} />}>
       {!window.IS_CHROME_EXT && (
         <ForkMeOnGithub
           repo="https://github.com/Privoce/Portal-Lite-China"
@@ -43,7 +43,7 @@ export default function Home() {
       <StyledWrapper>
         {/* <Account /> */}
 
-        <Suspense fallback={<Loading tip="小组件模块加载中..." />}>
+        <Suspense fallback={<Skeleton count={5} />}>
           <WidgetSection
             reloading={syncing}
             widgets={widgets}

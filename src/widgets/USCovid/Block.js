@@ -88,6 +88,7 @@ const StyledWrapper = styled.div`
       dd {
         color: #000;
         font-size: 0.11rem;
+        text-align: center;
       }
     }
   }
@@ -95,7 +96,7 @@ const StyledWrapper = styled.div`
 const addDots = (num) => {
   return Number(num).toLocaleString('en');
 };
-export default function Block({ type, title, data }) {
+export default function Block({ lang, type, title, data }) {
   const {
     value,
     calculated: { change_from_prior_day, population_percent, seven_day_change_percent }
@@ -103,7 +104,7 @@ export default function Block({ type, title, data }) {
   return (
     <StyledWrapper key={type} className={`block ${type}`}>
       <div className="compare">
-        较上日{' '}
+        {lang.comparePrev}{' '}
         <span className="num">
           {Number(change_from_prior_day) > 0 ? `+ ${change_from_prior_day}` : change_from_prior_day}
         </span>
@@ -112,11 +113,11 @@ export default function Block({ type, title, data }) {
       <div className="title">{title}</div>
       <div className="others">
         <dl>
-          <dt>人口占比</dt>
+          <dt>{lang.populationPercent}</dt>
           <dd>{population_percent}%</dd>
         </dl>
         <dl>
-          <dt>七日变化率</dt>
+          <dt>{lang.sevenDayChange}</dt>
           <dd>{seven_day_change_percent}%</dd>
         </dl>
       </div>

@@ -25,7 +25,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default function Loading({ tip = '加载中' }) {
+export default function Loading() {
   return (
     <StyledWrapper>
       <svg
@@ -49,7 +49,6 @@ export default function Loading({ tip = '加载中' }) {
           p-id="15449"
         ></path>
       </svg>
-      <div>{tip}</div>
     </StyledWrapper>
   );
 }

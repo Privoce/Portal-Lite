@@ -54,7 +54,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function AddEvent({ calendar = null, addEvent }) {
+export default function AddEvent({ lang, calendar = null, addEvent }) {
   const [pending, setPending] = useState(false);
   const [input, setInput] = useState(null);
   const [panelVisible, setPanelVisible] = useState(false);
@@ -97,7 +97,7 @@ export default function AddEvent({ calendar = null, addEvent }) {
           ></textarea>
           {calendar && (
             <h3 className="calendar" style={{ color: calendar.backgroundColor }}>
-              Add to: {calendar.summary}
+              {lang.addTo}: {calendar.summary}
             </h3>
           )}
           {/* <select data-type="calendarId" onChange={handleInputChange}>
@@ -116,7 +116,7 @@ export default function AddEvent({ calendar = null, addEvent }) {
             className="submit"
             onClick={handleSubmitEvent}
           >
-            提交
+            {lang.submit}
           </button>
         </div>
       )}

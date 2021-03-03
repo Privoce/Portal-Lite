@@ -50,7 +50,7 @@ const StyledWrapper = styled.section`
   }
 `;
 // http://health.people.com.cn/GB/26466/431463/431576/index.html
-export default function USCovid() {
+export default function USCovid({ lang }) {
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
   // const [listVisible, setListVisible] = useState(false);
@@ -91,41 +91,44 @@ export default function USCovid() {
     testing
   } = data || {};
   console.log({ date, data });
+  const { title } = lang;
   const blocks = [
     {
       type: 'confirmed',
-      title: '累计确诊',
+      title: title.confirmed,
       data: cases.total
     },
     {
       type: 'testing',
-      title: '正在检测',
+      title: title.verifying,
       data: testing.total
     },
     {
       type: 'dead',
-      title: '累计死亡',
+      title: title.death,
       data: death.total
     },
     {
       type: 'hospital',
-      title: '当前住院',
+      title: title.hospital,
       data: currently
     },
     {
       type: 'serious',
-      title: '重症患者',
+      title: title.icu,
       data: in_icu.currently
     },
     {
       type: 'maybe',
-      title: '呼吸机观察',
+      title: title.ventilator,
       data: on_ventilator.currently
     }
   ];
   return (
     <StyledWrapper>
-      <div className="date_time">截止日期：{date}</div>
+      <div className="date_time">
+        {lang.closingDate}：{date}
+      </div>
       {/* {listVisible ? (
         <List data={list} toggleListVisible={toggleListVisible} />
       ) : (
@@ -134,7 +137,15 @@ export default function USCovid() {
       */}
       <>
         {blocks.map((block) => {
-          return <Block key={block.type} type={block.type} title={block.title} data={block.data} />;
+          return (
+            <Block
+              lang={lang}
+              key={block.type}
+              type={block.type}
+              title={block.title}
+              data={block.data}
+            />
+          );
         })}
       </>
     </StyledWrapper>
