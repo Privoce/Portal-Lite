@@ -3,20 +3,20 @@ const en = {
   value: 'en',
   words: {
     profile: {
-      avatar: 'Avatar',
+      avatar: 'Photo',
       name: 'Name',
-      mobile: 'Mobile',
-      email: 'E-Mail',
+      mobile: 'Phone',
+      email: 'Email',
       edit: 'Edit',
-      logout: 'Logout'
+      logout: 'Log Out'
     },
     setting: {
-      clear: 'Reset Background',
+      clear: 'Clear Background',
       export: 'Export Data',
       import: 'Import Data',
-      reset: 'Reset',
+      reset: 'Reset All',
       feedback: 'Feedback',
-      tip: 'No local data'
+      tip: 'No local data!'
     },
     modal: {
       widgets: {
@@ -25,41 +25,41 @@ const en = {
       }
     },
     widget: {
-      loading: 'Loading',
+      loading: 'Loading...',
       goAuth: {
-        initializing: 'Initializing',
-        tip: 'Not yet authorized',
+        initializing: 'Initializing...',
+        tip: 'Not Authorized',
         btnTxt: 'Authorize'
       },
       opts: {
-        setting: 'Setting',
+        setting: 'Settings',
         remove: 'Remove',
-        fullscreen: 'Fullscreen',
-        open: { newTab: 'Open in new window', standalone: 'Open standalone' },
+        fullscreen: 'Full-screen',
+        open: { newTab: 'Open in new tab', standalone: 'Open in new window' },
         sizes: {
-          middle: 'middle',
-          large: 'large'
+          middle: 'Medium',
+          large: 'Large'
         }
       }
     },
     widgets: {
       navs: {
-        title: 'Nav',
+        title: 'Quick Access',
         modal: {
           placeholder: {
-            name: 'title',
+            name: 'Title',
             url: 'URL'
           },
           add: 'Add'
         },
         cateTitle: {
-          popular: '常用',
-          social: '社交',
-          media: '视频音乐',
-          shopping: '购物',
-          news: '新闻阅读',
-          office: '办公效率',
-          tool: '使用工具'
+          popular: 'Popular',
+          social: 'Social Media',
+          media: 'Video',
+          shopping: 'Shopping',
+          news: 'News',
+          office: 'Productivity',
+          tool: 'Tools'
         },
         addNav: 'Add'
       },
@@ -70,13 +70,13 @@ const en = {
         google: 'Google'
       },
       ['us-covid-info']: {
-        title: '🇺🇸 Covid Info Of USA',
+        title: '🇺🇸 Covid Info',
         closingDate: 'Closing Date',
-        comparePrev: 'Prior Day',
-        populationPercent: 'Population Percent',
-        sevenDayChange: 'Seven Day Change Percent',
+        comparePrev: 'Yesterday',
+        populationPercent: 'Compared with Population',
+        sevenDayChange: 'Seven Day Change',
         blockTitle: {
-          confirmed: 'Accumulative Total',
+          confirmed: 'Confirmed',
           verifying: 'Verifying',
           death: 'Accumulative Death',
           hospital: 'In Hospital',
@@ -87,7 +87,7 @@ const en = {
       ['my-agenda']: {
         title: 'My Agenda',
         locale: 'en-US',
-        fetching: 'Fetching remote data, wait moment please...',
+        fetching: 'Loading...',
         today: 'Today',
         addEvent: {
           addTo: 'Add To',
