@@ -259,7 +259,8 @@ const useGoogleAuth = () => {
         htmlLink,
         start: start?.dateTime || start?.date,
         end: end?.dateTime || end?.date,
-        summary
+        summary,
+        readOnly: false
       };
       let newGroup = addToGroup(groupEvents, data);
       setGroupEvents({ ...newGroup });

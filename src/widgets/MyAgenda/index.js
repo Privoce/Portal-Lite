@@ -77,7 +77,7 @@ export default function MyAgenda({ name, lang }) {
           <ul className="list" ref={listEle}>
             {Object.entries(groupEvents)
               .sort(([a], [b]) => {
-                new Date(a) - new Date(b);
+                return new Date(a) - new Date(b);
               })
               .map(([dateKey, events]) => {
                 if (events.length == 0) return null;
