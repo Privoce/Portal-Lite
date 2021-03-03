@@ -55,7 +55,7 @@ const addToGroup = (group, evt) => {
   let { start } = evt;
   let dateKey = null;
   try {
-    dateKey = format(new Date(start), 'PPPP');
+    dateKey = format(new Date(start), 'P');
   } catch (error) {
     dateKey = 'Not Yet Classified';
   }

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 
 import IconUpdate from '../Common/Icons/Update';
 import GoAuth from '../Common/GoAuth';
@@ -10,7 +10,7 @@ import Event from './Event';
 import AddEvent from './AddEvent';
 import Setting from './Setting';
 
-export default function MyAgenda({ name }) {
+export default function MyAgenda({ name, lang }) {
   const listEle = useRef(null);
   const {
     auth,
@@ -51,9 +51,9 @@ export default function MyAgenda({ name }) {
         <div className="topbar">
           <div className="today">
             <button disabled={loading} onClick={handleTodayClick} className="btn">
-              Today
+              {lang.today}
             </button>
-            <span className="date">{format(new Date(), 'PPPP')}</span>
+            <span className="date">{new Date().toLocaleDateString(lang.locale)}</span>
             <button disabled={loading} onClick={handleSyncData} className="update">
               <IconUpdate
                 className={reloading ? 'reloading' : ''}
@@ -61,29 +61,37 @@ export default function MyAgenda({ name }) {
                 bgColor="transparent"
               />
             </button>
-            <AddEvent calendar={calendars.find((c) => c.primary == true)} addEvent={addEvent} />
+            <AddEvent
+              lang={lang.addEvent}
+              calendar={calendars.find((c) => c.primary == true)}
+              addEvent={addEvent}
+            />
           </div>
           {/* <a className="link" href="http://baidu.com" target="_blank" rel="noopener noreferrer">
           link
         </a> */}
         </div>
         {loading ? (
-          <div className="loading">正在获取日程数据，请耐心等候...</div>
+          <div className="loading">{lang.fetching}</div>
         ) : (
           <ul className="list" ref={listEle}>
-            {Object.entries(groupEvents).map(([dateKey, events]) => {
-              if (events.length == 0) return null;
-              return (
-                <li className="item" key={dateKey}>
-                  <h3 className="title">{dateKey}</h3>
-                  <ul className="evts">
-                    {events.map((evt) => {
-                      return <Event key={evt.summary} data={evt} deleteEvent={removeEvent} />;
-                    })}
-                  </ul>
-                </li>
-              );
-            })}
+            {Object.entries(groupEvents)
+              .sort(([a], [b]) => {
+                new Date(a) - new Date(b);
+              })
+              .map(([dateKey, events]) => {
+                if (events.length == 0) return null;
+                return (
+                  <li className="item" key={dateKey}>
+                    <h3 className="title">{new Date(dateKey).toLocaleDateString(lang.locale)}</h3>
+                    <ul className="evts">
+                      {events.map((evt) => {
+                        return <Event key={evt.summary} data={evt} deleteEvent={removeEvent} />;
+                      })}
+                    </ul>
+                  </li>
+                );
+              })}
           </ul>
         )}
       </StyledWrapper>
