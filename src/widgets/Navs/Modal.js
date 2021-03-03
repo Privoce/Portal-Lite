@@ -101,7 +101,7 @@ const StyledWrapper = styled.section`
   }
 `;
 // let other_params = {};
-export default function Modal({ resetModalVisible, addApp, widgetName = '' }) {
+export default function Modal({ lang, resetModalVisible, addApp, widgetName = '' }) {
   const { getWidgetSetting } = useWidgetSettings();
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
@@ -176,14 +176,19 @@ export default function Modal({ resetModalVisible, addApp, widgetName = '' }) {
         <div className="modal">
           <div className="add">
             <input
-              placeholder="名称"
+              placeholder={lang.placeholder.name}
               onChange={handleInputChange}
               value={title}
               className="title"
             />
-            <input placeholder="地址" onChange={handleInputChange} value={url} className="url" />
+            <input
+              placeholder={lang.placeholder.url}
+              onChange={handleInputChange}
+              value={url}
+              className="url"
+            />
             <div className="btn">
-              <button onClick={handleSubmit}>添 加</button>
+              <button onClick={handleSubmit}>{lang.add}</button>
               {tip && <div className="tip">{tip}</div>}
             </div>
           </div>

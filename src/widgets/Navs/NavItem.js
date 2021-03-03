@@ -68,7 +68,14 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Nav({ data = {}, showMenu = null, add, className, ...rest }) {
+export default function Nav({
+  addTitle = '添加导航',
+  data = {},
+  showMenu = null,
+  add,
+  className,
+  ...rest
+}) {
   const { themeColor = '#333', icon = '', title = '标题', url = '', frame } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
@@ -103,7 +110,7 @@ export default function Nav({ data = {}, showMenu = null, add, className, ...res
       </div>
 
       <h2 className="title">
-        {add ? '添加导航' : title} {frame ? '🖥️' : ''}
+        {add ? addTitle : title} {frame ? '🖥️' : ''}
       </h2>
     </StyledWrapper>
   );

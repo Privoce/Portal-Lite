@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, cloneElement, Suspense } from 'react';
 import styled from 'styled-components';
 import Loading from '../../component/Loading';
 import { useWidgetSettings } from '../../hooks';
@@ -41,7 +41,7 @@ const StyledWrapper = styled.section`
   }
 `;
 
-export default function Searchs({ name, toggleWidgetSettingVisible }) {
+export default function Searchs({ lang, name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [search, setSearch] = useState(getWidgetSetting({ name }) || 'baidu');
   const refresh = (s) => {
@@ -51,6 +51,7 @@ export default function Searchs({ name, toggleWidgetSettingVisible }) {
   return (
     <>
       <Setting
+        lang={lang}
         name={name}
         toggleWidgetSettingVisible={toggleWidgetSettingVisible}
         search={search}
@@ -58,7 +59,11 @@ export default function Searchs({ name, toggleWidgetSettingVisible }) {
       />
       <StyledWrapper>
         <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
-          <div className="search">{SearchMap[search]}</div>
+          <div className="search">
+            {cloneElement(SearchMap[search], {
+              lang
+            })}
+          </div>
         </Suspense>
       </StyledWrapper>
     </>

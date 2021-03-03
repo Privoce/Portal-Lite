@@ -1,5 +1,7 @@
 import { useState, useRef, Children, useCallback, cloneElement, Suspense } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useLanguage } from 'uselanguage';
+
 import IconThreeDots from '../Icons/ThreeDots';
 import ErrorBoundary from './ErrorBoundary';
 import StyledWrapper from './styled';
@@ -27,6 +29,14 @@ export default function WidgetWrapper({
   sizes = null,
   children = null
 }) {
+  const {
+    language: {
+      words: {
+        widget: { opts: lang },
+        widgets
+      }
+    }
+  } = useLanguage();
   const compContainer = useRef(null);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [currSize, setCurrSize] = useState(getWidgetSetting({ name, key: 'size' }) || defaultSize);
@@ -60,6 +70,7 @@ export default function WidgetWrapper({
   }, []);
   // 只有一个size选择也不显示
   const hasSizes = sizes && sizes.length > 1;
+  console.log('lang', widgets[name]);
   return (
     <StyledWrapper
       ref={compContainer}
@@ -77,6 +88,7 @@ export default function WidgetWrapper({
               <Suspense fallback={<Loading />}>
                 {Children.map(children, (child) =>
                   cloneElement(child, {
+                    lang: widgets[name],
                     name,
                     toggleWidgetSettingVisible
                   })
@@ -102,16 +114,16 @@ export default function WidgetWrapper({
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {enableSetting && (
             <li className="item" onClick={toggleWidgetSettingVisible}>
-              设置
+              {lang.setting}
             </li>
           )}
           {!standalone && (
             <li className="item" onClick={handleRemove.bind(null, title)}>
-              移除
+              {lang.remove}
             </li>
           )}
           <li className="item" onClick={handleFullscreen}>
-            全屏
+            {lang.fullscreen}
           </li>
           {!standalone && (
             <li className="item">
@@ -124,7 +136,7 @@ export default function WidgetWrapper({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {isExt ? '独立网页打开' : '新页面打开'}
+                {isExt ? lang.open.standalone : lang.open.newTab}
               </a>
             </li>
           )}

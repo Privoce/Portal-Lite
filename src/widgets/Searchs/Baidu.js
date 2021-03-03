@@ -35,7 +35,7 @@ const StyledWrapper = styled.div`
     }
     .list {
       height: 2rem;
-      overflow: scroll;
+      overflow: auto;
       overscroll-behavior: contain;
       background-color: #fff;
       width: 100%;
@@ -91,8 +91,8 @@ const StyledWrapper = styled.div`
     }
   }
   .btn {
-    /* width: 1.4rem;
-    height: 0.44rem; */
+    min-width: 1.4rem;
+    text-align: center;
     word-break: keep-all;
     background-color: #4e6ef3;
     border-radius: 0 0.1rem 0.1rem 0;
@@ -107,7 +107,7 @@ const StyledWrapper = styled.div`
   }
 `;
 let timeoutInt = 0;
-export default function BaiduSearch() {
+export default function BaiduSearch({ lang }) {
   const [input, setInput] = useState('');
   const [associates, setAssociates] = useState([]);
   const [focused, setFocused] = useState(false);
@@ -178,7 +178,7 @@ export default function BaiduSearch() {
         </ul>
       </div>
       <a className="btn" target="_blank" href={`https://www.baidu.com/s?wd=${input}`}>
-        百度一下
+        {lang.baidu}
       </a>
     </StyledWrapper>
   );

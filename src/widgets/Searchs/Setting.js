@@ -24,7 +24,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Setting({ name, search, updateSearch, toggleWidgetSettingVisible }) {
+export default function Setting({ lang, name, search, updateSearch, toggleWidgetSettingVisible }) {
   const handleClick = ({
     target: {
       dataset: { s }
@@ -40,7 +40,7 @@ export default function Setting({ name, search, updateSearch, toggleWidgetSettin
     <StyledWrapper>
       <ul className="opts">
         <li className="opt" onClick={handleClick} data-s="baidu" data-selected={search == 'baidu'}>
-          百度搜索
+          {lang.baidu}
         </li>
         <li
           className="opt"
@@ -48,10 +48,10 @@ export default function Setting({ name, search, updateSearch, toggleWidgetSettin
           data-s="google"
           data-selected={search == 'google'}
         >
-          谷歌搜索
+          {lang.google}
         </li>
         <li className="opt" onClick={handleClick} data-s="bing" data-selected={search == 'bing'}>
-          必应搜索
+          {lang.bing}
         </li>
       </ul>
     </StyledWrapper>,

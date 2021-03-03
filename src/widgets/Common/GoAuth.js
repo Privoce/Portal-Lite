@@ -1,5 +1,7 @@
 // import React from 'react'
 import styled from 'styled-components';
+import { useLanguage } from 'uselanguage';
+
 const StyledWrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -31,14 +33,21 @@ const StyledWrapper = styled.div`
   }
 `;
 export default function GoAuth({ auth = '', disabled = false }) {
+  const {
+    language: {
+      words: {
+        widget: { goAuth }
+      }
+    }
+  } = useLanguage();
   let isF = typeof auth === 'function';
   const handleClick = () => {
     auth();
   };
-  const txt = disabled ? '初始化中...' : '去授权';
+  const txt = disabled ? goAuth.initializing : goAuth.btnTxt;
   return (
     <StyledWrapper>
-      <p className="tip">暂未授权，点击进行授权</p>
+      <p className="tip">{goAuth.tip}</p>
       {isF ? (
         <button disabled={disabled} className="btn" onClick={handleClick}>
           {txt}

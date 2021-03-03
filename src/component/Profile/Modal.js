@@ -2,6 +2,8 @@
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
+import { useLanguage } from 'uselanguage';
+
 import { appId } from './config';
 import IconClose from '../../asset/img/icon.close.png';
 const modalRoot = document.querySelector('#modal-root');
@@ -79,6 +81,11 @@ const StyledWrapper = styled.section`
   }
 `;
 export default function Modal({ closeModal, updateUserInfo, data = {} }) {
+  const {
+    language: {
+      words: { profile }
+    }
+  } = useLanguage();
   const { authClient } = useAuthing({ appId });
   const { username, phone, email, photo } = data;
   console.log({ data });
@@ -96,24 +103,24 @@ export default function Modal({ closeModal, updateUserInfo, data = {} }) {
           <table className="info">
             <tbody>
               <tr>
-                <td>头像</td>
+                <td>{profile.avatar}</td>
                 <td>
                   <img src={photo} alt="头像" />
                 </td>
               </tr>
               <tr>
-                <td>用户名</td>
+                <td>{profile.name}</td>
                 <td>{username || '暂未设置'}</td>
               </tr>
               {phone && (
                 <tr>
-                  <td>电话</td>
+                  <td>{profile.mobile}</td>
                   <td>{phone}</td>
                 </tr>
               )}
               {email && (
                 <tr>
-                  <td>邮箱</td>
+                  <td>{profile.email}</td>
                   <td>{email}</td>
                 </tr>
               )}
@@ -121,10 +128,10 @@ export default function Modal({ closeModal, updateUserInfo, data = {} }) {
           </table>
           <div className="opts">
             <a target="_blank" href="https://portal-lite-china.authing.cn/u">
-              编辑资料
+              {profile.edit}
             </a>
             <button className="logout_btn" onClick={handleLogout}>
-              退出登录
+              {profile.logout}
             </button>
           </div>
           <img src={IconClose} onClick={closeModal} className="close" />

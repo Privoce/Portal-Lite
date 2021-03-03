@@ -45,7 +45,7 @@ const StyledSection = styled.section`
     }
   }
 `;
-export default function Navs({ name }) {
+export default function Navs({ name, lang }) {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
   const { data: navs, addNav, removeNav, updateNavs } = useNavData(name);
   const [modalVisible, setModalVisible] = useState(false);
@@ -124,11 +124,12 @@ export default function Navs({ name }) {
               </li>
             );
           })}
-          <Nav add onClick={setModalVisible.bind(null, true)} />
+          <Nav addTitle={lang.addNav} add onClick={setModalVisible.bind(null, true)} />
         </ul>
       </StyledSection>
       {modalVisible ? (
         <Modal
+          lang={lang.modal}
           widgetName={name}
           addApp={addNav}
           resetModalVisible={setModalVisible.bind(null, false)}

@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { parse, differenceInSeconds } from 'date-fns';
 // import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { useLanguage } from 'uselanguage';
+
 import { Widgets } from '../../data';
 import Item from './Item';
 import IconClose from '../../asset/img/icon.close.png';
@@ -113,6 +115,13 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
   //     enableBodyScroll(modalEle);
   //   };
   // }, []);
+  const {
+    language: {
+      words: {
+        modal: { widgets: lang }
+      }
+    }
+  } = useLanguage();
   const handleAddClick = (w) => {
     addWidget(w);
     // resetModalVisible();
@@ -136,7 +145,7 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
         <div className="modal">
           {addedItems.length ? (
             <div className="widgets">
-              <h2 className="title">已添加的小组件 🛍️</h2>
+              <h2 className="title">{lang.added} 🛍️</h2>
               <ul className="list added">
                 {addedItems.map(({ key, title, description }) => {
                   return (
@@ -150,7 +159,7 @@ export default function Modal({ resetModalVisible, addWidget, addedWidgets }) {
           ) : null}
           {unAddedWidgets.length ? (
             <div className="widgets">
-              <h2 className="title">未添加的小组件 🛒</h2>
+              <h2 className="title">{lang.notAdded} 🛒</h2>
               <ul className="list">
                 {unAddedWidgets.map(
                   ({ key, title, description, screenshot, created, updated, added }) => {

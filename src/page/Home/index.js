@@ -1,6 +1,7 @@
 // import { Link } from 'react-router-dom';
 import { lazy, Suspense, useState } from 'react';
 import ForkMeOnGithub from 'fork-me-on-github';
+import { useLanguage } from 'uselanguage';
 import StyledWrapper from './styled';
 import Loading from '../../component/Loading';
 import Darkmode from '../../component/Darkmode';
@@ -23,6 +24,7 @@ export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
   const [syncing, setSyncing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const { language } = useLanguage();
   const toggleModalVisible = () => {
     setModalVisible((prev) => !prev);
   };
@@ -37,7 +39,7 @@ export default function Home() {
         />
       )}
       <Profile setSyncing={setSyncing} />
-      <Setting />
+      <Setting lang={language.words.setting} />
       <StyledWrapper>
         {/* <Account /> */}
 

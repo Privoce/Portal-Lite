@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { saveAs } from 'file-saver';
+import { useLanguage } from 'uselanguage';
+import languages from '../../lang';
 import IconClose from '../../asset/img/icon.close.png';
 import { useWidgetSettings } from '../../hooks';
 import IconClear from './icons/Clear';
@@ -109,6 +111,12 @@ const StyledWrapper = styled.section`
 // let other_params = {};
 export default function Modal({ closeModal }) {
   const {
+    language: {
+      words: { setting }
+    }
+  } = useLanguage();
+
+  const {
     widgetSettings,
     clearWidgetSettings,
     getWidgetSetting,
@@ -156,6 +164,13 @@ export default function Modal({ closeModal }) {
       location.reload();
     }
   };
+  const { language, setLanguage } = useLanguage();
+
+  const handleChangeLanguage = (e) => {
+    const filteredLanguage = languages.find((lang) => lang.value === e.target.value);
+
+    setLanguage(filteredLanguage);
+  };
   let currPageBg = getWidgetSetting({ key: 'bg' });
   return (
     <ModalWrapper ref={modal}>
@@ -168,17 +183,17 @@ export default function Modal({ closeModal }) {
                 disabled={!currPageBg}
                 onClick={handleResetBackground}
               >
-                清除背景
+                {setting.clear}
                 <IconClear />
               </button>
             </li>
             <li className="setting">
               <button className="btn export" disabled={!widgetSettings} onClick={handleExport}>
-                导出数据
+                {setting.export}
                 <IconExport />
               </button>
               <button className="btn import">
-                导入数据
+                {setting.import}
                 <IconImport />
                 <input type="file" accept="application/*" onChange={handleFileImport}></input>
               </button>
@@ -186,7 +201,7 @@ export default function Modal({ closeModal }) {
 
             <li className="setting">
               <button className="btn reset" disabled={!widgetSettings} onClick={handleReset}>
-                重置全部
+                {setting.reset}
                 <IconReset />
               </button>
               <a
@@ -194,15 +209,21 @@ export default function Modal({ closeModal }) {
                 href={'https://support.qq.com/product/303691'}
                 target="_blank"
               >
-                反馈
+                {setting.feedback}
                 <IconMsg />
               </a>
             </li>
-            {/* <li className="setting">
-              <button className="btn langs">多语言设置</button>
-            </li> */}
+            <li className="setting">
+              <select className="btn langs" onChange={handleChangeLanguage} value={language.value}>
+                {languages.map((lang) => (
+                  <option key={lang.value} value={lang.value}>
+                    {lang.title}
+                  </option>
+                ))}
+              </select>
+            </li>
           </ul>
-          {!widgetSettings ? <h2 className="tip">暂未产生本地数据</h2> : null}
+          {!widgetSettings ? <h2 className="tip">{setting.tip}</h2> : null}
           <img src={IconClose} onClick={closeModal} className="close" />
         </div>
       </StyledWrapper>

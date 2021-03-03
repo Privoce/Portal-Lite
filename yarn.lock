@@ -9910,6 +9910,11 @@ use@^3.1.0:
   resolved "https://registry.npm.taobao.org/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha1-1QyMrHmhn7wg8pEfVuuXP04QBw8=
 
+uselanguage@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npm.taobao.org/uselanguage/download/uselanguage-1.2.1.tgz#811d4b895d4f89368ba01c959feb0b13945a78fa"
+  integrity sha1-gR1LiV1PiTaLoByVn+sLE5RaePo=
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/util-deprecate/download/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
