@@ -109,10 +109,16 @@
 
 ![widget relationship calc](demo/screenshoots/widget.relationship.calc.png)
 
+#### 我的日程
+
+![my agenda](demo/screenshoots/widget.my.agenda.png)
+
+目前只支持谷歌日历
+
 ## 迭代计划
 
 - ~~浏览器插件化：赋能更多的可能性~~
-- 个人中心-账号体系
+- ~~个人中心-账号体系~~
 - ~~本地数据导出与导入~~
 - 小组件开源方案
 - 继续自研小组件
