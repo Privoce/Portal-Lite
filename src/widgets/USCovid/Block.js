@@ -99,7 +99,7 @@ const addDots = (num) => {
 export default function Block({ lang, type, title, data }) {
   const {
     value,
-    calculated: { change_from_prior_day, population_percent, seven_day_change_percent }
+    calculated: { change_from_prior_day, seven_day_change_percent }
   } = data;
   return (
     <StyledWrapper key={type} className={`block ${type}`}>
@@ -112,10 +112,6 @@ export default function Block({ lang, type, title, data }) {
       <div className="num">{addDots(value)}</div>
       <div className="title">{title}</div>
       <div className="others">
-        <dl>
-          <dt>{lang.populationPercent}</dt>
-          <dd>{population_percent}%</dd>
-        </dl>
         <dl>
           <dt>{lang.sevenDayChange}</dt>
           <dd>{seven_day_change_percent}%</dd>
