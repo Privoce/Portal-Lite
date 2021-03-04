@@ -91,7 +91,7 @@ export default function USCovid({ lang }) {
     testing
   } = data || {};
   console.log({ date, data });
-  const { title } = lang;
+  const { blockTitle: title } = lang;
   const blocks = [
     {
       type: 'confirmed',
