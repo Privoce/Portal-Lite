@@ -33,7 +33,7 @@ export default function OAuth() {
   }, [countDown]);
   useEffect(() => {
     let code = new URLSearchParams(location.search).get('code');
-    let extId = new URLSearchParams(location.search).get('extId') != 0;
+    let extId = new URLSearchParams(location.search).get('extId') || 0;
     if (code) {
       getToken(code).then((resp) => {
         console.log({ resp });
@@ -43,7 +43,7 @@ export default function OAuth() {
           setPending(false);
           setTipVisible(true);
           localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
-          if (extId) {
+          if (extId != 0) {
             location.href = `https://${extId}.chromiumapp.org/token=${data.access_token}`;
           } else {
             setCountDown(3);
