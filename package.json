@@ -1,6 +1,6 @@
 {
-  "name": "portal-lite-china",
-  "version": "0.9.0",
+  "name": "portal-lite",
+  "version": "1.0.0",
   "private": false,
   "dependencies": {
     "@apollo/client": "^3.3.11",
