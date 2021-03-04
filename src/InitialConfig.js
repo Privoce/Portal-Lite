@@ -7,12 +7,11 @@ function gtag() {
   window.dataLayer.push(arguments);
 }
 const isProd = process.env.NODE_ENV == 'production';
-const loadCollector = isProd && !window.IS_CHROME_EXT;
+const isExt = process.env.REACT_APP_CHROME_EXT == 'true';
 export default function InitialConfig() {
   useEffect(() => {
-    // set req timeout
-    // axios.defaults.timeout = 3000;
-    if (loadCollector) {
+    if (isProd && !isExt) {
+      // 浏览器扩展不需要加载这些
       // google 统计
       const gs = document.createElement('script');
       gs.async = 1;
@@ -40,5 +39,5 @@ export default function InitialConfig() {
       window.removeEventListener('error', handleError, true);
     };
   }, []);
-  return <>{loadCollector && <BaiduTongji />}</>;
+  return <>{isProd && !isExt && <BaiduTongji />}</>;
 }

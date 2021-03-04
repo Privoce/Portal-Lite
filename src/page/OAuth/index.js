@@ -9,7 +9,7 @@ let intervalId = null;
 export default function OAuth() {
   let { app } = useParams();
   const [pending, setPending] = useState(true);
-  const [tipVisible, setTipVisible] = useState(true);
+  const [tip, setTip] = useState(null);
   let [countDown, setCountDown] = useState(null);
   useEffect(() => {
     // return early
@@ -41,13 +41,15 @@ export default function OAuth() {
         const { code, data } = resp;
         if (code == 0 && data.access_token) {
           setPending(false);
-          setTipVisible(true);
+          setTip('授权成功');
           localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
           if (extId != 0) {
-            location.href = `https://${extId}.chromiumapp.org/token=${data.access_token}`;
+            location.href = `https://${extId}.chromiumapp.org/?token=${data.access_token}`;
           } else {
             setCountDown(3);
           }
+        } else {
+          setTip('授权失败');
         }
       });
     }
@@ -65,8 +67,8 @@ export default function OAuth() {
           <img src={APPs[app].logo} alt="app logo" />
         </div>
       </div>
-      <div className="status">{pending ? '授权中...' : tipVisible ? '授权成功' : '授权失败'}</div>
-      {tipVisible && (
+      <div className="status">{pending ? '授权中...' : tip}</div>
+      {!pending && (
         <>
           <div className="tip">{countDown}秒后将关闭页面</div>
           <button onClick={handleCloseClick} className="close_btn">
