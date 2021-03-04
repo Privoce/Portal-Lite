@@ -21,7 +21,7 @@
     }
   },
   "globals": {
-    "IS_CHROME_EXT": true
+    "chrome":true
   },
   "env": {
     "browser": true,

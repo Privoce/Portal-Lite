@@ -26,7 +26,7 @@ Personalized: all components are chosen by you—you can drag them around anywhe
 
 ## Preview
 
-![preview image]('./demo/preview.png')
+![preview image](./demo/preview.png)
 
 ### My Agenda
 
