@@ -71,7 +71,7 @@ const pt = {
       },
       ['us-covid-info']: {
         title: '🇺🇸 Informação Covid',
-        closingDate: 'Data de fechamento',
+        closingDate: 'Última atualização',
         comparePrev: 'Ontem',
         populationPercent: 'Em comparação com a população',
         sevenDayChange: 'Mudança de sete dias',
