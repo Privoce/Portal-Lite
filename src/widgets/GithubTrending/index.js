@@ -3,13 +3,11 @@ import styled from 'styled-components';
 import Developer from './developer';
 import Repo from './repo';
 import Loading from '../Common/Loading';
-import IconGithubRepo from '../Common/Icons/GithubRepo';
+import { GoRepoForked } from 'react-icons/go';
+
 import IconDev from '../Common/Icons/Developer';
 const StyledWrapper = styled.div`
-  /* position: relative; */
   background: #fff;
-  /* overflow: scroll; */
-  /* overscroll-behavior: contain; */
   height: 100%;
   ul {
     display: flex;
@@ -109,7 +107,7 @@ export default function GithubTrending() {
           onClick={handleTabClick.bind(null, 'repositories')}
           className={`tab ${type == 'repositories' && 'active'}`}
         >
-          <IconGithubRepo />
+          <GoRepoForked />
         </li>
         <li
           onClick={handleTabClick.bind(null, 'developers')}

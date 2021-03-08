@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import IconAdd from '../Common/Icons/Add';
-
+import { IoAddCircleOutline } from 'react-icons/io5';
 const StyledWrapper = styled.div`
   position: relative;
   .add {
     svg {
       transition: all 0.3s;
-      width: 0.28rem;
-      height: 0.28rem;
+      width: 0.3rem;
+      height: 0.3rem;
       transform-origin: center;
     }
     &.expand svg {
@@ -84,7 +83,7 @@ export default function AddEvent({ lang, calendar = null, addEvent }) {
   return (
     <StyledWrapper>
       <button className={`add ${panelVisible ? 'expand' : ''}`} onClick={handleAddClick}>
-        <IconAdd color="#5c4ddf" />
+        <IoAddCircleOutline color="#5c4ddf" />
       </button>
       {panelVisible && (
         <div className="panel">

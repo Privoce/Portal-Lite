@@ -1,11 +1,7 @@
 // import React from 'react'
 import { format } from 'timeago.js';
 import styled from 'styled-components';
-import GithubFork from '../Common/Icons/GithubFork';
-import GithubStar from '../Common/Icons/GithubStar';
-import GithubHome from '../Common/Icons/GithubHome';
-import GithubCommit from '../Common/Icons/GithubCommit';
-import GithubPush from '../Common/Icons/GithubPush';
+import { GoGitCommit, GoRepoForked, GoStar, GoHome, GoRepoPush } from 'react-icons/go';
 const StyledCard = styled.li`
   font-size: 0.16rem;
   padding: 0.1rem 0.08rem;
@@ -89,26 +85,26 @@ export default function Card({
         </a>
         {homepageUrl && (
           <a title="项目主页" className="home" href={homepageUrl} target="_blank">
-            <GithubHome />
+            <GoHome />
           </a>
         )}
       </div>
       <div className="bottom">
         <span title={'最新更新'} className="item timeago">
-          <GithubPush />
+          <GoRepoPush />
           {format(new Date(pushedAt), 'zh_CN')}
         </span>
         <span title="Fork数" className="item fork">
-          <GithubFork />
+          <GoRepoForked />
           {forkCount}
         </span>
         <span title="标星数" className="item star">
-          <GithubStar />
+          <GoStar />
           {stargazerCount}
         </span>
         {object && (
           <span title="提交数" className="item commit">
-            <GithubCommit />
+            <GoGitCommit />
             {object.history.totalCount}
           </span>
         )}

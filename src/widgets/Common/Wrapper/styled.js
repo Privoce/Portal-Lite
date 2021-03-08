@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
+  /* content-visibility: auto; */
   width: 6.2rem;
   position: relative;
   display: flex;
@@ -70,6 +71,7 @@ const StyledWrapper = styled.div`
     top: 0.04rem;
     z-index: 9;
     display: flex;
+    padding: 0.05rem;
     cursor: pointer;
     background-color: rgba(222, 222, 222, 0.4);
     border-radius: 50%;

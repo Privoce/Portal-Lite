@@ -1,8 +1,7 @@
 import { useState, useRef, Children, useCallback, cloneElement, Suspense } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLanguage } from 'uselanguage';
-
-import IconThreeDots from '../Icons/ThreeDots';
+import { BsThreeDots } from 'react-icons/bs';
 import ErrorBoundary from './ErrorBoundary';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
@@ -106,7 +105,7 @@ export default function WidgetWrapper({
       {/* 小组件内部设置可见判断,避免关闭按钮的UI冲突 */}
       {!widgetSettingVisible && (
         <div className="setting" onClick={toggleSettingListVisible}>
-          <IconThreeDots />
+          <BsThreeDots />
         </div>
       )}
       {settingVisible && (

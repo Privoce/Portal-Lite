@@ -3,9 +3,8 @@ import { useState } from 'react';
 import { format, isToday } from 'date-fns';
 import styled, { keyframes } from 'styled-components';
 import Linkify from 'linkifyjs/react';
-import IconLocation from './IconLocation';
-import IconLink from './IconLink';
-import IconDelete from './IconDelete';
+import { AiOutlineLink, AiOutlineDelete } from 'react-icons/ai';
+import { GrLocation } from 'react-icons/gr';
 const AniFading = keyframes`
   from {
     opacity:1;
@@ -201,7 +200,7 @@ export default function Event({ deleteEvent, data = mock }) {
               data-eid={id}
               data-cid={calendarId}
             >
-              <IconDelete />
+              <AiOutlineDelete color="#fe6b23" />
             </button>
           )}
           <a
@@ -211,7 +210,7 @@ export default function Event({ deleteEvent, data = mock }) {
             rel="noopener noreferrer"
             className="opt link"
           >
-            <IconLink />
+            <AiOutlineLink />
           </a>
         </div>
         <h2 className="title">{summary}</h2>
@@ -250,7 +249,7 @@ export default function Event({ deleteEvent, data = mock }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <IconLocation />
+                  <GrLocation />
                 </a>
               </div>
             )}

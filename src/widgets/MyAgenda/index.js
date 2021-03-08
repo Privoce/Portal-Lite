@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 // import { format } from 'date-fns';
-
-import IconUpdate from '../Common/Icons/Update';
+import { RiRefreshLine } from 'react-icons/ri';
 import GoAuth from '../Common/GoAuth';
 import ErrorTip from '../Common/ErrorTip';
 import StyledWrapper from './styled';
@@ -57,10 +56,10 @@ export default function MyAgenda({ name, lang }) {
             </button>
             <span className="date">{new Date().toLocaleDateString(lang.locale)}</span>
             <button disabled={loading} onClick={handleSyncData} className="update">
-              <IconUpdate
+              <RiRefreshLine
                 className={reloading ? 'reloading' : ''}
                 color={loading ? '#aaa' : '#5c4ddf'}
-                bgColor="transparent"
+                // bgColor="transparent"
               />
             </button>
             <AddEvent

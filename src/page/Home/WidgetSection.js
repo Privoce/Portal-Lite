@@ -17,7 +17,6 @@ const StyledSection = styled.section`
     grid-auto-flow: row dense;
     grid-auto-rows: auto;
     > .widget {
-      /* user-select: none; */
       transition: transform 0.5s;
       &.ghost {
         opacity: 0.1;
