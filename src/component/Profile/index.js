@@ -7,9 +7,6 @@ export default function Profile({ setSyncing }) {
   const toggleSettingModalVisible = () => {
     setVisible((prev) => !prev);
   };
-  // useEffect(() => {
-
-  // }, []);
   // const { username } = userInfo || {};
   return (
     <>

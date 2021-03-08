@@ -42,18 +42,18 @@ const StyledG = createGlobalStyle`
 }
 `;
 const StyledButton = styled.button`
-  position: fixed;
-  left: 0.1rem;
-  bottom: 0.1rem;
-  font-size: 0.22rem;
-  padding: 0.12rem;
-  width: 0.45rem;
-  height: 0.45rem;
+  font-size: 0.26rem;
+  transition: all 0.5s;
+  width: 0.6rem;
+  height: 0.6rem;
+  background-color: #003c71 !important;
   border-radius: 50%;
+  padding: 0.1rem;
+  z-index: 996;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.5s;
+  box-shadow: 0 0 5px #333;
   &.dark {
     background: #fff;
   }

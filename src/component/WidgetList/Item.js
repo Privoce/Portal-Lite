@@ -1,36 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import { GrFormAdd, GrFormSubtract } from 'react-icons/gr';
 import IconTip from './IconTip';
 const StyledItem = styled.li`
   position: relative;
   width: 100%;
-  height: 1.44rem;
+  height: 1.8rem;
   transition: background-size 0.5s;
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: 0.05rem;
+  border-radius: 0.15rem;
   border: 0.01rem solid #eee;
-  transition: all 0.6s;
   overflow: hidden;
-  .add,
-  .added {
+  .icon {
     display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: #8784ff;
     cursor: pointer;
     width: 0.3rem;
     height: 0.3rem;
     position: absolute;
     bottom: 0.1rem;
     right: 0.1rem;
-    img {
-      width: 100%;
-      height: 100%;
+    transition: all 0.6s;
+    svg {
+      width: 80%;
+      height: 80%;
     }
-  }
-  .add {
-    border: 1px solid #fff;
   }
   .intro {
     width: 100%;
@@ -57,7 +56,9 @@ const StyledItem = styled.li`
     }
   }
   &:hover {
-    transform: scale(1.05);
+    .icon {
+      transform: scale(1.1);
+    }
     .intro {
       opacity: 0;
     }
@@ -89,8 +90,8 @@ const Recents = {
   )
 };
 // https://gitee.com/zyanggc/oss/raw/master/works/icon.check.png
-export default function Item({ data, addWidget }) {
-  const { title, description, screenshot, recent } = data;
+export default function Item({ data, addWidget, removeWidget }) {
+  const { title, description, screenshot, recent, added } = data;
   return (
     <StyledItem className="widget" style={{ backgroundImage: `url(${screenshot})` }}>
       <div className="intro">
@@ -98,11 +99,8 @@ export default function Item({ data, addWidget }) {
         <p className="desc">{description}</p>
         {recent ? Recents[recent.type] : null}
       </div>
-      <div className="add" onClick={addWidget}>
-        <img
-          src="https://gitee.com/zyanggc/oss/raw/master/works/icon.add.png"
-          alt="新增组件小图标"
-        />
+      <div className="icon" onClick={added ? removeWidget : addWidget}>
+        {added ? <GrFormSubtract /> : <GrFormAdd />}
       </div>
     </StyledItem>
   );

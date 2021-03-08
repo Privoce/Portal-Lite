@@ -2,6 +2,7 @@
 import { lazy, Suspense, useState } from 'react';
 import ForkMeOnGithub from 'fork-me-on-github';
 import { useLanguage } from 'uselanguage';
+import { IoAddSharp } from 'react-icons/io5';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
@@ -22,11 +23,15 @@ const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ 
 
 export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
+  const [settingExpanded, setSettingExpanded] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const { language } = useLanguage();
   const toggleModalVisible = () => {
     setModalVisible((prev) => !prev);
+  };
+  const handleSettingToggleClick = () => {
+    setSettingExpanded((prev) => !prev);
   };
   return (
     <Suspense fallback={<Skeleton count={10} />}>
@@ -38,10 +43,29 @@ export default function Home() {
           side="left"
         />
       )}
-      <Profile setSyncing={setSyncing} />
-      <Setting lang={language.words.setting} />
       <StyledWrapper>
         {/* <Account /> */}
+        <ul className={`settings ${settingExpanded ? 'expanded' : ''}`}>
+          <li className="setting">
+            <Profile setSyncing={setSyncing} />
+            <span className="tip">Profile</span>
+          </li>
+          <li className="setting">
+            <OpenButton openWidgetListModal={toggleModalVisible} />
+            <span className="tip">Widget Store</span>
+          </li>
+          <li className="setting">
+            <Setting lang={language.words.setting} />
+            <span className="tip">Setting</span>
+          </li>
+          <li className="setting">
+            <Darkmode />
+            <span className="tip">Dark Mode</span>
+          </li>
+          <li className="toggle" onClick={handleSettingToggleClick}>
+            <IoAddSharp />
+          </li>
+        </ul>
 
         <Suspense fallback={<Skeleton count={5} />}>
           <WidgetSection
@@ -52,16 +76,15 @@ export default function Home() {
           />
         </Suspense>
       </StyledWrapper>
-      <OpenButton openWidgetListModal={toggleModalVisible} />
       {modalVisible && (
         <ModalWidgetList
           addedWidgets={widgets}
+          removeWidget={removeWidget}
           addWidget={addWidget}
           resetModalVisible={toggleModalVisible}
         />
       )}
       <Footer />
-      <Darkmode />
     </Suspense>
   );
 }
