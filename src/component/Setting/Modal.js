@@ -8,11 +8,8 @@ import { useLanguage } from 'uselanguage';
 import languages from '../../lang';
 import IconClose from '../../asset/img/icon.close.png';
 import { useWidgetSettings } from '../../hooks';
-import IconClear from './icons/Clear';
-import IconExport from './icons/Export';
-import IconImport from './icons/Import';
-import IconReset from './icons/Reset';
-import IconMsg from './icons/Message';
+import { AiOutlineClear, AiOutlineMessage, AiOutlineExport, AiOutlineImport } from 'react-icons/ai';
+import { GrPowerReset } from 'react-icons/gr';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
   z-index: 999;
@@ -70,6 +67,9 @@ const StyledWrapper = styled.section`
           }
           &.reset {
             background-color: #f88070;
+            svg path {
+              stroke: #fff;
+            }
           }
           /* &.feedback {
             background-color: #2b7cfb;
@@ -184,17 +184,17 @@ export default function Modal({ closeModal }) {
                 onClick={handleResetBackground}
               >
                 {setting.clear}
-                <IconClear />
+                <AiOutlineClear />
               </button>
             </li>
             <li className="setting">
               <button className="btn export" disabled={!widgetSettings} onClick={handleExport}>
                 {setting.export}
-                <IconExport />
+                <AiOutlineExport />
               </button>
               <button className="btn import">
                 {setting.import}
-                <IconImport />
+                <AiOutlineImport />
                 <input type="file" accept="application/*" onChange={handleFileImport}></input>
               </button>
             </li>
@@ -202,7 +202,7 @@ export default function Modal({ closeModal }) {
             <li className="setting">
               <button className="btn reset" disabled={!widgetSettings} onClick={handleReset}>
                 {setting.reset}
-                <IconReset />
+                <GrPowerReset />
               </button>
               <a
                 className="btn feedback"
@@ -210,7 +210,7 @@ export default function Modal({ closeModal }) {
                 target="_blank"
               >
                 {setting.feedback}
-                <IconMsg />
+                <AiOutlineMessage />
               </a>
             </li>
             <li className="setting">
