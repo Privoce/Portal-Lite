@@ -1,0 +1,37 @@
+#ext_portal_widget_vemos {
+  z-index: 999;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#ext_portal_widget_vemos iframe {
+  border: none;
+}
+#ext_portal_widget_vemos .invite {
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+}
+#ext_portal_widget_vemos .dashboard {
+  visibility: hidden;
+  border: 1px solid #333;
+}
+#ext_portal_widget_vemos.dash_show .dashboard {
+  visibility: visible;
+}
+#ext_portal_widget_vemos .camera {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 100px;
+  border: 1px solid #eee;
+}

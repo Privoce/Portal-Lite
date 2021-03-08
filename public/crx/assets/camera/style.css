@@ -1,0 +1,14 @@
+body {
+  background: #000;
+  width: 200px;
+  height: 200px;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+main .controls {
+  display: flex;
+}

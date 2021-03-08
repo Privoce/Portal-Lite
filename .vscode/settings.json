@@ -3,5 +3,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
+  "less.compile": {
+    "outExt":".css"
+  },
   "emmet.includeLanguages": {"javascript":"javascriptreact"}
 }

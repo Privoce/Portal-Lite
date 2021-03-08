@@ -6,10 +6,12 @@ import GoAuth from '../Common/GoAuth';
 import ErrorTip from '../Common/ErrorTip';
 import StyledWrapper from './styled';
 import useGoogleAuth from './useGoogleAuth';
+import useGoogleExtAuth from './useGoogleExtAuth';
 import Event from './Event';
 import AddEvent from './AddEvent';
 import Setting from './Setting';
-
+const googleAuthHook =
+  process.env.REACT_APP_CHROME_EXT == 'true' ? useGoogleExtAuth : useGoogleAuth;
 export default function MyAgenda({ name, lang }) {
   const listEle = useRef(null);
   const {
@@ -24,7 +26,7 @@ export default function MyAgenda({ name, lang }) {
     addEvent,
     removeEvent,
     updateCalendars
-  } = useGoogleAuth();
+  } = googleAuthHook();
   // 去授权
   const getGoogleAuth = () => {
     auth.signIn();
@@ -67,9 +69,6 @@ export default function MyAgenda({ name, lang }) {
               addEvent={addEvent}
             />
           </div>
-          {/* <a className="link" href="http://baidu.com" target="_blank" rel="noopener noreferrer">
-          link
-        </a> */}
         </div>
         {loading ? (
           <div className="loading">{lang.fetching}</div>

@@ -33,7 +33,6 @@ export default function OAuth() {
   }, [countDown]);
   useEffect(() => {
     let code = new URLSearchParams(location.search).get('code');
-    let extId = new URLSearchParams(location.search).get('extId') || 0;
     if (code) {
       getToken(code).then((resp) => {
         console.log({ resp });
@@ -43,8 +42,11 @@ export default function OAuth() {
           setPending(false);
           setTip('授权成功');
           localStorage.setItem('GITHUB_OAUTH_TOKEN', data.access_token);
-          if (extId != 0) {
-            location.href = `https://${extId}.chromiumapp.org/?token=${data.access_token}`;
+          if (process.env.REACT_APP_CHROME_EXT == 'true') {
+            // 谷歌扩展处理逻辑
+            location.href = `${chrome.identity.getRedirectURL('github')}?token=${
+              data.access_token
+            }`;
           } else {
             setCountDown(3);
           }
