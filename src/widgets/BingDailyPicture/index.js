@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import { useWidgetSettings } from '../../hooks';
 
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import IconDownload from '../Common/Icons/Download';
 import IconWall from '../Common/Icons/Wall';
@@ -117,7 +116,10 @@ export default function BingDailyPicture() {
     }
   }, [currWallpaper]);
   if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   return (
     <StyledWrapper>
       <Swiper

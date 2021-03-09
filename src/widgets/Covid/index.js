@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import IconCovid from '../Common/Icons/Covid';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Block from './Block';
 import List from './List';
@@ -65,7 +64,10 @@ export default function Covid() {
     };
     getData();
   }, []);
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   if (loading) return <Loading />;
   const {
     times,

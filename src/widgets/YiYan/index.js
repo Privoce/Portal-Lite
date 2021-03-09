@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Setting from './Setting';
 import Icon from './Icon';
@@ -9,9 +8,7 @@ import { useWidgetSettings } from '../../hooks';
 
 const StyledWrapper = styled.section`
   position: relative;
-
   height: 100%;
-  /* background-color: ; */
   background: url('https://gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.bg.jpg') no-repeat;
   background-size: cover;
   background-position: bottom;
@@ -98,7 +95,10 @@ export default function YiYan({ name }) {
     };
   }, [inter, getYiYan]);
   if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   const { hitokoto, from_who, from } = yiyan;
   return (
     <StyledWrapper>

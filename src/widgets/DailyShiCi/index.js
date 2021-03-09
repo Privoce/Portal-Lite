@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import * as jinrishici from 'jinrishici';
 import styled from 'styled-components';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Yi from './Yi';
 import Icon from './Icon';
@@ -91,7 +90,10 @@ export default function DailyShici({ name }) {
     }
   }, [shici]);
   if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   const {
     origin: { title, dynasty, author, content, translate }
   } = shici;

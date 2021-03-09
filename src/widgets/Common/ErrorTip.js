@@ -17,6 +17,11 @@ const StyledWrapper = styled.div`
     height: 1rem;
     opacity: 0.5;
   }
+  .tip {
+    line-height: 1.4;
+    text-align: center;
+    max-width: 90%;
+  }
   .reload {
     padding: 0.06rem 0.12rem;
     border-radius: 5px;

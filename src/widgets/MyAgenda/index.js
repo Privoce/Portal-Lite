@@ -4,7 +4,6 @@ import { RiRefreshLine } from 'react-icons/ri';
 import { useWidgetSettings } from '../../hooks';
 import { formatDistanceToNowStrict } from 'date-fns';
 import GoAuth from '../Common/GoAuth';
-import ErrorTip from '../Common/ErrorTip';
 import StyledWrapper from './styled';
 import useGoogleAuth from './useGoogleAuth';
 import useGoogleExtAuth from './useGoogleExtAuth';
@@ -45,17 +44,23 @@ export default function MyAgenda({ name, lang }) {
   // 同步一份到本地
   useEffect(() => {
     updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
-    const sortedArr = Object.entries(groupEvents).sort(([a], [b]) => {
-      return new Date(a) - new Date(b);
-    });
-    const [firstArr] = sortedArr;
-    const [, events] = firstArr;
-    if (events) {
-      setLatestEvent(events[0]);
-      console.log('wtfff', sortedArr, events[0]);
+    // 设置最新事件
+    if (groupEvents) {
+      const sortedArr = Object.entries(groupEvents).sort(([a], [b]) => {
+        return new Date(a) - new Date(b);
+      });
+      const [firstArr] = sortedArr;
+      const [, events] = firstArr;
+      if (events) {
+        setLatestEvent(events[0]);
+        console.log('wtfff', sortedArr, events[0]);
+      }
     }
   }, [groupEvents]);
-  if (error) return <ErrorTip tip={error} bg="transparent" />;
+  // 抛错
+  if (error) {
+    throw new Error(error);
+  }
   if (!signedIn) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
   return (
     <>

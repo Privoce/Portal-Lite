@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import IconClose from '../Common/Icons/Close';
 
 const StyledWrapper = styled.section`
-  /* display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center; */
   height: 100%;
   padding: 0.1rem 0.15rem;
   position: relative;
@@ -157,7 +152,10 @@ export default function TodayInHistory() {
     setDetails(null);
   };
   if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   return (
     <StyledWrapper>
       <h2 className="title">{getCNDate(true)}</h2>

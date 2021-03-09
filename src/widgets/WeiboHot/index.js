@@ -1,21 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
-// import IconHot from '../../asset/img/icon.hot.png';
-
-// import { formatNumber } from '../../util';
 const StyledWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: fit-content;
-  /* margin: 0.14rem 0.16rem; */
   .wrapper {
     padding: 0.02rem;
-    /* overflow: scroll; */
-    /* overscroll-behavior: contain; */
     width: 100%;
     height: 100%;
     .item {
@@ -112,7 +105,10 @@ export default function WeiboHot() {
     };
     getHots();
   }, []);
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   if (loading) return <Loading />;
   return (
     <StyledWrapper>

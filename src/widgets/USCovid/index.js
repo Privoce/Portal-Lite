@@ -3,12 +3,8 @@ import styled from 'styled-components';
 
 import { utcToZonedTime } from 'date-fns-tz';
 import { subDays, format } from 'date-fns';
-
-// import IconCovid from '../Common/Icons/Covid';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Block from './Block';
-// import List from './List';
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100%;
@@ -20,10 +16,6 @@ const StyledWrapper = styled.section`
   grid-template-rows: 1fr 1fr;
   grid-column-gap: 0.01rem;
   grid-row-gap: 0.01rem;
-  /* background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/logo.america.png');
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position-y: -2px; */
   .covid_icon {
     display: none;
     position: absolute;
@@ -53,11 +45,7 @@ const StyledWrapper = styled.section`
 export default function USCovid({ lang }) {
   const [loading, setLoading] = useState(true);
   const [errTip, setErrTip] = useState('');
-  // const [listVisible, setListVisible] = useState(false);
   const [data, setData] = useState(null);
-  // const toggleListVisible = () => {
-  //   setListVisible((prev) => !prev);
-  // };
   useEffect(() => {
     const USDate = utcToZonedTime(new Date().getTime(), 'America/New_York');
     const getData = async () => {
@@ -79,7 +67,10 @@ export default function USCovid({ lang }) {
     };
     getData();
   }, []);
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   if (loading) return <Loading />;
   const {
     date,

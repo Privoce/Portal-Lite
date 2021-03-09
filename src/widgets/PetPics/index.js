@@ -7,7 +7,6 @@ import 'swiper/swiper-bundle.min.css';
 import Pets from './Pets';
 import { useWidgetSettings } from '../../hooks';
 
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 // import IconDownload from '../Common/Icons/Download';
 // install Swiper components
@@ -87,7 +86,10 @@ export default function PetPics({ name, toggleWidgetSettingVisible }) {
     updateWidgetSetting({ name, key: 'pet', data: pet });
   }, [pet, name]);
   if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   return (
     <>
       <Pets

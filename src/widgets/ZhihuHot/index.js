@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ErrorTip from '../Common/ErrorTip';
 import Loading from '../Common/Loading';
 import Tabs from './Tabs';
 import { useWidgetSettings } from '../../hooks';
@@ -140,8 +139,10 @@ export default function ZhihuHot({ name, toggleWidgetSettingVisible }) {
 
     getHots();
   }, [currTab]);
-  // if (loading) return <Loading />;
-  if (errTip) return <ErrorTip tip={errTip} />;
+  // 抛错
+  if (errTip) {
+    throw new Error(errTip);
+  }
   return (
     <>
       <Tabs
