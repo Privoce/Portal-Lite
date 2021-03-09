@@ -2,7 +2,7 @@
 
 ![portal logo](demo/portal.logo.png)
 
-[中文版介绍](./README.zh.md)
+[中文介绍](./README.zh.md)
 
 ## What is this?
 

@@ -1781,10 +1781,10 @@
     core-js-compat "^3.8.0"
     semver "^5.5.0"
 
-"@babel/preset-env@^7.13.8":
-  version "7.13.8"
-  resolved "https://registry.npm.taobao.org/@babel/preset-env/download/@babel/preset-env-7.13.8.tgz?cache=0&sync_timestamp=1614382887945&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fpreset-env%2Fdownload%2F%40babel%2Fpreset-env-7.13.8.tgz#1133d7ae806d6bf981b7a1a49e336d4d88db1953"
-  integrity sha1-ETPXroBta/mBt6GknjNtTYjbGVM=
+"@babel/preset-env@^7.13.9":
+  version "7.13.9"
+  resolved "https://registry.npm.taobao.org/@babel/preset-env/download/@babel/preset-env-7.13.9.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fpreset-env%2Fdownload%2F%40babel%2Fpreset-env-7.13.9.tgz#3ee5f233316b10d066d7f379c6d1e13a96853654"
+  integrity sha1-PuXyMzFrENBm1/N5xtHhOpaFNlQ=
   dependencies:
     "@babel/compat-data" "^7.13.8"
     "@babel/helper-compilation-targets" "^7.13.8"
@@ -4095,10 +4095,10 @@ core-js@^3.6.5:
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.8.1.tgz?cache=0&sync_timestamp=1607216048810&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.8.1.tgz#f51523668ac8a294d1285c3b9db44025fda66d47"
   integrity sha1-9RUjZorIopTRKFw7nbRAJf2mbUc=
 
-core-js@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.9.0.tgz?cache=0&sync_timestamp=1613668840564&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.9.0.tgz#790b1bb11553a2272b36e2625c7179db345492f8"
-  integrity sha1-eQsbsRVToicrNuJiXHF52zRUkvg=
+core-js@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.9.1.tgz#cec8de593db8eb2a85ffb0dbdeb312cb6e5460ae"
+  integrity sha1-zsjeWT246yqF/7Db3rMSy25UYK4=
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -4205,10 +4205,10 @@ css-color-keywords@^1.0.0:
   resolved "https://registry.npm.taobao.org/css-color-keywords/download/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
   integrity sha1-/qJhbcZ2spYmhrOvjb2+GAskTgU=
 
-css-loader@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.npm.taobao.org/css-loader/download/css-loader-5.1.0.tgz?cache=0&sync_timestamp=1614265098310&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcss-loader%2Fdownload%2Fcss-loader-5.1.0.tgz#7c39af036c6674712659ca43a43a80d972bff506"
-  integrity sha1-fDmvA2xmdHEmWcpDpDqA2XK/9QY=
+css-loader@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npm.taobao.org/css-loader/download/css-loader-5.1.1.tgz#9362d444a0f7c08c148a109596715c904e252879"
+  integrity sha1-k2LURKD3wIwUihCVlnFckE4lKHk=
   dependencies:
     camelcase "^6.2.0"
     cssesc "^3.0.0"
@@ -4338,10 +4338,15 @@ date-fns-tz@^1.1.3:
   resolved "https://registry.npm.taobao.org/date-fns-tz/download/date-fns-tz-1.1.3.tgz#8783489c9d90e5785548869af5bb8c4642a03855"
   integrity sha1-h4NInJ2Q5XhVSIaa9buMRkKgOFU=
 
-date-fns@^2.15.0, date-fns@^2.17.0:
+date-fns@^2.15.0:
   version "2.17.0"
   resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.17.0.tgz?cache=0&sync_timestamp=1612534562548&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdate-fns%2Fdownload%2Fdate-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
   integrity sha1-r6VdrqU5I52wpk4jbOcW7z1oG6E=
+
+date-fns@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.19.0.tgz#65193348635a28d5d916c43ec7ce6fbd145059e1"
+  integrity sha1-ZRkzSGNaKNXZFsQ+x85vvRRQWeE=
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
@@ -5901,10 +5906,10 @@ human-signals@^1.1.1:
   resolved "https://registry.npm.taobao.org/human-signals/download/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha1-xbHNFPUK6uCatsWf5jujOV/k36M=
 
-husky@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.npm.taobao.org/husky/download/husky-5.1.1.tgz#8678953fd8deb86f387cbf1ad50bb2f7f96e83f2"
-  integrity sha1-hniVP9jeuG84fL8a1Quy9/lug/I=
+husky@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.npm.taobao.org/husky/download/husky-5.1.3.tgz?cache=0&sync_timestamp=1614654639765&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhusky%2Fdownload%2Fhusky-5.1.3.tgz#1a0645a4fe3ffc006c4d0d8bd0bcb4c98787cc9d"
+  integrity sha1-GgZFpP4//ABsTQ2L0Ly0yYeHzJ0=
 
 iconv-lite@0.4.24:
   version "0.4.24"
@@ -9543,10 +9548,10 @@ svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swiper@^6.4.15:
-  version "6.4.15"
-  resolved "https://registry.npm.taobao.org/swiper/download/swiper-6.4.15.tgz#0fb153b3000c0dd26ab21ea9e8d1ab0ebe9e33cb"
-  integrity sha1-D7FTswAMDdJqsh6p6NGrDr6eM8s=
+swiper@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.npm.taobao.org/swiper/download/swiper-6.5.0.tgz?cache=0&sync_timestamp=1614953339572&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fswiper%2Fdownload%2Fswiper-6.5.0.tgz#4ca2243b44fccef47ee28199377666607d8c5141"
+  integrity sha1-TKIkO0T8zvR+4oGZN3ZmYH2MUUE=
   dependencies:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"
