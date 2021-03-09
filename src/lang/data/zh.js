@@ -72,7 +72,8 @@ const zh = {
         title: '搜索',
         baidu: '百度',
         bing: '必应',
-        google: '谷歌'
+        google: '谷歌',
+        duckduck: 'DuckDuckGo'
       },
       // 美国疫情小组件
       ['us-covid-info']: {

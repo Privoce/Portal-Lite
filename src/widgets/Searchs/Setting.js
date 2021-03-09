@@ -53,6 +53,14 @@ export default function Setting({ lang, name, search, updateSearch, toggleWidget
         <li className="opt" onClick={handleClick} data-s="bing" data-selected={search == 'bing'}>
           {lang.bing}
         </li>
+        <li
+          className="opt"
+          onClick={handleClick}
+          data-s="duckduck"
+          data-selected={search == 'duckduck'}
+        >
+          {lang.duckduck}
+        </li>
       </ul>
     </StyledWrapper>,
     document.querySelector(`#widget-${name}-setting`)

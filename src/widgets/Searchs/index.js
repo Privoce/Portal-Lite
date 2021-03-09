@@ -4,13 +4,15 @@ import Loading from '../../component/Loading';
 import { useWidgetSettings } from '../../hooks';
 
 const BaiduSearch = lazy(() => import('./Baidu'));
+const DuckduckSearch = lazy(() => import('./Duckduck'));
 const GoogleSearch = lazy(() => import('./Google'));
 const BingSearch = lazy(() => import('./Bing'));
 const Setting = lazy(() => import('./Setting'));
 const SearchMap = {
   baidu: <BaiduSearch />,
   google: <GoogleSearch />,
-  bing: <BingSearch />
+  bing: <BingSearch />,
+  duckduck: <DuckduckSearch />
 };
 const StyledWrapper = styled.section`
   /* display: flex;

@@ -69,7 +69,8 @@ const en = {
         title: 'Search',
         baidu: 'Baidu',
         bing: 'Bing',
-        google: 'Google'
+        google: 'Google',
+        duckduck: 'DuckDuckGo'
       },
       ['us-covid-info']: {
         title: '🇺🇸 Covid Info',
