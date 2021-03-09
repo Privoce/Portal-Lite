@@ -80,7 +80,7 @@ export default function WidgetWrapper({
       type={type}
     >
       <div className="container" ref={ref}>
-        <ErrorBoundary>
+        <ErrorBoundary lang={{ error: lang.error, reload: lang.reload }}>
           <>
             {inView ? (
               <Suspense fallback={<Skeleton count={4} />}>

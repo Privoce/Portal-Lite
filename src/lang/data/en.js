@@ -25,6 +25,8 @@ const en = {
       }
     },
     widget: {
+      reload: 'Reload',
+      error: 'Something got errors',
       loading: 'Loading...',
       goAuth: {
         initializing: 'Initializing...',

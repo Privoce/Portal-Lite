@@ -25,6 +25,8 @@ const pt = {
       }
     },
     widget: {
+      reload: 'Reload',
+      error: 'Something got errors',
       loading: 'Carregando...',
       goAuth: {
         initializing: 'Inicializando...',

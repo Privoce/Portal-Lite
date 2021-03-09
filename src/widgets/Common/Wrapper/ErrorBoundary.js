@@ -1,14 +1,5 @@
 import { Component } from 'react';
-import styled from 'styled-components';
-const StyledWrapper = styled.h2`
-  font-size: 0.25rem;
-  color: red;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import ErrorTip from '../ErrorTip';
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +16,14 @@ export default class ErrorBoundary extends Component {
     // You can also log the error to an error reporting service
     // logErrorToMyService(error, errorInfo);
   }
-
+  handleReload = () => {
+    this.setState({ hasError: false });
+  };
   render() {
     if (this.state.hasError) {
+      const { error, reload } = this.props.lang;
       // You can render any custom fallback UI
-      return <StyledWrapper>出错了~</StyledWrapper>;
+      return <ErrorTip tip={error} reloadTxt={reload} reload={this.handleReload} />;
     }
 
     return this.props.children;

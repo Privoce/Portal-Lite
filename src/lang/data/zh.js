@@ -25,6 +25,8 @@ const zh = {
       }
     },
     widget: {
+      reload: '重新加载',
+      error: '出错了~',
       loading: '加载中',
       goAuth: {
         initializing: '初始化中',
