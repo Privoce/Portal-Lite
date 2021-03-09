@@ -1,6 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 // import { format } from 'date-fns';
 import { RiRefreshLine } from 'react-icons/ri';
+import { useWidgetSettings } from '../../hooks';
+import { formatDistanceToNowStrict } from 'date-fns';
 import GoAuth from '../Common/GoAuth';
 import ErrorTip from '../Common/ErrorTip';
 import StyledWrapper from './styled';
@@ -12,7 +14,10 @@ import Setting from './Setting';
 const googleAuthHook =
   process.env.REACT_APP_CHROME_EXT == 'true' ? useGoogleExtAuth : useGoogleAuth;
 export default function MyAgenda({ name, lang }) {
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  let localEvents = getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
+  const [latestEvent, setLatestEvent] = useState(null);
   const {
     auth,
     signedIn,
@@ -25,7 +30,7 @@ export default function MyAgenda({ name, lang }) {
     addEvent,
     removeEvent,
     updateCalendars
-  } = googleAuthHook();
+  } = googleAuthHook(localEvents);
   // 去授权
   const getGoogleAuth = () => {
     auth.signIn();
@@ -33,11 +38,23 @@ export default function MyAgenda({ name, lang }) {
   const handleSyncData = () => {
     syncData();
   };
-  const handleTodayClick = () => {
-    let todayBlock = listEle.current.querySelector('.today');
-    todayBlock?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const handleHighlightClick = () => {
+    let hlBlock = listEle.current.querySelector('.highlight');
+    hlBlock?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
-
+  // 同步一份到本地
+  useEffect(() => {
+    updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
+    const sortedArr = Object.entries(groupEvents).sort(([a], [b]) => {
+      return new Date(a) - new Date(b);
+    });
+    const [firstArr] = sortedArr;
+    const [, events] = firstArr;
+    if (events) {
+      setLatestEvent(events[0]);
+      console.log('wtfff', sortedArr, events[0]);
+    }
+  }, [groupEvents]);
   if (error) return <ErrorTip tip={error} bg="transparent" />;
   if (!signedIn) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
   return (
@@ -51,8 +68,8 @@ export default function MyAgenda({ name, lang }) {
       <StyledWrapper>
         <div className="topbar">
           <div className="today">
-            <button disabled={loading} onClick={handleTodayClick} className="btn">
-              {lang.today}
+            <button disabled={loading} onClick={handleHighlightClick} className="btn">
+              {latestEvent && formatDistanceToNowStrict(new Date(latestEvent.start))}
             </button>
             <span className="date">{new Date().toLocaleDateString(lang.locale)}</span>
             <button disabled={loading} onClick={handleSyncData} className="update">
@@ -69,7 +86,7 @@ export default function MyAgenda({ name, lang }) {
             />
           </div>
         </div>
-        {loading ? (
+        {loading && !groupEvents ? (
           <div className="loading">{lang.fetching}</div>
         ) : (
           <ul className="list" ref={listEle}>
@@ -78,13 +95,19 @@ export default function MyAgenda({ name, lang }) {
                 return new Date(a) - new Date(b);
               })
               .map(([dateKey, events]) => {
-                if (events.length == 0) return null;
                 return (
                   <li className="item" key={dateKey}>
                     <h3 className="title">{new Date(dateKey).toLocaleDateString(lang.locale)}</h3>
                     <ul className="evts">
                       {events.map((evt) => {
-                        return <Event key={evt.summary} data={evt} deleteEvent={removeEvent} />;
+                        return (
+                          <Event
+                            highlight={latestEvent?.id == evt.id}
+                            key={evt.summary}
+                            data={evt}
+                            deleteEvent={removeEvent}
+                          />
+                        );
                       })}
                     </ul>
                   </li>

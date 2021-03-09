@@ -68,14 +68,14 @@ const cid = process.env.REACT_APP_GOOGLE_CALENDAR_CID;
 const scopes = 'https://www.googleapis.com/auth/calendar';
 // GOOGLE CALENDAR Token
 // const StorageKey = 'GOOGLE_CALENAR_OAUTH_TOKEN';
-const useGoogleAuth = () => {
+const useGoogleAuth = (localEvents = null) => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const [checkedCalendars, setCheckedCalendars] = useState([]);
-  const [groupEvents, setGroupEvents] = useState(null);
+  const [groupEvents, setGroupEvents] = useState(localEvents || null);
   const [error, setError] = useState(null);
   useEffect(() => {
     const init = async () => {
@@ -276,10 +276,12 @@ const useGoogleAuth = () => {
     });
     if (status == 204) {
       let newGroup = Object.fromEntries(
-        Object.entries(groupEvents).map(([date, list]) => {
-          let tmps = list.filter((evt) => evt.id !== eid);
-          return [date, tmps];
-        })
+        Object.entries(groupEvents)
+          .map(([date, list]) => {
+            let tmps = list.filter((evt) => evt.id !== eid);
+            return [date, tmps];
+          })
+          .filter(([, eventList]) => eventList.length !== 0)
       );
       setGroupEvents(newGroup);
       console.log({ newGroup });

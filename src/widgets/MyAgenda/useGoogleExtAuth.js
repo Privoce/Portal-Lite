@@ -209,10 +209,12 @@ const useGoogleExtAuth = () => {
     let { status, statusText } = await resp.json();
     if (status == 204) {
       let newGroup = Object.fromEntries(
-        Object.entries(groupEvents).map(([date, list]) => {
-          let tmps = list.filter((evt) => evt.id !== eid);
-          return [date, tmps];
-        })
+        Object.entries(groupEvents)
+          .map(([date, list]) => {
+            let tmps = list.filter((evt) => evt.id !== eid);
+            return [date, tmps];
+          })
+          .filter(([, eventList]) => eventList.length !== 0)
       );
       setGroupEvents(newGroup);
       console.log({ newGroup });

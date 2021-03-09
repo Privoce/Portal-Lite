@@ -28,7 +28,7 @@ const StyledEvent = styled.li`
   &.removing {
     animation: ${AniFading} 1s infinite alternate;
   }
-  &.today {
+  &.highlight {
     color: #fff;
     background-color: #5c46e3;
     .link .content .desc,
@@ -149,7 +149,7 @@ const getText = (htmlText) => {
   console.log('after:', tmpText);
   return tmpText;
 };
-export default function Event({ deleteEvent, data = mock }) {
+export default function Event({ highlight = false, deleteEvent, data = mock }) {
   const [removing, setRemoving] = useState(false);
   const {
     id,
@@ -181,7 +181,9 @@ export default function Event({ deleteEvent, data = mock }) {
     <StyledEvent
       id={`e-${id}`}
       themeColor={backgroundColor}
-      className={`${removing ? 'removing' : ''} ${isToday(new Date(start)) && 'today'}`}
+      className={`${removing ? 'removing' : ''} ${
+        (isToday(new Date(start)) || highlight) && 'highlight'
+      }`}
     >
       {!isAllDay && (
         <div className="time_span">
