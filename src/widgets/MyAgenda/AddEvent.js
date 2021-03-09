@@ -55,7 +55,7 @@ const StyledWrapper = styled.div`
 `;
 export default function AddEvent({ lang, calendar = null, addEvent }) {
   const [pending, setPending] = useState(false);
-  const [input, setInput] = useState(null);
+  const [input, setInput] = useState('');
   const [panelVisible, setPanelVisible] = useState(false);
   const handleAddClick = () => {
     setPanelVisible((prev) => !prev);
