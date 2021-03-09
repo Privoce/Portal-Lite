@@ -55,10 +55,11 @@ export default function USCovid({ lang }) {
           'yyyy-MM-dd'
         )}.json`
       );
-      const { data } = await resp.json();
-      if (!data) {
-        setLoading(false);
-        setErrTip('⚠️接口出错啦⚠️');
+      const { error, data, message = 'covidtracking api error' } = await resp.json();
+      console.log({ error, data });
+      if (error || !data) {
+        // setLoading(false);
+        setErrTip(message);
         return;
       }
       setData(data);
