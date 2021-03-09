@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { useLanguage } from 'uselanguage';
 
-import { appId, appDomain } from './config';
+import { appId } from './config';
 import IconClose from '../../asset/img/icon.close.png';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
@@ -86,7 +86,7 @@ export default function Modal({ closeModal, updateUserInfo, data = {} }) {
       words: { profile }
     }
   } = useLanguage();
-  const { authClient } = useAuthing({ appId, appDomain });
+  const { authClient } = useAuthing({ appId });
   const { username, phone, email, photo } = data;
   console.log({ data });
   const handleLogout = () => {
