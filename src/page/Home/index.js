@@ -7,8 +7,6 @@ import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
 import Footer from './Footer';
-import ModalWidgetList from '../../component/WidgetList';
-import OpenButton from './OpenButton';
 import { useWidgets } from '../../hooks';
 
 // import Account from '../../component/Account';
@@ -18,6 +16,9 @@ const Setting = lazy(() =>
 const Profile = lazy(() =>
   import(/* webpackChunkName: "aside.profile" */ '../../component/Profile')
 );
+const WidgetStore = lazy(() =>
+  import(/* webpackChunkName: "aside.widget.store" */ '../../component/WidgetStore')
+);
 
 const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ './WidgetSection'));
 
@@ -25,11 +26,8 @@ export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
   const [settingExpanded, setSettingExpanded] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const { language } = useLanguage();
-  const toggleModalVisible = () => {
-    setModalVisible((prev) => !prev);
-  };
+
   const handleSettingToggleClick = () => {
     setSettingExpanded((prev) => !prev);
   };
@@ -51,7 +49,7 @@ export default function Home() {
             <span className="tip">Profile</span>
           </li>
           <li className="setting">
-            <OpenButton openWidgetListModal={toggleModalVisible} />
+            <WidgetStore addedWidgets={widgets} removeWidget={removeWidget} addWidget={addWidget} />
             <span className="tip">Widget Store</span>
           </li>
           <li className="setting">
@@ -76,14 +74,7 @@ export default function Home() {
           />
         </Suspense>
       </StyledWrapper>
-      {modalVisible && (
-        <ModalWidgetList
-          addedWidgets={widgets}
-          removeWidget={removeWidget}
-          addWidget={addWidget}
-          resetModalVisible={toggleModalVisible}
-        />
-      )}
+
       <Footer />
     </Suspense>
   );

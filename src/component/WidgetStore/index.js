@@ -5,7 +5,7 @@ import { MdClose } from 'react-icons/md';
 import { parse, differenceInSeconds } from 'date-fns';
 // import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useLanguage } from 'uselanguage';
-
+import OpenButton from './OpenButton';
 import { Widgets } from '../../data';
 import Item from './Item';
 
@@ -95,7 +95,8 @@ const isRecent = (ct, ut) => {
 };
 
 // let other_params = {};
-export default function Modal({ resetModalVisible, addWidget, removeWidget, addedWidgets }) {
+export default function Modal({ addWidget, removeWidget, addedWidgets }) {
+  const [visible, setVisible] = useState(false);
   const [tab, setTab] = useState('new');
   const [list, setList] = useState([]);
   useEffect(() => {
@@ -127,7 +128,7 @@ export default function Modal({ resetModalVisible, addWidget, removeWidget, adde
     console.log({ evt });
     let { target } = evt;
     if (target.classList.contains('wrapper')) {
-      resetModalVisible();
+      toggleModalVisible();
     }
   };
   const handleTabChange = (evt) => {
@@ -138,44 +139,51 @@ export default function Modal({ resetModalVisible, addWidget, removeWidget, adde
     if (type == tab) return;
     setTab(type);
   };
-
+  const toggleModalVisible = () => {
+    setVisible((prev) => !prev);
+  };
   return (
-    <ModalWrapper>
-      <StyledWrapper className="wrapper" onClick={handleMaskClick}>
-        <div className="modal">
-          <div className="tabs">
-            <button
-              onClick={handleTabChange}
-              className={`tab ${tab == 'new' ? 'selected' : ''}`}
-              data-type="new"
-            >
-              {lang.notAdded}
-            </button>
-            <button
-              onClick={handleTabChange}
-              className={`tab ${tab == 'added' ? 'selected' : ''}`}
-              data-type="added"
-            >
-              {lang.added}
-            </button>
-            <MdClose onClick={resetModalVisible} className="close" />
-          </div>
-          <ul className="list">
-            {list.map(({ key, title, description, screenshot, created, updated, added }) => {
-              const recent = isRecent(created, updated);
-              return (
-                <Item
-                  key={title}
-                  data={{ title, description, screenshot, added, recent }}
-                  addWidget={handleAddClick.bind(null, key)}
-                  removeWidget={handleRemoveClick.bind(null, key)}
-                />
-              );
-            })}
-          </ul>
-        </div>
-      </StyledWrapper>
-    </ModalWrapper>
+    <>
+      <OpenButton openWidgetListModal={toggleModalVisible} />
+      {visible ? (
+        <ModalWrapper>
+          <StyledWrapper className="wrapper" onClick={handleMaskClick}>
+            <div className="modal">
+              <div className="tabs">
+                <button
+                  onClick={handleTabChange}
+                  className={`tab ${tab == 'new' ? 'selected' : ''}`}
+                  data-type="new"
+                >
+                  {lang.notAdded}
+                </button>
+                <button
+                  onClick={handleTabChange}
+                  className={`tab ${tab == 'added' ? 'selected' : ''}`}
+                  data-type="added"
+                >
+                  {lang.added}
+                </button>
+                <MdClose onClick={toggleModalVisible} className="close" />
+              </div>
+              <ul className="list">
+                {list.map(({ key, title, description, screenshot, created, updated, added }) => {
+                  const recent = isRecent(created, updated);
+                  return (
+                    <Item
+                      key={title}
+                      data={{ title, description, screenshot, added, recent }}
+                      addWidget={handleAddClick.bind(null, key)}
+                      removeWidget={handleRemoveClick.bind(null, key)}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+          </StyledWrapper>
+        </ModalWrapper>
+      ) : null}
+    </>
   );
 }
 
