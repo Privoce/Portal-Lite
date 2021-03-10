@@ -82,6 +82,7 @@ const zh = {
         comparePrev: '较上日',
         populationPercent: '人口占比',
         sevenDayChange: '七日变化率',
+        noData: '暂无数据',
         blockTitle: {
           confirmed: '累计确诊',
           verifying: '正在检测',

@@ -78,6 +78,7 @@ const es = {
         comparePrev: 'Ayer',
         populationPercent: 'Comparado con la población',
         sevenDayChange: 'Cambio de siete días',
+        noData: 'No Data from remote server',
         blockTitle: {
           confirmed: 'Confirmado',
           verifying: 'Verificando',

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // import { format } from 'timeago.js';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import styled, { keyframes } from 'styled-components';
 import Linkify from 'linkifyjs/react';
 import { AiOutlineLink, AiOutlineDelete } from 'react-icons/ai';
@@ -182,7 +182,7 @@ export default function Event({ highlight = false, deleteEvent, data = mock }) {
       id={`e-${id}`}
       themeColor={backgroundColor}
       className={`${removing ? 'removing' : ''} ${
-        (isToday(new Date(start)) || highlight) && 'highlight'
+        (new Date(start) - new Date() <= 0 || highlight) && 'highlight'
       }`}
     >
       {!isAllDay && (
