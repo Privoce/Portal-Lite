@@ -1,12 +1,11 @@
 // import { Link } from 'react-router-dom';
 import { lazy, Suspense, useState } from 'react';
-import ForkMeOnGithub from 'fork-me-on-github';
 import { useLanguage } from 'uselanguage';
 import { IoAddSharp } from 'react-icons/io5';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
-import Footer from './Footer';
+import Footer from '../../component/Footer';
 import { useWidgets } from '../../hooks';
 
 // import Account from '../../component/Account';
@@ -33,14 +32,6 @@ export default function Home() {
   };
   return (
     <Suspense fallback={<Skeleton count={10} />}>
-      {!window.IS_CHROME_EXT && (
-        <ForkMeOnGithub
-          repo="https://github.com/Privoce/Portal-Lite-China"
-          colorBackground="#4e6ef3"
-          colorOctocat="white"
-          side="left"
-        />
-      )}
       <StyledWrapper>
         {/* <Account /> */}
         <ul className={`settings ${settingExpanded ? 'expanded' : ''}`}>

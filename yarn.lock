@@ -5358,11 +5358,6 @@ for-in@^1.0.2:
   resolved "https://registry.npm.taobao.org/for-in/download/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-fork-me-on-github@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npm.taobao.org/fork-me-on-github/download/fork-me-on-github-1.0.6.tgz#bce1a1346a86f4bd9410e1b8611dd3c7d747fec6"
-  integrity sha1-vOGhNGqG9L2UEOG4YR3Tx9dH/sY=
-
 fork-ts-checker-webpack-plugin@4.1.6:
   version "4.1.6"
   resolved "https://registry.npm.taobao.org/fork-ts-checker-webpack-plugin/download/fork-ts-checker-webpack-plugin-4.1.6.tgz?cache=0&sync_timestamp=1608028559665&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffork-ts-checker-webpack-plugin%2Fdownload%2Ffork-ts-checker-webpack-plugin-4.1.6.tgz#5055c703febcf37fa06405d400c122b905167fc5"
