@@ -89,7 +89,7 @@ export default function MyAgenda({ readonly, name, lang }) {
             )}
           </div>
         </div>
-        {loading && !groupEvents ? (
+        {loading && !groupEvents && !readonly ? (
           <div className="loading">{lang.fetching}</div>
         ) : (
           <ul className="list" ref={listEle}>

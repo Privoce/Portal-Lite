@@ -88,6 +88,16 @@ export default function WidgetSection({ keys = null, data, single }) {
       setSingleWidget({ key, data, obj: Widgets[key] });
     }
   }, [single]);
+  let filtered = widgets.filter((w) => {
+    const obj = Widgets[w] || null;
+    if (!obj) return false;
+    // 过滤掉不可分享的组件
+    let canShare = data && data[w] && data[w].share;
+    console.log({ w, canShare });
+    if (!canShare) return false;
+    return true;
+  });
+  console.log({ filtered });
   return (
     <StyledSection className={single ? 'single' : ''}>
       {singleWidget ? (
@@ -124,6 +134,7 @@ export default function WidgetSection({ keys = null, data, single }) {
             if (!obj) return null;
             // 过滤掉不可分享的组件
             let canShare = data && data[w] && data[w].share;
+            console.log({ w, canShare });
             if (!canShare) return null;
             const { type, comp, title, compact = false, disableScroll, defaultSize } = obj;
             return (

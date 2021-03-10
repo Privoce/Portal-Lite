@@ -6,6 +6,7 @@ import { useWidgetSettings } from '../../hooks';
 import { appId } from '../../component/Profile/config';
 
 const StyledWrapper = styled.div`
+  z-index: 999;
   position: absolute;
   top: 0;
   left: 0;
@@ -187,6 +188,9 @@ export default function Share({ name, closeModal }) {
             text={link}
             onCopy={() => {
               setCopied(true);
+              setTimeout(() => {
+                setCopied(false);
+              }, 2000);
             }}
           >
             <button disabled={!canShare} className="btn copy">

@@ -15,8 +15,8 @@ const useWidgets = (keys = null) => {
   console.log({ initialKeys, keys });
   const [widgets, setWidgets] = useState(initialKeys);
   useEffect(() => {
-    if(keys){
-      setWidgets(keys );
+    if (keys) {
+      setWidgets(keys);
     }
   }, [keys]);
   const updateWidgetData = (list) => {
@@ -71,12 +71,13 @@ const useWidgetSettings = () => {
     const { key, name, data } = Object.assign({}, defaultUpdateParams, params);
     console.log({ key, name, data });
     let tmp = widgetSettings || {};
+    console.log('before', { tmp });
     if (tmp[name]) {
       tmp[name] = { ...tmp[name], ...{ [key]: data } };
     } else {
       tmp[name] = { [key]: data };
     }
-
+    console.log('after', { tmp });
     updateLocalData(tmp);
   };
   const getWidgetSetting = useCallback(

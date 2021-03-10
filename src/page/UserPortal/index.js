@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import WidgetSection from './WidgetSection';
 import Footer from '../../component/Footer';
 import Loading from '../../component/Loading';
+import BackHome from './BackHome';
 
 const getFormatedData = (data, key) => {
   let result = { keys: null, data: null };
@@ -46,12 +47,14 @@ export default function UserPortal() {
   if (errorTip) return errorTip;
   if (loading) return <Loading />;
   const { keys, data: allData } = data;
+  console.log({ keys, allData, widget });
   return (
     <StyledWrapper>
       <h2 className="title">
         {`${allData.common.user.username}'s`} Personal {widget ? `Widget` : `Portal`}
       </h2>
       <WidgetSection keys={keys} data={allData} single={!!widget} />
+      {widget && <BackHome path={`/portal/${uid}`} />}
       <Footer />
     </StyledWrapper>
   );
