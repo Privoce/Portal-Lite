@@ -28,6 +28,7 @@ const pt = {
       reload: 'Reload',
       error: 'Something got errors',
       loading: 'Carregando...',
+      removing: 'Are you sure to remove',
       goAuth: {
         initializing: 'Inicializando...',
         tip: 'Não Autorizado',
@@ -37,6 +38,7 @@ const pt = {
         setting: 'Sefinições',
         remove: 'Retirar',
         fullscreen: 'Tela Cheia',
+        share: 'Share',
         open: { newTab: 'Abrir em uma nova aba', standalone: 'Abrir em uma nova janela' },
         sizes: {
           middle: 'Médio',

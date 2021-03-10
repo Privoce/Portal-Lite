@@ -28,6 +28,7 @@ const en = {
       reload: 'Reload',
       error: 'Something got errors',
       loading: 'Loading...',
+      removing: 'Are you sure to remove',
       goAuth: {
         initializing: 'Initializing...',
         tip: 'Not Authorized',
@@ -37,6 +38,7 @@ const en = {
         setting: 'Settings',
         remove: 'Remove',
         fullscreen: 'Full-screen',
+        share: 'Share',
         open: { newTab: 'Open in new tab', standalone: 'Open in new window' },
         sizes: {
           middle: 'Medium',
@@ -87,6 +89,9 @@ const en = {
           icu: 'ICU',
           ventilator: 'On Ventilator'
         }
+      },
+      ['covid-info']: {
+        title: '🇨🇳 Covid Info'
       },
       ['my-agenda']: {
         title: 'My Agenda',

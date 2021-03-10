@@ -5,7 +5,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import ErrorBoundary from './ErrorBoundary';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
-
+import Share from '../Share';
 import IconClose from '../Icons/Close';
 
 import { useWidgetSettings } from '../../../hooks';
@@ -17,6 +17,8 @@ const SizeMap = {
 };
 const isExt = window.IS_CHROME_EXT;
 export default function WidgetWrapper({
+  data = null,
+  readonly = false,
   type = 'widget',
   enableSetting = false,
   standalone = false,
@@ -39,6 +41,7 @@ export default function WidgetWrapper({
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [currSize, setCurrSize] = useState(getWidgetSetting({ name, key: 'size' }) || defaultSize);
   const [settingVisible, setSettingVisible] = useState(false);
+  const [shareVisibile, setShareVisibile] = useState(false);
   const [widgetSettingVisible, setWidgetSettingVisible] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const updateCurrSize = (key, { size }) => {
@@ -46,8 +49,8 @@ export default function WidgetWrapper({
     setCurrSize(size);
     updateWidgetSetting({ name: key, key: 'size', data: size });
   };
-  const handleRemove = (widgetName) => {
-    let confirmed = confirm(`确定移除小组件：${widgetName}？`);
+  const handleRemove = (name) => {
+    let confirmed = confirm(`${lang.removing}：${widgets[name]?.title || title}？`);
     if (confirmed) {
       removeWidget();
     }
@@ -57,7 +60,13 @@ export default function WidgetWrapper({
     compContainer.current.requestFullscreen();
     toggleSettingListVisible();
   };
+  const handleShare = () => {
+    toggleShareVisible();
+  };
   // console.log({ compact });
+  const toggleShareVisible = () => {
+    setShareVisibile((prev) => !prev);
+  };
   const toggleSettingListVisible = () => {
     setSettingVisible((prev) => !prev);
   };
@@ -86,6 +95,8 @@ export default function WidgetWrapper({
               <Suspense fallback={<Skeleton count={4} />}>
                 {Children.map(children, (child) =>
                   cloneElement(child, {
+                    readonly,
+                    data,
                     lang: widgets[name],
                     name,
                     toggleWidgetSettingVisible
@@ -101,13 +112,15 @@ export default function WidgetWrapper({
             </div>
           </>
         </ErrorBoundary>
+        {shareVisibile && <Share name={name} closeModal={toggleShareVisible} />}
       </div>
-      {/* 小组件内部设置可见判断,避免关闭按钮的UI冲突 */}
-      {!widgetSettingVisible && (
+      {/* 小组件内部设置可见判断,避免和其他按钮的UI冲突 */}
+      {!widgetSettingVisible && !shareVisibile && !readonly && (
         <div className="setting" onClick={toggleSettingListVisible}>
           <BsThreeDots />
         </div>
       )}
+
       {settingVisible && (
         <ul className="setting_list" onMouseLeave={toggleSettingListVisible}>
           {enableSetting && (
@@ -116,7 +129,7 @@ export default function WidgetWrapper({
             </li>
           )}
           {!standalone && (
-            <li className="item" onClick={handleRemove.bind(null, title)}>
+            <li className="item" onClick={handleRemove.bind(null, name)}>
               {settingLang.remove}
             </li>
           )}
@@ -138,6 +151,9 @@ export default function WidgetWrapper({
               </a>
             </li>
           )}
+          <li className="item" onClick={handleShare}>
+            {settingLang.share}
+          </li>
           {hasSizes && (
             <li className="item sizes">
               {sizes.map((key) => {

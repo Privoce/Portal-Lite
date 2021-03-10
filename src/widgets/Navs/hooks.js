@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { useWidgetSettings } from '../../hooks';
 
 // 导航
-const useNavData = (widgetName = '') => {
+const useNavData = (widgetName = '', defaultData) => {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const initialData = getWidgetSetting({ name: widgetName }) || [];
+  const initialData = defaultData?.local || getWidgetSetting({ name: widgetName }) || [];
   const [data, setData] = useState(initialData);
   const updateNavs = (list) => {
     setData(list);

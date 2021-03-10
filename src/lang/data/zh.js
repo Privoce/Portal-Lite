@@ -28,6 +28,8 @@ const zh = {
       reload: '重新加载',
       error: '出错了~',
       loading: '加载中',
+      removing: '确定移除小组件',
+
       goAuth: {
         initializing: '初始化中',
         tip: '暂未授权',
@@ -37,6 +39,7 @@ const zh = {
         setting: '设置',
         remove: '移除',
         fullscreen: '全屏',
+        share: '分享',
         open: { newTab: '新页面打开', standalone: '独立页面打开' },
         sizes: {
           middle: '中',

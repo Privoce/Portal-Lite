@@ -45,9 +45,9 @@ const StyledSection = styled.section`
     }
   }
 `;
-export default function Navs({ name, lang }) {
+export default function Navs({ readonly = false, data, name, lang }) {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
-  const { data: navs, addNav, removeNav, updateNavs } = useNavData(name);
+  const { data: navs, addNav, removeNav, updateNavs } = useNavData(name, data);
   const [modalVisible, setModalVisible] = useState(false);
   const [currFrame, setCurrFrame] = useState(null);
   const removeCurrNav = (w) => {
@@ -64,52 +64,57 @@ export default function Navs({ name, lang }) {
     }
   };
   useEffect(() => {
-    // 全局存储
-    window.WEBAPP_NAVS = navs;
-    let boxContainer = document.querySelector('#nav-container');
-    Sortable.create(boxContainer, {
-      draggable: '.box',
-      // delayOnTouchOnly: true,
-      delay: 300,
-      filter: '.add',
-      invertSwap: true,
-      ghostClass: 'ghost',
-      chosenClass: 'choosen',
-      dragClass: 'drag',
+    if (!readonly) {
+      // 全局存储
+      window.WEBAPP_NAVS = navs;
+      let boxContainer = document.querySelector('#nav-container');
+      Sortable.create(boxContainer, {
+        draggable: '.box',
+        // delayOnTouchOnly: true,
+        delay: 300,
+        filter: '.add',
+        invertSwap: true,
+        ghostClass: 'ghost',
+        chosenClass: 'choosen',
+        dragClass: 'drag',
 
-      // Element dragging ended
-      onEnd: (/**Event*/ evt) => {
-        const { item, to, from, oldIndex, newIndex } = evt;
-        console.log('on end', {
-          item,
-          to,
-          from,
-          oldIndex,
-          newIndex
-        });
-        // 回归原位
-        if (oldIndex == newIndex) return;
-        let tmpNavs = [...window.WEBAPP_NAVS];
-        let [tmpItem] = tmpNavs.splice(oldIndex, 1);
-        if (tmpItem) {
-          tmpNavs.splice(newIndex, 0, tmpItem);
-          updateNavs(tmpNavs);
+        // Element dragging ended
+        onEnd: (/**Event*/ evt) => {
+          const { item, to, from, oldIndex, newIndex } = evt;
+          console.log('on end', {
+            item,
+            to,
+            from,
+            oldIndex,
+            newIndex
+          });
+          // 回归原位
+          if (oldIndex == newIndex) return;
+          let tmpNavs = [...window.WEBAPP_NAVS];
+          let [tmpItem] = tmpNavs.splice(oldIndex, 1);
+          if (tmpItem) {
+            tmpNavs.splice(newIndex, 0, tmpItem);
+            updateNavs(tmpNavs);
+          }
+          // 重新初始化
+          // sortable.destory();
+        },
+        // Called when creating a clone of element
+        onClone: function (/**Event*/ evt) {
+          const { item, clone } = evt;
+          clone.style.opacity = 0.2;
+          console.log('on clone', { item, clone });
         }
-        // 重新初始化
-        // sortable.destory();
-      },
-      // Called when creating a clone of element
-      onClone: function (/**Event*/ evt) {
-        const { item, clone } = evt;
-        clone.style.opacity = 0.2;
-        console.log('on clone', { item, clone });
-      }
-    });
-  }, [navs]);
+      });
+    }
+  }, [navs, readonly]);
+  console.log({ navs });
   return (
     <>
       <StyledSection>
-        {menuVisible && <ContextMenu {...position} currApp={widget} removeApp={removeCurrNav} />}
+        {menuVisible && !readonly && (
+          <ContextMenu {...position} currApp={widget} removeApp={removeCurrNav} />
+        )}
         <ul className="boxes" id={'nav-container'}>
           {navs.map((s) => {
             return (
@@ -124,7 +129,9 @@ export default function Navs({ name, lang }) {
               </li>
             );
           })}
-          <Nav addTitle={lang.addNav} add onClick={setModalVisible.bind(null, true)} />
+          {!readonly && (
+            <Nav addTitle={lang.addNav} add onClick={setModalVisible.bind(null, true)} />
+          )}
         </ul>
       </StyledSection>
       {modalVisible ? (

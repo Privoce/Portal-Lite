@@ -12,7 +12,7 @@ import AddEvent from './AddEvent';
 import Setting from './Setting';
 const googleAuthHook =
   process.env.REACT_APP_CHROME_EXT == 'true' ? useGoogleExtAuth : useGoogleAuth;
-export default function MyAgenda({ name, lang }) {
+export default function MyAgenda({ readonly, name, lang }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localEvents = getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
@@ -61,34 +61,32 @@ export default function MyAgenda({ name, lang }) {
   if (error) {
     throw new Error(error);
   }
-  if (!signedIn) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
+  if (!signedIn && !readonly) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
   return (
     <>
-      <Setting
-        calendars={calendars}
-        updateCalendars={updateCalendars}
-        name={name}
-        // addEvent={addEvent}
-      />
+      <Setting calendars={calendars} updateCalendars={updateCalendars} name={name} />
       <StyledWrapper>
         <div className="topbar">
           <div className="today">
-            <button disabled={loading} onClick={handleHighlightClick} className="btn">
+            <button disabled={loading || readonly} onClick={handleHighlightClick} className="btn">
               {latestEvent && formatDistanceToNowStrict(new Date(latestEvent.start))}
             </button>
             <span className="date">{new Date().toLocaleDateString(lang.locale)}</span>
-            <button disabled={loading} onClick={handleSyncData} className="update">
-              <RiRefreshLine
-                className={reloading ? 'reloading' : ''}
-                color={loading ? '#aaa' : '#5c4ddf'}
-                // bgColor="transparent"
-              />
-            </button>
-            <AddEvent
-              lang={lang.addEvent}
-              calendar={calendars.find((c) => c.primary == true)}
-              addEvent={addEvent}
-            />
+            {!readonly && (
+              <>
+                <button disabled={loading || readonly} onClick={handleSyncData} className="update">
+                  <RiRefreshLine
+                    className={reloading ? 'reloading' : ''}
+                    color={loading ? '#aaa' : '#5c4ddf'}
+                  />
+                </button>
+                <AddEvent
+                  lang={lang.addEvent}
+                  calendar={calendars.find((c) => c.primary == true)}
+                  addEvent={addEvent}
+                />
+              </>
+            )}
           </div>
         </div>
         {loading && !groupEvents ? (
@@ -107,6 +105,7 @@ export default function MyAgenda({ name, lang }) {
                       {events.map((evt) => {
                         return (
                           <Event
+                            readonly={readonly}
                             highlight={latestEvent?.id == evt.id}
                             key={evt.summary}
                             data={evt}

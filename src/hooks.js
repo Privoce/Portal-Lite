@@ -1,18 +1,24 @@
 // import { createLocalStorageStateHook } from 'use-local-storage-state';
 import createPersistedState from 'use-persisted-state';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuthing } from '@authing/react-ui-components';
 
 import { Widgets } from './data';
 
 // 小组件
-const useWidgets = () => {
+const useWidgets = (keys = null) => {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let wgKeys = Object.entries(Widgets)
     .filter(([, val]) => val.preset == true)
     .map(([key]) => key);
   const initialKeys = getWidgetSetting({ key: 'local', name: 'widgets' }) || wgKeys;
+  console.log({ initialKeys, keys });
   const [widgets, setWidgets] = useState(initialKeys);
+  useEffect(() => {
+    if(keys){
+      setWidgets(keys );
+    }
+  }, [keys]);
   const updateWidgetData = (list) => {
     setWidgets(list);
     updateWidgetSetting({ name: 'widgets', data: list });

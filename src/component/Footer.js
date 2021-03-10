@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import GitHubButton from 'react-github-btn';
 const StyledFooter = styled.footer`
   width: 100%;
   padding: 0.2rem 0 0.3rem 0;
@@ -17,6 +18,18 @@ const StyledFooter = styled.footer`
     color: #ccc;
     text-align: center;
   }
+  .github {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.15rem;
+    span {
+      display: flex;
+      align-items: center;
+    }
+    > span:not(:last-child) {
+      margin-right: 0.1rem;
+    }
+  }
 `;
 export default function Footer() {
   return (
@@ -33,6 +46,26 @@ export default function Footer() {
           Privoce Team
         </a>{' '}
         with ❤️
+      </div>
+      <div className="github">
+        <GitHubButton
+          href="https://github.com/Privoce/Portal-Lite"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-icon="octicon-star"
+          data-show-count="true"
+          aria-label="Star Privoce/Portal-Lite on GitHub"
+        >
+          Star
+        </GitHubButton>
+        <GitHubButton
+          href="https://github.com/Privoce/Portal-Lite/fork"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-icon="octicon-repo-forked"
+          data-show-count="true"
+          aria-label="Fork Privoce/Portal-Lite on GitHub"
+        >
+          Fork
+        </GitHubButton>
       </div>
     </StyledFooter>
   );

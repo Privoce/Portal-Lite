@@ -149,7 +149,7 @@ const getText = (htmlText) => {
   console.log('after:', tmpText);
   return tmpText;
 };
-export default function Event({ highlight = false, deleteEvent, data = mock }) {
+export default function Event({ readonly, highlight = false, deleteEvent, data = mock }) {
   const [removing, setRemoving] = useState(false);
   const {
     id,
@@ -192,29 +192,31 @@ export default function Event({ highlight = false, deleteEvent, data = mock }) {
         </div>
       )}
       <article className="content">
-        <div className="opts">
-          {/* TO DO: 3D transform */}
-          {!readOnly && (
-            <button
-              disabled={removing}
-              onClick={handleEventDelete}
-              className="opt delete"
-              data-eid={id}
-              data-cid={calendarId}
+        {!readonly && (
+          <div className="opts">
+            {/* TO DO: 3D transform */}
+            {!readOnly && (
+              <button
+                disabled={removing}
+                onClick={handleEventDelete}
+                className="opt delete"
+                data-eid={id}
+                data-cid={calendarId}
+              >
+                <AiOutlineDelete color="#fe6b23" />
+              </button>
+            )}
+            <a
+              href={htmlLink}
+              title="Jump to event detail"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opt link"
             >
-              <AiOutlineDelete color="#fe6b23" />
-            </button>
-          )}
-          <a
-            href={htmlLink}
-            title="Jump to event detail"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="opt link"
-          >
-            <AiOutlineLink />
-          </a>
-        </div>
+              <AiOutlineLink />
+            </a>
+          </div>
+        )}
         <h2 className="title">{summary}</h2>
         {description && (
           <div className="desc">
