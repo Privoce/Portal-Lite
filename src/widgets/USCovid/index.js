@@ -50,11 +50,13 @@ export default function USCovid({ lang }) {
     const USDate = utcToZonedTime(new Date().getTime(), 'America/New_York');
     const getData = async () => {
       const resp = await fetch(
-        `https://api.covidtracking.com/v2beta/us/daily/${format(
-          subDays(USDate, 1),
-          'yyyy-MM-dd'
-        )}.json`
+        `https://api.covidtracking.com/v2/us/daily/${format(subDays(USDate, 1), 'yyyy-MM-dd')}.json`
       );
+      console.log({ resp });
+      if (resp.status == 404) {
+        setErrTip(lang.noData);
+        return;
+      }
       const { error, data, message = 'covidtracking api error' } = await resp.json();
       console.log({ error, data });
       if (error || !data) {
