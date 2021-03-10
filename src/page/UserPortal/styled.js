@@ -14,6 +14,7 @@ const StyledWrapper = styled.section`
     font-weight: 800;
     padding-bottom: 0.2rem;
     border-bottom: 1px dashed #eee;
+    margin-bottom: 0.2rem;
   }
 `;
 
