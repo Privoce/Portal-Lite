@@ -8,6 +8,7 @@ import '@authing/react-ui-components/lib/index.min.css';
 import { appId, GuardConfig } from './config';
 import { useWidgetSettings } from '../../hooks';
 const StyledIcon = styled.div`
+  position: relative;
   cursor: pointer;
   width: 0.6rem;
   height: 0.6rem;
@@ -18,24 +19,18 @@ const StyledIcon = styled.div`
   display: flex;
   align-items: center;
   box-shadow: 0 0 5px #333;
-  /* .status {
-    white-space: nowrap;
+  .status {
+    width: 0.1rem;
+    height: 0.1rem;
+    border-radius: 50%;
     position: absolute;
-    top: -0.24rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: fit-content;
-    text-align: center;
-    padding: 0.04rem 0.1rem;
-    border-radius: 0.1rem;
-    border: 1px solid #fff;
-    font-size: 0.12rem;
-    color: #fff;
-    background-color: #07d302;
-    &.not_login {
-      background-color: #f88070;
+    top: -0.05rem;
+    right: -0.05rem;
+    background-color: #aaa;
+    &.logged {
+      background-color: #07d302;
     }
-  } */
+  }
 `;
 export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }) {
   const { widgetSettings, importWidgetSettings } = useWidgetSettings();
@@ -105,17 +100,9 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
     updateUserInfo(user);
     setGuardVisible(false);
   };
-  // const handleReg = (user, auth) => {
-  //   console.log('reg user', user);
-  //   setAuth(auth);
-  //   // updateUserInfo(user);
-  //   // setGuardVisible(false);
-  // };
   const handleGuardClose = () => {
     setGuardVisible(false);
   };
-  // const { username, phone, email } = user || {};
-  // const user_str = username || phone || email;
   return (
     <>
       <AuthingGuard
@@ -129,7 +116,7 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
       />
       <StyledIcon className="icon" onClick={handleIconClick}>
         <FaUserAlt />
-        {/* {user_str ? <FaUserAlt /> : <FaUserAlt />} */}
+        <i className={`status ${user ? 'logged' : ''}`}></i>
       </StyledIcon>
     </>
   );
