@@ -41,12 +41,11 @@ export default function PortalWidget() {
 
   if (errorTip) return <ErrorTip tip={errorTip} />;
   if (loading) return <Loading />;
-  const { keys, data: allData } = data;
-  console.log({ keys, allData, widget });
+  const { key, data: allData } = data;
   return (
     <StyledWrapper>
       <h2 className="title">{`${allData.common?.user?.username}'s`} Personal Widget</h2>
-      <WidgetDetail widgetKey={keys} data={allData} />
+      <WidgetDetail widgetKey={key} data={allData} />
       <BackHome path={`/p/${username}`} />
       <Footer />
     </StyledWrapper>

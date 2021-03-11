@@ -35,27 +35,26 @@ const StyledSection = styled.section`
     }
   }
 `;
-export default function WidgetSection({ key = null, data = {} }) {
-  if (key) return null;
-  let obj = Widgets[key];
+export default function WidgetSection({ widgetKey = null, data = {} }) {
+  if (!widgetKey) return null;
+  let obj = Widgets[widgetKey];
   return (
     <StyledSection>
       <div className="widget">
-        {data[key].share ? (
+        {data[widgetKey].share ? (
           <WidgetWrapper
             data={data}
             readonly={true}
             type={obj.type}
             disableScroll={obj.disableScroll}
-            name={key}
+            name={widgetKey}
             defaultSize={obj.defaultSize}
-            key={key}
             compact={obj.compact}
             title={obj.title}
           >
             {Children.map(obj.comp, (child) =>
               cloneElement(child, {
-                name: key
+                name: widgetKey
               })
             )}
           </WidgetWrapper>
