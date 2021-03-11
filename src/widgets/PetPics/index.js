@@ -61,12 +61,13 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function PetPics({ name, toggleWidgetSettingVisible }) {
+export default function PetPics({ name, data, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localPics = getWidgetSetting({ name, key: 'pics' });
-  const [pet, setPet] = useState(getWidgetSetting({ name, key: 'pet' }) || 'shibes');
-  const [pics, setPics] = useState(localPics || []);
-  const [loading, setLoading] = useState(true);
+  const [pet, setPet] = useState(data?.pet || getWidgetSetting({ name, key: 'pet' }) || 'shibes');
+  const [hasLocalData, setHasLocalData] = useState(!!(data?.pics || localPics));
+  const [pics, setPics] = useState(data?.pics || localPics || []);
+  const [loading, setLoading] = useState(pics.length ? false : true);
   const [errTip, setErrTip] = useState('');
 
   useEffect(() => {
@@ -82,9 +83,15 @@ export default function PetPics({ name, toggleWidgetSettingVisible }) {
       updateWidgetSetting({ name, key: 'pics', data });
       setLoading(false);
     };
-    getPics();
-    updateWidgetSetting({ name, key: 'pet', data: pet });
-  }, [pet, name]);
+    if (!hasLocalData) {
+      getPics();
+      updateWidgetSetting({ name, key: 'pet', data: pet });
+    }
+  }, [pet, name, hasLocalData]);
+  const updatePet = (pet) => {
+    setPet(pet);
+    setHasLocalData(false);
+  };
   if (loading) return <Loading />;
   // 抛错
   if (errTip) {
@@ -94,7 +101,7 @@ export default function PetPics({ name, toggleWidgetSettingVisible }) {
     <>
       <Pets
         currPet={pet}
-        updatePet={setPet}
+        updatePet={updatePet}
         name={name}
         toggleWidgetSettingVisible={toggleWidgetSettingVisible}
       />

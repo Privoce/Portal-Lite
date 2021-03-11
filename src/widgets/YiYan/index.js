@@ -52,9 +52,9 @@ const StyledWrapper = styled.section`
   }
 `;
 let InterInt = 0;
-export default function YiYan({ name }) {
+export default function YiYan({ readonly, data, name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  let localData = getWidgetSetting({ name });
+  let localData = data?.local || getWidgetSetting({ name });
   const [yiyan, setYiyan] = useState(localData);
   const [currCates, setCurrCates] = useState(Object.keys(CateMap));
   const [inter, setInter] = useState(0);
@@ -102,21 +102,25 @@ export default function YiYan({ name }) {
   const { hitokoto, from_who, from } = yiyan;
   return (
     <StyledWrapper>
-      <Setting
-        currCates={currCates}
-        updateCurrCates={setCurrCates}
-        currInter={inter}
-        updateInter={setInter}
-      />
+      {!readonly && (
+        <Setting
+          currCates={currCates}
+          updateCurrCates={setCurrCates}
+          currInter={inter}
+          updateInter={setInter}
+        />
+      )}
+      {!readonly && (
+        <Icon className="refresh" onClick={getYiYan}>
+          换
+        </Icon>
+      )}
       <article className="yiyan">
         <p className="content">{hitokoto}</p>
         <footer className="footer">
           -- {from_who || '来自'}·{from}
         </footer>
       </article>
-      <Icon className="refresh" onClick={getYiYan}>
-        换
-      </Icon>
     </StyledWrapper>
   );
 }

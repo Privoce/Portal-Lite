@@ -68,10 +68,10 @@ const cid = process.env.REACT_APP_GOOGLE_CALENDAR_CID;
 const scopes = 'https://www.googleapis.com/auth/calendar';
 // GOOGLE CALENDAR Token
 // const StorageKey = 'GOOGLE_CALENAR_OAUTH_TOKEN';
-const useGoogleAuth = (localEvents = null) => {
+const useGoogleAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!localEvents || !readonly);
   const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const [checkedCalendars, setCheckedCalendars] = useState([]);
@@ -93,7 +93,9 @@ const useGoogleAuth = (localEvents = null) => {
         console.error({ error });
       }
     };
-    init();
+    if (!readonly) {
+      init();
+    }
     // 处理脚本加载出错的情况，很可能被墙了
     const handleError = (evt) => {
       console.log('错误捕捉', evt);
@@ -111,7 +113,7 @@ const useGoogleAuth = (localEvents = null) => {
     return () => {
       window.removeEventListener('error', handleError, true);
     };
-  }, []);
+  }, [readonly]);
   useEffect(() => {
     if (auth) {
       auth.isSignedIn.listen((isSignIn) => {
@@ -235,6 +237,7 @@ const useGoogleAuth = (localEvents = null) => {
     };
     // 有日历数据则去拉取events
     if (checkedCalendars.length) {
+      console.log('fetch event list');
       fetchEventList();
     }
   }, [checkedCalendars]);

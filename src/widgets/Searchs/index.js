@@ -43,9 +43,9 @@ const StyledWrapper = styled.section`
   }
 `;
 
-export default function Searchs({ lang, name, toggleWidgetSettingVisible }) {
+export default function Searchs({ data, lang, name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [search, setSearch] = useState(getWidgetSetting({ name }) || 'baidu');
+  const [search, setSearch] = useState(data?.local || getWidgetSetting({ name }) || 'baidu');
   const refresh = (s) => {
     updateWidgetSetting({ name, data: s });
     setSearch(s);

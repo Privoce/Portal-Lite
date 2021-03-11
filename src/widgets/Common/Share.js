@@ -160,7 +160,7 @@ export default function Share({ name, closeModal }) {
   }, []);
   useEffect(() => {
     if (uid) {
-      setLink(`${location.origin}/portal/${uid}/${name}`);
+      setLink(`${location.origin}/p/${uid}/${name}`);
     }
   }, [uid, name]);
   return (

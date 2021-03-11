@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
-  margin: 0.5rem 1rem;
+  margin: 0.5rem auto;
   /* min-height: 100vh; */
   /* max-width: 8rem;
   display: flex;

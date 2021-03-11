@@ -51,10 +51,10 @@ export default function UserPortal() {
   return (
     <StyledWrapper>
       <h2 className="title">
-        {`${allData.common.user.username}'s`} Personal {widget ? `Widget` : `Portal`}
+        {`${allData.common?.user?.username}'s`} Personal {widget ? `Widget` : `Portal`}
       </h2>
       <WidgetSection keys={keys} data={allData} single={!!widget} />
-      {widget && <BackHome path={`/portal/${uid}`} />}
+      {widget && <BackHome path={`/p/${uid}`} />}
       <Footer />
     </StyledWrapper>
   );

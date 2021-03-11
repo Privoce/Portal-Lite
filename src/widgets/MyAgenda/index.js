@@ -12,11 +12,14 @@ import AddEvent from './AddEvent';
 import Setting from './Setting';
 const googleAuthHook =
   process.env.REACT_APP_CHROME_EXT == 'true' ? useGoogleExtAuth : useGoogleAuth;
-export default function MyAgenda({ readonly, name, lang }) {
+export default function MyAgenda({ data, readonly, name, lang }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  let localEvents = getWidgetSetting({ name, key: 'groupEvents' });
+  // 此处很关键
+  let localEvents = data?.groupEvents || getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
-  const [latestEvent, setLatestEvent] = useState(null);
+  const [fromLocal, setFromLocal] = useState(!!localEvents);
+  const [latestEvent, setLatestEvent] = useState(undefined);
+
   const {
     auth,
     signedIn,
@@ -29,12 +32,13 @@ export default function MyAgenda({ readonly, name, lang }) {
     addEvent,
     removeEvent,
     updateCalendars
-  } = googleAuthHook(localEvents);
+  } = googleAuthHook(localEvents, readonly);
   // 去授权
   const getGoogleAuth = () => {
     auth.signIn();
   };
   const handleSyncData = () => {
+    setFromLocal(false);
     syncData();
   };
   const handleHighlightClick = () => {
@@ -43,7 +47,9 @@ export default function MyAgenda({ readonly, name, lang }) {
   };
   // 同步一份到本地
   useEffect(() => {
-    updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
+    if (!fromLocal) {
+      updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
+    }
     // 设置最新事件
     if (groupEvents) {
       const sortedArr = Object.entries(groupEvents).sort(([a], [b]) => {
@@ -54,17 +60,20 @@ export default function MyAgenda({ readonly, name, lang }) {
       if (events) {
         setLatestEvent(events[0]);
         console.log('wtfff', sortedArr, events[0]);
+      } else {
+        setLatestEvent(null);
       }
     }
-  }, [groupEvents]);
+  }, [groupEvents, fromLocal]);
   // 抛错
   if (error) {
     throw new Error(error);
   }
   if (!signedIn && !readonly) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
+  console.log({ localEvents, groupEvents });
   return (
     <>
-      <Setting calendars={calendars} updateCalendars={updateCalendars} name={name} />
+      {!readonly && <Setting calendars={calendars} updateCalendars={updateCalendars} name={name} />}
       <StyledWrapper>
         <div className="topbar">
           <div className="today">
@@ -89,11 +98,11 @@ export default function MyAgenda({ readonly, name, lang }) {
             )}
           </div>
         </div>
-        {loading && !groupEvents && !readonly ? (
+        {loading && !groupEvents ? (
           <div className="loading">{lang.fetching}</div>
         ) : (
           <ul className="list" ref={listEle}>
-            {Object.entries(groupEvents)
+            {Object.entries(groupEvents || {})
               .sort(([a], [b]) => {
                 return new Date(a) - new Date(b);
               })

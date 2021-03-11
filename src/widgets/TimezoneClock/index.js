@@ -118,10 +118,12 @@ let initialData = [
     city: '底特律'
   }
 ];
-export default function TimezoneClock({ name }) {
+export default function TimezoneClock({ readonly, data, name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState(getWidgetSetting({ name, key: 'tzs' }) || initialData);
+  const [timezones, setTimezones] = useState(
+    data?.tzs || getWidgetSetting({ name, key: 'tzs' }) || initialData
+  );
   const updateCurrTimezones = (tzs) => {
     updateWidgetSetting({ key: 'tzs', name, data: tzs });
     setTimezones(tzs);
@@ -136,7 +138,9 @@ export default function TimezoneClock({ name }) {
   }, []);
   return (
     <>
-      <Setting name={name} currTimezones={timezones} updateTimezones={updateCurrTimezones} />
+      {!readonly && (
+        <Setting name={name} currTimezones={timezones} updateTimezones={updateCurrTimezones} />
+      )}
       <StyledWrapper>
         {/* {loading && <Loading />} */}
         {/* <Timezones currTimezones={timezones} updateTimezones={updateCurrTimezones} /> */}

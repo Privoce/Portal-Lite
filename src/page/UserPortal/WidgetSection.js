@@ -85,7 +85,7 @@ export default function WidgetSection({ keys = null, data, single }) {
     if (single) {
       const [key] = keys;
 
-      setSingleWidget({ key, data, obj: Widgets[key] });
+      setSingleWidget({ key, data: data[key], obj: Widgets[key] });
     }
   }, [single]);
   let filtered = widgets.filter((w) => {

@@ -71,13 +71,13 @@ const useWidgetSettings = () => {
     const { key, name, data } = Object.assign({}, defaultUpdateParams, params);
     console.log({ key, name, data });
     let tmp = widgetSettings || {};
-    console.log('before', { tmp });
+    console.log('before update', tmp, tmp[name]);
     if (tmp[name]) {
-      tmp[name] = { ...tmp[name], ...{ [key]: data } };
+      tmp[name] = { ...tmp[name], [key]: data };
     } else {
       tmp[name] = { [key]: data };
     }
-    console.log('after', { tmp });
+    console.log('after update', tmp, tmp[name]);
     updateLocalData(tmp);
   };
   const getWidgetSetting = useCallback(
