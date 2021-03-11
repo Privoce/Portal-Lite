@@ -135,13 +135,9 @@ const StyledWrapper = styled.div`
       height: 0.2rem;
     }
   }
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 0.6rem 0.8rem; */
 `;
-
+let prefix =
+  process.env.REACT_APP_CHROME_EXT == 'true' ? 'https://nicegoodthings.com' : location.origin;
 export default function Share({ name, lang, closeModal }) {
   const { authClient } = useAuthing({ appId });
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
@@ -171,7 +167,7 @@ export default function Share({ name, lang, closeModal }) {
   }, [authClient]);
   useEffect(() => {
     if (username) {
-      setLink(`${location.origin}/p/${username}/${name}`);
+      setLink(`${prefix}/p/${username}/${name}`);
     }
   }, [username, name]);
   return (

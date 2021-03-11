@@ -91,6 +91,8 @@ const StyledWrapper = styled.section`
   }
 `;
 // let other_params = {};
+let prefix =
+  process.env.REACT_APP_CHROME_EXT == 'true' ? 'https://nicegoodthings.com' : location.origin;
 export default function Modal({ closeModal }) {
   const {
     language: {
@@ -119,7 +121,7 @@ export default function Modal({ closeModal }) {
   }, [authClient]);
   useEffect(() => {
     if (username) {
-      setLink(`${location.origin}/p/${username}`);
+      setLink(`${prefix}/p/${username}`);
     }
   }, [username]);
   return (
