@@ -35,6 +35,14 @@ const en = {
         btnTxt: 'Authorize'
       },
       opts: {
+        shareModal: {
+          title: 'Share',
+          tip: 'Share the widget with everyone',
+          loginTip: 'Please login first.',
+          copy: 'Copy Link',
+          copied: 'Copied',
+          done: 'Done'
+        },
         setting: 'Settings',
         remove: 'Remove',
         fullscreen: 'Full-screen',

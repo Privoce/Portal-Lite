@@ -21,14 +21,14 @@ const getFormatedData = (data, key) => {
 export default function UserPortal() {
   // const { language } = useLanguage();
   const [errorTip, setErrorTip] = useState('');
-  const { uid, widget = null } = useParams();
+  const { username, widget = null } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   useEffect(() => {
     setLoading(true);
     const getUserData = async () => {
       const resp = await fetch(
-        `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${uid}/udf`
+        `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${username}/udf`
       );
       const { code, data, msg } = await resp.json();
       if (code != 0) {
@@ -43,7 +43,7 @@ export default function UserPortal() {
     };
 
     getUserData();
-  }, [widget,uid]);
+  }, [widget, username]);
   if (errorTip) return errorTip;
   if (loading) return <Loading />;
   const { keys, data: allData } = data;
@@ -54,7 +54,7 @@ export default function UserPortal() {
         {`${allData.common?.user?.username}'s`} Personal {widget ? `Widget` : `Portal`}
       </h2>
       <WidgetSection keys={keys} data={allData} single={!!widget} />
-      {widget && <BackHome path={`/p/${uid}`} />}
+      {widget && <BackHome path={`/p/${username}`} />}
       <Footer />
     </StyledWrapper>
   );

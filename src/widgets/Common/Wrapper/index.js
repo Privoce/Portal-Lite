@@ -1,4 +1,4 @@
-import { useState, useRef, Children, useCallback, cloneElement, Suspense } from 'react';
+import { useState, Children, useCallback, cloneElement, Suspense } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLanguage } from 'uselanguage';
 import { BsThreeDots } from 'react-icons/bs';
@@ -37,7 +37,6 @@ export default function WidgetWrapper({
     }
   } = useLanguage();
   const { opts: settingLang } = lang;
-  const compContainer = useRef(null);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [currSize, setCurrSize] = useState(getWidgetSetting({ name, key: 'size' }) || defaultSize);
   const [settingVisible, setSettingVisible] = useState(false);
@@ -54,11 +53,6 @@ export default function WidgetWrapper({
     if (confirmed) {
       removeWidget();
     }
-  };
-  const handleFullscreen = () => {
-    //to do
-    compContainer.current.requestFullscreen();
-    toggleSettingListVisible();
   };
   const handleShare = () => {
     toggleShareVisible();
@@ -80,7 +74,6 @@ export default function WidgetWrapper({
   console.log('lang', widgets[name]);
   return (
     <StyledWrapper
-      ref={compContainer}
       className={`widget ${compact ? 'compact' : ''} ${
         disableScroll ? 'noscroll' : ''
       }  ${currSize} ${hasSizes && sizes.includes('large') ? 'largable' : ''} ${
@@ -112,7 +105,9 @@ export default function WidgetWrapper({
             </div>
           </>
         </ErrorBoundary>
-        {shareVisibile && <Share name={name} closeModal={toggleShareVisible} />}
+        {shareVisibile && (
+          <Share name={name} lang={settingLang.shareModal} closeModal={toggleShareVisible} />
+        )}
       </div>
       {/* 小组件内部设置可见判断,避免和其他按钮的UI冲突 */}
       {!widgetSettingVisible && !shareVisibile && !readonly && (
@@ -133,9 +128,6 @@ export default function WidgetWrapper({
               {settingLang.remove}
             </li>
           )}
-          <li className="item" onClick={handleFullscreen}>
-            {settingLang.fullscreen}
-          </li>
           {!standalone && (
             <li className="item">
               <a

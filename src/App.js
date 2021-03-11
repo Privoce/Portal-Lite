@@ -42,7 +42,7 @@ function App() {
               <Route exact path="/authing">
                 <Authing />
               </Route>
-              <Route exact path={['/p/:uid', '/p/:uid/:widget']}>
+              <Route exact path={['/p/:username', '/p/:username/:widget']}>
                 <UserPortal />
               </Route>
               <Route exact path="/oauth/:app">

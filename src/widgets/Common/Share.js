@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { IoMdClose } from 'react-icons/io';
+
 import { useWidgetSettings } from '../../hooks';
 import { appId } from '../../component/Profile/config';
 
@@ -19,10 +21,11 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   .modal {
+    position: relative;
     border-radius: 0.05rem;
     color: #222;
     background-color: #fff;
-    padding: 0.2rem 0.3rem;
+    padding: 0.3rem 0.4rem;
     .title {
       color: #000;
       font-size: 0.22rem;
@@ -118,10 +121,18 @@ const StyledWrapper = styled.div`
             background-color: #ccc;
           }
         }
-        /* &.cancel {
+        /* &.done {
           background-color: #fff;
         } */
       }
+    }
+    > .close {
+      cursor: pointer;
+      position: absolute;
+      top: 0.05rem;
+      right: 0.05rem;
+      width: 0.2rem;
+      height: 0.2rem;
     }
   }
   /* display: flex;
@@ -131,10 +142,10 @@ const StyledWrapper = styled.div`
   padding: 0.6rem 0.8rem; */
 `;
 
-export default function Share({ name, closeModal }) {
+export default function Share({ name, lang, closeModal }) {
   const { authClient } = useAuthing({ appId });
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [uid, setUid] = useState(null);
+  const [username, setUsername] = useState(null);
   const [link, setLink] = useState('Generating link...');
   const [copied, setCopied] = useState(false);
   const [canShare, setCanShare] = useState(getWidgetSetting({ name, key: 'share' }));
@@ -147,27 +158,27 @@ export default function Share({ name, closeModal }) {
     updateWidgetSetting({ name, key: 'share', data: checked });
   };
   useEffect(() => {
-    async function getUid() {
+    const getUsername = async () => {
       let { status } = await authClient.checkLoginStatus();
       if (!status) {
         setLink('Please login first.');
         return;
       }
       let user = await authClient.getCurrentUser();
-      setUid(user.id);
-    }
-    getUid();
-  }, []);
+      setUsername(user.username);
+    };
+    getUsername();
+  }, [authClient]);
   useEffect(() => {
-    if (uid) {
-      setLink(`${location.origin}/p/${uid}/${name}`);
+    if (username) {
+      setLink(`${location.origin}/p/${username}/${name}`);
     }
-  }, [uid, name]);
+  }, [username, name]);
   return (
     <StyledWrapper>
       <div className="modal">
         <h3 className="title">
-          <span className="txt">Share</span>
+          <span className="txt">{lang.title}</span>
           <label className="toggle">
             <input
               className="toggle-checkbox"
@@ -180,7 +191,7 @@ export default function Share({ name, closeModal }) {
           </label>
         </h3>
         <div className="body">
-          <p className="tip">Share the widget with everyone</p>
+          <p className="tip">{lang.tip}</p>
           <div className="link">{link}</div>
         </div>
         <div className="btns">
@@ -194,13 +205,14 @@ export default function Share({ name, closeModal }) {
             }}
           >
             <button disabled={!canShare} className="btn copy">
-              {copied ? 'Copied' : 'Copy Link'}
+              {copied ? lang.copied : lang.copy}
             </button>
           </CopyToClipboard>
-          <button className="btn cancel" onClick={closeModal}>
-            Cancel
+          <button className="btn done" onClick={closeModal}>
+            {lang.done}
           </button>
         </div>
+        <IoMdClose className="close" onClick={closeModal} />
       </div>
     </StyledWrapper>
   );

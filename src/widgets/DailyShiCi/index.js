@@ -83,7 +83,7 @@ export default function DailyShici({ name }) {
         setErrTip(errMessage);
       }
     );
-  }, []);
+  }, [name]);
   useEffect(() => {
     if (!shici) {
       getShici();

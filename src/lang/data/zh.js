@@ -36,6 +36,14 @@ const zh = {
         btnTxt: '去授权'
       },
       opts: {
+        shareModal: {
+          title: '分享',
+          tip: '将此组件分享给TA',
+          loginTip: '请先登录',
+          copy: '复制链接',
+          copied: '已复制',
+          done: '完成'
+        },
         setting: '设置',
         remove: '移除',
         fullscreen: '全屏',
