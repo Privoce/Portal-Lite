@@ -2,6 +2,9 @@ const en = {
   title: 'English',
   value: 'en',
   words: {
+    msg: {
+      loading: 'loading...'
+    },
     profile: {
       avatar: 'Photo',
       name: 'Name',
@@ -104,6 +107,22 @@ const en = {
           hospital: 'In Hospital',
           icu: 'ICU',
           ventilator: 'On Ventilator'
+        }
+      },
+      ['timezone-clock']: {
+        title: 'World Time',
+        addTip: "Add Clock via 'setting' ↗",
+        city: {
+          beijing: 'Beijing',
+          tokyo: 'Tokyo',
+          london: 'London',
+          losAngeles: 'Los Angeles',
+          moscow: 'Moscow',
+          paris: 'Paris',
+          newYork: 'New York',
+          detroit: 'Detroit',
+          sydney: 'Sydney',
+          maputo: 'Maputo'
         }
       },
       ['covid-info']: {

@@ -2,6 +2,9 @@ const zh = {
   title: '中文',
   value: 'zh',
   words: {
+    msg: {
+      loading: '加载中...'
+    },
     profile: {
       avatar: '头像',
       name: '名称',
@@ -92,6 +95,22 @@ const zh = {
         bing: '必应',
         google: '谷歌',
         duckduck: 'DuckDuckGo'
+      },
+      ['timezone-clock']: {
+        title: '国际时钟',
+        addTip: '小组件右上角设置添加时钟 ↗',
+        city: {
+          beijing: '北京',
+          tokyo: '东京',
+          london: '伦敦',
+          losAngeles: '洛杉矶',
+          moscow: '莫斯科',
+          paris: '巴黎',
+          newYork: '纽约',
+          detroit: '底特律',
+          sydney: '悉尼',
+          maputo: '马普托'
+        }
       },
       // 美国疫情小组件
       ['us-covid-info']: {

@@ -17,6 +17,7 @@ const StyledWrapper = styled.div`
   width: 100%;
   height: 100%;
   .tab {
+    white-space: nowrap;
     font-size: 0.2rem;
     padding: 0.1rem;
     border: 1px solid #efe;
@@ -28,49 +29,31 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-const timezones = [
-  {
-    tz: 'Asia/Shanghai',
-    city: '北京'
-  },
-  {
-    tz: 'Asia/Tokyo',
-    city: '东京'
-  },
-  {
-    tz: 'Europe/London',
-    city: '伦敦'
-  },
-  {
-    tz: 'America/Los_Angeles',
-    city: '洛杉矶'
-  },
-  {
-    tz: 'Europe/Moscow',
-    city: '莫斯科'
-  },
-  {
-    tz: 'Europe/Paris',
-    city: '巴黎'
-  },
-  {
-    tz: 'America/New_York',
-    city: '纽约'
-  },
-  {
-    tz: 'America/Detroit',
-    city: '底特律'
-  },
-  {
-    tz: 'Australia/Sydney',
-    city: '悉尼'
-  },
-  {
-    tz: 'Africa/Maputo',
-    city: '马普托'
-  }
-];
-function Timezones({ name, currTimezones, updateTimezones }) {
+const getCities = (city = null) => {
+  if (!city) return [];
+  const timezones = {
+    beijing: 'Asia/Shanghai',
+    tokyo: 'Asia/Tokyo',
+    london: 'Europe/London',
+    losAngeles: 'America/Los_Angeles',
+    moscow: 'Europe/Moscow',
+    paris: 'Europe/Paris',
+    newYork: 'America/New_York',
+    detroit: 'America/Detroit',
+    sydney: 'Australia/Sydney',
+    maputo: 'Africa/Maputo'
+  };
+  const items = Object.keys(timezones).map((key) => {
+    return {
+      tz: timezones[key],
+      city: city[key]
+    };
+  });
+  console.log({ items });
+  return items;
+};
+
+function Timezones({ name, city = null, currTimezones, updateTimezones }) {
   // const [tzs, setTzs] = useState(currTimezones);
   const handleUpdate = ({ target }) => {
     const {
@@ -86,7 +69,7 @@ function Timezones({ name, currTimezones, updateTimezones }) {
         alert('最多三个，请先去掉一个');
         return;
       }
-      let newTZ = timezones.find((t) => t.tz == tz);
+      let newTZ = getCities(city).find((t) => t.tz == tz);
       console.log({ newTZ });
       // setTzs([...currTimezones, newTZ]);
       updateTimezones([...currTimezones, newTZ]);
@@ -98,8 +81,7 @@ function Timezones({ name, currTimezones, updateTimezones }) {
   };
   return createPortal(
     <StyledWrapper>
-      {/* <IconClose className="icon_close" onClick={toggleTimezoneExpand} /> */}
-      {timezones.map((t) => {
+      {getCities(city).map((t) => {
         const { city, tz } = t;
         let selected = !!currTimezones.find((item) => {
           return item.tz == tz;

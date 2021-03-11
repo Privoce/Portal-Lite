@@ -2,6 +2,9 @@ const es = {
   title: 'Español',
   value: 'es',
   words: {
+    msg: {
+      loading: 'loading...'
+    },
     profile: {
       avatar: 'Foto',
       name: 'Nombre',
@@ -88,6 +91,22 @@ const es = {
         bing: 'Bing',
         google: 'Google',
         duckduck: 'DuckDuckGo'
+      },
+      ['timezone-clock']: {
+        title: 'World Time',
+        addTip: 'Add Clock',
+        city: {
+          beijing: 'Beijing',
+          tokyo: 'Tokyo',
+          london: 'London',
+          losAngeles: 'Los Angeles',
+          moscow: 'Moscow',
+          paris: 'Paris',
+          newYork: 'New York',
+          detroit: 'Detroit',
+          sydney: 'Sydney',
+          maputo: 'Maputo'
+        }
       },
       ['us-covid-info']: {
         title: '🇺🇸 Información de Covid',

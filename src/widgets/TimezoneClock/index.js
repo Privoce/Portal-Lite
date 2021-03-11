@@ -21,8 +21,14 @@ const StyledWrapper = styled.section`
     }
   }
   .empty {
-    font-size: 0.2rem;
-    color: #666;
+    font-size: 0.25rem;
+    font-weight: 800;
+    color: #999;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .clocks {
@@ -104,25 +110,12 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-let initialData = [
-  {
-    tz: 'Asia/Shanghai',
-    city: '北京'
-  },
-  {
-    tz: 'Europe/London',
-    city: '伦敦'
-  },
-  {
-    tz: 'America/Detroit',
-    city: '底特律'
-  }
-];
-export default function TimezoneClock({ readonly, data, name }) {
+// let initialData = [];
+export default function TimezoneClock({ readonly, lang, data, name }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [date, setDate] = useState(new Date());
   const [timezones, setTimezones] = useState(
-    data?.tzs || getWidgetSetting({ name, key: 'tzs' }) || initialData
+    data?.tzs || getWidgetSetting({ name, key: 'tzs' }) || []
   );
   const updateCurrTimezones = (tzs) => {
     updateWidgetSetting({ key: 'tzs', name, data: tzs });
@@ -136,16 +129,22 @@ export default function TimezoneClock({ readonly, data, name }) {
       clearInterval(interval);
     };
   }, []);
+  console.log('time clock', lang);
   return (
     <>
       {!readonly && (
-        <Setting name={name} currTimezones={timezones} updateTimezones={updateCurrTimezones} />
+        <Setting
+          city={lang?.city}
+          name={name}
+          currTimezones={timezones}
+          updateTimezones={updateCurrTimezones}
+        />
       )}
       <StyledWrapper>
         {/* {loading && <Loading />} */}
         {/* <Timezones currTimezones={timezones} updateTimezones={updateCurrTimezones} /> */}
         {timezones.length == 0 ? (
-          <div className="empty">快去添加一个时钟吧！</div>
+          <div className="empty">{lang.addTip}</div>
         ) : (
           <div className="clocks">
             {timezones.map((item) => {
