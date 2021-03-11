@@ -19,6 +19,7 @@ const StyledFooter = styled.footer`
     text-align: center;
   }
   .github {
+    font-size: 0.12rem;
     display: flex;
     justify-content: center;
     margin-top: 0.15rem;
