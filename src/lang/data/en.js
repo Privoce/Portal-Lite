@@ -91,7 +91,13 @@ const en = {
         baidu: 'Baidu',
         bing: 'Bing',
         google: 'Google',
-        duckduck: 'DuckDuckGo'
+        duckduck: 'DuckDuckGo',
+        placeholder: {
+          bing: 'Bing Search',
+          google: 'Google Search',
+          duckduck: 'DuckduckGo: Search the web without being tracked',
+          baidu: 'Baidu Search'
+        }
       },
       ['us-covid-info']: {
         title: '🇺🇸 Covid Info',

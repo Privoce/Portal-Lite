@@ -94,7 +94,13 @@ const zh = {
         baidu: '百度',
         bing: '必应',
         google: '谷歌',
-        duckduck: 'DuckDuckGo'
+        duckduck: 'DuckDuckGo',
+        placeholder: {
+          bing: '必应一下！',
+          google: '谷歌搜索',
+          duckduck: '感受不被追踪的搜索体验',
+          baidu: ''
+        }
       },
       ['timezone-clock']: {
         title: '国际时钟',

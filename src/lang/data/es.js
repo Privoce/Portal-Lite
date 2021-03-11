@@ -90,7 +90,13 @@ const es = {
         baidu: 'Baidu',
         bing: 'Bing',
         google: 'Google',
-        duckduck: 'DuckDuckGo'
+        duckduck: 'DuckDuckGo',
+        placeholder: {
+          bing: 'Bing Search',
+          google: 'Google Search',
+          duckduck: 'DuckduckGo: Search the web without being tracked',
+          baidu: 'Baidu Search'
+        }
       },
       ['timezone-clock']: {
         title: 'World Time',

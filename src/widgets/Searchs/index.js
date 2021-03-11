@@ -63,6 +63,7 @@ export default function Searchs({ data, lang, name, toggleWidgetSettingVisible }
         <Suspense fallback={<Loading />}>
           <div className="search">
             {cloneElement(SearchMap[search], {
+              placeholder: lang.placeholder[search],
               lang
             })}
           </div>

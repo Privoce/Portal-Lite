@@ -39,7 +39,7 @@ const StyledWrapper = styled.div`
   }
 `;
 // let timeoutInt = 0;
-export default function BaiduSearch() {
+export default function BaiduSearch({ placeholder }) {
   const [input, setInput] = useState('');
   // const [associates, setAssociates] = useState([]);
   const [focused, setFocused] = useState(false);
@@ -70,6 +70,7 @@ export default function BaiduSearch() {
     <StyledWrapper>
       <div className={`input`}>
         <input
+          placeholder={placeholder}
           value={input}
           onFocus={handleFocus.bind(null, true)}
           onBlur={handleFocus.bind(null, false)}

@@ -75,7 +75,7 @@ const StyledWrapper = styled.div`
   }
 `;
 let timeoutInt = 0;
-export default function BingSearch() {
+export default function BingSearch({ placeholder }) {
   const [input, setInput] = useState('');
   const [associates, setAssociates] = useState([]);
   const [focused, setFocused] = useState(false);
@@ -125,6 +125,7 @@ export default function BingSearch() {
     <StyledWrapper>
       <div className={`input`}>
         <input
+          placeholder={placeholder}
           value={input}
           onFocus={handleFocus.bind(null, true)}
           onBlur={handleFocus.bind(null, false)}

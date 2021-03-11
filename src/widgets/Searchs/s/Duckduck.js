@@ -49,7 +49,7 @@ const StyledWrapper = styled.div`
   }
 `;
 // let timeoutInt = 0;
-export default function DuckduckSearch() {
+export default function DuckduckSearch({ placeholder }) {
   const [input, setInput] = useState('');
   // const [associates, setAssociates] = useState([]);
   const [focused, setFocused] = useState(false);
@@ -81,7 +81,7 @@ export default function DuckduckSearch() {
       <div className={`input`}>
         <SiDuckduckgo className="logo" color="#dc593a" />
         <input
-          placeholder="DuckduckGo: Search the web without being tracked"
+          placeholder={placeholder}
           value={input}
           onFocus={handleFocus.bind(null, true)}
           onBlur={handleFocus.bind(null, false)}
