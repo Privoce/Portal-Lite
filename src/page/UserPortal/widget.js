@@ -2,21 +2,22 @@ import { useEffect, useState } from 'react';
 import StyledWrapper from './styled';
 import { useParams } from 'react-router-dom';
 // import { useLanguage } from 'uselanguage';
-import WidgetList from './WidgetList';
+import WidgetDetail from './WidgetDetail';
 import ErrorTip from './ErrorTip';
 import Footer from '../../component/Footer';
 import Loading from '../../component/Loading';
+import BackHome from './BackHome';
 
-const getFormatedData = (data) => {
-  let result = { keys: null, data: null };
-  result.keys = data.widgets?.local || [];
+const getFormatedData = (data, key) => {
+  let result = { key: null, data: null };
+  result.key = key;
   result.data = data;
   return result;
 };
-export default function UserPortal() {
+export default function PortalWidget() {
   // const { language } = useLanguage();
   const [errorTip, setErrorTip] = useState('');
-  const { username } = useParams();
+  const { username, widget = null } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -31,20 +32,22 @@ export default function UserPortal() {
         return;
       }
 
-      let formated = getFormatedData(data);
-      setData({ ...formated });
+      let formated = getFormatedData(data, widget);
+      setData(formated);
       setLoading(false);
     };
     getUserData();
-  }, [username]);
+  }, [widget, username]);
 
   if (errorTip) return <ErrorTip tip={errorTip} />;
   if (loading) return <Loading />;
   const { keys, data: allData } = data;
+  console.log({ keys, allData, widget });
   return (
     <StyledWrapper>
-      <h2 className="title">{`${allData.common?.user?.username}'s`} Personal Portal</h2>
-      <WidgetList keys={keys} data={allData} />
+      <h2 className="title">{`${allData.common?.user?.username}'s`} Personal Widget</h2>
+      <WidgetDetail widgetKey={keys} data={allData} />
+      <BackHome path={`/p/${username}`} />
       <Footer />
     </StyledWrapper>
   );

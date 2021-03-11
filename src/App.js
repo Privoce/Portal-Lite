@@ -13,6 +13,9 @@ const Authing = lazy(() => import(/* webpackChunkName: "page.authing" */ './page
 const UserPortal = lazy(() =>
   import(/* webpackChunkName: "page.userPortal" */ './page/UserPortal')
 );
+const UserPortalWidget = lazy(() =>
+  import(/* webpackChunkName: "page.userPortal.widget" */ './page/UserPortal/widget')
+);
 const OAuth = lazy(() => import(/* webpackChunkName: "page.oauth" */ './page/OAuth'));
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
@@ -42,8 +45,11 @@ function App() {
               <Route exact path="/authing">
                 <Authing />
               </Route>
-              <Route exact path={['/p/:username', '/p/:username/:widget']}>
+              <Route exact path={'/p/:username'}>
                 <UserPortal />
+              </Route>
+              <Route exact path={'/p/:username/:widget'}>
+                <UserPortalWidget />
               </Route>
               <Route exact path="/oauth/:app">
                 <OAuth />
