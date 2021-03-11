@@ -18,7 +18,15 @@ const en = {
       feedback: 'Feedback',
       tip: 'No local data!'
     },
+
     modal: {
+      share: {
+        title: 'Share Portal',
+        tip: 'Share my portal with the link below',
+        copy: 'Copy Link',
+        copied: 'Copied',
+        done: 'Done'
+      },
       widgets: {
         added: 'Added',
         notAdded: 'Not added'
@@ -37,7 +45,7 @@ const en = {
       opts: {
         shareModal: {
           title: 'Share',
-          tip: 'Share the widget with everyone',
+          tip: 'Share this widget with the link',
           loginTip: 'Please login first.',
           copy: 'Copy Link',
           copied: 'Copied',

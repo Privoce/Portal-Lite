@@ -19,6 +19,13 @@ const zh = {
       tip: '暂未产生本地数据'
     },
     modal: {
+      share: {
+        title: '分享',
+        tip: '通过以下链接分享我的小组件主页',
+        copy: '复制链接',
+        copied: '已复制',
+        done: '完成'
+      },
       widgets: {
         added: '已添加的小组件',
         notAdded: '未添加的小组件'
@@ -38,7 +45,7 @@ const zh = {
       opts: {
         shareModal: {
           title: '分享',
-          tip: '将此组件分享给TA',
+          tip: '用以下链接分享此组件',
           loginTip: '请先登录',
           copy: '复制链接',
           copied: '已复制',

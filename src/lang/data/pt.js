@@ -19,6 +19,13 @@ const pt = {
       tip: 'Sem dados locais!'
     },
     modal: {
+      share: {
+        title: 'Share Portal',
+        tip: 'Share my portal with the link below',
+        copy: 'Copy Link',
+        copied: 'Copied',
+        done: 'Done'
+      },
       widgets: {
         added: 'Adicional',
         notAdded: 'Não Adicionado'

@@ -12,6 +12,9 @@ import { useWidgets } from '../../hooks';
 const Setting = lazy(() =>
   import(/* webpackChunkName: "aside.setting" */ '../../component/Setting')
 );
+const SharePortal = lazy(() =>
+  import(/* webpackChunkName: "aside.SharePortal" */ '../../component/SharePortal')
+);
 const Profile = lazy(() =>
   import(/* webpackChunkName: "aside.profile" */ '../../component/Profile')
 );
@@ -35,6 +38,10 @@ export default function Home() {
       <StyledWrapper>
         {/* <Account /> */}
         <ul className={`settings ${settingExpanded ? 'expanded' : ''}`}>
+          <li className="setting">
+            <SharePortal />
+            <span className="tip">Share My Portal</span>
+          </li>
           <li className="setting">
             <Profile setSyncing={setSyncing} />
             <span className="tip">Profile</span>
