@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import Loading from '../../component/Loading';
 import { useWidgetSettings } from '../../hooks';
 
-const BaiduSearch = lazy(() => import('./Baidu'));
-const DuckduckSearch = lazy(() => import('./Duckduck'));
-const GoogleSearch = lazy(() => import('./Google'));
-const BingSearch = lazy(() => import('./Bing'));
+const BaiduSearch = lazy(() => import('./s/Baidu'));
+const DuckduckSearch = lazy(() => import('./s/Duckduck'));
+const GoogleSearch = lazy(() => import('./s/Google'));
+const BingSearch = lazy(() => import('./s/Bing'));
 const Setting = lazy(() => import('./Setting'));
 const SearchMap = {
   baidu: <BaiduSearch />,
@@ -45,7 +45,7 @@ const StyledWrapper = styled.section`
 
 export default function Searchs({ data, lang, name, toggleWidgetSettingVisible }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [search, setSearch] = useState(data?.local || getWidgetSetting({ name }) || 'baidu');
+  const [search, setSearch] = useState(data?.local || getWidgetSetting({ name }) || 'google');
   const refresh = (s) => {
     updateWidgetSetting({ name, data: s });
     setSearch(s);
@@ -60,7 +60,7 @@ export default function Searchs({ data, lang, name, toggleWidgetSettingVisible }
         updateSearch={refresh}
       />
       <StyledWrapper>
-        <Suspense fallback={<Loading tip="搜索模块加载中..." />}>
+        <Suspense fallback={<Loading />}>
           <div className="search">
             {cloneElement(SearchMap[search], {
               lang
