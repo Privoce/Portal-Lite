@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import GitHubButton from 'react-github-btn';
 const StyledFooter = styled.footer`
   width: 100%;
-  padding: 0.2rem 0 0.3rem 0;
+  padding: 0.2rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;

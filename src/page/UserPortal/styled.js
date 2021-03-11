@@ -1,19 +1,20 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
-  margin: 0.5rem auto;
-  /* min-height: 100vh; */
-  /* max-width: 8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center; */
+  margin: 0.3rem auto;
+  padding: 0 0.5rem;
+  @media (min-width: 320px) and (max-width: 860px) {
+    padding: 0;
+  }
   > .title {
-    color: #333;
+    width: fit-content;
+    color: #666;
     text-align: center;
     font-size: 0.3rem;
     font-weight: 800;
-    padding-bottom: 0.2rem;
-    border-bottom: 1px dashed #eee;
+    padding: 0 0.5rem 0.15rem 0.5rem;
+    border-bottom: 1px dotted #dde;
+    margin: 0 auto;
     margin-bottom: 0.2rem;
   }
 `;

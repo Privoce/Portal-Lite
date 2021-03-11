@@ -9,12 +9,16 @@ const StyledSection = styled.section`
   width: 100%;
   padding-bottom: 0.6rem;
   min-height: 80vh;
+
   &.single {
     display: flex;
     align-items: center;
+    .widget {
+      margin: 0 auto;
+    }
   }
   .widget {
-    margin: 0 auto;
+    margin: 0;
     .tip {
       display: flex;
       flex-direction: column;
