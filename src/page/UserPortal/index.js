@@ -43,7 +43,7 @@ export default function UserPortal() {
     };
 
     getUserData();
-  }, []);
+  }, [widget,uid]);
   if (errorTip) return errorTip;
   if (loading) return <Loading />;
   const { keys, data: allData } = data;
