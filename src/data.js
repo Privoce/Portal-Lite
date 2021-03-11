@@ -104,6 +104,7 @@ let Widgets = {
     updated: '2020-12-28'
   },
   'my-agenda': {
+    loadType: 'script',
     preset: true,
     title: '我的日程',
     description: '快捷查看您的日常日程，目前仅支持谷歌日历',
@@ -274,7 +275,7 @@ let Widgets = {
   }
 };
 // 过滤掉不适合在浏览器扩展里加载的小组件
-if (window.IS_CHROME_EXT) {
+if (process.env.REACT_APP_CHROME_EXT == 'true') {
   Widgets = Object.fromEntries(
     Object.entries(Widgets).filter(([, obj]) => {
       return !['script'].includes(obj.loadType);

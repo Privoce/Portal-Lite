@@ -2,7 +2,7 @@
   "name": "Widget Portal",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity"],
@@ -13,6 +13,7 @@
     "48": "/android-chrome-192x192.png",
     "128": "/android-chrome-192x192.png"
   },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw8+yi9muoWgjcWZOHYN950YFzSZLkBuNy28G258RSxbhNU/kcAItaihpRHurE507yZVAydtdDKXVM3VEnBjawhcOHxvFwTKkNsZXwAUSnC8yscZDwgaapqRzZY69+UYPq0lJl4YvYMGvN+H4ehHt/9pYFXYilL6fLKOIL53ZVXHuOeyPk8O/2w2H2aJetDEok3wJUoWhjzPRzEPLPskyR8Cjei9qEr4vmF7fXn/2EyZhUgARgNIS5OjRV9wCbKsaTTcC5ci65lUzvn6r2KRn4nbU0mAiEoQdJyFocoxYBsZycM/FaKyClzqjqU81dbgaH63IQrO0A7BU2D0xpR1m7wIDAQAB",
   "oauth2": {
     "client_id": "1034738316090-tf816ulnekevogf577eron4d6iktdu01.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/calendar"]
