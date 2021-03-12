@@ -17,6 +17,7 @@ const UserPortalWidget = lazy(() =>
   import(/* webpackChunkName: "page.userPortal.widget" */ './page/UserPortal/widget')
 );
 const OAuth = lazy(() => import(/* webpackChunkName: "page.oauth" */ './page/OAuth'));
+const Transfer = lazy(() => import(/* webpackChunkName: "page.transfer" */ './page/Transfer'));
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
 
@@ -50,6 +51,9 @@ function App() {
               </Route>
               <Route exact path={'/p/:username/:widget'}>
                 <UserPortalWidget />
+              </Route>
+              <Route exact path="/transfer/:dest">
+                <Transfer />
               </Route>
               <Route exact path="/oauth/:app">
                 <OAuth />
