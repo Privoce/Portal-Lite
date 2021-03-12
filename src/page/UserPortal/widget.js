@@ -45,7 +45,7 @@ export default function PortalWidget() {
   return (
     <StyledWrapper>
       <h2 className="title">{`${allData.common?.user?.username}'s`} Personal Widget</h2>
-      <WidgetDetail widgetKey={key} data={allData} />
+      <WidgetDetail widgetKey={key} data={allData[key]} />
       <BackHome path={`/p/${username}`} />
       <Footer />
     </StyledWrapper>

@@ -9,15 +9,11 @@ const StyledSection = styled.section`
   padding-bottom: 0.6rem;
   min-height: 80vh;
 
-  &.single {
-    display: flex;
-    align-items: center;
-    .widget {
-      margin: 0 auto;
-    }
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .widget {
-    margin: 0;
+    margin-top: 0;
     .tip {
       display: flex;
       flex-direction: column;
@@ -41,7 +37,7 @@ export default function WidgetSection({ widgetKey = null, data = {} }) {
   return (
     <StyledSection>
       <div className="widget">
-        {data[widgetKey].share ? (
+        {data.share ? (
           <WidgetWrapper
             data={data}
             readonly={true}
