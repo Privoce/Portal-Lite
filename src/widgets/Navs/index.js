@@ -18,7 +18,7 @@ const StyledSection = styled.section`
     justify-items: center;
     @media (min-width: 320px) and (max-width: 860px) {
       grid-template-columns: repeat(4, 1fr);
-      grid-column-gap: 0;
+      grid-column-gap: 0.4rem;
     }
     .box {
       width: 100%;
