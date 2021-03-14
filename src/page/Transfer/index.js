@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-
+import DownloadExt from './DownloadExt';
 const StyledWrapper = styled.section`
   min-height: 100vh;
   display: flex;
@@ -42,11 +42,18 @@ const StyledWrapper = styled.section`
     }
   }
   .tip {
-    font-size: 0.18rem;
     margin-bottom: 0.1rem;
+    line-height: 1.5;
+    .redirect {
+      font-size: 0.2rem;
+    }
+    .click {
+      font-size: 0.16rem;
+      color: #555;
+    }
   }
   .link {
-    font-size: 0.14rem;
+    font-size: 0.16rem;
     max-width: 5.6rem;
     word-break: break-all;
     line-height: 1.5;
@@ -55,28 +62,34 @@ const StyledWrapper = styled.section`
 let inter = 0;
 export default function Transfer() {
   const { dest } = useParams();
+  const [checkResult, setCheckResult] = useState(undefined);
   const [countdown, setCountdown] = useState(undefined);
   const [tip, setTip] = useState('');
   const [jumpUrl, setJumpUrl] = useState(null);
   const [portalVemosId, setPortalVemosId] = useState(null);
   useEffect(() => {
+    const checkExtInstalled = () => {
+      let extInstalled = !!document.documentElement.getAttribute('ext-portal');
+      setCheckResult(extInstalled);
+    };
+    window.onload = checkExtInstalled;
+    return () => {
+      window.onload = null;
+    };
+  }, []);
+  useEffect(() => {
     let decoded = decodeURIComponent(dest);
     let id = new URLSearchParams(new URL(decoded).search).get('portal-vemos-id');
-    setJumpUrl(decoded);
-    setPortalVemosId(id);
-  }, [dest]);
-  useEffect(() => {
-    if (portalVemosId) {
+    if (id) {
+      setJumpUrl(decoded);
+      setPortalVemosId(id);
       setTip('Redirecting...');
-      setCountdown(10);
-      // inter = setTimeout(() => {
-      //   location.href = jumpUrl;
-      // }, 2000);
+      setCountdown(5);
     }
     return () => {
       clearTimeout(inter);
     };
-  }, [portalVemosId, jumpUrl]);
+  }, [dest]);
   useEffect(() => {
     if (typeof countdown !== 'undefined') {
       if (countdown > 0) {
@@ -88,6 +101,8 @@ export default function Transfer() {
       }
     }
   }, [countdown, jumpUrl]);
+  if (typeof checkResult == 'undefined') return 'checking';
+  if (checkResult === false) return <DownloadExt />;
   return (
     <StyledWrapper>
       <div className="logo">
@@ -98,13 +113,16 @@ export default function Transfer() {
       </div>
       {portalVemosId && (
         <article className="id">
-          <h2 className="title">Portal Vemos Invite ID</h2>
+          <h2 className="title">Your Portal Vemos Invite ID:</h2>
           <p className="value">{portalVemosId}</p>
         </article>
       )}
       {tip && (
         <div className="tip">
-          {tip} ({countdown}s)
+          <p className="redirect">
+            {tip} ({countdown}s)
+          </p>
+          <p className="click">↓ Click to jump now ↓</p>
         </div>
       )}
       {jumpUrl && (
