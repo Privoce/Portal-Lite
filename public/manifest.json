@@ -24,5 +24,14 @@
   "background": {
     "scripts": ["./crx/bg.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["crx/vemos/assets/peerjs.min.js", "crx/vemos/content_script.js"],
+      "css": ["crx/vemos/style.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": ["crx/vemos/*"],
   "options_page": "./crx/option.html"
 }

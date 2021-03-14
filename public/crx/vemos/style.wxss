@@ -1,0 +1,225 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+menu,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+  display: block;
+}
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+  display: none;
+}
+body {
+  line-height: 1;
+}
+menu,
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#PORTAL_VEMOS_WIDGET {
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  width: 60px;
+  height: 50px;
+  background-color: #5c46e3;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  padding: 5px;
+  transition: all 0.5s ease-in;
+  transform: translateX(-20px);
+}
+#PORTAL_VEMOS_WIDGET:hover {
+  transform: translateX(0);
+}
+#PORTAL_VEMOS_WIDGET .btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vemos/assets/logo.png');
+  background-size: cover;
+}
+#PORTAL_VEMOS_INVITE {
+  color: #fff;
+  z-index: 999;
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  min-width: 100px;
+  min-height: 200px;
+  background-color: #5c46e3;
+  padding: 15px 10px;
+}
+#PORTAL_VEMOS_INVITE[data-status]:after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: #999;
+  border-radius: 50%;
+}
+#PORTAL_VEMOS_INVITE[data-status='open']:after {
+  background-color: #48ba2b;
+}
+#PORTAL_VEMOS_INVITE[data-status='connected']:after {
+  background-color: #ee7f3d;
+}
+#PORTAL_VEMOS_INVITE[data-status='error']:after {
+  background-color: #d7322d;
+}
+#PORTAL_VEMOS_INVITE > .title {
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #eee;
+}
+#PORTAL_VEMOS_INVITE .intro {
+  padding: 5px 0;
+}
+#PORTAL_VEMOS_INVITE .btn {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 22px;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+}
+#PORTAL_VEMOS_INVITE .cameras {
+  border: 1px solid #eee;
+}
+#PORTAL_VEMOS_INVITE .cameras .camera {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+#PORTAL_VEMOS_INVITE .cameras .camera video {
+  width: 100%;
+  height: 100%;
+}
