@@ -9,6 +9,29 @@ const copyToClipboard = (str) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
+function drag_start(event) {
+  let style = window.getComputedStyle(event.target, null);
+  event.dataTransfer.setData(
+    'text/plain',
+    parseInt(style.getPropertyValue('left'), 10) -
+      event.clientX +
+      ',' +
+      (parseInt(style.getPropertyValue('top'), 10) - event.clientY)
+  );
+}
+function drop(event) {
+  let offset = event.dataTransfer.getData('text/plain').split(',');
+  let dm = document.getElementById('PORTAL_VEMOS_INVITE');
+  dm.style.left = event.clientX + parseInt(offset[0], 10) + 'px';
+  dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+  dm.style.right = 'auto';
+  event.preventDefault();
+  return false;
+}
+function drag_over(event) {
+  event.preventDefault();
+  return false;
+}
 class Invite {
   constructor(pvid = null) {
     this.pvid = pvid;
@@ -16,6 +39,9 @@ class Invite {
     this.dom.id = 'PORTAL_VEMOS_INVITE';
     this.dom.setAttribute('data-status', 'initial');
     this.dom.draggable = true;
+    this.dom.addEventListener('dragstart', drag_start, false);
+    document.body.addEventListener('dragover', drag_over, false);
+    document.body.addEventListener('drop', drop, false);
     this.dom.innerHTML = `
       <h2 class="title">Portal Vemos</h2>
       <div class="cameras"></div>
@@ -69,23 +95,27 @@ class Invite {
       // invited
       let joinBtn = this.dom.querySelector('.btn.join');
       joinBtn.addEventListener('click', () => {
+        // create audio and video constraints
+        const constraintsVideo = {
+          audio: {
+            // 设置回音消除
+            noiseSuppression: true,
+            // 设置降噪
+            echoCancellation: true
+          },
+          video: true
+        };
         navigator.mediaDevices
-          .getUserMedia({
-            video: {
-              width: 720,
-              height: 720
-            },
-            audio: true
-          })
+          .getUserMedia(constraintsVideo)
           .then((stream) => {
             let call = window.MyPeer.call(this.pvid, stream);
             call.on('stream', (st) => {
-              let gustVideo = this.dom.querySelector('.cameras .remote video');
-              gustVideo.srcObject = st;
+              let remoteVideo = this.dom.querySelector('.cameras .remote video');
+              remoteVideo.srcObject = st;
             });
           })
           .catch((err) => {
-            console.log('Failed to get local stream', err);
+            console.error('Failed to get local stream', err);
           });
       });
     } else {
@@ -94,9 +124,9 @@ class Invite {
       inviteBtn.addEventListener('click', () => {
         console.log('copy link');
         let obj = new URL(location.href);
-        obj.searchParams.append('portal-vemos-id', this.peerId);
+        obj.searchParams.append('portal-vera-id', this.peerId);
         console.log(obj.href);
-        copyToClipboard(`http://localhost:3666/transfer/${encodeURIComponent(obj.href)}`);
+        copyToClipboard(`http://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`);
       });
     }
   }

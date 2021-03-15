@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 btn.addEventListener('click', async () => {
   if (box.classList.contains('allowed')) {
-    // start vemos
+    // start vera
     chrome.tabs.sendMessage(currTabId, { action: 'DASHBOARD_SHOW' });
     // alert('start!');
   } else {
@@ -39,7 +39,7 @@ btn.addEventListener('click', async () => {
 // async function executeScripts() {
 //   // await chrome.tabs.executeScript({ file: 'url.js' });
 //   await chrome.tabs.executeScript({ file: 'crx/content.js' });
-//   await chrome.tabs.insertCSS({ file: 'crx/assets/vemos.css' });
+//   await chrome.tabs.insertCSS({ file: 'crx/assets/vera.css' });
 // }
 // 请求当前网址的权限
 function requestPermissions() {
@@ -68,7 +68,7 @@ function requestPermissions() {
 //   // });
 //   await chrome.contentScripts.register({
 //     js: [{ file: '../content.js' }],
-//     css: [{ file: '../assets/vemos.css' }],
+//     css: [{ file: '../assets/vera.css' }],
 //     runAt: 'document_end',
 //     matches: [permissionURL]
 //   });

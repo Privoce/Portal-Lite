@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { FaGithubAlt } from 'react-icons/fa';
 import StyledWrapper from './styled';
 import getToken from './github';
 const APPs = {
-  github: { name: 'Github OAuth', logo: '/logos/github.trending.png' }
+  github: { name: 'Github OAuth', logo: <FaGithubAlt /> }
 };
 let intervalId = null;
 export default function OAuth() {
@@ -65,9 +66,7 @@ export default function OAuth() {
     <StyledWrapper>
       <div className="app">
         <div className="name">{APPs[app].name}</div>
-        <div className="logo">
-          <img src={APPs[app].logo} alt="app logo" />
-        </div>
+        <div className="logo">{APPs[app].logo}</div>
       </div>
       <div className="status">{pending ? '授权中...' : tip}</div>
       {!pending && (

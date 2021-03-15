@@ -6,7 +6,7 @@ import Camera from './models/Camera.js';
 let inviteInserted = false;
 export function main() {
   //插入样式文件
-  // let css=chrome.extension.getURL('crx/vemos/style.css');
+  // let css=chrome.extension.getURL('crx/vera/style.css');
   // let link=document.createElement('link');
   // link
   const { pvid } = init();
@@ -25,6 +25,6 @@ export function main() {
 }
 const init = () => {
   document.documentElement.setAttribute('ext-portal', 1);
-  let pvid = new URLSearchParams(location.search).get('portal-vemos-id');
+  let pvid = new URLSearchParams(location.search).get('portal-vera-id');
   return { pvid };
 };

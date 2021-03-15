@@ -3,7 +3,7 @@ class Camera {
     this.host = host;
     this.dom = document.createElement('div');
     this.dom.classList.add('camera');
-    this.dom.innerHTML = `<div class='video'><video playsinline autoplay/></div>`;
+    this.dom.innerHTML = `<div class='video'><video playsinline autoplay muted='muted'/></div>`;
     if (host) {
       this.dom.classList.add('host');
       let videoDom = this.dom.querySelector('video');
@@ -13,7 +13,7 @@ class Camera {
             width: 720,
             height: 720
           },
-          audio: true
+          audio: { echoCancellation: true }
         })
         .then((stream) => {
           videoDom.srcObject = stream;
@@ -38,7 +38,7 @@ class Camera {
             width: 720,
             height: 720
           },
-          audio: true
+          audio: { echoCancellation: true }
         })
         .then((stream) => {
           call.answer(stream); // Answer the call with an A/V stream.
