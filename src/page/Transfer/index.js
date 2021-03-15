@@ -79,7 +79,7 @@ export default function Transfer() {
   }, []);
   useEffect(() => {
     let decoded = decodeURIComponent(dest);
-    let id = new URLSearchParams(new URL(decoded).search).get('portal-vemos-id');
+    let id = new URLSearchParams(new URL(decoded).search).get('portal-vera-id');
     if (id) {
       setJumpUrl(decoded);
       setPortalVemosId(id);
@@ -101,7 +101,9 @@ export default function Transfer() {
       }
     }
   }, [countdown, jumpUrl]);
+  // 暂未检测
   if (typeof checkResult == 'undefined') return 'checking';
+  // 检测状态为未安装
   if (checkResult === false) return <DownloadExt />;
   return (
     <StyledWrapper>

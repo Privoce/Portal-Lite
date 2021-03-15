@@ -1,14 +1,9 @@
 import Widget from './models/Widget.js';
 import Invite from './models/Invite.js';
 import Camera from './models/Camera.js';
-// import './assets/peerjs.js';
 // 初始化挂件
 let inviteInserted = false;
 export function main() {
-  //插入样式文件
-  // let css=chrome.extension.getURL('crx/vera/style.css');
-  // let link=document.createElement('link');
-  // link
   const { pvid } = init();
   const widget = new Widget();
   const inviteHandler = () => {
