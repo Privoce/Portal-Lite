@@ -49,19 +49,20 @@ class Invite {
       // port: '80',
       path: '/ngt'
     });
-    if (this.pvid) {
-      window.MyPeer.connect(this.pvid);
-    }
+
     window.MyPeer.on('open', (id) => {
       console.log('peer ID', id);
       this.dom.setAttribute('data-status', 'open');
-      this.init({ peerId: id, pvid });
+      this.init({ inviteId: pvid, localId: id });
+      // incoming connection
+      if (pvid) {
+        window.MyPeer.connect(pvid);
+      }
     });
     window.MyPeer.on('error', (error) => {
       console.log({ error });
       this.dom.setAttribute('data-status', 'error');
     });
-    // incoming connection
     window.MyPeer.on('connection', (conn) => {
       console.log('incoming peer connection!');
       this.dom.setAttribute('data-status', 'connected');
@@ -73,11 +74,11 @@ class Invite {
       });
     });
   }
-  init({ peerId = null, pvid = null }) {
-    console.log('inite init peerId', peerId);
+  init({ inviteId, localId }) {
+    console.log('invite init ids', inviteId, localId);
     let cameraList = this.dom.querySelector('.cameras');
     let frag = document.createDocumentFragment();
-    let videos = [new Camera({ host: true }), new Camera({ pvid, peerId })];
+    let videos = [new Camera({ host: true, inviteId }), new Camera({ inviteId, localId })];
     for (let i = 0; i < videos.length; i++) {
       frag.appendChild(videos[i]); // Note that this does NOT go to the DOM
     }

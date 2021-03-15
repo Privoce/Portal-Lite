@@ -32,7 +32,12 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["crx/vera/assets/peerjs.min.js", "crx/vera/content_script.js"],
+      "js": [
+        "crx/vera/assets/tf.min.js",
+        "crx/vera/assets/body-pix@2.1.js",
+        "crx/vera/assets/peerjs.min.js",
+        "crx/vera/content_script.js"
+      ],
       "css": ["crx/vera/style.css"],
       "run_at": "document_idle"
     }

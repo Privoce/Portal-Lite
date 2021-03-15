@@ -1,9 +1,16 @@
-const StreamConfig = {
+const localStreamConfig = {
   video: {
-    width: 720,
-    height: 720
+    width: { min: 160, ideal: 320, max: 640 },
+    height: { min: 120, ideal: 240, max: 480 }
   },
-  audio: { echoCancellation: true }
+  audio: false
 };
-const ExtFlag = 'portal-ext';
-export { StreamConfig };
+const remoteStreamConfig = {
+  video: {
+    width: { min: 160, ideal: 320, max: 640 },
+    height: { min: 120, ideal: 240, max: 480 }
+  },
+  audio: true
+};
+// const ExtFlag = 'portal-ext';
+export { localStreamConfig, remoteStreamConfig };
