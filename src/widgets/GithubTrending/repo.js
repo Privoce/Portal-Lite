@@ -1,8 +1,8 @@
 // import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import StyledCard from './card';
-import IconRepo from '../../asset/img/icon.repo.png';
-import IconCoder from '../../asset/img/icon.coder.png';
+import { FaUserAstronaut } from 'react-icons/fa';
+import { GoRepo } from 'react-icons/go';
 
 const StyledRepo = styled(StyledCard)`
   display: flex;
@@ -111,7 +111,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
     <StyledRepo langColor={`${languageColor}`} {...rest}>
       <div className="left">
         <h2 className="title">
-          <img className="icon" src={IconRepo} alt="repo icon" />
+          <GoRepo className="icon" />
           <a target="_blank" title={`${author}/${name}`} href={url}>
             {author}/{name}
           </a>
@@ -124,12 +124,7 @@ export default function Repo({ isFirst, repo, ...rest }) {
           <li className="item">⭐ {stars}</li>
           <li className="item">🍴 {forks}</li>
           <li className="item author">
-            <img
-              className="icon"
-              data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
-              src={IconCoder}
-              alt="头像图标"
-            />
+            <FaUserAstronaut className="icon" />
             <a
               className="head"
               href={`http://github.com/${author}`}

@@ -6,7 +6,7 @@ const Navs = [
         id: 'weibo',
         title: '微博',
         url: 'https://weibo.com',
-        icon: './logos/wb.png',
+        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/wb.png',
         themeColor: '#FFD902',
         popular: true
       },
