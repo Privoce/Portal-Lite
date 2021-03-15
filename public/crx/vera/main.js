@@ -1,6 +1,6 @@
 import Widget from './models/Widget.js';
 import Invite from './models/Invite.js';
-import Camera from './models/Camera.js';
+// import Camera from './models/Camera.js';
 // 初始化挂件
 let inviteInserted = false;
 export function main() {
@@ -9,10 +9,9 @@ export function main() {
   const inviteHandler = () => {
     console.log('invite from main');
     if (inviteInserted) return;
-    const invite = new Invite(pvid);
-    const hostCamera = new Camera(true);
-    const gustCamera = new Camera();
-    invite.init([hostCamera, gustCamera]);
+    new Invite(pvid);
+    // const hostCamera = new Camera(true);
+    // const gustCamera = new Camera();
     inviteInserted = true;
   };
   widget.init(inviteHandler);

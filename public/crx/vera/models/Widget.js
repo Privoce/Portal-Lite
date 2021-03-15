@@ -1,7 +1,7 @@
 class Widget {
   constructor() {
     this.dom = document.createElement('aside');
-    this.dom.id = 'PORTAL_VEMOS_WIDGET';
+    this.dom.id = 'PORTAL_VERA_WIDGET';
     this.dom.innerHTML = `<button class="btn"></button>`;
   }
   init(

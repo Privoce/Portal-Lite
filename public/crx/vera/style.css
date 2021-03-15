@@ -131,7 +131,7 @@ table {
   border-spacing: 0;
 }
 
-#PORTAL_VEMOS_WIDGET {
+#PORTAL_VERA_WIDGET {
   z-index: 999;
   position: fixed;
   left: 0;
@@ -145,10 +145,10 @@ table {
   transition: all 0.5s ease-in;
   transform: translateX(-20px);
 }
-#PORTAL_VEMOS_WIDGET:hover {
+#PORTAL_VERA_WIDGET:hover {
   transform: translateX(0);
 }
-#PORTAL_VEMOS_WIDGET .btn {
+#PORTAL_VERA_WIDGET .btn {
   width: 40px;
   height: 40px;
   border: none;
@@ -157,7 +157,7 @@ table {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/logo.png');
   background-size: cover;
 }
-#PORTAL_VEMOS_INVITE {
+#PORTAL_VERA_INVITE {
   color: #fff;
   z-index: 999;
   position: fixed;
@@ -169,7 +169,7 @@ table {
   background-color: #5c46e3;
   padding: 15px 10px;
 }
-#PORTAL_VEMOS_INVITE[data-status]:after {
+#PORTAL_VERA_INVITE[data-status]:after {
   content: '';
   position: absolute;
   left: 5px;
@@ -180,38 +180,30 @@ table {
   background-color: #999;
   border-radius: 50%;
 }
-#PORTAL_VEMOS_INVITE[data-status='open']:after {
+#PORTAL_VERA_INVITE[data-status='open']:after {
   background-color: #48ba2b;
 }
-#PORTAL_VEMOS_INVITE[data-status='connected']:after {
+#PORTAL_VERA_INVITE[data-status='connected']:after {
   background-color: #ee7f3d;
 }
-#PORTAL_VEMOS_INVITE[data-status='error']:after {
+#PORTAL_VERA_INVITE[data-status='error']:after {
   background-color: #d7322d;
 }
-#PORTAL_VEMOS_INVITE > .title {
+#PORTAL_VERA_INVITE > .title {
   padding: 5px;
   margin-bottom: 10px;
   font-size: 24px;
   font-weight: 800;
   color: #eee;
 }
-#PORTAL_VEMOS_INVITE .intro {
+#PORTAL_VERA_INVITE .intro {
   padding: 5px 0;
 }
-#PORTAL_VEMOS_INVITE .btn {
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 22px;
-  color: #fff;
-  background: transparent;
-  cursor: pointer;
-}
-#PORTAL_VEMOS_INVITE .cameras {
+#PORTAL_VERA_INVITE .cameras {
   border: 1px solid #eee;
 }
-#PORTAL_VEMOS_INVITE .cameras .camera {
+#PORTAL_VERA_INVITE .cameras .camera {
+  position: relative;
   width: 200px;
   height: 200px;
   display: flex;
@@ -219,7 +211,20 @@ table {
   justify-content: center;
   padding: 5px;
 }
-#PORTAL_VEMOS_INVITE .cameras .camera video {
+#PORTAL_VERA_INVITE .cameras .camera video {
   width: 100%;
   height: 100%;
+}
+#PORTAL_VERA_INVITE .cameras .camera .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 22px;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
 }

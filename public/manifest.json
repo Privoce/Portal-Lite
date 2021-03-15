@@ -5,7 +5,12 @@
   "version": "1.5.0",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
-  "permissions": ["tabs", "identity"],
+  "permissions": [
+    "tabs",
+    "identity",
+    "https://www.googleapis.com/*",
+    "https://accounts.google.com/*"
+  ],
   "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
   "icons": {
     "16": "/favicon-16x16.png",

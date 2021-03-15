@@ -104,7 +104,7 @@ let Widgets = {
     updated: '2020-12-28'
   },
   'my-agenda': {
-    loadType: 'script',
+    // loadType: 'script',
     preset: true,
     title: '我的日程',
     description: '快捷查看您的日常日程，目前仅支持谷歌日历',
