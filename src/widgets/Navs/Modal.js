@@ -5,8 +5,8 @@ import uniqolor from 'uniqolor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import { validateUrl } from '../../util';
-import SwiperTabs from './SwiperTabs';
-import { useWidgetSettings } from '../../hooks';
+// import SwiperTabs from './SwiperTabs';
+// import { useWidgetSettings } from '../../hooks';
 
 import IconClose from '../../asset/img/icon.close.png';
 
@@ -101,8 +101,8 @@ const StyledWrapper = styled.section`
   }
 `;
 // let other_params = {};
-export default function Modal({ lang, resetModalVisible, addApp, widgetName = '' }) {
-  const { getWidgetSetting } = useWidgetSettings();
+export default function Modal({ lang, resetModalVisible, addApp }) {
+  // const { getWidgetSetting } = useWidgetSettings();
   const [tip, setTip] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -159,17 +159,17 @@ export default function Modal({ lang, resetModalVisible, addApp, widgetName = ''
       setUrl(value);
     }
   };
-  const updateCurrSelect = (item) => {
-    console.log({ item });
-    // const { title: itemTitle, url: itemUrl, ...rest } = item;
-    let { success, msg } = addApp(item);
-    if (!success) {
-      alert(msg);
-      return;
-    }
-    resetModalVisible();
-  };
-  let localActiveTab = getWidgetSetting({ name: widgetName, key: 'swiper_tab' });
+  // const updateCurrSelect = (item) => {
+  //   console.log({ item });
+  //   // const { title: itemTitle, url: itemUrl, ...rest } = item;
+  //   let { success, msg } = addApp(item);
+  //   if (!success) {
+  //     alert(msg);
+  //     return;
+  //   }
+  //   resetModalVisible();
+  // };
+  // let localActiveTab = getWidgetSetting({ name: widgetName, key: 'swiper_tab' });
   return (
     <ModalWrapper ref={modal}>
       <StyledWrapper>
@@ -192,11 +192,11 @@ export default function Modal({ lang, resetModalVisible, addApp, widgetName = ''
               {tip && <div className="tip">{tip}</div>}
             </div>
           </div>
-          <SwiperTabs
+          {/* <SwiperTabs
             handleSelect={updateCurrSelect}
             widgetName={widgetName}
             activeTab={localActiveTab}
-          />
+          /> */}
           <img src={IconClose} onClick={resetModalVisible} className="close" />
         </div>
       </StyledWrapper>
