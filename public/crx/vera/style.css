@@ -132,6 +132,7 @@ table {
 }
 
 #PORTAL_VERA_WIDGET {
+  cursor: pointer;
   z-index: 999;
   position: fixed;
   left: 0;
@@ -144,9 +145,12 @@ table {
   padding: 5px;
   transition: all 0.5s ease-in;
   transform: translateX(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #PORTAL_VERA_WIDGET:hover {
-  transform: translateX(0);
+  transform: translateX(-5px);
 }
 #PORTAL_VERA_WIDGET .btn {
   width: 40px;
@@ -172,7 +176,7 @@ table {
 #PORTAL_VERA_INVITE[data-status]:after {
   content: '';
   position: absolute;
-  left: 5px;
+  right: 5px;
   top: 5px;
   display: block;
   width: 10px;
@@ -189,6 +193,35 @@ table {
 #PORTAL_VERA_INVITE[data-status='error']:after {
   background-color: #d7322d;
 }
+#PORTAL_VERA_INVITE > .close {
+  cursor: pointer;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+#PORTAL_VERA_INVITE > .close:hover {
+  opacity: 1;
+}
+#PORTAL_VERA_INVITE > .close:before,
+#PORTAL_VERA_INVITE > .close:after {
+  position: absolute;
+  left: 8px;
+  content: ' ';
+  height: 14px;
+  width: 2px;
+  background-color: #df0f17;
+}
+#PORTAL_VERA_INVITE > .close:before {
+  transform: rotate(45deg);
+}
+#PORTAL_VERA_INVITE > .close:after {
+  transform: rotate(-45deg);
+}
 #PORTAL_VERA_INVITE > .title {
   padding: 5px;
   padding-bottom: 10px;
@@ -203,7 +236,7 @@ table {
   overflow: hidden;
 }
 #PORTAL_VERA_INVITE .cameras .camera {
-  border-radius: 10px;
+  border-radius: 8px;
   position: relative;
   width: 200px;
   display: flex;
@@ -214,14 +247,76 @@ table {
   border: 1px solid #eee;
 }
 #PORTAL_VERA_INVITE .cameras .camera:not(:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] .processing {
+  display: block;
+}
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='ready'] .processing {
+  display: none;
+}
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='ready'] .video video {
+  visibility: hidden;
+}
+#PORTAL_VERA_INVITE .cameras .camera .processing {
+  display: none;
+  z-index: 10;
+  text-transform: capitalize;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -70%, 0);
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #5c46e3;
+  font-size: 22px;
+  color: #fff;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video {
+  position: relative;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts {
+  visibility: hidden;
+  z-index: 11;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 5px;
+  display: flex;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt {
+  opacity: 0.3;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt:not(:last-child) {
+  margin-right: 6px;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt:hover {
+  opacity: 1;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video video {
-  width: 100%;
-  height: 100%;
-  max-height: 200px;
+  width: 200px;
+  height: 200px;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video canvas {
+  z-index: 9;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video canvas.side {
+  display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera .btn {
+  z-index: 11;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -235,6 +330,7 @@ table {
   cursor: pointer;
 }
 #PORTAL_VERA_INVITE .cameras .camera .controls {
+  visibility: hidden;
   width: 100%;
   margin-top: 5px;
   border-top: 1px dashed #eee;
@@ -257,6 +353,7 @@ table {
 #PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .btn {
   display: none;
 }
-#PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .controls {
+#PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .controls,
+#PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .opts {
   visibility: visible;
 }

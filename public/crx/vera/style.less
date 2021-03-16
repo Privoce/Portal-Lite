@@ -1,6 +1,7 @@
 @import (inline) './reset.css';
 // widget
 #PORTAL_VERA_WIDGET {
+  cursor: pointer;
   z-index: 999;
   position: fixed;
   left: 0;
@@ -13,8 +14,11 @@
   padding: 5px;
   transition: all 0.5s ease-in;
   transform: translateX(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
-    transform: translateX(0);
+    transform: translateX(-5px);
   }
   .btn {
     width: 40px;
@@ -41,7 +45,7 @@
   &[data-status]:after {
     content: '';
     position: absolute;
-    left: 5px;
+    right: 5px;
     top: 5px;
     display: block;
     width: 10px;
@@ -57,6 +61,36 @@
   }
   &[data-status='error']:after {
     background-color: #d7322d;
+  }
+  > .close {
+    cursor: pointer;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    opacity: 0.4;
+    &:hover {
+      opacity: 1;
+    }
+    &:before,
+    &:after {
+      position: absolute;
+      left: 8px;
+      content: ' ';
+      height: 14px;
+      width: 2px;
+      background-color: #df0f17;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      transform: rotate(-45deg);
+    }
   }
   > .title {
     padding: 5px;
@@ -74,7 +108,7 @@
     // border: 1px solid #eee;
     overflow: hidden;
     .camera {
-      border-radius: 10px;
+      border-radius: 8px;
       position: relative;
       width: 200px;
       // height: 200px;
@@ -85,30 +119,95 @@
       padding: 5px;
       border: 1px solid #eee;
       &:not(:last-child) {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+      }
+      &[bg-rm-status='processing']{
+        .processing{
+          display: block;
+        }
+      }
+      &[bg-rm-status='ready']{
+        .processing{
+          display: none;
+        }
+        .video video{
+          visibility: hidden;
+        }
+      }
+      .processing{
+        display: none;
+        z-index: 10;
+        text-transform: capitalize;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -70%, 0);
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #5c46e3;
+        font-size: 22px;
+        color: #fff;
       }
       .video {
+        position: relative;
+        .opts{
+          visibility:hidden;
+          z-index: 11;
+          position: absolute;
+          right:5px;
+          top:5px;
+          padding:5px;
+          display: flex;
+          .opt{
+            opacity: .3;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
+            color: #fff;
+            background: transparent;
+            cursor: pointer;
+             &:not(:last-child) {
+              margin-right: 6px;
+            }
+            &:hover{
+              opacity: 1;
+            }
+          }
+        }
         video {
-          width: 100%;
-          height: 100%;
-          max-height: 200px;
+          width: 200px;
+          height: 200px;
+        }
+        canvas{
+           z-index: 9;
+          width:200px;
+          height:200px;
+          position: absolute;
+          left:0;
+          top:0;
+          &.side{
+            display: none;
+          }
         }
       }
       .btn {
+        z-index: 11;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate3d(-50%, -60%, 0);
-        border: 1px solid #eee;
+         border: 1px solid #eee;
         border-radius: 4px;
         padding: 4px 10px;
         font-size: 22px;
         color: #fff;
         background: transparent;
         cursor: pointer;
+
       }
       .controls {
-        // visibility: hidden;
+        visibility: hidden;
         width: 100%;
         margin-top: 5px;
         border-top: 1px dashed #eee;
@@ -133,7 +232,7 @@
         .btn {
           display: none;
         }
-        .controls {
+        .controls,.opts {
           visibility: visible;
         }
       }

@@ -1,14 +1,14 @@
 const localStreamConfig = {
   video: {
-    width: { min: 160, ideal: 320, max: 640 },
-    height: { min: 120, ideal: 240, max: 480 }
+    width: { min: 200, ideal: 200, max: 720 },
+    height: { min: 200, ideal: 200, max: 720 }
   },
   audio: false
 };
 const remoteStreamConfig = {
   video: {
-    width: { min: 160, ideal: 320, max: 640 },
-    height: { min: 120, ideal: 240, max: 480 }
+    width: { min: 200, ideal: 200, max: 720 },
+    height: { min: 200, ideal: 200, max: 720 }
   },
   audio: true
 };

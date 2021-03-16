@@ -11,67 +11,63 @@ const copyToClipboard = (str) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
-const bgRemove = (videoEle, canvasEle) => {
-  bodyPix
-    .load({
-      architecture: 'MobileNetV1',
-      outputStride: 16,
-      multiplier: 0.75,
-      quantBytes: 2
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-    .then((objNet) => {
-      {
-        detectBody(objNet, videoEle, canvasEle);
-      }
-    });
+const bgRemove = async (videoContainer) => {
+  videoContainer.setAttribute('bg-rm-status', 'processing');
+  let video = videoContainer.querySelector('video');
+  let canvas = videoContainer.querySelector('.render');
+  let offCanvas = videoContainer.querySelector('.side');
+  const net = await bodyPix.load({
+    architecture: 'MobileNetV1',
+    outputStride: 16,
+    multiplier: 0.75,
+    quantBytes: 2
+  });
+  videoContainer.setAttribute('bg-rm-status', 'ready');
+  console.log({ video, canvas, offCanvas });
+  draw({ video, canvas, offCanvas, net });
 };
-const detectBody = (net, videoEle, canvasEle) => {
-  console.log({ videoEle, canvasEle });
-  net
-    .segmentPerson(videoEle, {
-      flipHorizontal: true,
-      internalResolution: 'low',
-      segmentationThreshold: 0.3
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((personsegmentation) => {
-      drawBody(personsegmentation, videoEle, canvasEle);
+const draw = async ({ video, canvas, offCanvas, net }) => {
+  let ctx = canvas.getContext('2d');
+  let offCtx = offCanvas.getContext('2d');
+  offCtx.drawImage(video, 0, 0);
+  const res = await net.segmentPerson(offCanvas);
+  // document.getElementById('i').style.display = 'none';
+  tf.tidy(() => {
+    const maskTensor = tf.tensor3d(res.data, [200, 200, 1]);
+    const imageTensor = tf.browser.fromPixels(offCanvas);
+    const t1 = tf.mul(imageTensor, maskTensor);
+    const t2 = tf.concat([t1, tf.mul(maskTensor, 255)], 2);
+    t2.data().then((rawData) => {
+      const rawImageData = new ImageData(new Uint8ClampedArray(rawData), 200, 200);
+      ctx.putImageData(rawImageData, 0, 0);
+      ctx.scale(-1, 1);
+      ctx.translate(-canvas.width, 0);
     });
-  requestAnimationFrame(detectBody.bind(null, net, videoEle, canvasEle));
-};
-const drawBody = (personSegmentation, videoEle, canvasEle) => {
-  canvasEle.getContext('2d').drawImage(videoEle, 0, 0, 200, 200);
-  var imageData = canvasEle.getContext('2d').getImageData(0, 0, 200, 200);
-  var pixel = imageData.data;
-  for (var p = 0; p < pixel.length; p += 4) {
-    if (personSegmentation.data[p / 4] == 0) {
-      pixel[p + 3] = 0;
-    }
-  }
+  });
 
-  canvasEle.getContext('2d').imageSmoothingEnabled = true;
-  canvasEle.getContext('2d').putImageData(imageData, 0, 0);
+  requestAnimationFrame(draw.bind(this, { video, canvas, offCanvas, net }));
 };
 class Camera {
   constructor({ host = false, inviteId = null, localId = null }) {
     this.dom = document.createElement('div');
     this.dom.classList.add('camera');
     this.dom.innerHTML = `
+    <div class='processing'>processing</div>
     <div class='video'>
-      <video playsinline autoplay />
-      <canvas class='mask' width=200 height=200 />
+      <div class='opts'>
+        <button class='opt mute'>Mute</button>
+        <button class='opt pin'>Pin</button>
+      </div>
+      <video playsinline autoplay ></video>
+      <canvas class='render' width=200 height=200 ></canvas>
+      <canvas class='side' width=200 height=200 ></canvas>
     </div>
     <div class='controls'>
-      <button class='control pip'>PiP</button>
       <button class='control remove_bg'>Remove Bg</button>
     </div>
     `;
-    this.initPip();
+    // <button class='control pip'>Pin</button>
+    this.initOpts();
     this.initBgRemoving();
     if (host) {
       this.initHostCamera();
@@ -81,26 +77,50 @@ class Camera {
 
     return this.dom;
   }
-  initPip() {
-    let pipBtn = this.dom.querySelector('.control.pip');
-    pipBtn.addEventListener('click', () => {
-      let videoDom = this.dom.querySelector('video');
-      console.log('pip', videoDom);
-      videoDom.requestPictureInPicture().catch((error) => {
-        // Error handling
-        console.log('pip error', error);
-      });
-    });
+  initOpts() {
+    // let pipBtn = this.dom.querySelector('.control.pip');
+    // console.log('init pip click', pipBtn);
+    this.dom.addEventListener(
+      'click',
+      ({ target }) => {
+        console.log('click remote', { target });
+
+        if (target.classList.contains('pin')) {
+          let videoEle = target.parentElement.nextElementSibling;
+          if (document.pictureInPictureElement) {
+            document.exitPictureInPicture();
+          }
+          videoEle.requestPictureInPicture().catch((error) => {
+            // Error handling
+            console.log('pip error', error);
+          });
+        }
+        if (target.classList.contains('mute')) {
+          let videoEle = target.parentElement.nextElementSibling;
+          if (videoEle.getAttribute('muted') == 'true') {
+            videoEle.removeAttribute('muted');
+            target.innerHTML = 'Mute';
+          } else {
+            videoEle.setAttribute('muted', true);
+            target.innerHTML = 'Unmute';
+          }
+        }
+      },
+      true
+    );
   }
   initBgRemoving() {
-    console.log('暂不可用');
-    // let bgRemoveBtn = this.dom.querySelector('.control.remove_bg');
-    // bgRemoveBtn.addEventListener('click', () => {
-    //   let videoDom = this.dom.querySelector('video');
-    //   let canvasDom = this.dom.querySelector('.mask');
-    //   console.log('bg remove', videoDom, canvasDom);
-    //   bgRemove(videoDom, canvasDom);
-    // });
+    this.dom.addEventListener(
+      'click',
+      ({ target }) => {
+        console.log('click remote', { target });
+
+        if (target.classList.contains('remove_bg')) {
+          bgRemove(this.dom);
+        }
+      },
+      true
+    );
   }
   initHostCamera() {
     this.dom.classList.add('host');

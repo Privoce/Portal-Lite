@@ -25,6 +25,7 @@ function drag_over(event) {
 }
 class Invite {
   constructor(pvid = null) {
+    this.inited = false;
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_INVITE';
     this.dom.setAttribute('data-status', 'initial');
@@ -33,24 +34,51 @@ class Invite {
     document.body.addEventListener('dragover', drag_over, false);
     document.body.addEventListener('drop', drop, false);
     this.dom.innerHTML = `
+     <div class='close'></div>
       <h2 class="title">Portal Vera</h2>
       <div class="cameras"></div>
       <div class="intro">
         <h3 class="title">Welcome</h3>
       </div>
     `;
+    this.initClose();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
   }
+  initClose() {
+    this.dom.addEventListener(
+      'click',
+      ({ target }) => {
+        console.log('click close', { target });
+
+        if (target.classList.contains('close')) {
+          this.dom.querySelectorAll('video').forEach((v) => {
+            v.pause();
+            v.src = '';
+          });
+          this.dom.remove();
+
+          document.documentElement.removeAttribute('invite-expand');
+        }
+      },
+      true
+    );
+  }
   initPeer(pvid) {
     // init peerjs
-    window.MyPeer = new Peer({
-      host: 'r.nicegoodthings.com',
-      // port: '80',
-      path: '/ngt'
-    });
-
+    window.MyPeer =
+      window.MyPeer ||
+      new Peer({
+        host: 'r.nicegoodthings.com',
+        // port: '80',
+        path: '/ngt'
+      });
+    if (window.CURRENT_PEER_ID) {
+      console.log('reopen', pvid, window.CURRENT_PEER_ID);
+      this.init({ inviteId: pvid, localId: window.CURRENT_PEER_ID });
+    }
     window.MyPeer.on('open', (id) => {
+      window.CURRENT_PEER_ID = id;
       console.log('peer ID', id);
       this.dom.setAttribute('data-status', 'open');
       this.init({ inviteId: pvid, localId: id });
@@ -75,6 +103,7 @@ class Invite {
     });
   }
   init({ inviteId, localId }) {
+    if (this.inited) return;
     console.log('invite init ids', inviteId, localId);
     let cameraList = this.dom.querySelector('.cameras');
     let frag = document.createDocumentFragment();
@@ -83,6 +112,7 @@ class Invite {
       frag.appendChild(videos[i]); // Note that this does NOT go to the DOM
     }
     cameraList.appendChild(frag);
+    this.inited = true;
   }
 }
 export default Invite;
