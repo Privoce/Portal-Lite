@@ -113,7 +113,9 @@ const StyledWrapper = styled.div`
         padding: 0.08rem 0.12rem;
         color: #7e65c8;
         margin-right: 0.2rem;
-        &.copy {
+
+        &.copy,
+        &.login {
           background-color: #7a3cf0;
           color: #fff;
           &[disabled] {
@@ -152,6 +154,15 @@ export default function Share({ name, lang, closeModal }) {
     });
     console.log({ checked });
     updateWidgetSetting({ name, key: 'share', data: checked });
+  };
+  const handleLoginClick = () => {
+    closeModal();
+    let toggleEle = document.querySelector('.settings .toggle');
+    let loginEle = document.querySelector('.settings .setting .icon.profile');
+    toggleEle.click();
+    if (loginEle) {
+      loginEle.click();
+    }
   };
   useEffect(() => {
     const getUsername = async () => {
@@ -200,9 +211,15 @@ export default function Share({ name, lang, closeModal }) {
               }, 2000);
             }}
           >
-            <button disabled={!canShare} className="btn copy">
-              {copied ? lang.copied : lang.copy}
-            </button>
+            {username ? (
+              <button disabled={!canShare} className="btn copy">
+                {copied ? lang.copied : lang.copy}
+              </button>
+            ) : (
+              <button className="btn login" onClick={handleLoginClick}>
+                Login/Reg
+              </button>
+            )}
           </CopyToClipboard>
           <button className="btn done" onClick={closeModal}>
             {lang.done}

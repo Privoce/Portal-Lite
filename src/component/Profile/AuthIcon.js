@@ -114,7 +114,7 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
         appId={appId}
         config={GuardConfig}
       />
-      <StyledIcon className="icon" onClick={handleIconClick}>
+      <StyledIcon className="icon profile" onClick={handleIconClick}>
         <FaUserAlt />
         <i className={`status ${user ? 'logged' : ''}`}></i>
       </StyledIcon>
