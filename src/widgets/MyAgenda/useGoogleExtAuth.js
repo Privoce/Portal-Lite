@@ -64,15 +64,14 @@ const addToGroup = (group, evt) => {
 };
 const calendarListAPI = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
 const quickAddEventAPI = `https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd`;
-// GOOGLE CALENDAR Token
-// const StorageKey = 'GOOGLE_CALENAR_OAUTH_TOKEN';
-const useGoogleExtAuth = () => {
+// test token:ya29.a0AfH6SMAzOFJjV0HizciyTQ0ARlwWipiAND-k5OTEVYiWXANj36qVzppZKGwcrY5qlZh0wzWWztvI_VDLWlH7D0PDIwEzJOhKDcyLMb71g0O5_J5SPxc1xbCrSH5fNre2peehhZHwlONKuRzqVwCvhPzTo5w7
+const useGoogleExtAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!localEvents || !readonly);
   const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const [checkedCalendars, setCheckedCalendars] = useState([]);
-  const [groupEvents, setGroupEvents] = useState(null);
+  const [groupEvents, setGroupEvents] = useState(localEvents || null);
   const [error, setError] = useState(null);
   const fetchCalendarList = async () => {
     setLoading(true);
@@ -88,7 +87,32 @@ const useGoogleExtAuth = () => {
       fetch(calendarListAPI, init)
         .then((response) => response.json()) // Transform the data into json
         .then(function (data) {
-          console.log(data);
+          const { items } = data;
+          // let { id } = items.find((it) => it.primary);
+          let initialCalendars = items.map((c) => {
+            let {
+              id,
+              summary,
+              description,
+              backgroundColor,
+              foregroundColor,
+              primary,
+              accessRole
+            } = c;
+            // 首次load均设置checked为true
+            return {
+              id,
+              summary,
+              description,
+              backgroundColor,
+              foregroundColor,
+              checked: true,
+              primary,
+              readOnly: accessRole == 'reader' ? true : accessRole == 'owner' ? false : true
+            };
+          });
+          setCalendars(initialCalendars);
+          setCheckedCalendars(initialCalendars);
         });
     } catch (error) {
       setLoading(false);
@@ -132,7 +156,7 @@ const useGoogleExtAuth = () => {
           },
           contentType: 'json'
         };
-        return fetch(p, opt);
+        return fetch(p, opt).then((resp) => resp.json());
       });
       console.log({ paths });
       try {
@@ -140,11 +164,10 @@ const useGoogleExtAuth = () => {
         const resps = await Promise.all(promises);
 
         let events = [];
-        resps.forEach((resp) => {
-          if (resp.status == 200) {
-            const { items } = resp.result;
-            events.push(...items);
-          }
+        resps.forEach((data) => {
+          console.log({ data });
+          const { items } = data;
+          events.push(...items);
         });
         console.log({ events });
         let tmps = formatEvents(events, calendars);
@@ -163,7 +186,7 @@ const useGoogleExtAuth = () => {
     if (checkedCalendars.length) {
       fetchEventList();
     }
-  }, [checkedCalendars, auth]);
+  }, [checkedCalendars, calendars, auth]);
   const addEvent = async (text) => {
     let opt = {
       method: 'POST',
@@ -174,9 +197,11 @@ const useGoogleExtAuth = () => {
       body: JSON.stringify({ text })
     };
     let resp = await fetch(quickAddEventAPI, opt);
-    let { status, result, statusText } = await resp.json();
+    let addData = await resp.json();
+    console.log({ addData });
+    let { status, ...result } = addData;
     let data = {};
-    if (status == 200) {
+    if (status == 'confirmed') {
       let { foregroundColor, backgroundColor, id: cid } = calendars.find((c) => c.primary == true);
       let { start, end } = result;
       let { id, htmlLink, summary } = result;
@@ -194,7 +219,7 @@ const useGoogleExtAuth = () => {
       let newGroup = addToGroup(groupEvents, data);
       setGroupEvents({ ...newGroup });
     }
-    return { success: status == 200, msg: statusText, data };
+    return { success: status == 'confirmed', msg: status, data };
   };
   const removeEvent = async ({ cid, eid }) => {
     let path = `https://www.googleapis.com/calendar/v3/calendars/${cid}/events/${eid}`;
@@ -205,8 +230,7 @@ const useGoogleExtAuth = () => {
         'Content-Type': 'application/json'
       }
     };
-    let resp = await fetch(path, opt);
-    let { status, statusText } = await resp.json();
+    let { status } = await fetch(path, opt);
     if (status == 204) {
       let newGroup = Object.fromEntries(
         Object.entries(groupEvents)
@@ -219,7 +243,7 @@ const useGoogleExtAuth = () => {
       setGroupEvents(newGroup);
       console.log({ newGroup });
     }
-    return { success: status == 204, msg: statusText };
+    return { success: status == 204, msg: '删除成功' };
   };
   const updateCalendars = (calendars) => {
     setCalendars(calendars);

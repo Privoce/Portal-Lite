@@ -70,7 +70,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
     throw new Error(error);
   }
   if (!signedIn && !readonly) return <GoAuth disabled={!auth} auth={getGoogleAuth} />;
-  console.log({ localEvents, groupEvents });
+  console.log({ localEvents, groupEvents, loading });
   return (
     <>
       {!readonly && <Setting calendars={calendars} updateCalendars={updateCalendars} name={name} />}

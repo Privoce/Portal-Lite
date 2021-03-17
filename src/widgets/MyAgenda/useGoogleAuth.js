@@ -66,8 +66,6 @@ const addToGroup = (group, evt) => {
 const calendarListAPI = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
 const cid = process.env.REACT_APP_GOOGLE_CALENDAR_CID;
 const scopes = 'https://www.googleapis.com/auth/calendar';
-// GOOGLE CALENDAR Token
-// const StorageKey = 'GOOGLE_CALENAR_OAUTH_TOKEN';
 const useGoogleAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
@@ -204,8 +202,6 @@ const useGoogleAuth = (localEvents = null, readonly = false) => {
         ).toISOString()}`;
       });
       let promises = paths.map((p) => {
-        // let path = `https://www.googleapis.com/calendar/v3/calendars/${id}/events?orderBy=startTime&singleEvents=true&maxResults=30&timeMin=${new Date().toISOString()}`;
-        // paths.push(path);
         return gapi.client.request({
           path: p
         });
@@ -272,7 +268,6 @@ const useGoogleAuth = (localEvents = null, readonly = false) => {
   };
   const removeEvent = async ({ cid, eid }) => {
     let path = `https://www.googleapis.com/calendar/v3/calendars/${cid}/events/${eid}`;
-    // let path = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/quickAdd`;
     let { status, statusText } = await gapi.client.request({
       path,
       method: 'DELETE'
