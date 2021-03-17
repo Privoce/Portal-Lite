@@ -12,6 +12,7 @@
 /build
 /crx
 /crx*.zip
+/ext*.zip
 
 # misc
 /.idea
