@@ -1,0 +1,33 @@
+// widget
+#PORTAL_VERA_WIDGET {
+  cursor: pointer;
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  width: 60px;
+  height: 50px;
+  background-color: #5c46e3;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  padding: 5px;
+  transition: all 0.5s ease-in;
+  transform: translateX(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    transform: translateX(-5px);
+  }
+  > .portal_logo {
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

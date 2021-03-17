@@ -130,30 +130,36 @@ class Camera {
     navigator.mediaDevices
       .getUserMedia(localStreamConfig)
       .then((stream) => {
+        VERA_STREAMS.push(stream);
         videoDom.srcObject = stream;
+        // window.LOCAL_STREAM = stream;
       })
       .catch((err) => {
         console.error('Failed to get local stream', err);
       });
     // incoming voice/video connection
-    window.MyPeer.on('call', (call) => {
+    window.MyPeer.on('call', async (call) => {
       console.log('called from remote');
-      navigator.mediaDevices
-        .getUserMedia(remoteStreamConfig)
-        .then((stream) => {
-          call.answer(stream); // Answer the call with an A/V stream.
-          call.on('stream', (s) => {
-            let remoteVideoContainer = this.dom.nextElementSibling;
-            let videoEle = remoteVideoContainer.querySelector('video');
-            console.log('attach stream', videoEle);
-            videoEle.srcObject = s;
-            remoteVideoContainer.setAttribute('camera-status', 'connected');
-            this.dom.setAttribute('camera-status', 'connected');
-          });
-        })
-        .catch((err) => {
-          console.error('Failed to get local stream', err);
+      try {
+        let stream = await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
+        VERA_STREAMS.push(stream);
+        call.answer(stream); // Answer the call with an A/V stream.
+        // window.LOCAL_STREAM = stream;
+        call.on('stream', (s) => {
+          VERA_STREAMS.push(s);
+          let remoteVideoContainer = this.dom.nextElementSibling;
+          let videoEle = remoteVideoContainer.querySelector('video');
+          console.log('attach stream', videoEle);
+          videoEle.srcObject = s;
+          remoteVideoContainer.setAttribute('camera-status', 'connected');
+          this.dom.setAttribute('camera-status', 'connected');
         });
+        call.on('close', () => {
+          console.log('call close');
+        });
+      } catch (error) {
+        console.error('Failed to get local stream', error);
+      }
     });
   }
   initRemoteCamera({ inviteId, localId }) {
@@ -180,26 +186,29 @@ class Camera {
     } else {
       // 响应加入按钮的事件
       let joinBtn = this.dom.querySelector('.btn.join');
-      joinBtn.addEventListener('click', () => {
+      joinBtn.addEventListener('click', async () => {
         // create audio and video constraints
-        navigator.mediaDevices
-          .getUserMedia(remoteStreamConfig)
-          .then((stream) => {
-            console.log('join event peer called');
-            let call = window.MyPeer.call(inviteId, stream);
-            call.on('stream', (st) => {
-              let remoteVideo = this.dom.querySelector('video');
-              remoteVideo.srcObject = st;
-              this.dom.setAttribute('camera-status', 'connected');
-              this.dom.previousElementSibling.setAttribute('camera-status', 'connected');
-              // console.log('connect from remote camrea', inviteId);
-              // window.MyPeer.connect(inviteId);
-            });
-          })
-          .catch((err) => {
-            console.log('join event peer called,error');
-            console.error('Failed to get local stream', err);
-          });
+        try {
+        } catch (error) {
+          console.log('join event peer called,error');
+          console.error('Failed to get local stream', error);
+        }
+        let stream = await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
+        VERA_STREAMS.push(stream);
+        console.log('join event peer called');
+        let call = window.MyPeer.call(inviteId, stream);
+        call.on('stream', (st) => {
+          VERA_STREAMS.push(st);
+          let remoteVideo = this.dom.querySelector('video');
+          remoteVideo.srcObject = st;
+          this.dom.setAttribute('camera-status', 'connected');
+          this.dom.previousElementSibling.setAttribute('camera-status', 'connected');
+          // console.log('connect from remote camrea', inviteId);
+          // window.MyPeer.connect(inviteId);
+        });
+        call.on('close', () => {
+          console.log('call close');
+        });
       });
     }
   }

@@ -53,28 +53,41 @@ class Invite {
 
         if (target.classList.contains('close')) {
           this.dom.querySelectorAll('video').forEach((v) => {
-            v.pause();
-            v.src = '';
+            v.srcObject = null;
+          });
+          // 停掉每一次的stream
+          VERA_STREAMS.forEach((st) => {
+            const tracks = st?.getTracks() || [];
+            for (let i = 0; i < tracks.length; i++) {
+              let track = tracks[i];
+              track.stop();
+            }
           });
           this.dom.remove();
-
           document.documentElement.removeAttribute('invite-expand');
+          window.MyPeer.disconnect();
         }
       },
       true
     );
   }
   initPeer(pvid) {
+    console.log('invited peerId', pvid);
     // init peerjs
-    window.MyPeer =
-      window.MyPeer ||
-      new Peer({
-        host: 'r.nicegoodthings.com',
-        // port: '80',
-        path: '/ngt'
-      });
+    window.MyPeer = window.CURRENT_PEER_ID
+      ? new Peer(window.CURRENT_PEER_ID, {
+          host: 'r.nicegoodthings.com',
+          // port: '80',
+          path: '/ngt'
+        })
+      : new Peer({
+          host: 'r.nicegoodthings.com',
+          // port: '80',
+          path: '/ngt'
+        });
     if (window.CURRENT_PEER_ID) {
       console.log('reopen', pvid, window.CURRENT_PEER_ID);
+      // window.MyPeer.reconnect();
       this.init({ inviteId: pvid, localId: window.CURRENT_PEER_ID });
     }
     window.MyPeer.on('open', (id) => {
@@ -83,23 +96,36 @@ class Invite {
       this.dom.setAttribute('data-status', 'open');
       this.init({ inviteId: pvid, localId: id });
       // incoming connection
+      window.MyPeer.on('connection', (conn) => {
+        console.log('incoming peer connection!', conn);
+        this.dom.setAttribute('data-status', 'connected');
+        // connect the other side from main
+        if (!pvid) {
+          window.MyPeer.connect(conn.peer);
+        }
+        conn.on('open', () => {
+          conn.on('data', (data) => {
+            console.log(`received: ${data}`);
+          });
+          conn.send('hello!');
+        });
+      });
+      window.MyPeer.on('disconnected', () => {
+        this.dom.setAttribute('data-status', 'disconnected');
+      });
       if (pvid) {
+        console.log('connect the invite peer');
         window.MyPeer.connect(pvid);
       }
     });
+
     window.MyPeer.on('error', (error) => {
       console.log({ error });
       this.dom.setAttribute('data-status', 'error');
     });
-    window.MyPeer.on('connection', (conn) => {
-      console.log('incoming peer connection!');
-      this.dom.setAttribute('data-status', 'connected');
-      conn.on('data', (data) => {
-        console.log(`received: ${data}`);
-      });
-      conn.on('open', () => {
-        conn.send('hello!');
-      });
+    window.MyPeer.on('close', () => {
+      console.log('connect close');
+      // this.dom.setAttribute('data-status', 'close');
     });
   }
   init({ inviteId, localId }) {

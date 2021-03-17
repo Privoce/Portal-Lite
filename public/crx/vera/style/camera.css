@@ -1,0 +1,122 @@
+.camera {
+  border-radius: 8px;
+  position: relative;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: 1px dashed #5c46e3;
+}
+.camera:not(:last-child) {
+  margin-bottom: 10px;
+}
+.camera[bg-rm-status='processing'] .processing {
+  display: block;
+}
+.camera[bg-rm-status='ready'] .processing {
+  display: none;
+}
+.camera[bg-rm-status='ready'] .video video {
+  visibility: hidden;
+}
+.camera .processing {
+  display: none;
+  z-index: 10;
+  text-transform: capitalize;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -70%, 0);
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #5c46e3;
+  font-size: 22px;
+  color: #fff;
+}
+.camera .video {
+  position: relative;
+}
+.camera .video .opts {
+  visibility: hidden;
+  z-index: 11;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 5px;
+  display: flex;
+}
+.camera .video .opts .opt {
+  opacity: 0.5;
+  border: 1px solid #5c46e3;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #fff;
+  background: #5c46e3;
+  cursor: pointer;
+}
+.camera .video .opts .opt:not(:last-child) {
+  margin-right: 6px;
+}
+.camera .video .opts .opt:hover {
+  opacity: 1;
+}
+.camera .video video {
+  width: 200px;
+  height: 200px;
+}
+.camera .video canvas {
+  z-index: 9;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.camera .video canvas.side {
+  display: none;
+}
+.camera .btn {
+  z-index: 11;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -60%, 0);
+  border: 1px solid #5c46e3;
+  background-color: #5c46e3;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.camera .controls {
+  visibility: hidden;
+  width: 100%;
+  margin-top: 5px;
+  border-top: 1px dashed #5c46e3;
+  font-size: 13px;
+  display: flex;
+  padding: 5px 8px;
+}
+.camera .controls .control {
+  border: 1px solid #5c46e3;
+  background-color: #5c46e3;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: #fff;
+  cursor: pointer;
+}
+.camera .controls .control:not(:last-child) {
+  margin-right: 4px;
+}
+.camera[camera-status='connected'] .btn {
+  display: none;
+}
+.camera[camera-status='connected'] .controls,
+.camera[camera-status='connected'] .opts {
+  visibility: visible;
+}

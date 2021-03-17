@@ -152,14 +152,16 @@ table {
 #PORTAL_VERA_WIDGET:hover {
   transform: translateX(-5px);
 }
-#PORTAL_VERA_WIDGET .btn {
+#PORTAL_VERA_WIDGET > .portal_logo {
   width: 40px;
   height: 40px;
   border: none;
   outline: none;
   background-color: transparent;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/logo.png');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 #PORTAL_VERA_INVITE {
   color: #fff;
@@ -170,13 +172,36 @@ table {
   transform: translateY(-50%);
   min-width: 100px;
   min-height: 200px;
-  background-color: #5c46e3;
+  background: transparent;
   padding: 15px 10px;
+  border: 4px solid #5c46e3;
+  transition: all 0.4s ease-in-out;
+}
+#PORTAL_VERA_INVITE:hover {
+  background: #5c46e3;
+}
+#PORTAL_VERA_INVITE:hover .title {
+  color: #eee;
+}
+#PORTAL_VERA_INVITE:hover .cameras .camera {
+  border-color: #eee;
+}
+#PORTAL_VERA_INVITE:hover .cameras .camera .video .opts .opt {
+  color: #fff;
+  border-color: #eee;
+}
+#PORTAL_VERA_INVITE:hover .cameras .camera .controls .control {
+  color: #fff;
+  border-color: #eee;
+}
+#PORTAL_VERA_INVITE:hover .cameras .camera .btn {
+  border: 1px solid #eee;
+  color: #eee;
 }
 #PORTAL_VERA_INVITE[data-status]:after {
   content: '';
   position: absolute;
-  right: 5px;
+  left: 5px;
   top: 5px;
   display: block;
   width: 10px;
@@ -187,6 +212,12 @@ table {
 #PORTAL_VERA_INVITE[data-status='open']:after {
   background-color: #ee7f3d;
 }
+#PORTAL_VERA_INVITE[data-status='close']:after {
+  background-color: #fff;
+}
+#PORTAL_VERA_INVITE[data-status='disconnected']:after {
+  background-color: #ccc;
+}
 #PORTAL_VERA_INVITE[data-status='connected']:after {
   background-color: #48ba2b;
 }
@@ -196,38 +227,24 @@ table {
 #PORTAL_VERA_INVITE > .close {
   cursor: pointer;
   position: absolute;
-  left: 5px;
+  right: 5px;
   top: 5px;
   display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.4;
+  width: 25px;
+  height: 25px;
+  opacity: 0.8;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/tel.svg');
+  background-size: cover;
 }
 #PORTAL_VERA_INVITE > .close:hover {
   opacity: 1;
-}
-#PORTAL_VERA_INVITE > .close:before,
-#PORTAL_VERA_INVITE > .close:after {
-  position: absolute;
-  left: 8px;
-  content: ' ';
-  height: 14px;
-  width: 2px;
-  background-color: #df0f17;
-}
-#PORTAL_VERA_INVITE > .close:before {
-  transform: rotate(45deg);
-}
-#PORTAL_VERA_INVITE > .close:after {
-  transform: rotate(-45deg);
 }
 #PORTAL_VERA_INVITE > .title {
   padding: 5px;
   padding-bottom: 10px;
   font-size: 24px;
   font-weight: 800;
-  color: #eee;
+  color: #5c46e3;
 }
 #PORTAL_VERA_INVITE .intro {
   padding: 5px 0;
@@ -244,7 +261,7 @@ table {
   align-items: center;
   justify-content: center;
   padding: 5px;
-  border: 1px solid #eee;
+  border: 1px dashed #5c46e3;
 }
 #PORTAL_VERA_INVITE .cameras .camera:not(:last-child) {
   margin-bottom: 10px;
@@ -285,13 +302,13 @@ table {
   display: flex;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt {
-  opacity: 0.3;
-  border: 1px solid #eee;
+  opacity: 0.5;
+  border: 1px solid #5c46e3;
   border-radius: 4px;
   padding: 2px 8px;
   font-size: 10px;
   color: #fff;
-  background: transparent;
+  background: #5c46e3;
   cursor: pointer;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt:not(:last-child) {
@@ -321,30 +338,30 @@ table {
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -60%, 0);
-  border: 1px solid #eee;
+  border: 1px solid #5c46e3;
+  background-color: #5c46e3;
+  color: #fff;
   border-radius: 4px;
   padding: 4px 10px;
   font-size: 22px;
-  color: #fff;
-  background: transparent;
   cursor: pointer;
 }
 #PORTAL_VERA_INVITE .cameras .camera .controls {
   visibility: hidden;
   width: 100%;
   margin-top: 5px;
-  border-top: 1px dashed #eee;
+  border-top: 1px dashed #5c46e3;
   font-size: 13px;
   display: flex;
   padding: 5px 8px;
 }
 #PORTAL_VERA_INVITE .cameras .camera .controls .control {
-  border: 1px solid #eee;
+  border: 1px solid #5c46e3;
+  background-color: #5c46e3;
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 12px;
   color: #fff;
-  background: transparent;
   cursor: pointer;
 }
 #PORTAL_VERA_INVITE .cameras .camera .controls .control:not(:last-child) {
