@@ -66,12 +66,12 @@ const StyledWrapper = styled.section`
       }
     }
     &.expanded {
-      .toggle {
+      /* .toggle {
         background-color: #f1f1f1;
         svg {
           transform: rotate(45deg);
         }
-      }
+      } */
       .setting {
         display: block;
       }

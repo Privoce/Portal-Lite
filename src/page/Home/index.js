@@ -1,7 +1,8 @@
 // import { Link } from 'react-router-dom';
 import { lazy, Suspense, useState } from 'react';
 import { useLanguage } from 'uselanguage';
-import { IoAddSharp } from 'react-icons/io5';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { IoCloseOutline } from 'react-icons/io5';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
@@ -59,7 +60,7 @@ export default function Home() {
             <span className="tip">Dark Mode</span>
           </li>
           <li className="toggle" onClick={handleSettingToggleClick}>
-            <IoAddSharp />
+            {settingExpanded ? <IoCloseOutline /> : <BiDotsHorizontalRounded />}
           </li>
         </ul>
 
