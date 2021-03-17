@@ -14,8 +14,16 @@
     margin-bottom: 10px;
   }
   &[bg-rm-status='processing'] {
+    canvas {
+      visibility: hidden;
+    }
     .processing {
       display: block;
+    }
+  }
+  &[bg-rm-status='restore'] {
+    canvas {
+      visibility: hidden;
     }
   }
   &[bg-rm-status='ready'] {

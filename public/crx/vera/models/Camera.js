@@ -23,11 +23,33 @@ const bgRemove = async (videoContainer) => {
     quantBytes: 2
   });
   videoContainer.setAttribute('bg-rm-status', 'ready');
+  let isHost = videoContainer.classList.contains('host');
+  if (isHost) {
+    window.VERA_HOST_RM_BG = true;
+  } else {
+    window.VERA_REMOTE_RM_BG = true;
+  }
+  draw({ key: isHost ? 'host' : 'remote', video, canvas, offCanvas, net });
   console.log({ video, canvas, offCanvas });
-  draw({ video, canvas, offCanvas, net });
 };
-const draw = async ({ video, canvas, offCanvas, net }) => {
+const bgRestore = (container) => {
+  if (container.classList.contains('host')) {
+    window.VERA_HOST_RM_BG = false;
+  } else {
+    window.VERA_REMOTE_RM_BG = false;
+  }
+  container.setAttribute('bg-rm-status', 'restore');
+};
+const draw = async ({ key = 'host', video, canvas, offCanvas, net }) => {
+  let keyMap = {
+    host: 'VERA_HOST_RM_BG',
+    remote: 'VERA_REMOTE_RM_BG'
+  };
+  if (!window[keyMap[key]]) {
+    return;
+  }
   let ctx = canvas.getContext('2d');
+  console.log('start draw');
   let offCtx = offCanvas.getContext('2d');
   offCtx.drawImage(video, 0, 0);
   const res = await net.segmentPerson(offCanvas);
@@ -44,8 +66,7 @@ const draw = async ({ video, canvas, offCanvas, net }) => {
       ctx.translate(-canvas.width, 0);
     });
   });
-
-  requestAnimationFrame(draw.bind(this, { video, canvas, offCanvas, net }));
+  requestAnimationFrame(draw.bind(this, { key, video, canvas, offCanvas, net }));
 };
 class Camera {
   constructor({ host = false, inviteId = null, localId = null }) {
@@ -116,7 +137,15 @@ class Camera {
         console.log('click remote', { target });
 
         if (target.classList.contains('remove_bg')) {
-          bgRemove(this.dom);
+          if (target.getAttribute('removed')) {
+            target.innerHTML = 'Remove Bg';
+            target.removeAttribute('removed');
+            bgRestore(this.dom);
+          } else {
+            target.innerHTML = 'Restore Bg';
+            bgRemove(this.dom);
+            target.setAttribute('removed', 1);
+          }
         }
       },
       true

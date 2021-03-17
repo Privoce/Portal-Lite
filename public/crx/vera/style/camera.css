@@ -12,8 +12,14 @@
 .camera:not(:last-child) {
   margin-bottom: 10px;
 }
+.camera[bg-rm-status='processing'] canvas {
+  visibility: hidden;
+}
 .camera[bg-rm-status='processing'] .processing {
   display: block;
+}
+.camera[bg-rm-status='restore'] canvas {
+  visibility: hidden;
 }
 .camera[bg-rm-status='ready'] .processing {
   display: none;

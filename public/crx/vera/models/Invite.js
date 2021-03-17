@@ -52,6 +52,8 @@ class Invite {
         console.log('click close', { target });
 
         if (target.classList.contains('close')) {
+          let confirmed = confirm('Are you sure to quit?');
+          if (!confirmed) return;
           this.dom.querySelectorAll('video').forEach((v) => {
             v.srcObject = null;
           });

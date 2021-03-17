@@ -266,8 +266,14 @@ table {
 #PORTAL_VERA_INVITE .cameras .camera:not(:last-child) {
   margin-bottom: 10px;
 }
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] canvas {
+  visibility: hidden;
+}
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] .processing {
   display: block;
+}
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='restore'] canvas {
+  visibility: hidden;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='ready'] .processing {
   display: none;
