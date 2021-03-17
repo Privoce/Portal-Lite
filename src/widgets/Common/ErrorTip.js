@@ -28,13 +28,13 @@ const StyledWrapper = styled.div`
     border: 1px solid #eee;
     margin-top: 0.4rem;
     font-size: 0.18rem;
-    color: #333;
+    color: inherit;
   }
 `;
 
 export default function ErrorTip({
   tip = '接口出错啦~~~',
-  bg = '#fff',
+  bg = 'inherit',
   reload = null,
   reloadTxt = 'Reload'
 }) {

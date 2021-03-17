@@ -46,7 +46,6 @@ const StyledButton = styled.button`
   transition: all 0.5s;
   width: 0.6rem;
   height: 0.6rem;
-  background-color: #003c71 !important;
   border-radius: 50%;
   padding: 0.1rem;
   z-index: 996;
@@ -55,10 +54,10 @@ const StyledButton = styled.button`
   justify-content: center;
   box-shadow: 0 0 5px #333;
   &.dark {
-    background: #fff;
+    background-color: #eee !important;
   }
   &.light {
-    background: #666;
+    background-color: #003c71 !important;
   }
 `;
 const options = {

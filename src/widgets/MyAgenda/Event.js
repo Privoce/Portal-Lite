@@ -60,8 +60,9 @@ const StyledEvent = styled.li`
       font-size: 0.12rem;
       color: #999;
       line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
       a {
-        color: #eee;
         text-decoration: underline;
       }
     }

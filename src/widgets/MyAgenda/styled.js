@@ -45,7 +45,7 @@ const StyledWrapper = styled.div`
       .date {
         font-weight: 800;
         font-size: 0.16rem;
-        color: #333;
+        /* color: #333; */
         padding: 0 0.2rem;
       }
     }
@@ -67,7 +67,7 @@ const StyledWrapper = styled.div`
         padding-bottom: 0.1rem;
         position: sticky;
         top: 0;
-        background: #fff;
+        /* text-shadow: 0 0 10px black; */
         z-index: 2;
       }
       > .evts {

@@ -30,7 +30,7 @@ const StyledWrapper = styled.section`
     overflow: auto;
     .tabs {
       position: relative;
-      background-color: #fff;
+      /* background-color: #fff; */
       z-index: 996;
       display: flex;
       position: sticky;
