@@ -84,13 +84,13 @@
 .camera .video .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
 }
-.camera .video[bg-remove='true'] .opts .opt.bg {
+.camera .video[bg='true'] .opts .opt.bg {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
 }
-.camera .video[invisible='true'] .opts .opt.video {
+.camera .video[video='true'] .opts .opt.video {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
 }
-.camera .video[muted='true'] .opts .opt.audio {
+.camera .video[audio='true'] .opts .opt.audio {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
 }
 .camera .video[pin='true'] .opts .opt.pin {
@@ -133,7 +133,7 @@
   font-weight: 800;
   color: #ec3636;
 }
-.camera .video[invisible='true'] .mask.user {
+.camera .video[video='true'] .mask.user {
   display: block;
 }
 .camera .invite {

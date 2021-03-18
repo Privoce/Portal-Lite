@@ -1,6 +1,65 @@
 import { localStreamConfig, remoteStreamConfig } from './config.js';
 import { bgRemove, bgRestore, copyToClipboard, selectText } from './utils.js';
+const handleControl = async (control, btn, root) => {
+  let videoEle = btn.parentElement.nextElementSibling;
+  let videoContainer = videoEle.parentElement;
+  let isTrue;
+  let map = {
+    audio: {
+      on: 'AUDIO_ON',
+      off: 'AUDIO_OFF'
+    },
+    video: {
+      on: 'VIDEO_ON',
+      off: 'VIDEO_OFF'
+    }
+  };
+  if (['pin', 'audio', 'video'].includes(control)) {
+    isTrue = videoContainer.getAttribute(control) == 'true';
+    if (isTrue) {
+      videoContainer.removeAttribute(control);
+    } else {
+      videoContainer.setAttribute(control, true);
+    }
+  }
+  if (control == 'pin') {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    }
+    videoEle.requestPictureInPicture().catch((error) => {
+      // Error handling
+      console.log('pip error', error);
+    });
+  }
+  if (control == 'audio' || control == 'video') {
+    let tracks =
+      control == 'audio'
+        ? videoEle.srcObject.getAudioTracks()
+        : videoEle.srcObject.getVideoTracks();
+    tracks.forEach((t) => {
+      console.log({ t });
+      t.enabled = !t.enabled;
+    });
 
+    if (root.classList.contains('host')) {
+      window.PEER_DATA_CONN?.send({ type: isTrue ? map[control].on : map[control].off });
+    }
+  }
+  if (control == 'bg') {
+    let bgRemoved = videoContainer.getAttribute('bg') == 'true';
+    let bgRemoving = videoContainer.getAttribute('bg-removing') == 'true';
+    if (bgRemoving) return;
+    if (bgRemoved) {
+      videoContainer.removeAttribute('bg');
+      bgRestore(root);
+    } else {
+      videoContainer.setAttribute('bg-removing', true);
+      await bgRemove(root);
+      videoContainer.removeAttribute('bg-removing');
+      videoContainer.setAttribute('bg', true);
+    }
+  }
+};
 class Camera {
   constructor({ host = false, inviteId = null, localId = null }) {
     this.dom = document.createElement('div');
@@ -9,10 +68,10 @@ class Camera {
     <div class='processing'>processing</div>
     <div class='video'>
       <div class='opts'>
-      <button class='opt bg' title='clear background'></button>
-        <button class='opt video' title='video'></button>
-        <button class='opt audio' title='audio'></button>
-        <button class='opt pin' title='pin'></button>
+        <button class='opt bg' control='bg' title='clear background'></button>
+        <button class='opt video' control='video' title='video'></button>
+        <button class='opt audio' control='audio' title='audio'></button>
+        <button class='opt pin' control='pin' title='pin'></button>
       </div>
       <video playsinline autoplay ></video>
       <canvas class='render' width=200 height=200 ></canvas>
@@ -21,8 +80,7 @@ class Camera {
       <div class='mask error'>Camera Error</div>
     </div>
     `;
-    this.initOpts();
-    this.initBgRemoving();
+    this.initControls();
     if (host) {
       this.initHostCamera();
     } else {
@@ -31,90 +89,17 @@ class Camera {
 
     return this.dom;
   }
-  initOpts() {
-    // let pipBtn = this.dom.querySelector('.control.pip');
-    // console.log('init pip click', pipBtn);
+  initControls() {
+    let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>
+      opt.getAttribute('control')
+    );
     this.dom.addEventListener(
       'click',
       ({ target }) => {
         console.log('click remote', { target });
-
-        if (target.classList.contains('pin')) {
-          let videoEle = target.parentElement.nextElementSibling;
-          let videoContainer = videoEle.parentElement;
-          let pinned = videoContainer.getAttribute('pin') == 'true';
-          if (pinned) {
-            videoContainer.removeAttribute('pin');
-          } else {
-            videoContainer.setAttribute('pin', true);
-          }
-          if (document.pictureInPictureElement) {
-            document.exitPictureInPicture();
-          }
-          videoEle.requestPictureInPicture().catch((error) => {
-            // Error handling
-            console.log('pip error', error);
-          });
-        }
-        if (target.classList.contains('audio')) {
-          let videoEle = target.parentElement.nextElementSibling;
-          let videoContainer = videoEle.parentElement;
-          let isMuted = videoContainer.getAttribute('muted') == 'true';
-          if (isMuted) {
-            videoContainer.removeAttribute('muted');
-          } else {
-            videoContainer.setAttribute('muted', true);
-          }
-          videoEle.srcObject.getAudioTracks().forEach((t) => {
-            console.log({ t });
-            t.enabled = !t.enabled;
-          });
-          if (this.dom.classList.contains('host')) {
-            window.PEER_DATA_CONN?.send({ type: isMuted ? 'AUDIO_ON' : 'AUDIO_OFF' });
-          }
-        }
-        if (target.classList.contains('video')) {
-          let videoEle = target.parentElement.nextElementSibling;
-          let videoContainer = videoEle.parentElement;
-          let invisible = videoContainer.getAttribute('invisible') == 'true';
-          if (invisible) {
-            videoContainer.removeAttribute('invisible');
-          } else {
-            videoContainer.setAttribute('invisible', true);
-          }
-          videoEle.srcObject.getVideoTracks().forEach((t) => {
-            console.log({ t });
-            t.enabled = !t.enabled;
-          });
-          if (this.dom.classList.contains('host')) {
-            window.PEER_DATA_CONN?.send({ type: invisible ? 'VIDEO_ON' : 'VIDEO_OFF' });
-          }
-        }
-      },
-      true
-    );
-  }
-  initBgRemoving() {
-    this.dom.addEventListener(
-      'click',
-      async ({ target }) => {
-        console.log('click remote', { target });
-
-        if (target.classList.contains('bg')) {
-          let videoEle = target.parentElement.nextElementSibling;
-          let videoContainer = videoEle.parentElement;
-          let bgRemoved = videoContainer.getAttribute('bg-remove') == 'true';
-          let bgRemoving = videoContainer.getAttribute('bg-removing') == 'true';
-          if (bgRemoving) return;
-          if (bgRemoved) {
-            videoContainer.removeAttribute('bg-remove');
-            bgRestore(this.dom);
-          } else {
-            videoContainer.setAttribute('bg-removing', true);
-            await bgRemove(this.dom);
-            videoContainer.removeAttribute('bg-removing');
-            videoContainer.setAttribute('bg-remove', true);
-          }
+        let control = target.getAttribute('control');
+        if (controls.includes(control)) {
+          handleControl(control, target, this.dom);
         }
       },
       true
