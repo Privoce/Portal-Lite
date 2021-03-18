@@ -67,9 +67,9 @@ export default function Home() {
               comp: <Darkmode />,
               tip: 'Dark Mode'
             }
-          ].map(({ comp, tip }, idx) => {
+          ].map(({ comp, tip }) => {
             return (
-              <li key={tip} style={{ animationDelay: `.${idx * 1}s` }} className="setting">
+              <li key={tip} className="setting">
                 {comp}
                 <span className="tip">{tip}</span>
               </li>
