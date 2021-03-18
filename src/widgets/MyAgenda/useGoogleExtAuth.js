@@ -73,6 +73,16 @@ const useGoogleExtAuth = (localEvents = null, readonly = false) => {
   const [checkedCalendars, setCheckedCalendars] = useState([]);
   const [groupEvents, setGroupEvents] = useState(localEvents || null);
   const [error, setError] = useState(null);
+  const authFunction = () => {
+    chrome.identity.getAuthToken({ interactive: true }, function (token) {
+      if (chrome.runtime.lastError) {
+        setError(chrome.runtime.lastError.message);
+        return;
+      }
+      console.log('ext get token', token);
+      setAuth(token);
+    });
+  };
   const fetchCalendarList = async () => {
     setLoading(true);
     try {
@@ -87,7 +97,11 @@ const useGoogleExtAuth = (localEvents = null, readonly = false) => {
       fetch(calendarListAPI, init)
         .then((response) => response.json()) // Transform the data into json
         .then(function (data) {
-          const { items } = data;
+          const { items, error } = data;
+          if (error && error.code == 401) {
+            setAuth('');
+            return;
+          }
           // let { id } = items.find((it) => it.primary);
           let initialCalendars = items.map((c) => {
             let {
@@ -125,13 +139,7 @@ const useGoogleExtAuth = (localEvents = null, readonly = false) => {
     }
   };
   useEffect(() => {
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-      if (chrome.runtime.lastError) {
-        setError(chrome.runtime.lastError.message);
-        return;
-      }
-      setAuth(token);
-    });
+    authFunction();
   }, []);
   useEffect(() => {
     if (auth) {
