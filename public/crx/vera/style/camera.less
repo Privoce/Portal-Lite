@@ -2,7 +2,7 @@
 .camera {
   border-radius: 8px;
   position: relative;
-  width: 200px;
+  width: fit-content;
   // height: 200px;
   display: flex;
   flex-direction: column;
@@ -10,6 +10,7 @@
   justify-content: center;
   padding: 5px;
   border: 1px dashed #5c46e3;
+  background: none;
   &:not(:last-child) {
     margin-bottom: 10px;
   }
@@ -50,6 +51,7 @@
   }
   .video {
     position: relative;
+
     .opts {
       visibility: hidden;
       z-index: 11;
@@ -59,13 +61,15 @@
       padding: 5px;
       display: flex;
       .opt {
-        opacity: 0.5;
+        opacity: 0.6;
         border: 1px solid #5c46e3;
         border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 10px;
-        color: #fff;
-        background: #5c46e3;
+        background-color: #5c46e3;
+        height: 22px !important;
+        width: 22px !important;
+        background-size: 70%;
+        background-repeat: no-repeat;
+        background-position: center;
         cursor: pointer;
         &:not(:last-child) {
           margin-right: 6px;
@@ -73,7 +77,32 @@
         &:hover {
           opacity: 1;
         }
+        &.bg {
+          background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
+        }
+        &.video {
+          background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
+        }
+        &.audio {
+          background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
+        }
+        &.pin {
+          background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
+        }
       }
+    }
+    // 关闭态
+    &[bg-remove='true'] .opts .opt.bg {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
+    }
+    &[invisible='true'] .opts .opt.video {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
+    }
+    &[muted='true'] .opts .opt.audio {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
+    }
+    &[pin='true'] .opts .opt.pin {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.off.svg');
     }
     video {
       width: 200px;
@@ -90,6 +119,21 @@
         display: none;
       }
     }
+    .user_mask {
+      display: none;
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-size: 45%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
+    }
+    &[invisible='true'] .user_mask {
+      display: block;
+    }
   }
   .btn {
     z-index: 11;
@@ -105,27 +149,27 @@
     font-size: 22px;
     cursor: pointer;
   }
-  .controls {
-    visibility: hidden;
-    width: 100%;
-    margin-top: 5px;
-    border-top: 1px dashed #5c46e3;
-    font-size: 13px;
-    display: flex;
-    padding: 5px 8px;
-    .control {
-      border: 1px solid #5c46e3;
-      background-color: #5c46e3;
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-size: 12px;
-      color: #fff;
-      cursor: pointer;
-      &:not(:last-child) {
-        margin-right: 4px;
-      }
-    }
-  }
+  // .controls {
+  //   visibility: hidden;
+  //   width: 100%;
+  //   margin-top: 5px;
+  //   border-top: 1px dashed #5c46e3;
+  //   font-size: 13px;
+  //   display: flex;
+  //   padding: 5px 8px;
+  //   .control {
+  //     border: 1px solid #5c46e3;
+  //     background-color: #5c46e3;
+  //     border-radius: 4px;
+  //     padding: 2px 6px;
+  //     font-size: 12px;
+  //     color: #fff;
+  //     cursor: pointer;
+  //     &:not(:last-child) {
+  //       margin-right: 4px;
+  //     }
+  //   }
+  // }
   &[camera-status='connected'] {
     .btn {
       display: none;

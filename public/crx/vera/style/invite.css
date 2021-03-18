@@ -84,6 +84,9 @@
 #PORTAL_VERA_INVITE .intro {
   padding: 5px 0;
 }
+#PORTAL_VERA_INVITE .intro > .title {
+  font-size: 24px;
+}
 #PORTAL_VERA_INVITE .cameras {
   overflow: hidden;
 }
@@ -101,8 +104,14 @@
 #PORTAL_VERA_INVITE .cameras .camera:not(:last-child) {
   margin-bottom: 10px;
 }
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] canvas {
+  visibility: hidden;
+}
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] .processing {
   display: block;
+}
+#PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='restore'] canvas {
+  visibility: hidden;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='ready'] .processing {
   display: none;
@@ -128,7 +137,6 @@
   position: relative;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts {
-  visibility: hidden;
   z-index: 11;
   position: absolute;
   right: 5px;
@@ -137,13 +145,15 @@
   display: flex;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt {
-  opacity: 0.5;
+  opacity: 0.6;
   border: 1px solid #5c46e3;
   border-radius: 4px;
-  padding: 2px 8px;
-  font-size: 10px;
-  color: #fff;
-  background: #5c46e3;
+  background-color: #5c46e3;
+  height: 22px;
+  width: 22px;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
   cursor: pointer;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt:not(:last-child) {
@@ -151,6 +161,24 @@
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt:hover {
   opacity: 1;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.video {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.audio {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.pin {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video[invisible='true'] .opts .opt.video {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video[muted='true'] .opts .opt.audio {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video[pin='true'] .opts .opt.pin {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.off.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video video {
   width: 200px;
@@ -166,6 +194,21 @@
 }
 #PORTAL_VERA_INVITE .cameras .camera .video canvas.side {
   display: none;
+}
+#PORTAL_VERA_INVITE .cameras .camera .video .user_mask {
+  display: none;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
+}
+#PORTAL_VERA_INVITE .cameras .camera .video[invisible='true'] .user_mask {
+  display: block;
 }
 #PORTAL_VERA_INVITE .cameras .camera .btn {
   z-index: 11;

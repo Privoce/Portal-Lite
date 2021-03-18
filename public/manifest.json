@@ -1,16 +1,11 @@
 {
-  "name": "Portal",
+  "name": "Portal - Home of Your Web Apps",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.6.0",
+  "version": "1.6.5",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
-  "permissions": [
-    "tabs",
-    "identity",
-    "https://www.googleapis.com/*",
-    "https://accounts.google.com/*"
-  ],
+  "permissions": ["tabs", "identity"],
   "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
   "icons": {
     "16": "/favicon-16x16.png",
@@ -39,7 +34,7 @@
         "crx/vera/content_script.js"
       ],
       "css": ["crx/vera/style.css"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": ["crx/vera/*"],

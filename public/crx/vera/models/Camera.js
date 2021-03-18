@@ -26,6 +26,7 @@ const bgRemove = async (videoContainer) => {
   let isHost = videoContainer.classList.contains('host');
   if (isHost) {
     window.VERA_HOST_RM_BG = true;
+    window.PEER_DATA_CONN?.send({ type: 'RM_BG' });
   } else {
     window.VERA_REMOTE_RM_BG = true;
   }
@@ -35,6 +36,7 @@ const bgRemove = async (videoContainer) => {
 const bgRestore = (container) => {
   if (container.classList.contains('host')) {
     window.VERA_HOST_RM_BG = false;
+    window.PEER_DATA_CONN?.send({ type: 'RS_BG' });
   } else {
     window.VERA_REMOTE_RM_BG = false;
   }
@@ -76,17 +78,20 @@ class Camera {
     <div class='processing'>processing</div>
     <div class='video'>
       <div class='opts'>
-        <button class='opt mute'>Mute</button>
-        <button class='opt pin'>Pin</button>
+      <button class='opt bg' title='clear background'></button>
+        <button class='opt video' title='video'></button>
+        <button class='opt audio' title='audio'></button>
+        <button class='opt pin' title='pin'></button>
       </div>
       <video playsinline autoplay ></video>
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
-    </div>
-    <div class='controls'>
-      <button class='control remove_bg'>Remove Bg</button>
+      <div class='user_mask'></div>
     </div>
     `;
+    // <div class='controls'>
+    //   <button class='control remove_bg'>Remove Bg</button>
+    // </div>
     // <button class='control pip'>Pin</button>
     this.initOpts();
     this.initBgRemoving();
@@ -108,6 +113,13 @@ class Camera {
 
         if (target.classList.contains('pin')) {
           let videoEle = target.parentElement.nextElementSibling;
+          let videoContainer = videoEle.parentElement;
+          let pinned = videoContainer.getAttribute('pin') == 'true';
+          if (pinned) {
+            videoContainer.removeAttribute('pin');
+          } else {
+            videoContainer.setAttribute('pin', true);
+          }
           if (document.pictureInPictureElement) {
             document.exitPictureInPicture();
           }
@@ -116,14 +128,38 @@ class Camera {
             console.log('pip error', error);
           });
         }
-        if (target.classList.contains('mute')) {
+        if (target.classList.contains('audio')) {
           let videoEle = target.parentElement.nextElementSibling;
-          if (videoEle.getAttribute('muted') == 'true') {
-            videoEle.removeAttribute('muted');
-            target.innerHTML = 'Mute';
+          let videoContainer = videoEle.parentElement;
+          let isMuted = videoContainer.getAttribute('muted') == 'true';
+          if (isMuted) {
+            videoContainer.removeAttribute('muted');
           } else {
-            videoEle.setAttribute('muted', true);
-            target.innerHTML = 'Unmute';
+            videoContainer.setAttribute('muted', true);
+          }
+          videoEle.srcObject.getAudioTracks().forEach((t) => {
+            console.log({ t });
+            t.enabled = !t.enabled;
+          });
+          if (this.dom.classList.contains('host')) {
+            window.PEER_DATA_CONN?.send({ type: isMuted ? 'AUDIO_ON' : 'AUDIO_OFF' });
+          }
+        }
+        if (target.classList.contains('video')) {
+          let videoEle = target.parentElement.nextElementSibling;
+          let videoContainer = videoEle.parentElement;
+          let invisible = videoContainer.getAttribute('invisible') == 'true';
+          if (invisible) {
+            videoContainer.removeAttribute('invisible');
+          } else {
+            videoContainer.setAttribute('invisible', true);
+          }
+          videoEle.srcObject.getVideoTracks().forEach((t) => {
+            console.log({ t });
+            t.enabled = !t.enabled;
+          });
+          if (this.dom.classList.contains('host')) {
+            window.PEER_DATA_CONN?.send({ type: invisible ? 'VIDEO_ON' : 'VIDEO_OFF' });
           }
         }
       },
@@ -133,18 +169,23 @@ class Camera {
   initBgRemoving() {
     this.dom.addEventListener(
       'click',
-      ({ target }) => {
+      async ({ target }) => {
         console.log('click remote', { target });
 
-        if (target.classList.contains('remove_bg')) {
-          if (target.getAttribute('removed')) {
-            target.innerHTML = 'Remove Bg';
-            target.removeAttribute('removed');
+        if (target.classList.contains('bg')) {
+          let videoEle = target.parentElement.nextElementSibling;
+          let videoContainer = videoEle.parentElement;
+          let bgRemoved = videoContainer.getAttribute('bg-remove') == 'true';
+          let bgRemoving = videoContainer.getAttribute('bg-removing') == 'true';
+          if (bgRemoving) return;
+          if (bgRemoved) {
+            videoContainer.removeAttribute('bg-remove');
             bgRestore(this.dom);
           } else {
-            target.innerHTML = 'Restore Bg';
-            bgRemove(this.dom);
-            target.setAttribute('removed', 1);
+            videoContainer.setAttribute('bg-removing', true);
+            await bgRemove(this.dom);
+            videoContainer.removeAttribute('bg-removing');
+            videoContainer.setAttribute('bg-remove', true);
           }
         }
       },
@@ -210,7 +251,7 @@ class Camera {
         let obj = new URL(location.href);
         obj.searchParams.append('portal-vera-id', localId);
         console.log(obj.href);
-        copyToClipboard(`http://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`);
+        copyToClipboard(`https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`);
       });
     } else {
       // 响应加入按钮的事件

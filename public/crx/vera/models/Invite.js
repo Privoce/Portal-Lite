@@ -34,7 +34,7 @@ class Invite {
     document.body.addEventListener('dragover', drag_over, false);
     document.body.addEventListener('drop', drop, false);
     this.dom.innerHTML = `
-     <div class='close'></div>
+      <div class='close'></div>
       <h2 class="title">Portal Vera</h2>
       <div class="cameras"></div>
       <div class="intro">
@@ -87,6 +87,7 @@ class Invite {
           // port: '80',
           path: '/ngt'
         });
+    console.log('my peer', window.MyPeer);
     if (window.CURRENT_PEER_ID) {
       console.log('reopen', pvid, window.CURRENT_PEER_ID);
       // window.MyPeer.reconnect();
@@ -103,11 +104,29 @@ class Invite {
         this.dom.setAttribute('data-status', 'connected');
         // connect the other side from main
         if (!pvid) {
-          window.MyPeer.connect(conn.peer);
+          window.PEER_DATA_CONN = window.MyPeer.connect(conn.peer);
         }
         conn.on('open', () => {
-          conn.on('data', (data) => {
+          conn.on('data', (data = {}) => {
             console.log(`received: ${data}`);
+            let { type = '' } = data;
+            switch (type) {
+              case 'RM_BG':
+              case 'RS_BG':
+                this.dom.querySelector('.camera.remote .opt.bg').click();
+                break;
+              case 'VIDEO_ON':
+              case 'VIDEO_OFF':
+                this.dom.querySelector('.camera.remote .opt.video').click();
+                break;
+              case 'AUDIO_ON':
+              case 'AUDIO_OFF':
+                this.dom.querySelector('.camera.remote .opt.audio').click();
+                break;
+
+              default:
+                break;
+            }
           });
           conn.send('hello!');
         });
@@ -117,7 +136,7 @@ class Invite {
       });
       if (pvid) {
         console.log('connect the invite peer');
-        window.MyPeer.connect(pvid);
+        window.PEER_DATA_CONN = window.MyPeer.connect(pvid);
       }
     });
 
