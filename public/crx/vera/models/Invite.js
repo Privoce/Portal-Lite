@@ -38,9 +38,13 @@ class Invite {
       <h2 class="title">Portal Vera</h2>
       <div class="cameras"></div>
       <div class="intro">
-        <h3 class="title">Welcome</h3>
+      <div class="copyright">
+      <span>© 2020 - 2021 </span>
+      <span>Provided by <a href="https://privoce.com/#our-team">Privoce Team</a> with ❤️</span>
       </div>
-    `;
+      </div>
+      `;
+    // <h3 class="title">Welcome</h3>
     this.initClose();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);

@@ -5,7 +5,7 @@ import Invite from './models/Invite.js';
 export function main() {
   window.VERA_STREAMS = [];
   const { pvid } = init();
-  const widget = new Widget();
+  const widget = new Widget(pvid);
   const inviteHandler = () => {
     console.log('portal vera id', pvid);
     let expand = document.documentElement.getAttribute('invite-expand');
@@ -18,6 +18,6 @@ export function main() {
 }
 const init = () => {
   document.documentElement.setAttribute('ext-portal', 1);
-  let pvid = new URLSearchParams(location.search).get('portal-vera-id');
+  let pvid = new URLSearchParams(location.search).get('portal-vera-id') || null;
   return { pvid };
 };

@@ -19,6 +19,22 @@
 #PORTAL_VERA_WIDGET:hover {
   transform: translateX(-5px);
 }
+#PORTAL_VERA_WIDGET.join:after {
+  content: '';
+  display: block;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px dotted #5c46e3;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/invite.svg');
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  animation: AniFloating 1s infinite alternate;
+}
 #PORTAL_VERA_WIDGET > .portal_logo {
   width: 40px;
   height: 40px;
@@ -29,4 +45,12 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+@keyframes AniFloating {
+  from {
+    transform: translateY(-50%) scale(0.6);
+  }
+  to {
+    transform: translateY(-50%) scale(1.1);
+  }
 }

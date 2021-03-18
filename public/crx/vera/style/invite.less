@@ -15,7 +15,10 @@
   &:hover {
     background: #5c46e3;
     .title {
-      color: #eee;
+      color: #eee !important;
+    }
+    .copyright {
+      visibility: visible !important;
     }
     .cameras .camera {
       border-color: #eee;
@@ -83,9 +86,17 @@
     color: #5c46e3;
   }
   .intro {
-    padding: 5px 0;
-    > .title {
-      font-size: 24px;
+    padding-top: 10px;
+
+    .copyright {
+      visibility: hidden;
+      display: flex;
+      margin-top: 10px;
+      font-size: 10px;
+
+      flex-direction: column;
+      line-height: 1.5;
+      color: #ccc;
     }
   }
 

@@ -1,7 +1,10 @@
 class Widget {
-  constructor() {
+  constructor(pvid) {
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_WIDGET';
+    if (pvid) {
+      this.dom.classList.add('join');
+    }
     this.dom.innerHTML = `<div class="portal_logo"></div>`;
   }
   init(
@@ -9,8 +12,7 @@ class Widget {
       console.log('invite btn clicked');
     }
   ) {
-    let btn = this.dom.querySelector('.portal_logo');
-    btn.onclick = inviteHandler;
+    this.dom.onclick = inviteHandler;
 
     document.body.appendChild(this.dom);
   }
