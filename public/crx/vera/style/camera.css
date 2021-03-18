@@ -111,8 +111,7 @@
 .camera .video canvas.side {
   display: none;
 }
-.camera .video .user_mask {
-  display: none;
+.camera .video .mask {
   width: 200px;
   height: 200px;
   position: absolute;
@@ -121,18 +120,37 @@
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
+}
+.camera .video .mask.user {
+  display: none;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
 }
-.camera .video[invisible='true'] .user_mask {
+.camera .video .mask.error {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #ec3636;
+}
+.camera .video[invisible='true'] .mask.user {
   display: block;
 }
-.camera .btn {
+.camera .invite {
   z-index: 11;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -60%, 0);
-  border: 1px solid #5c46e3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.camera .invite .btn {
+  white-space: nowrap;
+  margin-bottom: 10px;
+  border: 1px solid #fff;
   background-color: #5c46e3;
   color: #fff;
   border-radius: 4px;
@@ -140,10 +158,34 @@
   font-size: 22px;
   cursor: pointer;
 }
+.camera .invite .link {
+  padding: 4px;
+  border: 1px solid #eee;
+  background: rgba(2, 2, 2, 0.4);
+  color: #fff;
+  font-size: 10px;
+  width: 100%;
+  height: fit-content;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+  line-height: 1.2;
+  max-height: 90px;
+  overflow: scroll;
+}
 .camera[camera-status='connected'] .btn {
   display: none;
 }
 .camera[camera-status='connected'] .controls,
 .camera[camera-status='connected'] .opts {
   visibility: visible;
+}
+.camera[camera-status='connected'] .invite {
+  display: none;
+}
+.camera[camera-status='allow-error'] .btn {
+  display: none;
+}
+.camera[camera-status='allow-error'] .mask.error {
+  display: flex;
 }

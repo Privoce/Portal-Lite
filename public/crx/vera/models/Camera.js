@@ -1,75 +1,6 @@
 import { localStreamConfig, remoteStreamConfig } from './config.js';
+import { bgRemove, bgRestore, copyToClipboard, selectText } from './utils.js';
 
-const copyToClipboard = (str) => {
-  const el = document.createElement('textarea');
-  el.value = str;
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-};
-const bgRemove = async (videoContainer) => {
-  videoContainer.setAttribute('bg-rm-status', 'processing');
-  let video = videoContainer.querySelector('video');
-  let canvas = videoContainer.querySelector('.render');
-  let offCanvas = videoContainer.querySelector('.side');
-  const net = await bodyPix.load({
-    architecture: 'MobileNetV1',
-    outputStride: 16,
-    multiplier: 0.75,
-    quantBytes: 2
-  });
-  videoContainer.setAttribute('bg-rm-status', 'ready');
-  let isHost = videoContainer.classList.contains('host');
-  if (isHost) {
-    window.VERA_HOST_RM_BG = true;
-    window.PEER_DATA_CONN?.send({ type: 'RM_BG' });
-  } else {
-    window.VERA_REMOTE_RM_BG = true;
-  }
-  draw({ key: isHost ? 'host' : 'remote', video, canvas, offCanvas, net });
-  console.log({ video, canvas, offCanvas });
-};
-const bgRestore = (container) => {
-  if (container.classList.contains('host')) {
-    window.VERA_HOST_RM_BG = false;
-    window.PEER_DATA_CONN?.send({ type: 'RS_BG' });
-  } else {
-    window.VERA_REMOTE_RM_BG = false;
-  }
-  container.setAttribute('bg-rm-status', 'restore');
-};
-const draw = async ({ key = 'host', video, canvas, offCanvas, net }) => {
-  let keyMap = {
-    host: 'VERA_HOST_RM_BG',
-    remote: 'VERA_REMOTE_RM_BG'
-  };
-  if (!window[keyMap[key]]) {
-    return;
-  }
-  let ctx = canvas.getContext('2d');
-  console.log('start draw');
-  let offCtx = offCanvas.getContext('2d');
-  offCtx.drawImage(video, 0, 0);
-  const res = await net.segmentPerson(offCanvas);
-  // document.getElementById('i').style.display = 'none';
-  tf.tidy(() => {
-    const maskTensor = tf.tensor3d(res.data, [200, 200, 1]);
-    const imageTensor = tf.browser.fromPixels(offCanvas);
-    const t1 = tf.mul(imageTensor, maskTensor);
-    const t2 = tf.concat([t1, tf.mul(maskTensor, 255)], 2);
-    t2.data().then((rawData) => {
-      const rawImageData = new ImageData(new Uint8ClampedArray(rawData), 200, 200);
-      ctx.putImageData(rawImageData, 0, 0);
-      ctx.scale(-1, 1);
-      ctx.translate(-canvas.width, 0);
-    });
-  });
-  requestAnimationFrame(draw.bind(this, { key, video, canvas, offCanvas, net }));
-};
 class Camera {
   constructor({ host = false, inviteId = null, localId = null }) {
     this.dom = document.createElement('div');
@@ -86,13 +17,10 @@ class Camera {
       <video playsinline autoplay ></video>
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
-      <div class='user_mask'></div>
+      <div class='mask user'></div>
+      <div class='mask error'>Camera Error</div>
     </div>
     `;
-    // <div class='controls'>
-    //   <button class='control remove_bg'>Remove Bg</button>
-    // </div>
-    // <button class='control pip'>Pin</button>
     this.initOpts();
     this.initBgRemoving();
     if (host) {
@@ -192,21 +120,18 @@ class Camera {
       true
     );
   }
-  initHostCamera() {
+  async initHostCamera() {
     this.dom.classList.add('host');
     //  贴上本地视频
-    let videoDom = this.dom.querySelector('video');
-    videoDom.setAttribute('muted', true);
-    navigator.mediaDevices
-      .getUserMedia(localStreamConfig)
-      .then((stream) => {
-        VERA_STREAMS.push(stream);
-        videoDom.srcObject = stream;
-        // window.LOCAL_STREAM = stream;
-      })
-      .catch((err) => {
-        console.error('Failed to get local stream', err);
-      });
+    try {
+      let videoDom = this.dom.querySelector('video');
+      let stream = await navigator.mediaDevices.getUserMedia(localStreamConfig);
+      VERA_STREAMS.push(stream);
+      videoDom.srcObject = stream;
+    } catch (error) {
+      console.error('getUserMedia error', error);
+      this.dom.setAttribute('camera-status', 'allow-error');
+    }
     // incoming voice/video connection
     window.MyPeer.on('call', async (call) => {
       console.log('called from remote');
@@ -214,7 +139,6 @@ class Camera {
         let stream = await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
         VERA_STREAMS.push(stream);
         call.answer(stream); // Answer the call with an A/V stream.
-        // window.LOCAL_STREAM = stream;
         call.on('stream', (s) => {
           VERA_STREAMS.push(s);
           let remoteVideoContainer = this.dom.nextElementSibling;
@@ -235,23 +159,34 @@ class Camera {
   initRemoteCamera({ inviteId, localId }) {
     console.log('detected inviteId', inviteId);
     let prevHtml = this.dom.innerHTML;
+    console.log('copy link');
+    let obj = new URL(location.href);
+    obj.searchParams.append('portal-vera-id', localId);
+    console.log(obj.href);
+    let inviteUrl = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`;
     this.dom.innerHTML = `${prevHtml}
     ${
       inviteId
-        ? `<button class='btn join'>Join</button>`
-        : `<button class="btn copy">Copy Invite Link</button>`
+        ? `<div class="invite">
+        <button class='btn join'>Join</button>
+        </div>
+        `
+        : `<div class="invite">
+          <button class="btn copy">Copy Invite Link</button>
+          <div class='link' contenteditable>${inviteUrl}</div>
+        </div>`
     }`;
     this.dom.classList.add('remote');
 
     if (!inviteId) {
       // 邀请按钮的点击事件
       let inviteBtn = this.dom.querySelector('.btn.copy');
+      let linkBox = this.dom.querySelector('.invite .link');
+      linkBox.addEventListener('click', (evt) => {
+        selectText(evt.target);
+      });
       inviteBtn.addEventListener('click', () => {
-        console.log('copy link');
-        let obj = new URL(location.href);
-        obj.searchParams.append('portal-vera-id', localId);
-        console.log(obj.href);
-        copyToClipboard(`https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`);
+        copyToClipboard(inviteUrl);
       });
     } else {
       // 响应加入按钮的事件
@@ -259,26 +194,27 @@ class Camera {
       joinBtn.addEventListener('click', async () => {
         // create audio and video constraints
         try {
+          let stream = await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
+          VERA_STREAMS.push(stream);
+          console.log('join event peer called');
+          let call = window.MyPeer.call(inviteId, stream);
+          call.on('stream', (st) => {
+            VERA_STREAMS.push(st);
+            let remoteVideo = this.dom.querySelector('video');
+            remoteVideo.srcObject = st;
+            this.dom.setAttribute('camera-status', 'connected');
+            this.dom.previousElementSibling.setAttribute('camera-status', 'connected');
+            // console.log('connect from remote camrea', inviteId);
+            // window.MyPeer.connect(inviteId);
+          });
+          call.on('close', () => {
+            console.log('call close');
+          });
         } catch (error) {
+          this.dom.setAttribute('camera-status', 'allow-error');
           console.log('join event peer called,error');
           console.error('Failed to get local stream', error);
         }
-        let stream = await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
-        VERA_STREAMS.push(stream);
-        console.log('join event peer called');
-        let call = window.MyPeer.call(inviteId, stream);
-        call.on('stream', (st) => {
-          VERA_STREAMS.push(st);
-          let remoteVideo = this.dom.querySelector('video');
-          remoteVideo.srcObject = st;
-          this.dom.setAttribute('camera-status', 'connected');
-          this.dom.previousElementSibling.setAttribute('camera-status', 'connected');
-          // console.log('connect from remote camrea', inviteId);
-          // window.MyPeer.connect(inviteId);
-        });
-        call.on('close', () => {
-          console.log('call close');
-        });
       });
     }
   }

@@ -119,8 +119,7 @@
         display: none;
       }
     }
-    .user_mask {
-      display: none;
+    .mask {
       width: 200px;
       height: 200px;
       position: absolute;
@@ -129,47 +128,61 @@
       background-size: 45%;
       background-repeat: no-repeat;
       background-position: center;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
+      &.user {
+        display: none;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
+      }
+      &.error {
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 800;
+        color: #ec3636;
+      }
     }
-    &[invisible='true'] .user_mask {
+    &[invisible='true'] .mask.user {
       display: block;
     }
   }
-  .btn {
+  .invite {
     z-index: 11;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -60%, 0);
-    border: 1px solid #5c46e3;
-    background-color: #5c46e3;
-    color: #fff;
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-size: 22px;
-    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .btn {
+      white-space: nowrap;
+      margin-bottom: 10px;
+      border: 1px solid #fff;
+      background-color: #5c46e3;
+      color: #fff;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .link {
+      padding: 4px;
+      border: 1px solid #eee;
+      background: rgba(2, 2, 2, 0.4);
+      color: #fff;
+      font-size: 10px;
+      width: 100%;
+      height: fit-content;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: left;
+      line-height: 1.2;
+      max-height: 90px;
+      overflow: scroll;
+    }
   }
-  // .controls {
-  //   visibility: hidden;
-  //   width: 100%;
-  //   margin-top: 5px;
-  //   border-top: 1px dashed #5c46e3;
-  //   font-size: 13px;
-  //   display: flex;
-  //   padding: 5px 8px;
-  //   .control {
-  //     border: 1px solid #5c46e3;
-  //     background-color: #5c46e3;
-  //     border-radius: 4px;
-  //     padding: 2px 6px;
-  //     font-size: 12px;
-  //     color: #fff;
-  //     cursor: pointer;
-  //     &:not(:last-child) {
-  //       margin-right: 4px;
-  //     }
-  //   }
-  // }
   &[camera-status='connected'] {
     .btn {
       display: none;
@@ -177,6 +190,17 @@
     .controls,
     .opts {
       visibility: visible;
+    }
+    .invite {
+      display: none;
+    }
+  }
+  &[camera-status='allow-error'] {
+    .btn {
+      display: none;
+    }
+    .mask.error {
+      display: flex;
     }
   }
 }
