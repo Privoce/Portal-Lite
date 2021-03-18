@@ -34,31 +34,48 @@ export default function Home() {
   const handleSettingToggleClick = () => {
     setSettingExpanded((prev) => !prev);
   };
+
   return (
     <Suspense fallback={<Skeleton count={10} />}>
       <StyledWrapper>
         {/* <Account /> */}
         <ul className={`settings ${settingExpanded ? 'expanded' : ''}`}>
-          <li className="setting">
-            <SharePortal />
-            <span className="tip">Share My Portal</span>
-          </li>
-          <li className="setting">
-            <Profile setSyncing={setSyncing} />
-            <span className="tip">Profile</span>
-          </li>
-          <li className="setting">
-            <WidgetStore addedWidgets={widgets} removeWidget={removeWidget} addWidget={addWidget} />
-            <span className="tip">Widget Store</span>
-          </li>
-          <li className="setting">
-            <Setting lang={language.words.setting} />
-            <span className="tip">Setting</span>
-          </li>
-          <li className="setting">
-            <Darkmode />
-            <span className="tip">Dark Mode</span>
-          </li>
+          {[
+            {
+              comp: <SharePortal />,
+              tip: 'Share My Portal'
+            },
+            {
+              comp: <Profile setSyncing={setSyncing} />,
+              tip: 'Profile'
+            },
+            {
+              comp: (
+                <WidgetStore
+                  addedWidgets={widgets}
+                  removeWidget={removeWidget}
+                  addWidget={addWidget}
+                />
+              ),
+              tip: 'Widget Store'
+            },
+            {
+              comp: <Setting lang={language.words.setting} />,
+              tip: 'Setting'
+            },
+            {
+              comp: <Darkmode />,
+              tip: 'Dark Mode'
+            }
+          ].map(({ comp, tip }, idx) => {
+            return (
+              <li key={tip} style={{ animationDelay: `.${idx * 1}s` }} className="setting">
+                {comp}
+                <span className="tip">{tip}</span>
+              </li>
+            );
+          })}
+
           <li className="toggle" onClick={handleSettingToggleClick}>
             {settingExpanded ? <IoCloseOutline /> : <BiDotsHorizontalRounded />}
           </li>

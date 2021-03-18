@@ -1,5 +1,14 @@
-import styled from 'styled-components';
-
+import styled, { keyframes } from 'styled-components';
+const AniSlide = keyframes`
+  from {
+    transform:translateX(100%);
+    opacity:0;
+  }
+  to {
+    opacity:1;
+    transform:translateX(0)
+  }
+`;
 const StyledWrapper = styled.section`
   position: relative;
   margin: 0 auto;
@@ -32,9 +41,11 @@ const StyledWrapper = styled.section`
       }
     }
     .setting {
-      display: none;
+      /* display: none; */
       margin-bottom: 0.15rem;
       position: relative;
+      transform: translatex(200%);
+      /* animation-direction: alternate; */
       .tip {
         visibility: hidden;
         position: absolute;
@@ -73,7 +84,8 @@ const StyledWrapper = styled.section`
         }
       } */
       .setting {
-        display: block;
+        animation: ${AniSlide} 0.5s forwards;
+        /* display: block; */
       }
     }
   }
