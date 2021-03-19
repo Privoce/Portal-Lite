@@ -29,12 +29,18 @@ export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
   const [settingExpanded, setSettingExpanded] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [darkTip, setDarkTip] = useState('');
   const { language } = useLanguage();
 
   const handleSettingToggleClick = () => {
     setSettingExpanded((prev) => !prev);
   };
-
+  const handleSettingClick = (isDark) => {
+    if (isDark) {
+      let isDark = window.DARK_MODE?.isActivated();
+      setDarkTip(isDark ? 'Dark Mode' : 'Light Mode');
+    }
+  };
   return (
     <Suspense fallback={<Skeleton count={10} />}>
       <StyledWrapper>
@@ -64,12 +70,17 @@ export default function Home() {
               tip: 'Setting'
             },
             {
+              type: 'dark',
               comp: <Darkmode />,
-              tip: 'Dark Mode'
+              tip: darkTip
             }
-          ].map(({ comp, tip }) => {
+          ].map(({ comp, tip, type }) => {
             return (
-              <li key={tip} className="setting">
+              <li
+                key={tip}
+                className="setting"
+                onClick={handleSettingClick.bind(null, type == 'dark')}
+              >
                 {comp}
                 <span className="tip">{tip}</span>
               </li>

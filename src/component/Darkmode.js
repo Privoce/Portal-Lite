@@ -63,13 +63,13 @@ const StyledButton = styled.button`
 const options = {
   // mixColor: '#fff', // default: '#fff'
   // backgroundColor: '#fff', // default: '#fff'
-  saveInCookies: false // default: true,
+  saveInCookies: true // default: true,
   // autoMatchOsTheme: true // default: true
 };
-const dm = new Darkmode(options);
+window.DARK_MODE = new Darkmode(options);
 export default function Dark() {
   const { getWidgetSetting } = useWidgetSettings();
-  const [dark, setDark] = useState(dm.isActivated);
+  const [dark, setDark] = useState(window.DARK_MODE.isActivated());
   let pageBg = getWidgetSetting({ key: 'bg' });
   if (pageBg) {
     let dmbg = document.querySelector('.darkmode-background');
@@ -85,8 +85,8 @@ export default function Dark() {
   const toggleDarkmode = () => {
     let pageBg = getWidgetSetting({ key: 'bg' });
     if (!pageBg) {
-      dm.toggle();
-      setDark(dm.isActivated);
+      window.DARK_MODE.toggle();
+      setDark(window.DARK_MODE.isActivated());
     } else {
       setDark((prev) => !prev);
       document.body.classList.toggle('darkmode--activated');
