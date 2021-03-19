@@ -58,7 +58,7 @@ let Widgets = {
     comp: <Searchs />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png',
     created: '2020-12-14',
-    updated: '2020-12-24'
+    updated: '2021-03-16'
   },
   navs: {
     preset: true,
@@ -70,13 +70,13 @@ let Widgets = {
     comp: <NavBlock />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png',
     created: '2020-12-12',
-    updated: '2020-12-18'
+    updated: '2021-03-19'
   },
   'covid-info': {
     title: '🇨🇳 国内新冠疫情概况',
     description: '快速了解国内每日疫情概况',
     compact: true,
-    preset: true,
+    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
     disableScroll: true,
     comp: <Covid />,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png',
@@ -105,7 +105,7 @@ let Widgets = {
   },
   'my-agenda': {
     // loadType: 'script',
-    preset: true,
+    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
     title: '我的日程',
     description: '快捷查看您的日常日程，目前仅支持谷歌日历',
     defaultSize: 'large',
@@ -114,11 +114,11 @@ let Widgets = {
     enableSetting: true,
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
     created: '2021-02-24',
-    updated: '2021-02-24'
+    updated: '2021-03-14'
   },
   weather: {
     loadType: 'script',
-    preset: true,
+    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
     title: '今日天气',
     description: '全方位，多角度，为您提供天气信息。',
     compact: true,
