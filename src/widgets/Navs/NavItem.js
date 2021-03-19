@@ -106,7 +106,7 @@ export default function Nav({
     <StyledWrapper
       className={`inside ${add && 'add'} ${className}`}
       bgColor={themeColor}
-      onContextMenu={handleContextMenu}
+      onContextMenu={history ? null : handleContextMenu}
       title={url}
       {...rest}
     >
