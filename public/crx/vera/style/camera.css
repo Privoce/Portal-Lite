@@ -73,25 +73,25 @@
   opacity: 1;
 }
 .camera .video .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
 }
 .camera .video .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
 }
 .camera .video .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
 }
 .camera .video .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
 }
 .camera .video[bg='true'] .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
 }
 .camera .video[video='true'] .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
 }
 .camera .video[audio='true'] .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
 }
 .camera .video[pin='true'] .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.off.svg');
@@ -122,7 +122,6 @@
   background-position: center;
 }
 .camera .video .mask.user {
-  display: none;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
 }
 .camera .video .mask.error {
@@ -134,7 +133,7 @@
   color: #ec3636;
 }
 .camera .video[video='true'] .mask.user {
-  display: block;
+  display: none;
 }
 .camera .invite {
   z-index: 11;

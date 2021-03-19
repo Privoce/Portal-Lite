@@ -12,9 +12,13 @@ const handleControl = async (control, btn, root) => {
     video: {
       on: 'VIDEO_ON',
       off: 'VIDEO_OFF'
+    },
+    bg: {
+      on: 'RS_BG',
+      off: 'RM_BG'
     }
   };
-  if (['pin', 'audio', 'video'].includes(control)) {
+  if (['bg', 'pin', 'audio', 'video'].includes(control)) {
     isTrue = videoContainer.getAttribute(control) == 'true';
     if (isTrue) {
       videoContainer.removeAttribute(control);
@@ -22,6 +26,7 @@ const handleControl = async (control, btn, root) => {
       videoContainer.setAttribute(control, true);
     }
   }
+  // pin
   if (control == 'pin') {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
@@ -30,7 +35,9 @@ const handleControl = async (control, btn, root) => {
       // Error handling
       console.log('pip error', error);
     });
+    return;
   }
+  // 禁用音视频
   if (control == 'audio' || control == 'video') {
     let tracks =
       control == 'audio'
@@ -40,24 +47,20 @@ const handleControl = async (control, btn, root) => {
       console.log({ t });
       t.enabled = !t.enabled;
     });
-
-    if (root.classList.contains('host')) {
-      window.PEER_DATA_CONN?.send({ type: isTrue ? map[control].on : map[control].off });
+  }
+  // 去背景
+  if (control == 'bg') {
+    if (isTrue) {
+      await bgRemove(root);
+    } else {
+      bgRestore(root);
     }
   }
-  if (control == 'bg') {
-    let bgRemoved = videoContainer.getAttribute('bg') == 'true';
-    let bgRemoving = videoContainer.getAttribute('bg-removing') == 'true';
-    if (bgRemoving) return;
-    if (bgRemoved) {
-      videoContainer.removeAttribute('bg');
-      bgRestore(root);
-    } else {
-      videoContainer.setAttribute('bg-removing', true);
-      await bgRemove(root);
-      videoContainer.removeAttribute('bg-removing');
-      videoContainer.setAttribute('bg', true);
-    }
+  // 如果是主camera，需要给对方发送指令
+  if (root.classList.contains('host')) {
+    let cmd = { type: isTrue ? map[control].off : map[control].on };
+    console.log('send cmd to remote camera', cmd);
+    window.PEER_DATA_CONN?.send(cmd);
   }
 };
 class Camera {
@@ -66,7 +69,7 @@ class Camera {
     this.dom.classList.add('camera');
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
-    <div class='video'>
+    <div class='video' video='true' bg='true' audio='true'>
       <div class='opts'>
         <button class='opt bg' control='bg' title='clear background'></button>
         <button class='opt video' control='video' title='video'></button>
@@ -96,7 +99,7 @@ class Camera {
     this.dom.addEventListener(
       'click',
       ({ target }) => {
-        console.log('click remote', { target });
+        console.log('clicked', { target });
         let control = target.getAttribute('control');
         if (controls.includes(control)) {
           handleControl(control, target, this.dom);

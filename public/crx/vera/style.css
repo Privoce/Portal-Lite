@@ -367,25 +367,25 @@ table {
   opacity: 1;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video[bg='true'] .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video[video='true'] .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video[audio='true'] .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video[pin='true'] .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.off.svg');
@@ -416,7 +416,6 @@ table {
   background-position: center;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .mask.user {
-  display: none;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .mask.error {
@@ -428,7 +427,7 @@ table {
   color: #ec3636;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video[video='true'] .mask.user {
-  display: block;
+  display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera .invite {
   z-index: 11;

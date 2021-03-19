@@ -112,20 +112,39 @@ class Invite {
         }
         conn.on('open', () => {
           conn.on('data', (data = {}) => {
-            console.log(`received: ${data}`);
+            console.log(`received: `, data);
             let { type = '' } = data;
+            let videoContainer = this.dom.querySelector('.camera.remote .video');
             switch (type) {
               case 'RM_BG':
+                if (videoContainer.getAttribute('bg') == 'true') {
+                  videoContainer.querySelector('.opt.bg').click();
+                }
+                break;
               case 'RS_BG':
-                this.dom.querySelector('.camera.remote .opt.bg').click();
+                if (videoContainer.getAttribute('bg') !== 'true') {
+                  videoContainer.querySelector('.opt.bg').click();
+                }
                 break;
               case 'VIDEO_ON':
+                if (videoContainer.getAttribute('video') !== 'true') {
+                  videoContainer.querySelector('.opt.video').click();
+                }
+                break;
               case 'VIDEO_OFF':
-                this.dom.querySelector('.camera.remote .opt.video').click();
+                if (videoContainer.getAttribute('video') == 'true') {
+                  videoContainer.querySelector('.opt.video').click();
+                }
                 break;
               case 'AUDIO_ON':
+                if (videoContainer.getAttribute('audio') !== 'true') {
+                  videoContainer.querySelector('.opt.audio').click();
+                }
+                break;
               case 'AUDIO_OFF':
-                this.dom.querySelector('.camera.remote .opt.audio').click();
+                if (videoContainer.getAttribute('audio') == 'true') {
+                  videoContainer.querySelector('.opt.audio').click();
+                }
                 break;
 
               default:
