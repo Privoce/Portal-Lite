@@ -7,6 +7,7 @@ import { Widgets } from '../../data';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 const StyledSection = styled.section`
   position: relative;
+  min-height: 80vh;
   width: 100%;
   padding-bottom: 0.6rem;
 

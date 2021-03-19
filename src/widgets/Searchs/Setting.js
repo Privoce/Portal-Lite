@@ -39,9 +39,6 @@ export default function Setting({ lang, name, search, updateSearch, toggleWidget
   return createPortal(
     <StyledWrapper>
       <ul className="opts">
-        <li className="opt" onClick={handleClick} data-s="baidu" data-selected={search == 'baidu'}>
-          {lang.baidu}
-        </li>
         <li
           className="opt"
           onClick={handleClick}
@@ -49,6 +46,9 @@ export default function Setting({ lang, name, search, updateSearch, toggleWidget
           data-selected={search == 'google'}
         >
           {lang.google}
+        </li>
+        <li className="opt" onClick={handleClick} data-s="baidu" data-selected={search == 'baidu'}>
+          {lang.baidu}
         </li>
         <li className="opt" onClick={handleClick} data-s="bing" data-selected={search == 'bing'}>
           {lang.bing}
