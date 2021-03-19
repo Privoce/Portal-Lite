@@ -47,7 +47,7 @@ const StyledSection = styled.section`
 `;
 export default function Navs({ readonly = false, data, name, lang }) {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
-  const { data: navs, addNav, removeNav, updateNavs } = useNavData(name, data);
+  const { data: navs, histories, addNav, removeNav, updateNavs } = useNavData(name, data);
   const [modalVisible, setModalVisible] = useState(false);
   const [currFrame, setCurrFrame] = useState(null);
   const removeCurrNav = (w) => {
@@ -116,7 +116,7 @@ export default function Navs({ readonly = false, data, name, lang }) {
           <ContextMenu {...position} currApp={widget} removeApp={removeCurrNav} />
         )}
         <ul className="boxes" id={'nav-container'}>
-          {navs.map((s) => {
+          {[...histories, ...navs].map((s) => {
             return (
               <li className="box" key={`nav-${s.id}`}>
                 <Nav

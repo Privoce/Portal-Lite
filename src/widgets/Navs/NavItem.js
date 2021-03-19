@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import IconDefault from '../../asset/img/icon.logo.png';
+import { MdHistory } from 'react-icons/md';
 import { getDefaultIcon } from '../../util';
 const StyledWrapper = styled.div`
   display: flex;
@@ -14,6 +15,7 @@ const StyledWrapper = styled.div`
   user-select: none;
 
   .icon {
+    position: relative;
     width: 1.08rem;
     height: 1.08rem;
     display: flex;
@@ -23,10 +25,14 @@ const StyledWrapper = styled.div`
 
     box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
     border-radius: 0.24rem;
-    /* border: 0.01rem solid #e8e8e8; */
     transition: all 0.5s;
     img {
       height: 0.36rem;
+    }
+    .history {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
     }
   }
   &:hover .icon {
@@ -76,7 +82,7 @@ export default function Nav({
   className,
   ...rest
 }) {
-  const { themeColor = '#333', icon = '', title = '标题', url = '', frame } = data;
+  const { themeColor = '#333', icon = '', title = '标题', url = '', history = false, frame } = data;
   const [ico, setIco] = useState(icon);
   const handleImageError = () => {
     setIco(IconDefault);
@@ -101,12 +107,14 @@ export default function Nav({
       className={`inside ${add && 'add'} ${className}`}
       bgColor={themeColor}
       onContextMenu={handleContextMenu}
+      title={url}
       {...rest}
     >
       <div className="icon">
         {!add && (
           <img onError={handleImageError} src={ico ? ico : `${getDefaultIcon(url)}`} alt="logo" />
         )}
+        {history && <MdHistory className="history" color="#ddd" />}
       </div>
 
       <h2 className="title">
