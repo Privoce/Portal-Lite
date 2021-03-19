@@ -16,7 +16,7 @@
   }
   &[bg-rm-status='processing'] {
     canvas {
-      visibility: hidden;
+      display: none;
     }
     .processing {
       display: block;
@@ -24,7 +24,7 @@
   }
   &[bg-rm-status='restore'] {
     canvas {
-      visibility: hidden;
+      display: none;
     }
   }
   &[bg-rm-status='ready'] {
@@ -36,8 +36,8 @@
     }
   }
   .processing {
-    display: none;
     z-index: 10;
+    display: none;
     text-transform: capitalize;
     position: absolute;
     top: 50%;
@@ -53,8 +53,8 @@
     position: relative;
 
     .opts {
-      visibility: hidden;
-      z-index: 11;
+      z-index: 7;
+      display: none;
       position: absolute;
       right: 5px;
       top: 5px;
@@ -109,7 +109,6 @@
       height: 200px;
     }
     canvas {
-      z-index: 9;
       width: 200px;
       height: 200px;
       position: absolute;
@@ -120,6 +119,7 @@
       }
     }
     .mask {
+      z-index: 6;
       width: 200px;
       height: 200px;
       position: absolute;
@@ -147,11 +147,10 @@
     }
   }
   .invite {
-    z-index: 11;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate3d(-50%, -60%, 0);
+    transform: translate3d(-50%, -50%, 0);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,7 +188,7 @@
     }
     .controls,
     .opts {
-      visibility: visible;
+      display: flex;
     }
     .invite {
       display: none;
@@ -201,6 +200,13 @@
     }
     .mask.error {
       display: flex;
+    }
+  }
+  &.remote .video .opts {
+    .bg,
+    .video,
+    .audio {
+      display: none;
     }
   }
 }

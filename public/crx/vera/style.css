@@ -308,13 +308,13 @@ table {
   margin-bottom: 10px;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] canvas {
-  visibility: hidden;
+  display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='processing'] .processing {
   display: block;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='restore'] canvas {
-  visibility: hidden;
+  display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera[bg-rm-status='ready'] .processing {
   display: none;
@@ -323,8 +323,8 @@ table {
   visibility: hidden;
 }
 #PORTAL_VERA_INVITE .cameras .camera .processing {
-  display: none;
   z-index: 10;
+  display: none;
   text-transform: capitalize;
   position: absolute;
   top: 50%;
@@ -340,8 +340,8 @@ table {
   position: relative;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .opts {
-  visibility: hidden;
-  z-index: 11;
+  z-index: 7;
+  display: none;
   position: absolute;
   right: 5px;
   top: 5px;
@@ -395,7 +395,6 @@ table {
   height: 200px;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video canvas {
-  z-index: 9;
   width: 200px;
   height: 200px;
   position: absolute;
@@ -406,6 +405,7 @@ table {
   display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera .video .mask {
+  z-index: 6;
   width: 200px;
   height: 200px;
   position: absolute;
@@ -430,11 +430,10 @@ table {
   display: none;
 }
 #PORTAL_VERA_INVITE .cameras .camera .invite {
-  z-index: 11;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate3d(-50%, -60%, 0);
+  transform: translate3d(-50%, -50%, 0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -471,7 +470,7 @@ table {
 }
 #PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .controls,
 #PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .opts {
-  visibility: visible;
+  display: flex;
 }
 #PORTAL_VERA_INVITE .cameras .camera[camera-status='connected'] .invite {
   display: none;
@@ -481,4 +480,9 @@ table {
 }
 #PORTAL_VERA_INVITE .cameras .camera[camera-status='allow-error'] .mask.error {
   display: flex;
+}
+#PORTAL_VERA_INVITE .cameras .camera.remote .video .opts .bg,
+#PORTAL_VERA_INVITE .cameras .camera.remote .video .opts .video,
+#PORTAL_VERA_INVITE .cameras .camera.remote .video .opts .audio {
+  display: none;
 }

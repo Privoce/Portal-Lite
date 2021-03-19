@@ -53,7 +53,7 @@ class Invite {
     this.dom.addEventListener(
       'click',
       ({ target }) => {
-        console.log('click close', { target });
+        console.log('click ', { target });
 
         if (target.classList.contains('close')) {
           let confirmed = confirm('Are you sure to quit?');
@@ -108,6 +108,7 @@ class Invite {
         this.dom.setAttribute('data-status', 'connected');
         // connect the other side from main
         if (!pvid) {
+          console.log('connect the other', conn.peer);
           window.PEER_DATA_CONN = window.MyPeer.connect(conn.peer);
         }
         conn.on('open', () => {

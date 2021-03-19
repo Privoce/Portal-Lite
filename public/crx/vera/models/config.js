@@ -1,5 +1,6 @@
 const localStreamConfig = {
   video: {
+    facingMode: 'user',
     width: { min: 200, ideal: 200, max: 720 },
     height: { min: 200, ideal: 200, max: 720 }
   },
@@ -7,6 +8,7 @@ const localStreamConfig = {
 };
 const remoteStreamConfig = {
   video: {
+    facingMode: 'user',
     width: { min: 200, ideal: 200, max: 720 },
     height: { min: 200, ideal: 200, max: 720 }
   },

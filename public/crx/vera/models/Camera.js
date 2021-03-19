@@ -3,6 +3,7 @@ import { bgRemove, bgRestore, copyToClipboard, selectText } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
   let videoContainer = videoEle.parentElement;
+  let isHost = root.classList.contains('host');
   let isTrue;
   let map = {
     audio: {
@@ -18,6 +19,11 @@ const handleControl = async (control, btn, root) => {
       off: 'RM_BG'
     }
   };
+  if (control == 'bg') {
+    // 如果视频被禁用了，就地返回
+    let disabled = videoEle.srcObject.getVideoTracks().some((t) => t.enabled == false);
+    if (disabled) return;
+  }
   if (['bg', 'pin', 'audio', 'video'].includes(control)) {
     isTrue = videoContainer.getAttribute(control) == 'true';
     if (isTrue) {
@@ -37,27 +43,27 @@ const handleControl = async (control, btn, root) => {
     });
     return;
   }
-  // 禁用音视频
-  if (control == 'audio' || control == 'video') {
-    let tracks =
-      control == 'audio'
-        ? videoEle.srcObject.getAudioTracks()
-        : videoEle.srcObject.getVideoTracks();
-    tracks.forEach((t) => {
-      console.log({ t });
-      t.enabled = !t.enabled;
-    });
-  }
-  // 去背景
-  if (control == 'bg') {
-    if (isTrue) {
-      await bgRemove(root);
-    } else {
-      bgRestore(root);
+  if (isHost) {
+    // 禁用音视频
+    if (control == 'audio' || control == 'video') {
+      let tracks =
+        control == 'audio'
+          ? videoEle.srcObject.getAudioTracks()
+          : videoEle.srcObject.getVideoTracks();
+      tracks.forEach((t) => {
+        console.log({ t });
+        t.enabled = !t.enabled;
+      });
     }
-  }
-  // 如果是主camera，需要给对方发送指令
-  if (root.classList.contains('host')) {
+    // 去背景
+    if (control == 'bg') {
+      if (isTrue) {
+        await bgRemove(root);
+      } else {
+        bgRestore(root);
+      }
+    }
+    // 如果是主camera，需要给对方发送指令
     let cmd = { type: isTrue ? map[control].off : map[control].on };
     console.log('send cmd to remote camera', cmd);
     window.PEER_DATA_CONN?.send(cmd);
@@ -70,6 +76,8 @@ class Camera {
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
     <div class='video' video='true' bg='true' audio='true'>
+      <div class='mask user'></div>
+
       <div class='opts'>
         <button class='opt bg' control='bg' title='clear background'></button>
         <button class='opt video' control='video' title='video'></button>
@@ -79,7 +87,6 @@ class Camera {
       <video playsinline autoplay ></video>
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
-      <div class='mask user'></div>
       <div class='mask error'>Camera Error</div>
     </div>
     `;
@@ -91,6 +98,12 @@ class Camera {
     }
 
     return this.dom;
+  }
+  autoPlay() {
+    let video = this.dom.querySelector('video');
+    video.onloadedmetadata = () => {
+      video.play();
+    };
   }
   initControls() {
     let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>
@@ -112,6 +125,8 @@ class Camera {
     this.dom.classList.add('host');
     //  贴上本地视频
     try {
+      // 一次性获取两个授权
+      await navigator.mediaDevices.getUserMedia(remoteStreamConfig);
       let videoDom = this.dom.querySelector('video');
       let stream = await navigator.mediaDevices.getUserMedia(localStreamConfig);
       VERA_STREAMS.push(stream);
