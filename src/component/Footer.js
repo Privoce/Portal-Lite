@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import GitHubButton from 'react-github-btn';
+import { AiFillTwitterCircle, AiFillLinkedin } from 'react-icons/ai';
+import { FaFacebook } from 'react-icons/fa';
 const StyledFooter = styled.footer`
   width: 100%;
   padding: 0.2rem 0;
@@ -29,6 +31,27 @@ const StyledFooter = styled.footer`
     }
     > span:not(:last-child) {
       margin-right: 0.1rem;
+    }
+  }
+  .socials {
+    display: flex;
+    padding: 0.15rem;
+    .item {
+      width: 30px;
+      height: 30px;
+      &.linkedin {
+        /* background-color: rgb(0, 127, 177); */
+      }
+      &:not(:last-child) {
+        margin-right: 0.15rem;
+      }
+      .link {
+        display: flex;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
   }
 `;
@@ -68,6 +91,23 @@ export default function Footer() {
           Fork
         </GitHubButton>
       </div>
+      <ul className="socials">
+        <li className="item">
+          <a href="https://twitter.com/Privoce1" target="_blank" className="link">
+            <AiFillTwitterCircle color="rgb(0, 172, 237)" />
+          </a>
+        </li>
+        <li className="item linkedin">
+          <a href="https://www.linkedin.com/company/privoce" className="link" target="_blank">
+            <AiFillLinkedin color="rgb(0, 127, 177)" />
+          </a>
+        </li>
+        <li className="item">
+          <a href="https://www.facebook.com/privoce" className="link" target="_blank">
+            <FaFacebook color="rgb(59, 89, 152)" />
+          </a>
+        </li>
+      </ul>
     </StyledFooter>
   );
 }
