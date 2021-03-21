@@ -1,5 +1,5 @@
 import Widget from './models/Widget.js';
-import Invite from './models/Invite.js';
+import Panel from './models/Panel.js';
 // import Camera from './models/Camera.js';
 // 初始化挂件
 export function main() {
@@ -10,7 +10,7 @@ export function main() {
     console.log('portal vera id', pvid);
     let expand = document.documentElement.getAttribute('invite-expand');
     if (expand) return;
-    new Invite(pvid);
+    new Panel(pvid);
     document.documentElement.setAttribute('invite-expand', 1);
   };
   widget.init(inviteHandler);

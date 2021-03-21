@@ -1,4 +1,4 @@
-.invite {
+.join {
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
   margin-top: 20px;
   padding: 5px;
 }
-.invite .btn {
+.join .btn {
   white-space: nowrap;
   margin-bottom: 10px;
   border: 1px solid #fff;
@@ -17,19 +17,4 @@
   padding: 4px 10px;
   font-size: 22px;
   cursor: pointer;
-}
-.invite .link {
-  padding: 4px;
-  border: 1px solid #eee;
-  background: rgba(2, 2, 2, 0.4);
-  color: #fff;
-  font-size: 10px;
-  width: 100%;
-  height: fit-content;
-  white-space: pre-wrap;
-  word-break: break-word;
-  text-align: left;
-  line-height: 1.2;
-  max-height: 90px;
-  overflow: scroll;
 }

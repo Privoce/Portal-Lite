@@ -86,4 +86,28 @@ const draw = async ({ key = 'host', video, canvas, offCanvas, net }) => {
   });
   requestAnimationFrame(draw.bind(this, { key, video, canvas, offCanvas, net }));
 };
-export { copyToClipboard, selectText, bgRestore, bgRemove };
+// 拖拽事件处理
+function drag_start(event) {
+  let style = window.getComputedStyle(event.target, null);
+  event.dataTransfer.setData(
+    'text/plain',
+    parseInt(style.getPropertyValue('left'), 10) -
+      event.clientX +
+      ',' +
+      (parseInt(style.getPropertyValue('top'), 10) - event.clientY)
+  );
+}
+function drop(event) {
+  let offset = event.dataTransfer.getData('text/plain').split(',');
+  let dm = document.getElementById('PORTAL_VERA_PANEL');
+  dm.style.left = event.clientX + parseInt(offset[0], 10) + 'px';
+  dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+  dm.style.right = 'auto';
+  event.preventDefault();
+  return false;
+}
+function drag_over(event) {
+  event.preventDefault();
+  return false;
+}
+export { copyToClipboard, selectText, bgRestore, bgRemove, drag_over, drag_start, drop };

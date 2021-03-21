@@ -1,0 +1,117 @@
+// vera panel
+#PORTAL_VERA_PANEL {
+  color: #fff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  min-width: 100px;
+  min-height: 200px;
+  max-height: 100vh;
+  overflow: scroll;
+  background: transparent;
+  padding: 15px 10px;
+  border: 4px solid #5c46e3;
+  transition: all 0.4s ease-in-out;
+  &:hover {
+    background: #5c46e3;
+    .title {
+      color: #eee !important;
+    }
+    .copyright {
+      visibility: visible !important;
+    }
+    .cameras .camera {
+      border-color: #eee !important;
+      .video .opts .opt {
+        color: #fff;
+        border-color: #eee;
+      }
+      .controls .control {
+        color: #fff;
+        border-color: #eee;
+      }
+      .btn {
+        border: 1px solid #eee;
+        color: #eee;
+      }
+    }
+  }
+  &[data-status]:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: #999;
+    border-radius: 50%;
+  }
+  &[data-status='open']:after {
+    background-color: #ee7f3d;
+  }
+  &[data-status='close']:after {
+    background-color: #fff;
+  }
+  &[data-status='disconnected']:after {
+    background-color: #ccc;
+  }
+  &[data-status='connected']:after {
+    background-color: #48ba2b;
+  }
+  &[data-status='error']:after {
+    background-color: #d7322d;
+  }
+  > .close {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    display: block;
+    width: 25px;
+    height: 25px;
+    opacity: 0.8;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/tel.svg');
+    background-size: cover;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  > .title {
+    padding: 5px;
+    font-weight: 800;
+    padding-bottom: 10px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #5c46e3;
+  }
+  .intro {
+    padding-top: 10px;
+
+    .copyright {
+      visibility: hidden;
+      display: flex;
+      margin-top: 10px;
+      font-size: 10px;
+      color: #fff;
+      flex-direction: column;
+      line-height: 1.5;
+      color: #ccc;
+      a {
+        color: inherit;
+      }
+    }
+  }
+
+  .cameras {
+    overflow: hidden;
+    @import './camera.less';
+  }
+  @import './invite.less';
+  @import './join.less';
+}
