@@ -1,5 +1,5 @@
 // import { Link } from 'react-router-dom';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { useLanguage } from 'uselanguage';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { IoCloseOutline } from 'react-icons/io5';
@@ -41,6 +41,9 @@ export default function Home() {
       setDarkTip(isDark ? 'Dark Mode' : 'Light Mode');
     }
   };
+  useEffect(() => {
+    handleSettingClick(true);
+  }, []);
   return (
     <Suspense fallback={<Skeleton count={10} />}>
       <StyledWrapper>

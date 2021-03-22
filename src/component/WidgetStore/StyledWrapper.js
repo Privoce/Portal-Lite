@@ -18,13 +18,18 @@ const StyledWrapper = styled.section`
     height: 90vh;
     width: 80vw;
     overflow: auto;
+       padding-top: 0.75rem;
+       padding-bottom: 0.2rem;
+    overflow: hidden;
+}
     .tabs {
       position: relative;
       /* background-color: #fff; */
-      z-index: 996;
       display: flex;
-      position: sticky;
+      position: absolute;
+      left:0;
       top: 0;
+      width:100%;
       .tab {
         padding: 0.2rem 0;
         flex: 1;
@@ -35,7 +40,9 @@ const StyledWrapper = styled.section`
       }
     }
     .list {
-      padding: 0.5rem 0.2rem;
+      height:100%;
+      padding:  0.2rem;
+      padding-top: .1rem;
       overflow-y: scroll;
       overflow-y: overlay;
       display: grid;
