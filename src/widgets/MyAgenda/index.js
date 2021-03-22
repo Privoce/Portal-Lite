@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-// import { format } from 'date-fns';
+import { format, isAfter, isSameDay } from 'date-fns';
 import { RiRefreshLine } from 'react-icons/ri';
 import { useWidgetSettings } from '../../hooks';
 import { formatDistanceToNowStrict } from 'date-fns';
@@ -12,10 +12,37 @@ import AddEvent from './AddEvent';
 import Setting from './Setting';
 const googleAuthHook =
   process.env.REACT_APP_CHROME_EXT == 'true' ? useGoogleExtAuth : useGoogleAuth;
+const filterOutPassed = (groupEvents) => {
+  if (!groupEvents) return null;
+  let evts = [];
+  Object.entries(groupEvents).forEach(([, list]) => {
+    evts.push(...list);
+  });
+  evts = evts.filter((evt) => {
+    return (
+      (evt.isAllDay && isSameDay(new Date(evt.start), new Date())) ||
+      isAfter(new Date(evt.end), new Date())
+    );
+  });
+  let group = {};
+  evts.forEach((evt) => {
+    let { start } = evt;
+    let dateKey = null;
+    try {
+      dateKey = format(new Date(start), 'P');
+    } catch (error) {
+      dateKey = 'Not Yet Classified';
+    }
+    let tmp = group[dateKey];
+    group[dateKey] = tmp ? [...tmp, evt] : [evt];
+  });
+  return group;
+};
 export default function MyAgenda({ data, readonly, name, lang }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   // 此处很关键
-  let localEvents = data?.groupEvents || getWidgetSetting({ name, key: 'groupEvents' });
+  let localEvents =
+    filterOutPassed(data?.groupEvents) || getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
   const [fromLocal, setFromLocal] = useState(!!localEvents);
   const [latestEvent, setLatestEvent] = useState(undefined);
