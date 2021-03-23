@@ -2,7 +2,7 @@
   "name": "Portal - Home of Your Web Apps",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.6.16",
+  "version": "1.7.0",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "history", "storage"],
