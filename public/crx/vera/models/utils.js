@@ -111,12 +111,12 @@ function drag_over(event) {
   return false;
 }
 function getUsername() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     chrome.storage.local.get(['user'], function (result) {
       if (result.user) {
         resolve(result.user.username);
       } else {
-        reject();
+        resolve(null);
       }
     });
   });
@@ -148,6 +148,7 @@ async function appendHistory(participants = []) {
   return data;
 }
 export {
+  getUsername,
   appendHistory,
   copyToClipboard,
   selectText,

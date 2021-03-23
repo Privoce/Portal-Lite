@@ -136,7 +136,7 @@ table {
   z-index: 999;
   position: fixed;
   left: 0;
-  bottom: 10px;
+  bottom: 30px;
   width: 60px;
   height: 50px;
   background-color: #5c46e3;
@@ -178,6 +178,18 @@ table {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+#PORTAL_VERA_WIDGET > .username {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  border-radius: 5px;
+  font-size: 10px;
+  border: 1px solid #eee;
+  background-color: #333;
+  color: #fff;
+  padding: 2px 5px;
+  line-height: 1.1;
 }
 @keyframes AniFloating {
   from {
@@ -357,6 +369,7 @@ table {
   display: flex;
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .opts .opt {
+  padding: 0;
   opacity: 0.6;
   border: 1px solid #5c46e3;
   border-radius: 4px;
