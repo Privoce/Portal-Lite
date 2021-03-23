@@ -1,4 +1,7 @@
 import { lazy } from 'react';
+const VeraHistory = lazy(() =>
+  import(/* webpackChunkName: "widget.VeraHistory" */ './widgets/VeraHistory')
+);
 const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
 const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
 const WeiboHot = lazy(() =>
@@ -102,6 +105,19 @@ let Widgets = {
     screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
     created: '2020-12-17',
     updated: '2020-12-28'
+  },
+  'vera-history': {
+    // loadType: 'script',
+    preset: true,
+    title: '我的Vera历史',
+    description: 'Vera链接历史记录',
+    defaultSize: 'middle',
+    sizes: ['middle', 'large'],
+    comp: <VeraHistory />,
+    enableSetting: false,
+    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
+    created: '2021-03-22',
+    updated: '2021-03-22'
   },
   'my-agenda': {
     // loadType: 'script',
