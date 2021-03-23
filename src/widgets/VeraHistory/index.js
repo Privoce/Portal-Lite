@@ -40,12 +40,14 @@ export default function VeraHistory({ lang }) {
       <StyledWrapper>
         {loading ? (
           <div className="loading">{lang.fetching}</div>
-        ) : (
+        ) : list ? (
           <ul className="list">
             {list.map((item) => {
               return <HistoryItem key={item.peer} data={item} />;
             })}
           </ul>
+        ) : (
+          <StyledTip>Empty</StyledTip>
         )}
       </StyledWrapper>
     </>

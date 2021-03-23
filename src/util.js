@@ -6,7 +6,7 @@ const getDefaultIcon = (url) => {
   } catch (error) {
     console.log({ error });
   }
-  console.log({ iconPrefix });
+  // console.log({ iconPrefix });
   return `${iconPrefix}/favicon.ico`;
 };
 const highlightWord = (list, keyWord = '') => {
