@@ -147,7 +147,10 @@ async function appendHistory({ peerId, isHost }) {
   };
   try {
     // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
-    let resp = await fetch(`http://localhost:3008/service/authing/${username}/udf/vera`, putMethod);
+    let resp = await fetch(
+      `https://api.yangerxiao.com/service/authing/${username}/udf/vera`,
+      putMethod
+    );
     data = await resp.json();
   } catch (error) {
     console.log(error);

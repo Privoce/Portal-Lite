@@ -92,7 +92,7 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
     if (currUser) {
       if (process.env.REACT_APP_CHROME_EXT == 'true') {
         // 扩展环境，则注入用户信息
-        chrome.storage.local.set({ user }, function () {
+        chrome.storage.local.set({ user: currUser }, function () {
           console.log('Value is set to ', user);
         });
       }
