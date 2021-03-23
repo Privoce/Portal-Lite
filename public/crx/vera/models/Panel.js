@@ -2,13 +2,13 @@ import HostCamera from './HostCamera.js';
 import RemoteCamera from './RemoteCamera.js';
 import Invite from './Invite.js';
 import Join from './Join.js';
-import { drag_over, drag_start, drop } from './utils.js';
+import { drag_over, drag_start, drop, appendHistory } from './utils.js';
 window.REMOTE_PEER_IDS = [];
 window.REMOTE_STREAM = null;
 window.LOCAL_STREAM = null;
 window.CURRENT_PEER_ID = null;
-window.MyPeer = null;
-window.PEER_DATA_CONN = null;
+window.MyPortalVeraPeer = null;
+window.PEER_DATA_CONNS = {};
 class Panel {
   constructor(pvid = null) {
     this.inited = false;
@@ -57,7 +57,7 @@ class Panel {
           });
           this.dom.remove();
           document.documentElement.removeAttribute('invite-expand');
-          MyPeer.disconnect();
+          MyPortalVeraPeer.disconnect();
         }
       },
       true
@@ -66,7 +66,7 @@ class Panel {
   initPeer(pvid) {
     console.log('invited peerId', pvid);
     // init peerjs
-    MyPeer = CURRENT_PEER_ID
+    MyPortalVeraPeer = CURRENT_PEER_ID
       ? new Peer(CURRENT_PEER_ID, {
           host: 'r.nicegoodthings.com',
           // port: '80',
@@ -77,89 +77,103 @@ class Panel {
           // port: '80',
           path: '/ngt'
         });
-    console.log('my peer', MyPeer);
+    console.log('my peer', MyPortalVeraPeer);
     if (CURRENT_PEER_ID) {
       console.log('reopen', pvid, CURRENT_PEER_ID);
-      // MyPeer.reconnect();
+      // MyPortalVeraPeer.reconnect();
       this.init({ inviteId: pvid, localId: CURRENT_PEER_ID });
     }
-    // 受邀者，则主动连接对方
-    if (pvid) {
-      console.log('connect the invite peer');
-      PEER_DATA_CONN = MyPeer.connect(pvid);
-    }
-    MyPeer.on('open', (id) => {
+    MyPortalVeraPeer.on('open', (id) => {
+      // 受邀者，则主动连接对方
+      if (pvid) {
+        let inviteConn = MyPortalVeraPeer.connect(pvid);
+        console.log('connect the invite peer', pvid, inviteConn);
+        inviteConn.on('open', () => {
+          inviteConn.send('hi from remote!');
+        });
+        inviteConn.on('error', (error) => {
+          console.log('remote connect error', error);
+        });
+        PEER_DATA_CONNS[pvid] = inviteConn;
+      }
       CURRENT_PEER_ID = id;
       console.log('peer ID', id);
       this.dom.setAttribute('data-status', 'open');
       this.init({ inviteId: pvid, localId: id });
 
       // incoming connection
-      MyPeer.on('connection', (conn) => {
+      MyPortalVeraPeer.on('connection', (conn) => {
         console.log('incoming peer connection!', conn);
         this.dom.setAttribute('data-status', 'connected');
-        // connect the other side from main
+        // 如果是host，来自remote的连接，需要回应并存入全局变量
         if (!pvid) {
-          console.log('connect the other', conn.peer);
-          PEER_DATA_CONN = MyPeer.connect(conn.peer);
+          // 放入全局变量中
+          // PEER_DATA_CONNS[conn.peer] = conn;
+          // console.log('connect the other', conn.peer);
+          MyPortalVeraPeer.connect(conn.peer);
+          PEER_DATA_CONNS[conn.peer] = conn;
         }
 
         conn.on('open', () => {
           console.log('the connection is open and ready for read/write.');
+          conn.send('hello from host!');
           // 只有host才发初始化的消息
-          conn.send('hello!');
           if (!pvid) {
-            console.log('send connected peer ids');
-            PEER_DATA_CONN.send({ type: 'INIT', data: { pids: REMOTE_PEER_IDS } });
+            let cmd = { type: 'INIT', data: { pids: Object.keys(PEER_DATA_CONNS) } };
+            console.log('send connected peer ids', cmd);
+            conn.send(cmd);
           }
-          conn.on('data', (cmd = {}) => {
-            let { type = '', data } = cmd;
-            console.log(`received: `, type, data);
-            let videoContainer = this.dom.querySelector('.camera.remote .video');
-            switch (type) {
-              case 'RM_BG':
-                if (videoContainer.getAttribute('bg') == 'true') {
-                  videoContainer.querySelector('.opt.bg').click();
-                }
-                break;
-              case 'RS_BG':
-                if (videoContainer.getAttribute('bg') !== 'true') {
-                  videoContainer.querySelector('.opt.bg').click();
-                }
-                break;
-              case 'VIDEO_ON':
-                if (videoContainer.getAttribute('video') !== 'true') {
-                  videoContainer.querySelector('.opt.video').click();
-                }
-                break;
-              case 'VIDEO_OFF':
-                if (videoContainer.getAttribute('video') == 'true') {
-                  videoContainer.querySelector('.opt.video').click();
-                }
-                break;
-              case 'AUDIO_ON':
-                if (videoContainer.getAttribute('audio') !== 'true') {
-                  videoContainer.querySelector('.opt.audio').click();
-                }
-                break;
-              case 'AUDIO_OFF':
-                if (videoContainer.getAttribute('audio') == 'true') {
-                  videoContainer.querySelector('.opt.audio').click();
-                }
-                break;
+        });
+        conn.on('data', (cmd = {}) => {
+          let { type = '', data } = cmd;
+          console.log(`received: `, type, data);
+          let videoContainer = this.dom.querySelector('.camera.remote .video');
+          switch (type) {
+            case 'RM_BG':
+              if (videoContainer.getAttribute('bg') == 'true') {
+                videoContainer.querySelector('.opt.bg').click();
+              }
+              break;
+            case 'RS_BG':
+              if (videoContainer.getAttribute('bg') !== 'true') {
+                videoContainer.querySelector('.opt.bg').click();
+              }
+              break;
+            case 'VIDEO_ON':
+              if (videoContainer.getAttribute('video') !== 'true') {
+                videoContainer.querySelector('.opt.video').click();
+              }
+              break;
+            case 'VIDEO_OFF':
+              if (videoContainer.getAttribute('video') == 'true') {
+                videoContainer.querySelector('.opt.video').click();
+              }
+              break;
+            case 'AUDIO_ON':
+              if (videoContainer.getAttribute('audio') !== 'true') {
+                videoContainer.querySelector('.opt.audio').click();
+              }
+              break;
+            case 'AUDIO_OFF':
+              if (videoContainer.getAttribute('audio') == 'true') {
+                videoContainer.querySelector('.opt.audio').click();
+              }
+              break;
 
-              default:
-                break;
-            }
-          });
+            default:
+              break;
+          }
+        });
+        conn.on('error', (error) => {
+          console.log('host connect error', error);
         });
       });
-      MyPeer.on('disconnected', () => {
+      MyPortalVeraPeer.on('disconnected', () => {
         this.dom.setAttribute('data-status', 'disconnected');
       });
     });
     // incoming voice/video connection
-    MyPeer.on('call', async (call) => {
+    MyPortalVeraPeer.on('call', async (call) => {
       console.log('called from remote');
       // 加入当前remote peer列表
       REMOTE_PEER_IDS.push(call.peer);
@@ -169,6 +183,8 @@ class Panel {
         console.log('attach remote video');
         cameraList.appendChild(remoteCamera.getDom());
         call.answer(LOCAL_STREAM); // Answer the call with an A/V stream.
+        // 写入历史记录
+        appendHistory();
         call.on('stream', (s) => {
           REMOTE_STREAM = s;
           remoteCamera.attachStream(s);
@@ -178,17 +194,19 @@ class Panel {
         call.on('close', () => {
           console.log('call close');
           // 从当前remote peer列表剔除
-          REMOTE_PEER_IDS = REMOTE_PEER_IDS.filter((pid) => pid !== call.peer);
+          PEER_DATA_CONNS = Object.fromEntries(
+            Object.entries(PEER_DATA_CONNS).filter(([pid, conn]) => pid !== call.peer)
+          );
         });
       } catch (error) {
         console.error('Failed to get local stream', error);
       }
     });
-    MyPeer.on('error', (error) => {
+    MyPortalVeraPeer.on('error', (error) => {
       console.log({ error });
       this.dom.setAttribute('data-status', 'error');
     });
-    MyPeer.on('close', () => {
+    MyPortalVeraPeer.on('close', () => {
       console.log('connect close');
       // this.dom.setAttribute('data-status', 'close');
     });

@@ -5,7 +5,7 @@
   "version": "1.6.16",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
-  "permissions": ["tabs", "identity", "history"],
+  "permissions": ["tabs", "identity", "history", "storage"],
   "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
   "icons": {
     "16": "/favicon-16x16.png",
@@ -28,6 +28,7 @@
     {
       "matches": ["<all_urls>"],
       "js": [
+        "crx/vera/assets/authing.min.js",
         "crx/vera/assets/tf.min.js",
         "crx/vera/assets/body-pix@2.1.js",
         "crx/vera/assets/peerjs.min.js",

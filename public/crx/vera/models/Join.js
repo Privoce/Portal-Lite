@@ -21,7 +21,7 @@ class Join {
         let cameraList = this.dom.previousElementSibling;
         console.log('attach remote video');
         cameraList.appendChild(remoteCamera.getDom());
-        let call = MyPeer.call(inviteId, LOCAL_STREAM);
+        let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
         call.on('stream', (st) => {
           REMOTE_STREAM = st;
           remoteCamera.attachStream(st);

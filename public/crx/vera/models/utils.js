@@ -110,4 +110,50 @@ function drag_over(event) {
   event.preventDefault();
   return false;
 }
-export { copyToClipboard, selectText, bgRestore, bgRemove, drag_over, drag_start, drop };
+function getUsername() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(['user'], function (result) {
+      if (result.user) {
+        resolve(result.user.username);
+      } else {
+        reject();
+      }
+    });
+  });
+}
+async function appendHistory(participants = []) {
+  let username = await getUsername();
+  if (!username) return;
+  const putMethod = {
+    method: 'PUT', // Method itself
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8' // Indicates the content
+    },
+    body: JSON.stringify({
+      title: document.title,
+      url: location.href,
+      timestamp: new Date().getTime(),
+      participants
+    }) // We send data in JSON format
+  };
+  let data = {
+    code: -1
+  };
+  try {
+    let resp = await fetch(`http://localhost:3008/service/authing/${username}/udf/vera`, putMethod);
+    data = await resp.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return data;
+}
+export {
+  appendHistory,
+  copyToClipboard,
+  selectText,
+  bgRestore,
+  bgRemove,
+  drag_over,
+  drag_start,
+  drop
+};
