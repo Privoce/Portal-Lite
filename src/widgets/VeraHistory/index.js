@@ -1,24 +1,40 @@
-// import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { RiRefreshLine } from 'react-icons/ri';
 // import { useWidgetSettings } from '../../hooks';
 // import { formatDistanceToNowStrict } from 'date-fns';
+import styled from 'styled-components';
+import { useAuthing } from '@authing/react-ui-components';
+import { appId } from '../../InitialConfig';
+
 import StyledWrapper from './styled';
 import HistoryItem from './HistoryItem';
 import useHistory from './useHistory';
+const StyledTip = styled.div`
+  width: 100%;
+  height: 100%;
+  font-size: 0.18rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 export default function VeraHistory({ lang }) {
+  const { authClient } = useAuthing({ appId });
+  const [checkingLogin, setCheckingLogin] = useState(true);
   // const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const { data: list, error, loading } = useHistory('Tristan');
-  // const [list, setList] = useState([
-  //   {
-  //     peer: 'c548144f-6ddf-4bc5-8f54-9c5c44089fa1',
-  //     title: 'My Portal',
-  //     url: 'https://github.com/ElizabethHudnott/peerjs-groups',
-  //     timestamp: new Date().getTime(),
-  //     participants: ['Tristan', 'Suhan']
-  //   }
-  // ]);
+  const { data: list, error, loading, username, setUsername } = useHistory();
   console.log({ list });
-  if (error) return 'error';
+  useEffect(() => {
+    const initLoginStatus = async () => {
+      let user = await authClient.getCurrentUser();
+      setCheckingLogin(false);
+      if (user) {
+        setUsername(user.username);
+      }
+    };
+    initLoginStatus();
+  }, [authClient]);
+  if (!username && !checkingLogin) return <StyledTip>Login first</StyledTip>;
+  if (error) return <StyledTip>error</StyledTip>;
   return (
     <>
       <StyledWrapper>

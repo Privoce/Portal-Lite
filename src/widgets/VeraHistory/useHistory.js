@@ -1,12 +1,18 @@
 import useSWR from 'swr';
+import { useState } from 'react';
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
-function useHistory(user) {
+function useHistory() {
+  const [username, setUsername] = useState(null);
   const { data, error } = useSWR(
-    `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${user}/udf/vera`,
+    username
+      ? `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${username}/udf/vera`
+      : null,
     fetcher
   );
 
   return {
+    username,
+    setUsername,
     data: data?.data,
     loading: !error && !data,
     error
