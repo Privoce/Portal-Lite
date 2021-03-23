@@ -138,12 +138,16 @@ const zh = {
       ['my-agenda']: {
         title: '我的日程',
         locale: 'zh-CN',
+        empty: '暂无事件',
         fetching: '正在获取日程数据，请耐心等候...',
         today: '今天',
         addEvent: {
           addTo: '添加至',
           submit: '提交'
         }
+      },
+      ['vera-history']: {
+        title: 'Vera历史记录'
       }
     }
   }

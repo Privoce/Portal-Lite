@@ -133,12 +133,16 @@ const es = {
       ['my-agenda']: {
         title: 'Mi Agenda',
         locale: 'es',
+        empty: 'No Events',
         fetching: 'Cargando...',
         today: 'Hoy Dia',
         addEvent: {
           addTo: 'Añadir',
           submit: 'Enviar'
         }
+      },
+      ['vera-history']: {
+        title: 'My Vera History'
       }
     }
   }

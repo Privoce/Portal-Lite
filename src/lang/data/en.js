@@ -137,12 +137,16 @@ const en = {
       ['my-agenda']: {
         title: 'My Agenda',
         locale: 'en-US',
+        empty: 'No Events',
         fetching: 'Loading...',
         today: 'Today',
         addEvent: {
           addTo: 'Add To',
           submit: 'Submit'
         }
+      },
+      ['vera-history']: {
+        title: 'My Vera History'
       }
     }
   }

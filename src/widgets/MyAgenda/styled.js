@@ -79,7 +79,8 @@ const StyledWrapper = styled.div`
     }
   }
 
-  .loading {
+  .loading,
+  .empty {
     font-size: 0.2rem;
     height: 100%;
     display: flex;

@@ -82,7 +82,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
       const sortedArr = Object.entries(groupEvents).sort(([a], [b]) => {
         return new Date(a) - new Date(b);
       });
-      const [firstArr] = sortedArr;
+      const [firstArr = [null, null]] = sortedArr;
       const [, events] = firstArr;
       if (events) {
         setLatestEvent(events[0]);
@@ -127,6 +127,8 @@ export default function MyAgenda({ data, readonly, name, lang }) {
         </div>
         {loading && !groupEvents ? (
           <div className="loading">{lang.fetching}</div>
+        ) : groupEvents == null ? (
+          <div className="empty">{lang.empty}</div>
         ) : (
           <ul className="list" ref={listEle}>
             {Object.entries(groupEvents || {})

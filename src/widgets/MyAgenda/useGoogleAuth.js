@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { gapi, loadAuth2 } from 'gapi-script';
 import { format, addDays } from 'date-fns';
-const formatEvents = (evts, calendars) => {
+const formatEvents = (evts = [], calendars) => {
   console.log({ calendars });
+  if (evts.length == 0) return null;
   let items = evts
     .map((evt) => {
       const {
