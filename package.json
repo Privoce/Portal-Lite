@@ -63,6 +63,7 @@
     "styled-components": "^5.2.1",
     "styled-reset": "^4.3.4",
     "swiper": "^6.5.0",
+    "swr": "^0.5.4",
     "terser-webpack-plugin": "4.2.3",
     "timeago.js": "^4.0.2",
     "uniqolor": "^1.0.1",

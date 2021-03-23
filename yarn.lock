@@ -9608,6 +9608,11 @@ swiper@^6.5.0:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"
 
+swr@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.npm.taobao.org/swr/download/swr-0.5.4.tgz#9516af6ffd84ba2c23a804ff771be2eb83ba8d46"
+  integrity sha1-lRavb/2EuiwjqAT/dxvi64O6jUY=
+
 symbol-observable@^2.0.0:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/symbol-observable/download/symbol-observable-2.0.3.tgz?cache=0&sync_timestamp=1604338077306&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsymbol-observable%2Fdownload%2Fsymbol-observable-2.0.3.tgz#5b521d3d07a43c351055fa43b8355b62d33fd16a"
