@@ -1,3 +1,4 @@
+import { userKey } from './config.js';
 const selectText = (node) => {
   // node = document.getElementById(node);
 
@@ -114,16 +115,19 @@ function getUsername() {
   return new Promise((resolve) => {
     chrome.storage.local.get(['user'], function (result) {
       if (result.user) {
-        resolve(result.user.username);
+        // resolve(result.user.username);
+        let tmp = result.user.username;
+        resolve(tmp == 'zerosoul' ? 'Tristan' : tmp);
       } else {
         resolve(null);
       }
     });
   });
 }
-async function appendHistory(participants = []) {
+async function appendHistory({ peerId, isHost }) {
   let username = await getUsername();
   if (!username) return;
+  let urlUsername = new URLSearchParams(location.search).get(userKey) || '';
   const putMethod = {
     method: 'PUT', // Method itself
     headers: {
@@ -133,13 +137,16 @@ async function appendHistory(participants = []) {
       title: document.title,
       url: location.href,
       timestamp: new Date().getTime(),
-      participants
+      peerId,
+      host: isHost ? username : urlUsername == 'zerosoul' ? 'Tristan' : urlUsername,
+      username
     }) // We send data in JSON format
   };
   let data = {
     code: -1
   };
   try {
+    // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
     let resp = await fetch(`http://localhost:3008/service/authing/${username}/udf/vera`, putMethod);
     data = await resp.json();
   } catch (error) {

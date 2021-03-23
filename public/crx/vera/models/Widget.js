@@ -1,4 +1,5 @@
 import { getUsername } from './utils.js';
+window.PORTAL_USER_NAME = null;
 class Widget {
   constructor(pvid) {
     this.dom = document.createElement('aside');
@@ -9,6 +10,7 @@ class Widget {
     this.dom.innerHTML = `<div class="portal_logo"></div>`;
     getUsername().then((username) => {
       if (username) {
+        PORTAL_USER_NAME = username;
         let userEle = document.createElement('span');
         userEle.classList.add('username');
         userEle.innerHTML = username;

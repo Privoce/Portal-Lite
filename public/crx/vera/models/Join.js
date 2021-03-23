@@ -1,4 +1,5 @@
 import RemoteCamera from './RemoteCamera.js';
+import { appendHistory } from './utils.js';
 class Join {
   constructor({ inviteId = null }) {
     this.dom = document.createElement('div');
@@ -21,11 +22,13 @@ class Join {
         console.log('attach remote video');
         cameraList.appendChild(remoteCamera.getDom());
         let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
+        // 加入历史记录
+        appendHistory({ peerId: inviteId, isHost: false });
         call.on('stream', (st) => {
+          this.dom.remove();
           REMOTE_STREAM = st;
           remoteCamera.attachStream(st);
           cameraList.setAttribute('camera-status', 'connected');
-          this.dom.remove();
         });
         call.on('close', () => {
           console.log('call close');

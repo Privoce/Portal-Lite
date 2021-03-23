@@ -1,4 +1,4 @@
-import { fullStreamConfig, audioSreamConfig } from './config.js';
+import { fullStreamConfig, audioStreamConfig } from './config.js';
 import { bgRemove, bgRestore } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
@@ -118,12 +118,12 @@ class HostCamera {
     //  贴上本地视频
     try {
       // 一次性获取两个授权
-      let devices = navigator.mediaDevices.enumerateDevices();
+      let devices = await navigator.mediaDevices.enumerateDevices();
       let hasVideoCam = devices.some((d) => {
         return d.deviceId && d.kind == 'videoinput';
       });
       LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
-        hasVideoCam ? fullStreamConfig : audioSreamConfig
+        hasVideoCam ? fullStreamConfig : audioStreamConfig
       );
       let videoDom = this.dom.querySelector('video');
       videoDom.parentElement.removeAttribute('audio');

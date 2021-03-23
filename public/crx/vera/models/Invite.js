@@ -1,8 +1,13 @@
 import { copyToClipboard, selectText } from './utils.js';
+import { peerKey, userKey } from './config.js';
 class Invite {
   constructor({ localId = null }) {
+    console.log({ localId });
     let obj = new URL(location.href);
-    obj.searchParams.append('portal-vera-id', localId);
+    obj.searchParams.append(peerKey, localId);
+    if (PORTAL_USER_NAME) {
+      obj.searchParams.append(userKey, PORTAL_USER_NAME);
+    }
     this.inviteUrl = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`;
     this.dom = document.createElement('div');
     this.dom.classList.add('invite');

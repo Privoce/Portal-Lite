@@ -1,5 +1,6 @@
 import Widget from './models/Widget.js';
 import Panel from './models/Panel.js';
+import { peerKey, installCheckKey } from './models/config.js';
 // import Camera from './models/Camera.js';
 // 初始化挂件
 export function main() {
@@ -17,7 +18,7 @@ export function main() {
   console.log('Is chrome.runtime available here?', typeof chrome.runtime.sendMessage == 'function');
 }
 const init = () => {
-  document.documentElement.setAttribute('ext-portal', 1);
-  let pvid = new URLSearchParams(location.search).get('portal-vera-id') || null;
+  document.documentElement.setAttribute(installCheckKey, 1);
+  let pvid = new URLSearchParams(location.search).get(peerKey) || null;
   return { pvid };
 };

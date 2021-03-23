@@ -18,5 +18,22 @@ const fullStreamConfig = {
   },
   audio: true
 };
+const peerConfig = {
+  host: 'r.nicegoodthings.com',
+  // port: '80',
+  path: '/ngt',
+  debug: 3
+};
+const userKey = 'portal-vera-host-user';
+const peerKey = 'portal-vera-id';
+const installCheckKey = 'ext-portal';
 // const ExtFlag = 'portal-ext';
-export { audioStreamConfig, videoStreamConfig, fullStreamConfig };
+export {
+  installCheckKey,
+  userKey,
+  peerKey,
+  peerConfig,
+  audioStreamConfig,
+  videoStreamConfig,
+  fullStreamConfig
+};

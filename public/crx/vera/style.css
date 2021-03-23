@@ -182,7 +182,7 @@ table {
 #PORTAL_VERA_WIDGET > .username {
   position: absolute;
   bottom: -20px;
-  left: 0;
+  left: 20px;
   border-radius: 5px;
   font-size: 10px;
   border: 1px solid #eee;
