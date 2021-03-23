@@ -185,6 +185,8 @@ class Panel {
         call.answer(LOCAL_STREAM); // Answer the call with an A/V stream.
         // 写入历史记录
         appendHistory();
+        // 去掉邀请链接框
+        this.inviteBox.remove();
         call.on('stream', (s) => {
           REMOTE_STREAM = s;
           remoteCamera.attachStream(s);
@@ -215,11 +217,11 @@ class Panel {
     if (this.inited) return;
     console.log('invite init ids', inviteId, localId);
     let cameraList = this.dom.querySelector('.cameras');
-    let OptBox = inviteId ? new Join({ inviteId }) : new Invite({ localId });
+    this.inviteBox = inviteId ? new Join({ inviteId }) : new Invite({ localId });
     // 如果 inviteId 存在，则是被邀请者
     let CameraBox = new HostCamera({ inviteId, localId });
     cameraList.appendChild(CameraBox);
-    cameraList.insertAdjacentElement('afterend', OptBox);
+    cameraList.insertAdjacentElement('afterend', this.inviteBox);
     this.inited = true;
   }
 }
