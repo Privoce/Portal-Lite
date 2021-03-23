@@ -1,4 +1,3 @@
-import { localStreamConfig, remoteStreamConfig } from './config.js';
 import { bgRemove, bgRestore } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;

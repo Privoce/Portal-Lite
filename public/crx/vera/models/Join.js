@@ -1,4 +1,3 @@
-import { localStreamConfig, remoteStreamConfig } from './config.js';
 import RemoteCamera from './RemoteCamera.js';
 class Join {
   constructor({ inviteId = null }) {
