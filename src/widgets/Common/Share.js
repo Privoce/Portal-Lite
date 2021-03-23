@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { IoMdClose } from 'react-icons/io';
 
 import { useWidgetSettings } from '../../hooks';
-import { appId } from '../../component/Profile/config';
+import { appId } from '../../InitialConfig';
 
 const StyledWrapper = styled.div`
   z-index: 999;

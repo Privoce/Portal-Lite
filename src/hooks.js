@@ -2,7 +2,7 @@
 import createPersistedState from 'use-persisted-state';
 import { useState, useEffect, useCallback } from 'react';
 import { useAuthing } from '@authing/react-ui-components';
-
+import { appId } from './InitialConfig';
 import { Widgets } from './data';
 
 // 小组件
@@ -50,7 +50,7 @@ const defaultGetParams = { key: 'local', name: 'common' };
 // const useLocalSettings = createLocalStorageStateHook(LOCAL_WG_SETTINGS_KEY, null);
 const useWidgetSettings = () => {
   const [widgetSettings, setWidgetSettings] = useLocalSettings();
-  const { authClient } = useAuthing({ appId: '6034a70af621af721e5320b9' });
+  const { authClient } = useAuthing({ appId });
   const updateLocalData = async (newData) => {
     // if(!newData){
 

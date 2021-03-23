@@ -5,7 +5,7 @@ import { AuthingGuard } from '@authing/react-ui-components';
 
 // 引入 css 文件
 import '@authing/react-ui-components/lib/index.min.css';
-import { appId, GuardConfig } from './config';
+import { appId, GuardConfig } from '../../InitialConfig';
 import { useWidgetSettings } from '../../hooks';
 const StyledIcon = styled.div`
   position: relative;

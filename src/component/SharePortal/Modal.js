@@ -6,7 +6,7 @@ import { useAuthing } from '@authing/react-ui-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { IoMdClose } from 'react-icons/io';
 
-import { appId } from '../../component/Profile/config';
+import { appId } from '../../InitialConfig';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
   z-index: 999;

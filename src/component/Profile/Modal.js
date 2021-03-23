@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { useLanguage } from 'uselanguage';
 
-import { appId } from './config';
+import { appId } from '../../InitialConfig';
 import IconClose from '../../asset/img/icon.close.png';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
