@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { IoMdClose } from 'react-icons/io';
 
 import { useWidgetSettings } from '../../hooks';
-import { appId } from '../../InitialConfig';
+import { appId, appHost } from '../../InitialConfig';
 
 const StyledWrapper = styled.div`
   z-index: 999;
@@ -141,7 +141,10 @@ const StyledWrapper = styled.div`
 let prefix =
   process.env.REACT_APP_CHROME_EXT == 'true' ? 'https://nicegoodthings.com' : location.origin;
 export default function Share({ name, lang, closeModal }) {
-  const { authClient } = useAuthing({ appId });
+  const { authClient } = useAuthing({
+    appId,
+    appHost
+  });
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const [username, setUsername] = useState(null);
   const [link, setLink] = useState('Generating link...');
