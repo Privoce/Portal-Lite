@@ -5,6 +5,7 @@ import { useWidgetSettings } from '../../hooks';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { appId, appHost } from '../../InitialConfig';
+import DownloadExt from '../../component/DownloadExtension';
 
 import StyledWrapper from './styled';
 import HistoryItem from './HistoryItem';
@@ -22,6 +23,7 @@ export default function VeraHistory({ data, name, lang, readonly }) {
     appId,
     appHost
   });
+  const [extInstalled] = useState(!!document.documentElement.getAttribute('ext-portal'));
   const [checkingLogin, setCheckingLogin] = useState(true);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localItems = getWidgetSetting({ name });
@@ -44,6 +46,7 @@ export default function VeraHistory({ data, name, lang, readonly }) {
       updateWidgetSetting({ name, data: list });
     }
   }, [list, readonly]);
+  if (!extInstalled) return <DownloadExt page={false}></DownloadExt>;
   if (!username && !checkingLogin && !readonly) return <StyledTip>Login first</StyledTip>;
   if (loading && !readonly) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;

@@ -1,7 +1,7 @@
-// import React from 'react';
+// import React from 'react'
 import styled from 'styled-components';
 const StyledWrapper = styled.section`
-  min-height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -14,11 +14,13 @@ const StyledWrapper = styled.section`
     border-radius: 50%;
     border: 1px solid #eee;
     margin-bottom: 0.4rem;
+    display: flex;
     img {
       width: 100%;
       height: 100%;
     }
   }
+
   .tip {
     color: #999;
     font-size: 0.25rem;
@@ -29,10 +31,23 @@ const StyledWrapper = styled.section`
     font-size: 0.34rem;
     text-decoration: underline;
   }
+  &.widget {
+    .logo {
+      width: 1rem;
+      height: 1rem;
+      margin-bottom: 0.3rem;
+    }
+    .tip {
+      font-size: 0.2rem;
+    }
+    .download {
+      font-size: 0.25rem;
+    }
+  }
 `;
-export default function DownloadExt() {
+export default function DownloadExtension({ page = true }) {
   return (
-    <StyledWrapper>
+    <StyledWrapper className={page ? '' : 'widget'}>
       <div className="logo">
         <img
           alt="Portal Logo"

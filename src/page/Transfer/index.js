@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import DownloadExt from './DownloadExt';
+import DownloadExt from '../../component/DownloadExtension';
 const StyledWrapper = styled.section`
   min-height: 100vh;
   display: flex;
