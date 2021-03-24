@@ -5,7 +5,9 @@ function useHistory(localItems) {
   const [username, setUsername] = useState(null);
   const { data, error } = useSWR(
     username
-      ? `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${username}/udf/vera`
+      ? `${process.env.REACT_APP_SERVICE_DOMAIN}/service/authing/${encodeURIComponent(
+          username
+        )}/udf/vera`
       : null,
     fetcher
   );
