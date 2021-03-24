@@ -146,7 +146,7 @@ const en = {
         }
       },
       ['vera-history']: {
-        title: 'My Vera History'
+        title: 'Vera Co-browsing'
       }
     }
   }
