@@ -38,7 +38,7 @@ export default function Home() {
   const handleSettingClick = (isDark) => {
     if (isDark) {
       let isDark = window.DARK_MODE?.isActivated();
-      setDarkTip(isDark ? 'Dark Mode' : 'Light Mode');
+      setDarkTip(isDark ? 'Light Mode' : 'Dark Mode');
     }
   };
   useEffect(() => {
