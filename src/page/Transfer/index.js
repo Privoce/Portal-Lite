@@ -59,6 +59,32 @@ const StyledWrapper = styled.section`
     line-height: 1.5;
   }
 `;
+const StyledTip = styled.section`
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .logo {
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0.15rem;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-bottom: 0.2rem;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .txt {
+    color: #555;
+    padding: 0.5rem;
+    font-size: 0.4rem;
+    font-weight: 800;
+  }
+`;
 let inter = 0;
 export default function Transfer() {
   const { dest } = useParams();
@@ -66,7 +92,7 @@ export default function Transfer() {
   const [countdown, setCountdown] = useState(undefined);
   const [tip, setTip] = useState('');
   const [jumpUrl, setJumpUrl] = useState(null);
-  const [portalVemosId, setPortalVemosId] = useState(null);
+  const [portalVeraId, setPortalVeraId] = useState(null);
   useEffect(() => {
     const checkExtInstalled = () => {
       let extInstalled = !!document.documentElement.getAttribute('ext-portal');
@@ -82,7 +108,7 @@ export default function Transfer() {
     let id = new URLSearchParams(new URL(decoded).search).get('portal-vera-id');
     if (id) {
       setJumpUrl(decoded);
-      setPortalVemosId(id);
+      setPortalVeraId(id);
       setTip('Redirecting...');
       setCountdown(5);
     }
@@ -101,8 +127,22 @@ export default function Transfer() {
       }
     }
   }, [countdown, jumpUrl]);
+  console.log({ checkResult });
   // 暂未检测
-  if (typeof checkResult == 'undefined') return 'checking';
+  if (typeof checkResult == 'undefined') {
+    return (
+      <StyledTip>
+        <div className="logo">
+          <img
+            alt="Portal Logo"
+            src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
+          />
+        </div>
+        <div className="txt">Checking Portal Vera</div>
+      </StyledTip>
+    );
+  }
+
   // 检测状态为未安装
   if (checkResult === false) return <DownloadExt />;
   return (
@@ -113,10 +153,10 @@ export default function Transfer() {
           src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
         />
       </div>
-      {portalVemosId && (
+      {portalVeraId && (
         <article className="id">
-          <h2 className="title">Your Portal Vemos Invite ID:</h2>
-          <p className="value">{portalVemosId}</p>
+          <h2 className="title">Your Portal Vera Invite ID:</h2>
+          <p className="value">{portalVeraId}</p>
         </article>
       )}
       {tip && (
