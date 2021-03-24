@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { useLanguage } from 'uselanguage';
+import { useWidgetSettings } from '../../hooks';
 
 import { appId, appHost } from '../../InitialConfig';
 import IconClose from '../../asset/img/icon.close.png';
@@ -81,6 +82,7 @@ const StyledWrapper = styled.section`
   }
 `;
 export default function Modal({ closeModal, updateUserInfo, data = {} }) {
+  const { clearWidgetSettings } = useWidgetSettings();
   const {
     language: {
       words: { profile }
@@ -97,6 +99,14 @@ export default function Modal({ closeModal, updateUserInfo, data = {} }) {
       authClient.logout();
       updateUserInfo(null);
       closeModal();
+      clearWidgetSettings();
+      if (process.env.REACT_APP_CHROME_EXT == 'true') {
+        // 扩展环境，则清掉用户信息
+        chrome.storage.local.set({ user: '' }, function () {
+          console.log('clear user');
+        });
+      }
+      location.reload();
     }
   };
   return (
