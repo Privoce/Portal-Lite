@@ -15,6 +15,10 @@ export function main() {
     document.documentElement.setAttribute('invite-expand', 1);
   };
   widget.init(inviteHandler);
+  // 受邀者 直接打开panel
+  if (pvid) {
+    inviteHandler();
+  }
   console.log('Is chrome.runtime available here?', typeof chrome.runtime.sendMessage == 'function');
 }
 const init = () => {
