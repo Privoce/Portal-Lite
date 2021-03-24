@@ -4,7 +4,7 @@ import { useWidgetSettings } from '../../hooks';
 // import { formatDistanceToNowStrict } from 'date-fns';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
-import { appId } from '../../InitialConfig';
+import { appId, appHost } from '../../InitialConfig';
 
 import StyledWrapper from './styled';
 import HistoryItem from './HistoryItem';
@@ -18,7 +18,10 @@ const StyledTip = styled.div`
   justify-content: center;
 `;
 export default function VeraHistory({ data, name, lang, readonly }) {
-  const { authClient } = useAuthing({ appId });
+  const { authClient } = useAuthing({
+    appId,
+    appHost
+  });
   const [checkingLogin, setCheckingLogin] = useState(true);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localItems = getWidgetSetting({ name });
