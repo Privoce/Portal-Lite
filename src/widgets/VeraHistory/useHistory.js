@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { useState } from 'react';
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
-function useHistory() {
+function useHistory(localItems) {
   const [username, setUsername] = useState(null);
   const { data, error } = useSWR(
     username
@@ -13,7 +13,7 @@ function useHistory() {
   return {
     username,
     setUsername,
-    data: data?.data,
+    data: data?.data || localItems,
     loading: !error && !data,
     error
   };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { RiRefreshLine } from 'react-icons/ri';
-// import { useWidgetSettings } from '../../hooks';
+import { useWidgetSettings } from '../../hooks';
 // import { formatDistanceToNowStrict } from 'date-fns';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
@@ -17,11 +17,12 @@ const StyledTip = styled.div`
   align-items: center;
   justify-content: center;
 `;
-export default function VeraHistory({ lang }) {
+export default function VeraHistory({ data, name, lang, readonly }) {
   const { authClient } = useAuthing({ appId });
   const [checkingLogin, setCheckingLogin] = useState(true);
-  // const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const { data: list, error, loading, username, setUsername } = useHistory();
+  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  let localItems = getWidgetSetting({ name });
+  const { data: list, error, loading, username, setUsername } = useHistory(localItems);
   console.log({ list });
   useEffect(() => {
     const initLoginStatus = async () => {
@@ -31,18 +32,26 @@ export default function VeraHistory({ lang }) {
         setUsername(user.username);
       }
     };
-    initLoginStatus();
-  }, [authClient]);
-  if (!username && !checkingLogin) return <StyledTip>Login first</StyledTip>;
+    if (!readonly) {
+      initLoginStatus();
+    }
+  }, [authClient, readonly]);
+  useEffect(() => {
+    if (!readonly) {
+      updateWidgetSetting({ name, data: list });
+    }
+  }, [list, readonly]);
+  if (!username && !checkingLogin && !readonly) return <StyledTip>Login first</StyledTip>;
+  if (loading && !readonly) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
+  const items = readonly ? data.local : list;
+  console.log({ items, localItems });
   return (
     <>
       <StyledWrapper>
-        {loading ? (
-          <div className="loading">{lang.fetching}</div>
-        ) : list ? (
+        {items ? (
           <ul className="list">
-            {list.map((item) => {
+            {items.map((item) => {
               return <HistoryItem key={item.peer} data={item} />;
             })}
           </ul>
