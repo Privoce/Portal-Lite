@@ -1,4 +1,4 @@
-import HostCamera from './HostCamera.js';
+import LocalCamera from './LocalCamera.js';
 import Invite from './Invite.js';
 import Join from './Join.js';
 import PeerClient from './PeerClient.js';
@@ -76,7 +76,7 @@ class Panel {
     let cameraList = this.dom.querySelector('.cameras');
     this.inviteBox = inviteId ? new Join({ inviteId }) : new Invite({ localId });
     // 如果 inviteId 存在，则是被邀请者
-    let CameraBox = new HostCamera({ inviteId, localId });
+    let CameraBox = new LocalCamera({ inviteId, localId });
     cameraList.appendChild(CameraBox);
     cameraList.insertAdjacentElement('afterend', this.inviteBox);
     this.inited = true;

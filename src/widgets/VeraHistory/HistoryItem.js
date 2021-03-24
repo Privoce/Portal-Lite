@@ -83,7 +83,7 @@ const StyledEvent = styled.li`
 `;
 
 export default function HistoryItem({ data = {} }) {
-  const { peerId, title, url, timestamp, host, username } = data;
+  const { peerId, title, url, timestamp, host, username, participants = [] } = data;
   return (
     <StyledEvent id={timestamp}>
       <article className="content" data-peer={peerId}>
@@ -93,7 +93,7 @@ export default function HistoryItem({ data = {} }) {
           {url}
         </a>
         <div className="participants">
-          {[host, username].map((p, idx) => {
+          {[...new Set([host, username, ...participants])].map((p, idx) => {
             return (
               <span className="user" key={p}>
                 {idx === 0 && <IoIosMic />}

@@ -40,28 +40,26 @@ const bgRemove = async (videoContainer) => {
     quantBytes: 2
   });
   videoContainer.setAttribute('bg-rm-status', 'ready');
-  let isHost = videoContainer.classList.contains('host');
+  let isHost = videoContainer.classList.contains('local');
   if (isHost) {
-    window.VERA_HOST_RM_BG = true;
-    window.PEER_DATA_CONN?.send({ type: 'RM_BG' });
+    window.VERA_LOCAL_RM_BG = true;
   } else {
     window.VERA_REMOTE_RM_BG = true;
   }
-  draw({ key: isHost ? 'host' : 'remote', video, canvas, offCanvas, net });
+  draw({ key: isHost ? 'local' : 'remote', video, canvas, offCanvas, net });
   console.log({ video, canvas, offCanvas });
 };
 const bgRestore = (container) => {
-  if (container.classList.contains('host')) {
-    window.VERA_HOST_RM_BG = false;
-    window.PEER_DATA_CONN?.send({ type: 'RS_BG' });
+  if (container.classList.contains('local')) {
+    window.VERA_LOCAL_RM_BG = false;
   } else {
     window.VERA_REMOTE_RM_BG = false;
   }
   container.setAttribute('bg-rm-status', 'restore');
 };
-const draw = async ({ key = 'host', video, canvas, offCanvas, net }) => {
+const draw = async ({ key = 'local', video, canvas, offCanvas, net }) => {
   let keyMap = {
-    host: 'VERA_HOST_RM_BG',
+    local: 'VERA_LOCAL_RM_BG',
     remote: 'VERA_REMOTE_RM_BG'
   };
   if (!window[keyMap[key]]) {
@@ -117,7 +115,7 @@ function getUsername() {
       if (result.user) {
         // resolve(result.user.username);
         let tmp = result.user.username;
-        resolve(tmp == 'zerosoul' ? 'Tristan' : tmp);
+        resolve(tmp);
       } else {
         resolve(null);
       }
@@ -125,8 +123,7 @@ function getUsername() {
   });
 }
 async function appendHistory({ peerId, isHost }) {
-  let username = await getUsername();
-  if (!username) return;
+  if (!PORTAL_USER_NAME) return;
   let urlUsername = new URLSearchParams(location.search).get(userKey) || '';
   const putMethod = {
     method: 'PUT', // Method itself
@@ -138,8 +135,9 @@ async function appendHistory({ peerId, isHost }) {
       url: location.href,
       timestamp: new Date().getTime(),
       peerId,
-      host: isHost ? username : urlUsername == 'zerosoul' ? 'Tristan' : urlUsername,
-      username
+      host: isHost ? PORTAL_USER_NAME : urlUsername,
+      username: PORTAL_USER_NAME,
+      participants: USERNAMES
     }) // We send data in JSON format
   };
   let data = {
@@ -148,7 +146,7 @@ async function appendHistory({ peerId, isHost }) {
   try {
     // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
     let resp = await fetch(
-      `https://api.yangerxiao.com/service/authing/${username}/udf/vera`,
+      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(username)}/udf/vera`,
       putMethod
     );
     data = await resp.json();
@@ -157,6 +155,7 @@ async function appendHistory({ peerId, isHost }) {
   }
   return data;
 }
+
 export {
   getUsername,
   appendHistory,

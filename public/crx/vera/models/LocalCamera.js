@@ -1,9 +1,9 @@
-import { fullStreamConfig, audioStreamConfig } from './config.js';
+import { fullStreamConfig, audioStreamConfig, videoStreamConfig } from './config.js';
 import { bgRemove, bgRestore } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
   let videoContainer = videoEle.parentElement;
-  let isHost = root.classList.contains('host');
+  // let isHost = root.classList.contains('local');
   let isTrue;
   let map = {
     audio: {
@@ -63,19 +63,22 @@ const handleControl = async (control, btn, root) => {
       bgRestore(root);
     }
   }
-  if (isHost) {
-    // 如果是主camera，需要给对方发送指令
-    let cmd = { type: isTrue ? map[control].off : map[control].on };
-    console.log('send cmd to remote camera', cmd);
-    PEER_DATA_CONN?.send(cmd);
-  }
+  // if (isHost) {
+  // 给现存链接 依次发消息
+  let cmd = { type: isTrue ? map[control].off : map[control].on };
+  console.log('send cmd to remote camera', cmd);
+  Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
+    console.log('send to peer', pid);
+    conn.send(cmd);
+  });
+  // }
 };
-class HostCamera {
-  constructor({ inviteId = null, localId = null }) {
+class LocalCamera {
+  constructor({ localId = null }) {
     this.dom = document.createElement('div');
     this.dom.setAttribute('peer-id', localId);
     this.dom.classList.add('camera');
-    this.dom.classList.add('host');
+    this.dom.classList.add('local');
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
     <div class='video' video='true' bg='true' audio='true'>
@@ -87,7 +90,7 @@ class HostCamera {
         <button class='opt audio' control='audio' title='audio'></button>
         <button class='opt pin' control='pin' title='pin'></button>
       </div>
-      <video playsinline autoplay ></video>
+      <video playsinline autoplay muted='muted' ></video>
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
@@ -120,19 +123,20 @@ class HostCamera {
       // 一次性获取两个授权
       let devices = await navigator.mediaDevices.enumerateDevices();
       let hasVideoCam = devices.some((d) => {
-        return d.deviceId && d.kind == 'videoinput';
+        return d.kind == 'videoinput';
       });
+      // 仅是为了提前拿到授权
+      await navigator.mediaDevices.getUserMedia(hasVideoCam ? fullStreamConfig : audioStreamConfig);
       LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
-        hasVideoCam ? fullStreamConfig : audioStreamConfig
+        hasVideoCam ? videoStreamConfig : audioStreamConfig
       );
       let videoDom = this.dom.querySelector('video');
-      videoDom.parentElement.removeAttribute('audio');
+      // videoDom.parentElement.removeAttribute('audio');
       // let cloneStream = LOCAL_STREAM.clone();
       // 禁用本地音频
-      LOCAL_STREAM.getAudioTracks().forEach((t) => {
-        t.enabled = false;
-      });
-      // videoDom.setAttribute('muted', 'muted');
+      // LOCAL_STREAM.getAudioTracks().forEach((t) => {
+      //   t.enabled = false;
+      // });
       videoDom.srcObject = LOCAL_STREAM;
     } catch (error) {
       console.error('getUserMedia error', error);
@@ -140,4 +144,4 @@ class HostCamera {
     }
   }
 }
-export default HostCamera;
+export default LocalCamera;

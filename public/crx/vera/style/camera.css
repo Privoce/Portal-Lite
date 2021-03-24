@@ -10,7 +10,7 @@
   border: 1px dashed #5c46e3;
   background: none;
 }
-.camera.host {
+.camera.local {
   border-style: solid;
 }
 .camera:not(:last-child) {

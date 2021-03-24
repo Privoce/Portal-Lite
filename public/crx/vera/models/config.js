@@ -21,8 +21,9 @@ const fullStreamConfig = {
 const peerConfig = {
   host: 'r.nicegoodthings.com',
   // port: '80',
-  path: '/ngt',
-  debug: 3
+  path: '/ngt'
+  // config: { iceServers: [{ url: 'stun:stun.l.google.com:19302' }] }
+  // debug: 3
 };
 const userKey = 'portal-vera-host-user';
 const peerKey = 'portal-vera-id';
