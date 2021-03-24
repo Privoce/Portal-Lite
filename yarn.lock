@@ -56,13 +56,13 @@
     tslib "^1.10.0"
     zen-observable "^0.8.14"
 
-"@authing/react-ui-components@^2.2.7":
-  version "2.2.7"
-  resolved "https://registry.npm.taobao.org/@authing/react-ui-components/download/@authing/react-ui-components-2.2.7.tgz#94ad4c1bdae15750f8fdada45355a8d18511702d"
-  integrity sha1-lK1MG9rhV1D4/a2kU1Wo0YURcC0=
+"@authing/react-ui-components@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.npm.taobao.org/@authing/react-ui-components/download/@authing/react-ui-components-2.3.0.tgz#0584cca537eaed1875201e9028c693f589bfdc0d"
+  integrity sha1-BYTMpTfq7Rh1IB6QKMaT9Ym/3A0=
   dependencies:
     antd "^4.8.0"
-    authing-js-sdk "^4.11.16"
+    authing-js-sdk "^4.15.0"
     jsencrypt "^3.0.0-rc.1"
     qs "^6.9.4"
 
@@ -3166,10 +3166,10 @@ atob@^2.1.2:
   resolved "https://registry.npm.taobao.org/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
-authing-js-sdk@^4.11.16:
-  version "4.11.16"
-  resolved "https://registry.npm.taobao.org/authing-js-sdk/download/authing-js-sdk-4.11.16.tgz#8dc1e0aa9df45d67cc99430e03704f1cbceb50b9"
-  integrity sha1-jcHgqp30XWfMmUMOA3BPHLzrULk=
+authing-js-sdk@^4.15.0:
+  version "4.15.0"
+  resolved "https://registry.npm.taobao.org/authing-js-sdk/download/authing-js-sdk-4.15.0.tgz#96d37790bf735f92b93844e4d7aaa9f1d00f174d"
+  integrity sha1-ltN3kL9zX5K5OETk16qp8dAPF00=
   dependencies:
     axios "^0.19.2"
     jsencrypt "^3.0.0-rc.1"

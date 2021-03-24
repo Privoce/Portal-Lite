@@ -6,7 +6,7 @@ import { useAuthing } from '@authing/react-ui-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { IoMdClose } from 'react-icons/io';
 
-import { appId } from '../../InitialConfig';
+import { appId, appHost } from '../../InitialConfig';
 const modalRoot = document.querySelector('#modal-root');
 const StyledWrapper = styled.section`
   z-index: 999;
@@ -103,7 +103,10 @@ export default function Modal({ closeModal }) {
   } = useLanguage();
 
   const modal = useRef(null);
-  const { authClient } = useAuthing({ appId });
+  const { authClient } = useAuthing({
+    appId,
+    appHost
+  });
   const [username, setUsername] = useState(null);
   const [link, setLink] = useState('Generating link...');
   const [copied, setCopied] = useState(false);
