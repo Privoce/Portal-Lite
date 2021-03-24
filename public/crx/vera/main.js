@@ -22,6 +22,10 @@ export function main() {
   console.log('Is chrome.runtime available here?', typeof chrome.runtime.sendMessage == 'function');
 }
 const init = () => {
+  // 扩展环境，则注入安装标识
+  chrome.storage.local.set({ installed: true }, function () {
+    console.log('installed ');
+  });
   document.documentElement.setAttribute(installCheckKey, 1);
   let pvid = new URLSearchParams(location.search).get(peerKey) || null;
   return { pvid };

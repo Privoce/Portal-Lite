@@ -18,12 +18,21 @@ const StyledTip = styled.div`
   align-items: center;
   justify-content: center;
 `;
+let extInstalled = true;
+// 扩展环境
+if (process.env.REACT_APP_CHROME_EXT == 'true') {
+  chrome.storage.local.get(['installed'], function (result) {
+    extInstalled = result.installed;
+  });
+}
+let webpageCheck = !!document.documentElement.getAttribute('ext-portal');
+let finalCheck = process.env.REACT_APP_CHROME_EXT == 'true' ? extInstalled : webpageCheck;
 export default function VeraHistory({ data, name, lang, readonly }) {
   const { authClient } = useAuthing({
     appId,
     appHost
   });
-  const [extInstalled] = useState(!!document.documentElement.getAttribute('ext-portal'));
+  const [extInstalled] = useState(finalCheck);
   const [checkingLogin, setCheckingLogin] = useState(true);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localItems = getWidgetSetting({ name });
