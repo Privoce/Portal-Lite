@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
+  max-width: 13rem;
   margin: 0.3rem auto;
   padding: 0 0.5rem;
   @media (min-width: 320px) and (max-width: 860px) {
