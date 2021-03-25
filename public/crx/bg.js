@@ -9,3 +9,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     localStorage.setItem(key, value);
   }
 });
+chrome.runtime.onInstalled.addListener(function (details) {
+  // 扩展环境，则注入安装标识
+  chrome.storage.local.set({ installed: true }, function () {
+    console.log('installed ');
+  });
+});

@@ -4,7 +4,6 @@ import { peerKey, installCheckKey } from './models/config.js';
 // import Camera from './models/Camera.js';
 // 初始化挂件
 export function main() {
-  window.VERA_STREAMS = [];
   const { pvid } = init();
   const widget = new Widget(pvid);
   const inviteHandler = () => {
@@ -22,10 +21,7 @@ export function main() {
   console.log('Is chrome.runtime available here?', typeof chrome.runtime.sendMessage == 'function');
 }
 const init = () => {
-  // 扩展环境，则注入安装标识
-  chrome.storage.local.set({ installed: true }, function () {
-    console.log('installed ');
-  });
+  // localStorage.getItem()
   document.documentElement.setAttribute(installCheckKey, 1);
   let pvid = new URLSearchParams(location.search).get(peerKey) || null;
   return { pvid };
