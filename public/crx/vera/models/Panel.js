@@ -2,7 +2,6 @@ import LocalCamera from './LocalCamera.js';
 import Invite from './Invite.js';
 import Join from './Join.js';
 import PeerClient from './PeerClient.js';
-import { drag_over, drag_start, drop } from './utils.js';
 window.REMOTE_PEER_IDS = [];
 window.REMOTE_STREAM = null;
 window.LOCAL_STREAM = null;
@@ -12,11 +11,8 @@ class Panel {
     this.inited = false;
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_PANEL';
+    if (!pvid) this.dom.classList.add('host');
     this.dom.setAttribute('data-status', 'initial');
-    this.dom.draggable = true;
-    this.dom.addEventListener('dragstart', drag_start, false);
-    document.body.addEventListener('dragover', drag_over, false);
-    document.body.addEventListener('drop', drop, false);
     this.dom.innerHTML = `
       <div class='close'></div>
       <h2 class="title">Portal Vera</h2>
@@ -32,6 +28,7 @@ class Panel {
     this.initClose();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
+    new PlainDraggable(this.dom);
   }
   initClose() {
     this.dom.addEventListener(
@@ -43,6 +40,11 @@ class Panel {
           let confirmed = confirm('Are you sure to quit?');
           if (!confirmed) return;
           this.dom.querySelectorAll('video').forEach((v) => {
+            const tracks = v.srcObject?.getTracks() || [];
+            for (let i = 0; i < tracks.length; i++) {
+              let track = tracks[i];
+              track.stop();
+            }
             v.srcObject = null;
           });
           // 停掉每一次的stream
@@ -55,7 +57,10 @@ class Panel {
           });
           this.dom.remove();
           document.documentElement.removeAttribute('invite-expand');
-          MyPortalVeraPeer.disconnect();
+          Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
+            console.log('close the peer', pid);
+            conn.close();
+          });
         }
       },
       true

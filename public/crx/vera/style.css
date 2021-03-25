@@ -143,7 +143,6 @@ table {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   padding: 5px;
-  transition: all 0.5s ease-in;
   transform: translateX(-20px);
   display: flex;
   align-items: center;
@@ -192,6 +191,15 @@ table {
   padding: 2px 5px;
   line-height: 1.1;
 }
+#PORTAL_VERA_WIDGET > .drag {
+  width: 12px;
+  height: 30px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/drag-vertical.svg');
+  background-size: cover;
+  background-color: rgba(238, 238, 238, 0.5);
+  background-repeat: no-repeat;
+  background-position: center;
+}
 @keyframes AniFloating {
   from {
     transform: translateY(-50%) scale(0.6);
@@ -207,9 +215,8 @@ table {
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: 50%;
+  top: 35px;
   right: 0;
-  transform: translateY(-50%);
   min-width: 100px;
   min-height: 200px;
   max-height: 100vh;
@@ -217,7 +224,6 @@ table {
   background: transparent;
   padding: 15px 10px;
   border: 4px solid #5c46e3;
-  transition: all 0.4s ease-in-out;
 }
 #PORTAL_VERA_PANEL.host {
   border-color: khaki;
@@ -380,6 +386,7 @@ table {
   background-color: #5c46e3;
   height: 22px !important;
   width: 22px !important;
+  min-width: unset;
   background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;

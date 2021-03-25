@@ -9,8 +9,7 @@
   background-color: #5c46e3;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  padding: 5px;
-  transition: all 0.5s ease-in;
+  padding: 5px 5px 5px 0;
   transform: translateX(-20px);
   display: flex;
   align-items: center;
@@ -58,6 +57,16 @@
   color: #fff;
   padding: 2px 5px;
   line-height: 1.1;
+}
+#PORTAL_VERA_WIDGET > .drag {
+  border-radius: 4px;
+  width: 12px;
+  height: 30px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/drag-vertical.svg');
+  background-size: cover;
+  background-color: rgba(238, 238, 238, 0.4);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 @keyframes AniFloating {
   from {

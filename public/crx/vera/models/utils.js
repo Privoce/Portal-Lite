@@ -85,30 +85,6 @@ const draw = async ({ key = 'local', video, canvas, offCanvas, net }) => {
   });
   requestAnimationFrame(draw.bind(this, { key, video, canvas, offCanvas, net }));
 };
-// 拖拽事件处理
-function drag_start(event) {
-  let style = window.getComputedStyle(event.target, null);
-  event.dataTransfer.setData(
-    'text/plain',
-    parseInt(style.getPropertyValue('left'), 10) -
-      event.clientX +
-      ',' +
-      (parseInt(style.getPropertyValue('top'), 10) - event.clientY)
-  );
-}
-function drop(event) {
-  let offset = event.dataTransfer.getData('text/plain').split(',');
-  let dm = document.getElementById('PORTAL_VERA_PANEL');
-  dm.style.left = event.clientX + parseInt(offset[0], 10) + 'px';
-  dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
-  dm.style.right = 'auto';
-  event.preventDefault();
-  return false;
-}
-function drag_over(event) {
-  event.preventDefault();
-  return false;
-}
 function getUsername() {
   return new Promise((resolve) => {
     chrome.storage.local.get(['user'], function (result) {
@@ -146,7 +122,7 @@ async function appendHistory({ peerId, isHost }) {
   try {
     // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
     let resp = await fetch(
-      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(username)}/udf/vera`,
+      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(PORTAL_USER_NAME)}/udf/vera`,
       putMethod
     );
     data = await resp.json();
@@ -156,14 +132,4 @@ async function appendHistory({ peerId, isHost }) {
   return data;
 }
 
-export {
-  getUsername,
-  appendHistory,
-  copyToClipboard,
-  selectText,
-  bgRestore,
-  bgRemove,
-  drag_over,
-  drag_start,
-  drop
-};
+export { getUsername, appendHistory, copyToClipboard, selectText, bgRestore, bgRemove };
