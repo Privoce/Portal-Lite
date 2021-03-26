@@ -23,7 +23,7 @@ class Invite {
     this.init(localId);
     return this.dom;
   }
-  init() {
+  async init() {
     // 邀请按钮的点击事件
     let inviteBtn = this.dom.querySelector('.btn.copy');
     let linkBox = this.dom.querySelector('.invite .link .url');
@@ -33,6 +33,47 @@ class Invite {
     inviteBtn.addEventListener('click', () => {
       copyToClipboard(this.inviteUrl);
     });
+    if (PORTAL_USER_NAME) {
+      let userlist = null;
+      try {
+        // let resp = await fetch(`http://localhost:3008/service/authing/vera/Tristan/userlist`);
+        let resp = await fetch(
+          `https://api.yangerxiao.com/service/authing/vera/${encodeURIComponent(
+            PORTAL_USER_NAME
+          )}/userlist`
+        );
+        let { data = [] } = await resp.json();
+        userlist = data;
+      } catch (error) {
+        console.log(error);
+      }
+      if (userlist && userlist.length) {
+        let ul = document.createElement('ul');
+        ul.classList.add('users');
+        userlist.forEach((user) => {
+          let { username, name, nickname, photo } = user;
+
+          let li = document.createElement('li');
+          li.classList.add('user');
+          let avator = document.createElement('img');
+          avator.classList.add('avator');
+          avator.src = photo;
+          let btn = document.createElement('button');
+          btn.classList.add('btn');
+          btn.innerText = 'INVITE';
+          let un = document.createElement('span');
+          un.classList.add('name');
+          un.innerText = username || name || nickname;
+
+          li.appendChild(avator);
+          li.appendChild(un);
+          li.appendChild(btn);
+          ul.appendChild(li);
+        });
+        this.dom.appendChild(ul);
+      }
+      console.log({ userlist });
+    }
   }
 }
 export default Invite;

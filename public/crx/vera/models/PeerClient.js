@@ -4,7 +4,7 @@ import { peerConfig } from './config.js';
 
 window.MyPortalVeraPeer = null;
 window.PEER_DATA_CONNS = {};
-window.USERNAMES = [];
+window.USERNAMES = {};
 const handleCmd = ({ videoContainer, cmd }) => {
   let { type = '', data } = cmd;
   switch (type) {
@@ -35,7 +35,8 @@ const handleCmd = ({ videoContainer, cmd }) => {
       REMOTE_STREAM.getAudioTracks().forEach((t) => (t.enabled = false));
       break;
     case 'USERNAME':
-      USERNAMES.unshift(data);
+      let { peerId, username } = data;
+      USERNAMES[peerId] = username;
       break;
     default:
       break;
@@ -58,7 +59,7 @@ class PeerClient {
           inviteConn.send('hi from invited!');
           let username = await getUsername();
           if (username) {
-            inviteConn.send({ type: 'USERNAME', data: username });
+            inviteConn.send({ type: 'USERNAME', data: { peerId: id, username } });
           }
           // 监听数据
           inviteConn.on('data', (cmd = {}) => {

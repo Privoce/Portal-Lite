@@ -3,8 +3,10 @@
   height: 200px;
   width: 200px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   padding: 5px;
   background-color: var(--camera-bg-color);
   border-radius: var(--border-radius);
@@ -37,6 +39,45 @@
       border-radius: var(--border-radius);
       padding: 4px 10px;
       cursor: pointer;
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+  .users {
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: #1f1f1f;
+    padding: 6px 4px;
+    border-radius: var(--border-radius);
+    .user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &:not(:last-child) {
+        padding-bottom: 4px;
+        border-bottom: 1px dashed #333;
+      }
+      .avator {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+      }
+      .name {
+        font-size: 10px;
+      }
+      .btn {
+        border: none;
+        white-space: nowrap;
+        background-color: var(--camera-bg-color);
+        color: var(--font-color);
+        border-radius: 15px;
+        font-size: 12px;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
     }
   }
 }

@@ -113,7 +113,7 @@ async function appendHistory({ peerId, isHost }) {
       peerId,
       host: isHost ? PORTAL_USER_NAME : urlUsername,
       username: PORTAL_USER_NAME,
-      participants: USERNAMES
+      participants: [...Object.values(USERNAMES)]
     }) // We send data in JSON format
   };
   let data = {
