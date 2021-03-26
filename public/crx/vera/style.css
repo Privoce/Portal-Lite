@@ -630,7 +630,7 @@ table {
   gap: 10px;
   justify-content: center;
   padding: 5px;
-  background-color: var(--camera-bg-color);
+  background: transparent;
   border-radius: var(--border-radius);
 }
 #PORTAL_VERA_PANEL .join .btn {
@@ -643,6 +643,8 @@ table {
   cursor: pointer;
 }
 #PORTAL_VERA_PANEL .join .username {
+  min-width: 100px;
+  border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
   padding: 10px;
   color: var(--font-color);
