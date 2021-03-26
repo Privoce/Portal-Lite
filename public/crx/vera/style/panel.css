@@ -15,10 +15,11 @@
   padding: 12px;
   border: none;
   border-radius: var(--border-radius);
-  transition: background 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  transition-property: background, width, height;
 }
 #PORTAL_VERA_PANEL[layout='min'] {
-  width: 240px;
+  width: 260px;
   min-height: 40px;
   padding-top: 0;
   background: var(--panel-bg-color);
@@ -188,7 +189,7 @@
   justify-content: center;
   border-radius: var(--border-radius);
   border: none;
-  background: var(--camera-bg-color);
+  background: transparent;
 }
 #PORTAL_VERA_PANEL .cameras .camera:hover .video .opts {
   visibility: visible;
