@@ -33,14 +33,17 @@ class Widget {
     this.dom.querySelector('.portal_logo').onclick = inviteHandler;
 
     document.body.appendChild(this.dom);
-    let drag = new PlainDraggable(this.dom);
-    drag.containment = { left: 0, top: 0, width: 0, height: '100%' };
-    drag.handle = this.dom.querySelector('.drag');
-    // drag.snap = { y: { step: 10 }, gravity: 0 };
-    // drag.autoScroll = {
-    //   speed: [800, 810, 820],
-    //   sensitivity: [20, 10, 0]
-    // };
+    let handle = this.dom.querySelector('.drag');
+    new PlainDraggable(this.dom, {
+      containment: {
+        left: 0,
+        top: 0,
+        width: 0,
+        height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
+      },
+      handle,
+      autoScroll: true
+    });
   }
 }
 export default Widget;

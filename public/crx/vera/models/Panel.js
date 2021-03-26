@@ -40,7 +40,15 @@ class Panel {
     this.initLayout();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
-    new PlainDraggable(this.dom);
+    new PlainDraggable(this.dom, {
+      autoScroll: true,
+      containment: {
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
+      }
+    });
   }
   initLayout() {
     let layoutContainer = this.dom.querySelector('.layout');

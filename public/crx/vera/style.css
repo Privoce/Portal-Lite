@@ -218,7 +218,7 @@ table {
 #PORTAL_VERA_PANEL[layout='min'] {
   width: 260px;
   min-height: 40px;
-  padding-top: 0;
+  padding-top: 8px !important;
   background: var(--panel-bg-color);
 }
 #PORTAL_VERA_PANEL[layout='min'] .cameras,
@@ -542,8 +542,10 @@ table {
   height: 200px;
   width: 200px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   padding: 5px;
   background-color: var(--camera-bg-color);
   border-radius: var(--border-radius);
@@ -579,13 +581,53 @@ table {
   padding: 4px 10px;
   cursor: pointer;
 }
+#PORTAL_VERA_PANEL .invite .link .btn:active {
+  transform: scale(0.9);
+}
+#PORTAL_VERA_PANEL .invite .users {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: #1f1f1f;
+  padding: 6px 4px;
+  border-radius: var(--border-radius);
+}
+#PORTAL_VERA_PANEL .invite .users .user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#PORTAL_VERA_PANEL .invite .users .user:not(:last-child) {
+  padding-bottom: 4px;
+  border-bottom: 1px dashed #333;
+}
+#PORTAL_VERA_PANEL .invite .users .user .avator {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+#PORTAL_VERA_PANEL .invite .users .user .name {
+  font-size: 10px;
+}
+#PORTAL_VERA_PANEL .invite .users .user .btn {
+  border: none;
+  white-space: nowrap;
+  background-color: var(--camera-bg-color);
+  color: var(--font-color);
+  border-radius: 15px;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
 #PORTAL_VERA_PANEL .join {
   box-sizing: border-box;
   height: 200px;
   width: 200px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
+  gap: 10px;
   justify-content: center;
   padding: 5px;
   background-color: var(--camera-bg-color);
@@ -594,9 +636,15 @@ table {
 #PORTAL_VERA_PANEL .join .btn {
   border: none;
   white-space: nowrap;
-  background-color: var(--button-bg-color);
+  background-color: var(--camera-bg-color);
   color: var(--font-color);
   border-radius: var(--border-radius);
-  padding: 4px 10px;
+  padding: 8px 10px;
   cursor: pointer;
+}
+#PORTAL_VERA_PANEL .join .username {
+  background-color: var(--button-bg-color);
+  padding: 10px;
+  color: var(--font-color);
+  font-size: 14px;
 }
