@@ -41,6 +41,7 @@ export default function UserPortal() {
   if (errorTip) return <ErrorTip tip={errorTip} />;
   if (loading) return <Loading />;
   const { keys, data: allData } = data;
+  console.log({ allData, keys });
   return (
     <StyledWrapper>
       <h2 className="title">{`${allData.common?.user?.username}'s`} Personal Portal</h2>

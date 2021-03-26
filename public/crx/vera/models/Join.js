@@ -21,9 +21,11 @@ class Join {
         let cameraList = this.dom.previousElementSibling;
         console.log('attach remote video');
         cameraList.appendChild(remoteCamera.getDom());
+        // 把本地的音视频推给对方
         let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
         // 加入历史记录
         appendHistory({ peerId: inviteId, isHost: false });
+        // 响应对方的音视频流
         call.on('stream', (st) => {
           this.dom.remove();
           REMOTE_STREAM = st;

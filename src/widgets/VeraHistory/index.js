@@ -18,26 +18,33 @@ const StyledTip = styled.div`
   align-items: center;
   justify-content: center;
 `;
-let extInstalled = true;
-// 扩展环境
-if (process.env.REACT_APP_CHROME_EXT == 'true') {
-  chrome.storage.local.get(['installed'], function (result) {
-    extInstalled = result.installed;
-  });
-}
-let webpageCheck = !!document.documentElement.getAttribute('ext-portal');
-let finalCheck = process.env.REACT_APP_CHROME_EXT == 'true' ? extInstalled : webpageCheck;
 export default function VeraHistory({ data, name, lang, readonly }) {
   const { authClient } = useAuthing({
     appId,
     appHost
   });
-  const [extInstalled] = useState(finalCheck);
+  const [extInstalled, setExtInstalled] = useState(undefined);
   const [checkingLogin, setCheckingLogin] = useState(true);
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let localItems = getWidgetSetting({ name });
   const { data: list, error, loading, username, setUsername } = useHistory(localItems);
   console.log({ list });
+  useEffect(() => {
+    if (process.env.REACT_APP_CHROME_EXT == 'true') {
+      chrome.storage.local.get(['installed'], function (result) {
+        let tmp = result.installed || false;
+        setExtInstalled(tmp);
+      });
+    } else {
+      window.onload = () => {
+        let webpageCheck = !!document.documentElement.getAttribute('ext-portal');
+        setExtInstalled(webpageCheck);
+      };
+    }
+    return () => {
+      window.onlaod = null;
+    };
+  }, []);
   useEffect(() => {
     const initLoginStatus = async () => {
       let user = await authClient.getCurrentUser();
@@ -55,6 +62,7 @@ export default function VeraHistory({ data, name, lang, readonly }) {
       updateWidgetSetting({ name, data: list });
     }
   }, [list, readonly]);
+  if (typeof extInstalled == 'undefined') return <StyledTip>Checking Extension</StyledTip>;
   if (!extInstalled) return <DownloadExt page={false}></DownloadExt>;
   if (!username && !checkingLogin && !readonly) return <StyledTip>Login first</StyledTip>;
   if (loading && !readonly) return <StyledTip>{lang.fetching}</StyledTip>;

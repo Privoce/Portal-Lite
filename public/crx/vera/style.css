@@ -148,6 +148,9 @@ table {
   align-items: center;
   justify-content: center;
 }
+#PORTAL_VERA_WIDGET.show {
+  display: flex;
+}
 #PORTAL_VERA_WIDGET:hover {
   transform: translateX(-5px);
 }

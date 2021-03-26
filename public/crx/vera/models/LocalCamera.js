@@ -51,7 +51,7 @@ const handleControl = async (control, btn, root) => {
         : videoEle.srcObject.getVideoTracks();
     tracks.forEach((t) => {
       console.log('before', { t });
-      t.enabled = !t.enabled;
+      t.enabled = !isTrue;
       console.log('after', { t });
     });
   }
@@ -118,30 +118,39 @@ class LocalCamera {
     );
   }
   async init() {
+    let devices = null;
     //  贴上本地视频
     try {
       // 一次性获取两个授权
-      let devices = await navigator.mediaDevices.enumerateDevices();
+      devices = await navigator.mediaDevices.enumerateDevices();
       let hasVideoCam = devices.some((d) => {
         return d.kind == 'videoinput';
       });
-      // 仅是为了提前拿到授权
-      await navigator.mediaDevices.getUserMedia(hasVideoCam ? fullStreamConfig : audioStreamConfig);
+      // 提前拿到授权
       LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
-        hasVideoCam ? videoStreamConfig : audioStreamConfig
+        hasVideoCam ? fullStreamConfig : audioStreamConfig
       );
-      let videoDom = this.dom.querySelector('video');
-      // videoDom.parentElement.removeAttribute('audio');
-      // let cloneStream = LOCAL_STREAM.clone();
-      // 禁用本地音频
-      // LOCAL_STREAM.getAudioTracks().forEach((t) => {
-      //   t.enabled = false;
-      // });
-      videoDom.srcObject = LOCAL_STREAM;
+      // LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
+      //   hasVideoCam ? videoStreamConfig : audioStreamConfig
+      // );
+      this.attachStream();
     } catch (error) {
+      console.error('local device list', devices);
       console.error('getUserMedia error', error);
-      this.dom.setAttribute('camera-status', 'allow-error');
+      let { name } = error;
+      if (name == 'NotFoundError') {
+        LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(audioStreamConfig);
+        this.attachStream();
+      } else {
+        this.dom.setAttribute('camera-status', 'allow-error');
+      }
     }
+  }
+  attachStream() {
+    let videoDom = this.dom.querySelector('video');
+    let video_only_local_stream = LOCAL_STREAM.clone();
+    video_only_local_stream.getAudioTracks().forEach((t) => (t.enabled = false));
+    videoDom.srcObject = video_only_local_stream;
   }
 }
 export default LocalCamera;

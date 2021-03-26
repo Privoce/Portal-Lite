@@ -20,15 +20,19 @@ const handleCmd = ({ videoContainer, cmd }) => {
       break;
     case 'VIDEO_ON':
       videoContainer.setAttribute('video', true);
+      REMOTE_STREAM.getVideoTracks().forEach((t) => (t.enabled = true));
       break;
     case 'VIDEO_OFF':
       videoContainer.removeAttribute('video');
+      REMOTE_STREAM.getVideoTracks().forEach((t) => (t.enabled = false));
       break;
     case 'AUDIO_ON':
       videoContainer.setAttribute('audio', true);
+      REMOTE_STREAM.getAudioTracks().forEach((t) => (t.enabled = true));
       break;
     case 'AUDIO_OFF':
       videoContainer.removeAttribute('audio');
+      REMOTE_STREAM.getAudioTracks().forEach((t) => (t.enabled = false));
       break;
     case 'USERNAME':
       USERNAMES.unshift(data);
@@ -51,17 +55,22 @@ class PeerClient {
         console.log('connect the invite peer', pvid, inviteConn);
         inviteConn.on('open', async () => {
           PEER_DATA_CONNS[pvid] = inviteConn;
-          inviteConn.send('hi from remote!');
+          inviteConn.send('hi from invited!');
           let username = await getUsername();
           if (username) {
             inviteConn.send({ type: 'USERNAME', data: username });
           }
+          // 监听数据
+          inviteConn.on('data', (cmd = {}) => {
+            let { type = '', data } = cmd;
+            console.log(`invited received: `, cmd, type, data);
+            let videoContainer = panel.dom.querySelector('.camera.remote .video');
+            handleCmd({ videoContainer, cmd });
+          });
         });
-        inviteConn.on('data', (cmd = {}) => {
-          let { type = '', data } = cmd;
-          console.log(`invited received: `, cmd, type, data);
-          let videoContainer = panel.dom.querySelector('.camera.remote .video');
-          handleCmd({ videoContainer, cmd });
+        inviteConn.on('close', () => {
+          console.log('close conn invited');
+          // panel.dom.querySelector('.camera.remote .video');
         });
         inviteConn.on('error', (error) => {
           console.log('remote connect error', error);
@@ -75,14 +84,14 @@ class PeerClient {
       MyPortalVeraPeer.on('connection', (conn) => {
         console.log('incoming peer connection!', conn);
         panel.dom.setAttribute('data-status', 'connected');
-        // 如果是host，来自remote的连接，需要回应
+        // 如果是host，来自remote的连接，需要回应？
         if (!pvid) {
           MyPortalVeraPeer.connect(conn.peer);
+          PEER_DATA_CONNS[conn.peer] = conn;
         }
         conn.on('open', () => {
           console.log('the connection is open and ready for read/write.');
           // 放入全局变量中
-          PEER_DATA_CONNS[conn.peer] = conn;
           // conn.send('hello from the other!');
           // 只有host才发初始化的消息
           if (!pvid) {
@@ -90,11 +99,16 @@ class PeerClient {
             console.log('send connected peer ids', cmd);
             conn.send(cmd);
           }
+          // 监听数据
+          conn.on('data', (cmd = {}) => {
+            console.log(`local received: `, cmd);
+            let videoContainer = panel.dom.querySelector('.camera.remote .video');
+            handleCmd({ videoContainer, cmd });
+          });
         });
-        conn.on('data', (cmd = {}) => {
-          console.log(`local received: `, cmd);
-          let videoContainer = panel.dom.querySelector('.camera.remote .video');
-          handleCmd({ videoContainer, cmd });
+
+        conn.on('close', () => {
+          console.log('close conn');
         });
         conn.on('error', (error) => {
           console.log('local connect error', error);
