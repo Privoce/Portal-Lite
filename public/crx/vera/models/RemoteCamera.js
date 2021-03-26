@@ -21,10 +21,15 @@ const handleControl = async (control, btn, root) => {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     }
-    videoEle.requestPictureInPicture().catch((error) => {
-      // Error handling
-      console.log('pip error', error);
-    });
+    if (!isTrue) {
+      videoEle.requestPictureInPicture().catch((error) => {
+        // Error handling
+        console.log('pip error', error);
+      });
+      videoEle.onleavepictureinpicture = () => {
+        videoContainer.removeAttribute('pin');
+      };
+    }
     return;
   }
   // 去背景

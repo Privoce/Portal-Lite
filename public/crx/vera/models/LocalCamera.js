@@ -37,10 +37,15 @@ const handleControl = async (control, btn, root) => {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     }
-    videoEle.requestPictureInPicture().catch((error) => {
-      // Error handling
-      console.log('pip error', error);
-    });
+    if (!isTrue) {
+      videoEle.requestPictureInPicture().catch((error) => {
+        // Error handling
+        console.log('pip error', error);
+      });
+      videoEle.onleavepictureinpicture = () => {
+        videoContainer.removeAttribute('pin');
+      };
+    }
     return;
   }
   // 禁用音视频
@@ -64,7 +69,7 @@ const handleControl = async (control, btn, root) => {
     }
   }
   // if (isHost) {
-  // 给现存链接 依次发消息
+  // 给现存连接列表 依次发消息
   let cmd = { type: isTrue ? map[control].off : map[control].on };
   console.log('send cmd to remote camera', cmd);
   Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
@@ -103,10 +108,10 @@ class LocalCamera {
     return this.dom;
   }
   initUsername() {
-    if (!window.PORTAL_USER_NAME) return;
+    // if (!window.PORTAL_USER_NAME) return;
     let username = document.createElement('div');
     username.classList.add('username');
-    username.innerHTML = window.PORTAL_USER_NAME;
+    username.innerHTML = window.PORTAL_USER_NAME || 'Guest';
     this.dom.querySelector('.video').appendChild(username);
   }
   initControls() {
