@@ -131,6 +131,13 @@ table {
   border-spacing: 0;
 }
 
+:root {
+  --panel-bg-color: #323639;
+  --camera-bg-color: #5f6368;
+  --button-bg-color: #000;
+  --font-color: #fff;
+  --border-radius: 5px;
+}
 #PORTAL_VERA_WIDGET {
   cursor: pointer;
   z-index: 999;
@@ -139,7 +146,7 @@ table {
   bottom: 30px;
   width: 60px;
   height: 50px;
-  background-color: #5c46e3;
+  background-color: var(--panel-bg-color);
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   padding: 5px 5px 5px 0;
@@ -149,7 +156,7 @@ table {
   justify-content: center;
 }
 #PORTAL_VERA_WIDGET.show {
-  display: flex;
+  display: flex !important;
 }
 #PORTAL_VERA_WIDGET:hover {
   transform: translateX(-5px);
@@ -216,52 +223,67 @@ table {
   color: #fff;
   z-index: 999;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 15px;
   position: fixed;
   top: 35px;
   right: 0;
   min-width: 100px;
   min-height: 200px;
   max-height: 100vh;
-  overflow: scroll;
+  overflow: visible;
   background: transparent;
-  padding: 15px 10px;
-  border: 4px solid #5c46e3;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: background 0.5s ease-in-out;
 }
-#PORTAL_VERA_PANEL.host {
-  border-color: khaki;
+#PORTAL_VERA_PANEL[layout='min'] {
+  width: 240px;
+  min-height: 40px;
+  padding-top: 0;
+  background: var(--panel-bg-color);
+}
+#PORTAL_VERA_PANEL[layout='min'] .cameras,
+#PORTAL_VERA_PANEL[layout='min'] .invite,
+#PORTAL_VERA_PANEL[layout='min'] .join {
+  display: none;
+}
+#PORTAL_VERA_PANEL[layout='min'] .close,
+#PORTAL_VERA_PANEL[layout='min'] .topbar,
+#PORTAL_VERA_PANEL[layout='min'][data-status]:after {
+  visibility: visible;
+}
+#PORTAL_VERA_PANEL[layout='vt'] {
+  flex-direction: column;
+}
+#PORTAL_VERA_PANEL[layout='vt'] .cameras {
+  flex-direction: column;
+}
+#PORTAL_VERA_PANEL[layout='hz'] {
+  flex-direction: row;
+}
+#PORTAL_VERA_PANEL[layout='one'] {
+  gap: 0;
+}
+#PORTAL_VERA_PANEL[layout='one'] .cameras .camera.local {
+  display: none;
 }
 #PORTAL_VERA_PANEL:hover {
-  background: #5c46e3;
+  background: var(--panel-bg-color);
 }
-#PORTAL_VERA_PANEL:hover .title {
-  color: #eee !important;
+#PORTAL_VERA_PANEL:hover[data-status]:after {
+  visibility: visible;
 }
-#PORTAL_VERA_PANEL:hover .copyright {
-  visibility: visible !important;
-}
-#PORTAL_VERA_PANEL:hover .cameras .camera {
-  border-color: #eee !important;
-}
-#PORTAL_VERA_PANEL:hover .cameras .camera .video .opts .opt {
-  color: #fff;
-  border-color: #eee;
-}
-#PORTAL_VERA_PANEL:hover .cameras .camera .controls .control {
-  color: #fff;
-  border-color: #eee;
-}
-#PORTAL_VERA_PANEL:hover .cameras .camera .btn {
-  border: 1px solid #eee;
-  color: #eee;
+#PORTAL_VERA_PANEL:hover .close {
+  visibility: visible;
 }
 #PORTAL_VERA_PANEL[data-status]:after {
   content: '';
   position: absolute;
-  left: 5px;
-  top: 5px;
-  display: block;
+  left: -15px;
+  top: 0;
+  visibility: hidden;
   width: 10px;
   height: 10px;
   background-color: #999;
@@ -276,6 +298,12 @@ table {
 #PORTAL_VERA_PANEL[data-status='disconnected']:after {
   background-color: #ccc;
 }
+#PORTAL_VERA_PANEL[data-status='connected'] {
+  padding-top: 40px;
+}
+#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar {
+  display: flex;
+}
 #PORTAL_VERA_PANEL[data-status='connected']:after {
   background-color: #48ba2b;
 }
@@ -283,13 +311,16 @@ table {
   background-color: #d7322d;
 }
 #PORTAL_VERA_PANEL > .close {
+  visibility: hidden;
+  display: block;
   cursor: pointer;
   position: absolute;
-  right: 5px;
-  top: 5px;
-  display: block;
-  width: 25px;
-  height: 25px;
+  bottom: 10px;
+  left: 50%;
+  z-index: 999;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
   opacity: 0.8;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/tel.svg');
   background-size: cover;
@@ -297,49 +328,91 @@ table {
 #PORTAL_VERA_PANEL > .close:hover {
   opacity: 1;
 }
-#PORTAL_VERA_PANEL > .title {
-  padding: 5px;
-  padding-bottom: 10px;
-  font-size: 24px;
-  font-weight: 800;
-  color: #5c46e3;
+#PORTAL_VERA_PANEL .topbar {
+  display: none;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+  padding: 0 12px;
 }
-#PORTAL_VERA_PANEL .intro {
-  padding-top: 10px;
+#PORTAL_VERA_PANEL .topbar .add {
+  cursor: pointer;
+  width: 40px;
+  height: 18px;
+  padding: 2px;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/invite.svg');
+  background-position: center;
+  background-size: 14px;
 }
-#PORTAL_VERA_PANEL .intro .copyright {
-  visibility: hidden;
+#PORTAL_VERA_PANEL .topbar .layout {
   display: flex;
-  margin-top: 10px;
-  font-size: 10px;
-  color: #fff;
-  flex-direction: column;
-  line-height: 1.5;
-  color: #ccc;
+  align-items: center;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
+  padding: 4px;
+  gap: 10px;
 }
-#PORTAL_VERA_PANEL .intro .copyright a {
-  color: inherit;
+#PORTAL_VERA_PANEL .topbar .layout .item {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+  width: 15px;
+  height: 15px;
+}
+#PORTAL_VERA_PANEL .topbar .layout .item:after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+#PORTAL_VERA_PANEL .topbar .layout .item:hover,
+#PORTAL_VERA_PANEL .topbar .layout .item.curr {
+  background-color: var(--camera-bg-color);
+}
+#PORTAL_VERA_PANEL .topbar .layout .item.vt {
+  flex-direction: column;
+}
+#PORTAL_VERA_PANEL .topbar .layout .item .mock {
+  border-radius: 1px;
+  width: 4px;
+  background: var(--font-color);
+}
+#PORTAL_VERA_PANEL .topbar .layout .item .mock.box {
+  height: 4px;
+}
+#PORTAL_VERA_PANEL .topbar .layout .item .mock.line {
+  height: 2px;
 }
 #PORTAL_VERA_PANEL .cameras {
   overflow: hidden;
+  display: flex;
+  gap: 15px;
 }
 #PORTAL_VERA_PANEL .cameras .camera {
-  border-radius: 8px;
+  overflow: hidden;
   position: relative;
   width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  border: 1px dashed #5c46e3;
-  background: none;
+  border-radius: var(--border-radius);
+  border: none;
+  background: var(--camera-bg-color);
 }
-#PORTAL_VERA_PANEL .cameras .camera.local {
-  border-style: solid;
-}
-#PORTAL_VERA_PANEL .cameras .camera:not(:last-child) {
-  margin-bottom: 10px;
+#PORTAL_VERA_PANEL .cameras .camera:hover .video .opts {
+  visibility: visible;
 }
 #PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='processing'] canvas {
   display: none;
@@ -366,28 +439,37 @@ table {
   transform: translate3d(-50%, -70%, 0);
   padding: 10px;
   border-radius: 5px;
-  background-color: #5c46e3;
+  background-color: var(--camera-bg-color);
   font-size: 22px;
-  color: #fff;
+  color: var(--font-color);
 }
 #PORTAL_VERA_PANEL .cameras .camera .video {
   position: relative;
+  display: flex;
+}
+#PORTAL_VERA_PANEL .cameras .camera .video .username {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 8px 10px;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .opts {
   z-index: 7;
   display: none;
   position: absolute;
-  right: 5px;
-  top: 5px;
+  bottom: 5px;
+  left: 5px;
   padding: 5px;
   display: flex;
+  visibility: hidden;
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .opts .opt {
   padding: 0;
-  opacity: 0.6;
-  border: 1px solid #5c46e3;
-  border-radius: 4px;
-  background-color: #5c46e3;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
   height: 22px !important;
   width: 22px !important;
   min-width: unset;
@@ -398,9 +480,6 @@ table {
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .opts .opt:not(:last-child) {
   margin-right: 6px;
-}
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt:hover {
-  opacity: 1;
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .opts .opt.bg {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
@@ -482,57 +561,65 @@ table {
   display: flex;
 }
 #PORTAL_VERA_PANEL .invite {
+  box-sizing: border-box;
+  height: 200px;
   width: 200px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
   padding: 5px;
-}
-#PORTAL_VERA_PANEL .invite .btn {
-  white-space: nowrap;
-  margin-bottom: 10px;
-  border: 1px solid #fff;
-  background-color: #5c46e3;
-  color: #fff;
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 22px;
-  cursor: pointer;
+  background-color: var(--camera-bg-color);
+  border-radius: var(--border-radius);
 }
 #PORTAL_VERA_PANEL .invite .link {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px;
-  border: 1px solid #eee;
-  background: rgba(2, 2, 2, 0.4);
-  color: #fff;
+  background: var(--button-bg-color);
+  border-radius: var(--border-radius);
   font-size: 10px;
+}
+#PORTAL_VERA_PANEL .invite .link .url {
+  color: var(--font-color);
   width: 100%;
   height: fit-content;
-  white-space: pre-wrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   word-break: break-word;
   text-align: left;
   line-height: 1.2;
   max-height: 90px;
-  overflow: scroll;
+  overflow: hidden;
+}
+#PORTAL_VERA_PANEL .invite .link .btn {
+  border: none;
+  white-space: nowrap;
+  background-color: var(--camera-bg-color);
+  color: var(--font-color);
+  border-radius: var(--border-radius);
+  padding: 4px 10px;
+  cursor: pointer;
 }
 #PORTAL_VERA_PANEL .join {
+  box-sizing: border-box;
+  height: 200px;
   width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
   padding: 5px;
+  background-color: var(--camera-bg-color);
+  border-radius: var(--border-radius);
 }
 #PORTAL_VERA_PANEL .join .btn {
+  border: none;
   white-space: nowrap;
-  margin-bottom: 10px;
-  border: 1px solid #fff;
-  background-color: #5c46e3;
-  color: #fff;
-  border-radius: 4px;
+  background-color: var(--button-bg-color);
+  color: var(--font-color);
+  border-radius: var(--border-radius);
   padding: 4px 10px;
-  font-size: 22px;
   cursor: pointer;
 }

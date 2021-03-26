@@ -20,12 +20,13 @@ export function main() {
   }
   console.log('Is chrome.runtime available here?', typeof chrome.runtime.sendMessage == 'function');
   // 隐藏逻辑
-  chrome.storage.local.get(['widgets'], (result) => {
-    let ws = result.widgets || [];
-    if (ws.includes('vera-history')) {
-      widget.show();
-    }
-  });
+  // chrome.storage.local.get(['widgets'], (result) => {
+  //   let ws = result.widgets || [];
+  //   if (ws.includes('vera-history')) {
+  //     widget.show();
+  //   }
+  // });
+  widget.show();
 }
 const init = () => {
   // localStorage.getItem()

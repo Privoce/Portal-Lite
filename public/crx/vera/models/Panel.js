@@ -15,20 +15,49 @@ class Panel {
     this.dom.setAttribute('data-status', 'initial');
     this.dom.innerHTML = `
       <div class='close'></div>
-      <h2 class="title">Portal Vera</h2>
       <div class="cameras"></div>
-      <div class="intro">
-        <div class="copyright">
-          <span>© 2020 - 2021 </span>
-          <span>Provided by <a href="https://privoce.com/#our-team">Privoce Team</a> with ❤️</span>
-        </div>
+      <div class='topbar'>
+        <div class='add'></div>
+        <ul class='layout'>
+          <li class="item min" layout='min'>
+            <div class="mock line"></div>
+          </li>
+          <li class="item one" layout='one'>
+            <div class="mock box"></div>
+          </li>
+          <li class="item vt" layout='vt'>
+            <div class="mock box"></div>
+            <div class="mock box"></div>
+          </li>
+          <li class="item hz curr" layout='hz'>
+            <div class="mock box"></div>
+            <div class="mock box"></div>
+          </li>
+        </ul>
       </div>
       `;
-    // <h3 class="title">Welcome</h3>
     this.initClose();
+    this.initLayout();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
     new PlainDraggable(this.dom);
+  }
+  initLayout() {
+    let layoutContainer = this.dom.querySelector('.layout');
+    layoutContainer.addEventListener(
+      'click',
+      ({ target }) => {
+        console.log('click layout', { target });
+        let canNext = target.classList.contains('item') && !target.classList.contains('curr');
+        if (canNext) {
+          layoutContainer.querySelector('.item.curr').classList.remove('curr');
+          target.classList.add('curr');
+          let layout = target.getAttribute('layout');
+          this.dom.setAttribute('layout', layout);
+        }
+      },
+      true
+    );
   }
   initClose() {
     this.dom.addEventListener(

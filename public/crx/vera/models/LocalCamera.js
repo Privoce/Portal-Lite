@@ -97,9 +97,17 @@ class LocalCamera {
       </div>
       `;
     // <div class="cover_opts" />
+    this.initUsername();
     this.initControls();
     this.init();
     return this.dom;
+  }
+  initUsername() {
+    if (!window.PORTAL_USER_NAME) return;
+    let username = document.createElement('div');
+    username.classList.add('username');
+    username.innerHTML = window.PORTAL_USER_NAME;
+    this.dom.querySelector('.video').appendChild(username);
   }
   initControls() {
     let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>

@@ -1,23 +1,25 @@
 // camera
 .camera {
-  border-radius: 8px;
+  overflow: hidden;
   position: relative;
   width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  border: 1px dashed #5c46e3;
-  background: none;
-  &.local {
-    border-style: solid;
-  }
+  border-radius: var(--border-radius);
+  border: none;
+  background: var(--camera-bg-color);
+  // &.local {
+  //   border-style: solid;
+  // }
   //   &.remote{
   // border: 1px dashed #5c46e3;
   //   }
-  &:not(:last-child) {
-    margin-bottom: 10px;
+  &:hover {
+    .video .opts {
+      visibility: visible;
+    }
   }
   &[bg-rm-status='processing'] {
     canvas {
@@ -50,33 +52,42 @@
     transform: translate3d(-50%, -70%, 0);
     padding: 10px;
     border-radius: 5px;
-    background-color: #5c46e3;
+    background-color: var(--camera-bg-color);
     font-size: 22px;
-    color: #fff;
+    color: var(--font-color);
   }
   .video {
     position: relative;
-
+    display: flex;
     // .cover_opts {
     //   position: absolute;
     //   right: 5px;
     //   top: 5px;
     //   z-index: 8;
     // }
+    .username {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 8px 10px;
+      border-radius: var(--border-radius);
+      background-color: var(--button-bg-color);
+    }
     .opts {
       z-index: 7;
       display: none;
       position: absolute;
-      right: 5px;
-      top: 5px;
+      bottom: 5px;
+      left: 5px;
       padding: 5px;
       display: flex;
+      visibility: hidden;
       .opt {
         padding: 0;
-        opacity: 0.6;
-        border: 1px solid #5c46e3;
-        border-radius: 4px;
-        background-color: #5c46e3;
+        // opacity: 0.6;
+        border: none;
+        border-radius: var(--border-radius);
+        background-color: var(--button-bg-color);
         height: 22px !important;
         width: 22px !important;
         min-width: unset;
@@ -87,9 +98,9 @@
         &:not(:last-child) {
           margin-right: 6px;
         }
-        &:hover {
-          opacity: 1;
-        }
+        // &:hover {
+        //   opacity: 1;
+        // }
         &.bg {
           background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
         }

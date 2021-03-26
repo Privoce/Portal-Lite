@@ -26,8 +26,8 @@ class Join {
         // 加入历史记录
         appendHistory({ peerId: inviteId, isHost: false });
         // 响应对方的音视频流
+        this.dom.remove();
         call.on('stream', (st) => {
-          this.dom.remove();
           REMOTE_STREAM = st;
           remoteCamera.attachStream(st);
           cameraList.setAttribute('camera-status', 'connected');

@@ -3,8 +3,8 @@
   color: #fff;
   z-index: 999;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 15px;
   position: fixed;
   top: 35px;
   right: 0;
@@ -12,44 +12,62 @@
   min-width: 100px;
   min-height: 200px;
   max-height: 100vh;
-  overflow: scroll;
+  overflow: visible;
   background: transparent;
-  padding: 15px 10px;
-  border: 4px solid #5c46e3;
+  padding: 12px;
 
+  border: none;
+  border-radius: var(--border-radius);
+  transition: background 0.5s ease-in-out;
+  &[layout='min'] {
+    width: 240px;
+    min-height: 40px;
+    padding-top: 0;
+    .cameras,
+    .invite,
+    .join {
+      display: none;
+    }
+    background: var(--panel-bg-color);
+    .close,
+    .topbar,
+    &[data-status]:after {
+      visibility: visible;
+    }
+  }
+  &[layout='vt'] {
+    flex-direction: column;
+    .cameras {
+      flex-direction: column;
+    }
+  }
+  &[layout='hz'] {
+    flex-direction: row;
+  }
+  &[layout='one'] {
+    gap: 0;
+    .cameras .camera.local {
+      display: none;
+    }
+  }
   &.host {
-    border-color: khaki;
+    // border-color: khaki;
   }
   &:hover {
-    background: #5c46e3;
-    .title {
-      color: #eee !important;
+    background: var(--panel-bg-color);
+    &[data-status]:after {
+      visibility: visible;
     }
-    .copyright {
-      visibility: visible !important;
-    }
-    .cameras .camera {
-      border-color: #eee !important;
-      .video .opts .opt {
-        color: #fff;
-        border-color: #eee;
-      }
-      .controls .control {
-        color: #fff;
-        border-color: #eee;
-      }
-      .btn {
-        border: 1px solid #eee;
-        color: #eee;
-      }
+    .close {
+      visibility: visible;
     }
   }
   &[data-status]:after {
     content: '';
     position: absolute;
-    left: 5px;
-    top: 5px;
-    display: block;
+    left: -15px;
+    top: 0;
+    visibility: hidden;
     width: 10px;
     height: 10px;
     background-color: #999;
@@ -64,20 +82,31 @@
   &[data-status='disconnected']:after {
     background-color: #ccc;
   }
-  &[data-status='connected']:after {
-    background-color: #48ba2b;
+  &[data-status='connected'] {
+    padding-top: 40px;
+    &:hover {
+      .topbar {
+        display: flex;
+      }
+    }
+    &:after {
+      background-color: #48ba2b;
+    }
   }
   &[data-status='error']:after {
     background-color: #d7322d;
   }
   > .close {
+    visibility: hidden;
+    display: block;
     cursor: pointer;
     position: absolute;
-    right: 5px;
-    top: 5px;
-    display: block;
-    width: 25px;
-    height: 25px;
+    bottom: 10px;
+    left: 50%;
+    z-index: 999;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
     opacity: 0.8;
     background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/tel.svg');
     background-size: cover;
@@ -85,34 +114,77 @@
       opacity: 1;
     }
   }
-  > .title {
-    padding: 5px;
-    font-weight: 800;
-    padding-bottom: 10px;
-    font-size: 24px;
-    font-weight: 800;
-    color: #5c46e3;
-  }
-  .intro {
-    padding-top: 10px;
-
-    .copyright {
-      visibility: hidden;
+  .topbar {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 0;
+    justify-content: space-between;
+    width: -webkit-fill-available;
+    padding: 0 12px;
+    .add {
+      cursor: pointer;
+      width: 40px;
+      height: 18px;
+      padding: 2px;
+      border-radius: var(--border-radius);
+      background-color: var(--button-bg-color);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/invite.svg');
+      background-position: center;
+      background-size: 14px;
+    }
+    .layout {
       display: flex;
-      margin-top: 10px;
-      font-size: 10px;
-      color: #fff;
-      flex-direction: column;
-      line-height: 1.5;
-      color: #ccc;
-      a {
-        color: inherit;
+      align-items: center;
+      border-radius: var(--border-radius);
+      background-color: var(--button-bg-color);
+      padding: 4px;
+      gap: 10px;
+      .item {
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1px;
+        width: 15px;
+        height: 15px;
+        &:after {
+          position: absolute;
+          content: '';
+          display: block;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+        }
+        &:hover,
+        &.curr {
+          background-color: var(--camera-bg-color);
+        }
+        &.vt {
+          flex-direction: column;
+        }
+        .mock {
+          border-radius: 1px;
+          width: 4px;
+          background: var(--font-color);
+          &.box {
+            height: 4px;
+          }
+          &.line {
+            height: 2px;
+          }
+        }
       }
     }
   }
 
   .cameras {
     overflow: hidden;
+    display: flex;
+    gap: 15px;
     @import './camera.less';
   }
   @import './invite.less';

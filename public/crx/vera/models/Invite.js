@@ -12,8 +12,12 @@ class Invite {
     this.dom = document.createElement('div');
     this.dom.classList.add('invite');
     this.dom.innerHTML = `
-          <button class="btn copy">Copy Invite Link</button>
-          <div class='link' contenteditable>${this.inviteUrl}</div>
+    <div class='link' contenteditable>
+      <span class='url'>
+        ${this.inviteUrl}
+      </span>
+      <button class="btn copy">Copy Link</button>
+    </div>
       `;
     // <div class="cover_opts" />
     this.init(localId);
@@ -22,7 +26,7 @@ class Invite {
   init() {
     // 邀请按钮的点击事件
     let inviteBtn = this.dom.querySelector('.btn.copy');
-    let linkBox = this.dom.querySelector('.invite .link');
+    let linkBox = this.dom.querySelector('.invite .link .url');
     linkBox.addEventListener('click', (evt) => {
       selectText(evt.target);
     });
