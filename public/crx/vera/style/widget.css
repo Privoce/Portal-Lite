@@ -11,9 +11,12 @@
   border-bottom-right-radius: 50%;
   padding: 5px 5px 5px 0;
   transform: translateX(-20px);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+}
+#PORTAL_VERA_WIDGET.show {
+  display: flex;
 }
 #PORTAL_VERA_WIDGET:hover {
   transform: translateX(-5px);

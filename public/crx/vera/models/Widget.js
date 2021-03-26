@@ -22,6 +22,9 @@ class Widget {
       }
     });
   }
+  show() {
+    this.dom.classList.add('show');
+  }
   init(
     inviteHandler = () => {
       console.log('invite btn clicked');

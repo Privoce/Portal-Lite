@@ -65,6 +65,7 @@
   background-color: #5c46e3;
   height: 22px !important;
   width: 22px !important;
+  min-width: unset;
   background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;

@@ -13,9 +13,12 @@
   padding: 5px 5px 5px 0;
   // transition: all 0.5s ease-in;
   transform: translateX(-20px);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+  &.show {
+    display: flex;
+  }
   &:hover {
     transform: translateX(-5px);
   }

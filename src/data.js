@@ -107,6 +107,7 @@ let Widgets = {
     updated: '2020-12-28'
   },
   'vera-history': {
+    extension: true,
     // loadType: 'script',
     preset: true,
     title: '我的Vera历史',
