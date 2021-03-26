@@ -63,12 +63,21 @@ class RemoteCamera {
       </div>
       `;
     // <div class="cover_opts" />
+    this.initUsername(peerId);
     this.initControls();
     // this.init(stream);
     // return this.dom;
   }
   getDom() {
     return this.dom;
+  }
+  initUsername(peerId) {
+    // if (!window.PORTAL_USER_NAME) return;
+    let un = USERNAMES[peerId];
+    let username = document.createElement('div');
+    username.classList.add('username');
+    username.innerHTML = un || 'Guest';
+    this.dom.querySelector('.video').appendChild(username);
   }
   initControls() {
     let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>

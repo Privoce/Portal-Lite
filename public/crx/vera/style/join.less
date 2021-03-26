@@ -3,19 +3,29 @@
   height: 200px;
   width: 200px;
   display: flex;
-  flex-direction: column;
+
+  flex-direction: column-reverse;
   align-items: center;
+  gap: 10px;
   justify-content: center;
   padding: 5px;
-  background-color: var(--camera-bg-color);
+  background: transparent;
   border-radius: var(--border-radius);
   .btn {
     border: none;
     white-space: nowrap;
-    background-color: var(--button-bg-color);
+    background-color: var(--camera-bg-color);
     color: var(--font-color);
     border-radius: var(--border-radius);
-    padding: 4px 10px;
+    padding: 8px 10px;
     cursor: pointer;
+  }
+  .username {
+    min-width: 100px;
+    border-radius: var(--border-radius);
+    background-color: var(--button-bg-color);
+    padding: 10px;
+    color: var(--font-color);
+    font-size: 14px;
   }
 }

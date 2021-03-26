@@ -8,7 +8,16 @@ class Join {
           <button class='btn'>Join</button>
       `;
     this.init(inviteId);
+    this.initUsername();
     return this.dom;
+  }
+  initUsername() {
+    if (PORTAL_USER_NAME) {
+      let un = document.createElement('div');
+      un.classList.add('username');
+      un.innerText = PORTAL_USER_NAME;
+      this.dom.appendChild(un);
+    }
   }
   init(inviteId) {
     // 响应加入按钮的事件
