@@ -109,10 +109,15 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
   const handleGuardClose = () => {
     setGuardVisible(false);
   };
+  const handleRegComplete = (user) => {
+    updateUserInfo(user);
+    setGuardVisible(false);
+  };
   return (
     <>
       <AuthingGuard
         visible={guardVisible}
+        onRegisterInfoCompleted={handleRegComplete}
         // onRegister={handleReg}
         onClose={handleGuardClose}
         onLogin={handleGuardLogin}
