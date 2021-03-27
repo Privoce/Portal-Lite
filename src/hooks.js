@@ -72,10 +72,10 @@ const useWidgetSettings = () => {
     appHost
   });
   const updateLocalData = async (newData) => {
-    // if(!newData){
-
-    // }else{
-
+    if (newData == null) {
+      setWidgetSettings(newData);
+      return;
+    }
     // 加个时间戳
     newData.timestamp = new Date().getTime();
     setWidgetSettings({ ...newData });

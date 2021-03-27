@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaUserAlt } from 'react-icons/fa';
 import { AuthingGuard } from '@authing/react-ui-components';
@@ -35,46 +35,33 @@ const StyledIcon = styled.div`
 export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }) {
   const { widgetSettings, importWidgetSettings } = useWidgetSettings();
   const [guardVisible, setGuardVisible] = useState(false);
-  const [auth, setAuth] = useState(null);
+  const [isReg, setIsReg] = useState(false);
+  const currAuthClient = useRef(null);
   useEffect(() => {
     const syncWidgetData = async () => {
+      let auth = currAuthClient.current;
       let { status } = await auth.checkLoginStatus();
       if (!status) return;
       setSyncing(true);
       let localData = widgetSettings;
       let [cloudData = null] = await auth.listUdv('widget_data');
       console.log({ localData, cloudData });
-      if (!localData) {
-        if (cloudData && cloudData.value) {
-          // 云端数据存在
-          importWidgetSettings(cloudData.value);
-          // location.reload();
-        }
+      if (isReg && localData) {
+        // 第一次注册，则把本地数据，同步到云上
+        await auth.setUdv('widget_data', JSON.stringify(localData));
+        // location.reload();
       } else {
-        if (!cloudData) {
-          // 云端数据不存在
-          await auth.setUdv('widget_data', JSON.stringify(localData));
-        } else {
-          let cloudObj = JSON.parse(cloudData.value);
-          let localDate = new Date(localData.timestamp || new Date().getTime());
-          let cloudDate = new Date(cloudObj.timestamp || null);
-          if (localDate - cloudDate > 0) {
-            // 本地数据较新
-            await auth.setUdv('widget_data', JSON.stringify(localData));
-          } else {
-            // 云端数据较新
-            importWidgetSettings(cloudData.value);
-            // location.reload();
-          }
-        }
+        // 登录常态，则把云上数据，同步覆盖到本地
+        importWidgetSettings(cloudData.value);
+        // location.reload();
       }
       // await auth.setUdv('widget_data', JSON.stringify(localData));
       setSyncing(false);
     };
-    if (auth && user) {
+    if (user) {
       syncWidgetData();
     }
-  }, [auth, user]);
+  }, [user, isReg]);
   const handleIconClick = () => {
     if (user) {
       // 已登录的逻辑
@@ -86,6 +73,7 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
     }
   };
   const handleGuardLoad = async (authClient) => {
+    currAuthClient.current = authClient;
     let currUser = await authClient.getCurrentUser();
     // console.log({ authingResp });
     // const { userInfo, session } = authingResp;
@@ -99,7 +87,6 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
       setGuardVisible(false);
       updateUserInfo(currUser);
     }
-    setAuth(authClient);
   };
   const handleGuardLogin = async (user) => {
     console.log('login', { user });
@@ -111,6 +98,7 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
   };
   const handleRegComplete = (user) => {
     updateUserInfo(user);
+    setIsReg(true);
     setGuardVisible(false);
   };
   return (
