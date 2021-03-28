@@ -61,7 +61,7 @@ export default function Footer() {
       <div className="logo">
         <img
           alt="Portal Logo"
-          src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
+          src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
         />
       </div>
       <div className="txt">

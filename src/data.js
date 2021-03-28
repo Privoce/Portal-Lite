@@ -59,7 +59,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <Searchs />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.searchs.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.searchs.png',
     created: '2020-12-14',
     updated: '2021-03-16'
   },
@@ -71,7 +71,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <NavBlock />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.navs.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.navs.png',
     created: '2020-12-12',
     updated: '2021-03-19'
   },
@@ -82,7 +82,7 @@ let Widgets = {
     preset: process.env.REACT_APP_CHROME_EXT !== 'true',
     disableScroll: true,
     comp: <Covid />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.covid.data.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.covid.data.png',
     created: '2020-12-24',
     updated: '2020-12-28'
   },
@@ -92,7 +92,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <USCovid />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.usa.covid.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.usa.covid.png',
     created: '2021-02-01',
     updated: '2021-02-02'
   },
@@ -102,7 +102,7 @@ let Widgets = {
     defaultSize: 'large',
     sizes: ['middle', 'large'],
     comp: <WeiboHot />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.weibo.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.weibo.png',
     created: '2020-12-17',
     updated: '2020-12-28'
   },
@@ -116,7 +116,7 @@ let Widgets = {
     sizes: ['middle', 'large'],
     comp: <VeraHistory />,
     enableSetting: false,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.google.calendar.png',
     created: '2021-03-22',
     updated: '2021-03-22'
   },
@@ -129,7 +129,7 @@ let Widgets = {
     sizes: ['middle', 'large'],
     comp: <MyAgenda />,
     enableSetting: true,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.google.calendar.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.google.calendar.png',
     created: '2021-02-24',
     updated: '2021-03-14'
   },
@@ -141,7 +141,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <Weather />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.weather.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.weather.png',
     created: '2020-12-04',
     updated: '2020-12-23'
   },
@@ -154,7 +154,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <RelationshipCalc />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.relationship.calc.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.relationship.calc.png',
     created: '2021-02-08'
   },
   'timezone-clock': {
@@ -165,7 +165,7 @@ let Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <TimezoneClock />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.world.clock.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.world.clock.png',
     created: '2021-01-18',
     updated: '2021-02-02'
   },
@@ -177,7 +177,7 @@ let Widgets = {
     // preset: true,
     disableScroll: true,
     comp: <YiYan />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.yiyan.png',
     created: '2021-01-18',
     updated: '2021-01-27'
   },
@@ -188,7 +188,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <PetPics />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.pet.pics.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.pet.pics.png',
     created: '2021-02-3'
   },
 
@@ -197,7 +197,7 @@ let Widgets = {
     description: '公众号实时热文，你想了解的，都在这里！',
     sizes: ['middle', 'large'],
     comp: <MPDaily />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.mp.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.mp.png'
   },
   'daily-shici': {
     title: '今日诗词',
@@ -205,7 +205,7 @@ let Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <DailyShici />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.daily.shici.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.daily.shici.png'
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
@@ -214,7 +214,7 @@ let Widgets = {
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
     comp: <ZhihuHot />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.hot.zhihu.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.zhihu.png'
   },
   'gh-dashboard': {
     title: 'Github个人仓库',
@@ -222,7 +222,7 @@ let Widgets = {
     description: '通过授权，展现您个人仓库列表，快速预览每个仓库的概况。',
     compact: true,
     comp: <GithubDashboard />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.github.repo.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.github.repo.png'
   },
 
   'bing-daily-pic': {
@@ -231,7 +231,7 @@ let Widgets = {
     compact: true,
     disableScroll: true,
     comp: <BingDailyPicture />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.bing.pics.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.bing.pics.png',
     created: '2021-01-18',
     updated: '2021-01-27'
   },
@@ -239,7 +239,7 @@ let Widgets = {
     title: '豆瓣24小时话题',
     description: '直达豆瓣24小时热门话题',
     comp: <DoubanHotTopics />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.douban.topic.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.douban.topic.png',
     created: '2021-01-19'
   },
   'today-in-history': {
@@ -248,7 +248,7 @@ let Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <TodayInHistory />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.today.in.history.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.today.in.history.png',
     created: '2021-03-03'
   },
 
@@ -258,7 +258,7 @@ let Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <GithubTrending />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.github.trending.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.github.trending.png'
   },
   calc: {
     loadType: 'iframe',
@@ -269,7 +269,7 @@ let Widgets = {
     sizes: ['middle', 'large'],
     disableScroll: true,
     compact: true,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.calc.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.calc.png'
   },
   'life-progress': {
     loadType: 'iframe',
@@ -280,7 +280,7 @@ let Widgets = {
     // sizes: ['middle', 'large'],
     disableScroll: true,
     compact: true,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.life.progress.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.life.progress.png',
     created: '2021-02-03'
   },
   'yin-note': {
@@ -288,7 +288,7 @@ let Widgets = {
     description: '快速录入印象笔记【暂未开发】',
     disableScroll: true,
     comp: <YinNote />,
-    screenshot: 'https://gitee.com/zyanggc/oss/raw/master/works/widget.yinxiang.note.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.yinxiang.note.png'
   }
 };
 // 过滤掉不适合在浏览器扩展里加载的小组件

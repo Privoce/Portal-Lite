@@ -95,7 +95,7 @@ export default function Developer({ developer = {}, ...rest }) {
         <a className="info" href={url} target="_blank">
           <div className="avatar">
             <img
-              data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+              data-default="https://static.nicegoodthings.com/privoce/developer.png"
               src={`${avatar}`}
               alt="开发者头像"
             />

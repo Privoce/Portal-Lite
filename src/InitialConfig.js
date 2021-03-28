@@ -61,8 +61,7 @@ export default function InitialConfig() {
       // 处理图片加载出错
       if (target?.tagName?.toUpperCase() === 'IMG') {
         target.src =
-          target.dataset.default ||
-          'https://gitee.com/zyanggc/oss/raw/master/works/loading.error.png';
+          target.dataset.default || 'https://static.nicegoodthings.com/privoce/loading.error.png';
       }
     };
     window.addEventListener('error', handleError, true);

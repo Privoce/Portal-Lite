@@ -9,7 +9,7 @@ import { useWidgetSettings } from '../../hooks';
 const StyledWrapper = styled.section`
   position: relative;
   height: 100%;
-  background: url('https://gitee.com/zyanggc/oss/raw/master/works/widget.yiyan.bg.jpg') no-repeat;
+  background: url('https://static.nicegoodthings.com/privoce/widget.yiyan.bg.jpg') no-repeat;
   background-size: cover;
   background-position: bottom;
   .yiyan {

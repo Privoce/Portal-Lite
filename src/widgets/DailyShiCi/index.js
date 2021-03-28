@@ -14,8 +14,8 @@ const StyledWrapper = styled.section`
   padding: 0.1rem 0.4rem;
   height: 100%;
   /* background-color: ; */
-  background: url('https://gitee.com/zyanggc/oss/raw/master/works/shici.chuan.png') no-repeat,
-    url('https://gitee.com/zyanggc/oss/raw/master/works/shici.ddh.png') no-repeat,
+  background: url('https://static.nicegoodthings.com/privoce/shici.chuan.png') no-repeat,
+    url('https://static.nicegoodthings.com/privoce/shici.ddh.png') no-repeat,
     url('https://colors.ichuantong.cn/static/media/bg.texture.dd29a028.png'), #eedeb0;
   background-size: 1.5rem auto, 0.5rem auto;
   background-position: left bottom, right bottom;

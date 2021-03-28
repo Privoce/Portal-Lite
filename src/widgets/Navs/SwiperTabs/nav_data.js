@@ -6,7 +6,7 @@ const Navs = [
         id: 'weibo',
         title: '微博',
         url: 'https://weibo.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/wb.png',
+        icon: 'https://static.nicegoodthings.com/privoce/wb.png',
         themeColor: '#FFD902',
         popular: true
       },
@@ -14,14 +14,14 @@ const Navs = [
         id: 'zhihu',
         title: '知乎',
         url: 'https://zhihu.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/zhihu.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/zhihu.logo.png',
         themeColor: '#0083FF'
       },
       {
         id: 'douban',
         title: '豆瓣',
         url: 'https://douban.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/douban.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/douban.logo.png',
         themeColor: '#00C145'
       }
     ]
@@ -33,7 +33,7 @@ const Navs = [
         id: 'bilibili',
         title: '哔哩哔哩',
         url: 'https://bilibili.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/bilibili.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/bilibili.logo.png',
         themeColor: '#FF7997',
         popular: true
       },
@@ -57,7 +57,7 @@ const Navs = [
         id: 'iqiyi',
         title: '爱奇艺',
         url: 'https://iqiyi.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/aiqiyi.png',
+        icon: 'https://static.nicegoodthings.com/privoce/aiqiyi.png',
         themeColor: '#07D302',
         popular: true
       },
@@ -72,7 +72,7 @@ const Navs = [
         id: 'kugou',
         title: '酷狗',
         url: 'https://kugou.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/kugou.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/kugou.logo.png',
         themeColor: '#0094FF'
       },
       {
@@ -90,7 +90,7 @@ const Navs = [
         id: 'taobao',
         title: '淘宝',
         url: 'https://taobao.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/taobao.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/taobao.logo.png',
         themeColor: '#FF5900',
         popular: true
       },
@@ -98,21 +98,21 @@ const Navs = [
         id: 'tmall',
         title: '天猫',
         url: 'https://tmall.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/tmall.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/tmall.logo.png',
         themeColor: '#FF0017'
       },
       {
         id: 'jd',
         title: '京东',
         url: 'https://jd.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jd.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/jd.logo.png',
         themeColor: '#EF0011'
       },
       {
         id: 'suning',
         title: '苏宁易购',
         url: 'https://www.suning.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/suning.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/suning.logo.png',
         themeColor: '#fff'
       }
     ]
@@ -124,7 +124,7 @@ const Navs = [
         id: 'huxiu',
         title: '虎嗅网',
         url: 'https://huxiu.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/huxiuwang2.png',
+        icon: 'https://static.nicegoodthings.com/privoce/huxiuwang2.png',
         themeColor: '#fff',
         popular: true
       },
@@ -132,7 +132,7 @@ const Navs = [
         id: 'qq_news',
         title: '腾讯新闻',
         url: 'https://news.qq.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/txnews.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/txnews.logo.png',
         themeColor: '#fff'
       },
       {
@@ -150,7 +150,7 @@ const Navs = [
         id: 'github',
         title: 'Github',
         url: 'https://github.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/GitHub.png',
+        icon: 'https://static.nicegoodthings.com/privoce/GitHub.png',
         themeColor: '#fff'
       },
       {
@@ -164,7 +164,7 @@ const Navs = [
         id: 'yinxiang',
         title: '印象笔记',
         url: 'https://yinxiang.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/yinxiang.logo.png',
+        icon: 'https://static.nicegoodthings.com/privoce/yinxiang.logo.png',
         themeColor: '#00C51F'
       },
       {
@@ -178,21 +178,21 @@ const Navs = [
         id: 'baidu_t',
         title: '百度翻译',
         url: 'https://fanyi.baidu.com',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/fanyi.png',
+        icon: 'https://static.nicegoodthings.com/privoce/fanyi.png',
         themeColor: '#4898fc'
       },
       {
         id: 'convert',
         title: '格式转换',
         url: 'https://cloudconvert.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/transfer.png',
+        icon: 'https://static.nicegoodthings.com/privoce/transfer.png',
         themeColor: '#fff'
       },
       {
         id: 'calc',
         title: '计算器',
         url: 'https://www.desmos.com/scientific',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/jisuanqi.png',
+        icon: 'https://static.nicegoodthings.com/privoce/jisuanqi.png',
         themeColor: '#003461',
         frame: true,
         size: 'mobile'
@@ -201,7 +201,7 @@ const Navs = [
         id: 'markdown',
         title: 'Markdown编辑',
         url: 'https://www.zybuluo.com/mdeditor',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/file-markdown.png',
+        icon: 'https://static.nicegoodthings.com/privoce/file-markdown.png',
         themeColor: '#fff'
       },
 
@@ -216,7 +216,7 @@ const Navs = [
         title: '图片压缩',
         url: 'https://squoosh.app/',
         themeColor: '#FFD902',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/compress.png',
+        icon: 'https://static.nicegoodthings.com/privoce/compress.png',
         frame: true
       },
       {
@@ -241,7 +241,7 @@ const Navs = [
         id: 'ps',
         title: 'PhotoShop Online',
         url: 'https://www.photopea.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
+        icon: 'https://static.nicegoodthings.com/privoce/adobe-photoshop.png',
         themeColor: '#0b2446',
         frame: true,
         popular: true,
@@ -269,7 +269,7 @@ const Navs = [
         id: 'json',
         title: 'JSON编辑',
         url: 'https://www.beejson.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/JSON.png',
+        icon: 'https://static.nicegoodthings.com/privoce/JSON.png',
         themeColor: '#eee',
         popular: true
       },
@@ -277,7 +277,7 @@ const Navs = [
         id: 'shader',
         title: 'Shader编辑器',
         url: 'https://makepad.dev/',
-        // icon: 'https://gitee.com/zyanggc/oss/raw/master/works/adobe-photoshop.png',
+        // icon: 'https://static.nicegoodthings.com/privoce/adobe-photoshop.png',
         themeColor: '#0b2446',
         popular: true
       },
@@ -285,7 +285,7 @@ const Navs = [
         id: 'cidian',
         title: '在线汉语词典',
         url: 'http://xh.5156edu.com/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/cidian.png',
+        icon: 'https://static.nicegoodthings.com/privoce/cidian.png',
         themeColor: '#fff'
       },
 
@@ -299,7 +299,7 @@ const Navs = [
         id: 'booke_search',
         title: '书籍搜索',
         url: 'http://libgen.rs/',
-        icon: 'https://gitee.com/zyanggc/oss/raw/master/works/book.png',
+        icon: 'https://static.nicegoodthings.com/privoce/book.png',
         themeColor: '#FFD'
       },
       {

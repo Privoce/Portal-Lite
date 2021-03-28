@@ -51,7 +51,7 @@ export default function DownloadExtension({ page = true }) {
       <div className="logo">
         <img
           alt="Portal Logo"
-          src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
+          src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
         />
       </div>
       <div className="tip">Install Portal Extension First</div>

@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
       font-size: 0.16rem;
       height: 0.44rem;
       padding-left: 0.5rem;
-      background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/icon.google.search.png');
+      background-image: url('https://static.nicegoodthings.com/privoce/icon.google.search.png');
       background-repeat: no-repeat;
       background-size: 0.22rem;
       background-position: 0.14rem;
@@ -80,7 +80,7 @@ export default function BaiduSearch({ placeholder }) {
           <img
             onClick={handleClearInput}
             className="clear"
-            src="https://gitee.com/zyanggc/oss/raw/master/works/icon.google.remove.png"
+            src="https://static.nicegoodthings.com/privoce/icon.google.remove.png"
             alt="google clear icon"
           />
         )}

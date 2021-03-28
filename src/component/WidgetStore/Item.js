@@ -89,7 +89,7 @@ const Recents = {
     </StyledRecent>
   )
 };
-// https://gitee.com/zyanggc/oss/raw/master/works/icon.check.png
+// https://static.nicegoodthings.com/privoce/icon.check.png
 export default function Item({ data, addWidget, removeWidget }) {
   const { title, description, screenshot, recent, added } = data;
   return (

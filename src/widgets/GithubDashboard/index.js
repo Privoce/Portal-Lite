@@ -85,7 +85,7 @@ export default function GithubDashboard() {
     <StyledWrapper>
       <a href={`https://github.com/${login}/`} target="_blank" className="head">
         <img
-          data-default="https://gitee.com/zyanggc/oss/raw/master/works/developer.png"
+          data-default="https://static.nicegoodthings.com/privoce/developer.png"
           className="avatar"
           title={login}
           src={`${avatarUrl}`}

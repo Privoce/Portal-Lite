@@ -31,7 +31,7 @@ const StyledWrapper = styled.div`
       transform: translateY(-50%);
       width: 0.25rem;
       height: 0.25rem;
-      background-image: url('https://gitee.com/zyanggc/oss/raw/master/works/icon.search.png');
+      background-image: url('https://static.nicegoodthings.com/privoce/icon.search.png');
       background-size: contain;
       background-repeat: no-repeat;
     }
