@@ -2,63 +2,6 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import DownloadExt from '../../component/DownloadExtension';
-const StyledWrapper = styled.section`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: -1rem;
-  .logo {
-    width: 1.2rem;
-    height: 1.2rem;
-    padding: 0.15rem;
-    border-radius: 50%;
-    border: 1px solid #eee;
-    margin-bottom: 0.2rem;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .id {
-    margin-bottom: 0.4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    .title {
-      font-size: 0.4rem;
-      margin-bottom: 0.12rem;
-      font-weight: 800;
-    }
-    .value {
-      color: #333;
-      font-size: 0.3rem;
-      padding: 0.1rem 0.2rem;
-      border: 1px dashed #ccc;
-      text-shadow: 0px 2px 3px #5c46e3;
-      white-space: nowrap;
-    }
-  }
-  .tip {
-    margin-bottom: 0.1rem;
-    line-height: 1.5;
-    .redirect {
-      font-size: 0.2rem;
-    }
-    .click {
-      font-size: 0.16rem;
-      color: #555;
-    }
-  }
-  .link {
-    font-size: 0.16rem;
-    max-width: 5.6rem;
-    word-break: break-all;
-    line-height: 1.5;
-  }
-`;
 const StyledTip = styled.section`
   width: 100%;
   height: 80vh;
@@ -81,97 +24,70 @@ const StyledTip = styled.section`
   .txt {
     color: #555;
     padding: 0.5rem;
+    line-height: 1.4;
     font-size: 0.4rem;
     font-weight: 800;
+    white-space: pre-line;
+    &.error {
+      color: red;
+    }
   }
 `;
-let inter = 0;
+const Result = ({ children }) => (
+  <StyledTip>
+    <div className="logo">
+      <img
+        alt="Portal Logo"
+        src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
+      />
+    </div>
+    {children}
+  </StyledTip>
+);
+const checkUrl = `chrome-extension://ccegbnlnelhgaefimiaklaindffpfcmh/crx/vera/assets/icon/logo.png`;
+const urlParamKey = 'portal-vera-id';
 export default function Transfer() {
   const { dest } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
-  const [countdown, setCountdown] = useState(undefined);
   const [tip, setTip] = useState('');
-  const [jumpUrl, setJumpUrl] = useState(null);
-  const [portalVeraId, setPortalVeraId] = useState(null);
   useEffect(() => {
-    const checkExtInstalled = () => {
-      let extInstalled = !!document.documentElement.getAttribute('ext-portal');
-      setCheckResult(extInstalled);
+    let img = document.createElement('img');
+    img.src = checkUrl;
+    img.onload = () => {
+      setCheckResult(true);
     };
-    window.onload = checkExtInstalled;
-    return () => {
-      window.onload = null;
+    img.onerror = () => {
+      setCheckResult(false);
     };
   }, []);
   useEffect(() => {
-    let decoded = decodeURIComponent(dest);
-    let id = new URLSearchParams(new URL(decoded).search).get('portal-vera-id');
-    if (id) {
-      setJumpUrl(decoded);
-      setPortalVeraId(id);
-      setTip('Redirecting...');
-      setCountdown(5);
+    let decodedUrl = decodeURIComponent(dest);
+    let id = new URLSearchParams(new URL(decodedUrl).search).get(urlParamKey);
+    if (id && checkResult == true) {
+      location.href = decodedUrl;
+    } else if (checkResult === false || !id) {
+      setTip(`Transfer error: \n\r ${decodedUrl}`);
     }
-    return () => {
-      clearTimeout(inter);
-    };
-  }, [dest]);
-  useEffect(() => {
-    if (typeof countdown !== 'undefined') {
-      if (countdown > 0) {
-        setTimeout(() => {
-          setCountdown((prev) => --prev);
-        }, 1000);
-      } else {
-        location.href = jumpUrl;
-      }
-    }
-  }, [countdown, jumpUrl]);
+  }, [dest, checkResult]);
+
+  //  location.href = jumpUrl;
   console.log({ checkResult });
   // 暂未检测
   if (typeof checkResult == 'undefined') {
     return (
-      <StyledTip>
-        <div className="logo">
-          <img
-            alt="Portal Logo"
-            src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
-          />
-        </div>
+      <Result>
         <div className="txt">Checking Portal Vera</div>
-      </StyledTip>
+      </Result>
     );
   }
 
   // 检测状态为未安装
   if (checkResult === false) return <DownloadExt />;
-  return (
-    <StyledWrapper>
-      <div className="logo">
-        <img
-          alt="Portal Logo"
-          src="https://gitee.com/zyanggc/oss/raw/master/works/works.portal.logo.png"
-        />
-      </div>
-      {portalVeraId && (
-        <article className="id">
-          <h2 className="title">Your Portal Vera Invite ID:</h2>
-          <p className="value">{portalVeraId}</p>
-        </article>
-      )}
-      {tip && (
-        <div className="tip">
-          <p className="redirect">
-            {tip} ({countdown}s)
-          </p>
-          <p className="click">↓ Click to jump now ↓</p>
-        </div>
-      )}
-      {jumpUrl && (
-        <a className="link" href={jumpUrl}>
-          {jumpUrl}
-        </a>
-      )}
-    </StyledWrapper>
-  );
+  if (tip)
+    return (
+      <Result>
+        <div className="txt error">{tip}</div>
+      </Result>
+    );
+  return null;
 }
