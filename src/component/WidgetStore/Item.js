@@ -7,7 +7,7 @@ const StyledItem = styled.li`
   width: 100%;
   height: 1.8rem;
   transition: background-size 0.5s;
-  background-size: 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 0.15rem;

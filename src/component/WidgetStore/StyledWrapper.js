@@ -38,6 +38,8 @@ const StyledWrapper = styled.section`
       }
     }
     .list {
+      height: 100%;
+      height: -webkit-fill-available;
       padding:  0.2rem;
       padding-top: .1rem;
       overflow-y: scroll;
