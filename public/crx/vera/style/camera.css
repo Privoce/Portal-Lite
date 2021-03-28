@@ -110,6 +110,12 @@
 .camera .video[pin='true'] .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.off.svg');
 }
+.camera .video[waiting='true'] video {
+  visibility: hidden;
+}
+.camera .video[waiting='true'] .mask.waiting {
+  display: flex;
+}
 .camera .video video {
   width: 200px;
   height: 200px;
@@ -134,17 +140,22 @@
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
 }
 .camera .video .mask.user {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/user.svg');
 }
 .camera .video .mask.error {
   display: none;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
   color: #ec3636;
+}
+.camera .video .mask.waiting {
+  display: none;
+  background-color: var(--camera-bg-color);
 }
 .camera .video[video='true'] .mask.user {
   display: none;

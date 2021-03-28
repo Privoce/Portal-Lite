@@ -8,18 +8,18 @@
   position: fixed;
   top: 35px;
   right: 0;
-  // transform: translateY(-50%);
   min-width: 100px;
   min-height: 200px;
   max-height: 100vh;
   overflow: visible;
-  background: transparent;
-  padding: 12px;
 
+  padding: 12px;
   border: none;
   border-radius: var(--border-radius);
   transition: all 0.5s ease-in-out;
   transition-property: background, width, height;
+  background: var(--panel-bg-color);
+
   &[layout='min'] {
     width: 260px;
     min-height: 40px;
@@ -30,6 +30,9 @@
       display: none;
     }
     background: var(--panel-bg-color);
+    .close {
+      bottom: 0;
+    }
     .close,
     .topbar,
     &[data-status]:after {
@@ -83,15 +86,27 @@
   &[data-status='disconnected']:after {
     background-color: #ccc;
   }
-  &[data-status='connected'] {
+  &[data-status='streaming'] {
+    background: transparent;
+  }
+
+  &[data-status='connected'],
+  &[data-status='streaming'] {
     padding-top: 40px;
     &:hover {
+      background: var(--panel-bg-color);
       .topbar {
         display: flex;
       }
     }
     &:after {
       background-color: #48ba2b;
+    }
+  }
+  &[data-status='connected'],
+  &[data-status='connected']:hover {
+    .topbar {
+      display: none;
     }
   }
   &[data-status='error']:after {

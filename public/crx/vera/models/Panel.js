@@ -36,11 +36,13 @@ class Panel {
         </ul>
       </div>
       `;
+    // <div class="drag"></div>;
     this.initClose();
     this.initLayout();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
     new PlainDraggable(this.dom, {
+      // handle: this.dom.querySelector('.drag'),
       autoScroll: true,
       containment: {
         left: 0,

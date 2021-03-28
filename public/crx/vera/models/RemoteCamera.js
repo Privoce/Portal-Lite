@@ -1,4 +1,6 @@
 import { bgRemove, bgRestore } from './utils.js';
+import Username from './Username.js';
+
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
   let videoContainer = videoEle.parentElement;
@@ -49,7 +51,7 @@ class RemoteCamera {
     this.dom.classList.add('remote');
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
-    <div class='video' video='true' bg='true' audio='true'>
+    <div class='video' video='true' bg='true' audio='true' waiting='true'>
       <div class='mask user'></div>
 
       <div class='opts'>
@@ -60,25 +62,22 @@ class RemoteCamera {
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
-      </div>
+      <div class='mask waiting'>Waiting</div>
+    </div>
       `;
     // <div class="cover_opts" />
     this.initUsername(peerId);
     this.initControls();
-    // this.init(stream);
-    // return this.dom;
   }
   getDom() {
     return this.dom;
   }
-  initUsername(peerId) {
+  initUsername() {
     // if (!window.PORTAL_USER_NAME) return;
-    let un = USERNAMES[peerId];
-    let username = document.createElement('div');
-    username.classList.add('username');
-    username.innerHTML = un || 'Guest';
-    this.dom.querySelector('.video').appendChild(username);
+    let un = new Username({ remote: true });
+    this.dom.querySelector('.video').appendChild(un);
   }
+
   initControls() {
     let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>
       opt.getAttribute('control')
@@ -99,8 +98,9 @@ class RemoteCamera {
     try {
       //  贴上远程视频流
       let videoDom = this.dom.querySelector('video');
-      // videoDom.setAttribute('muted', 'muted');
+      videoDom.removeAttribute('waiting');
       videoDom.srcObject = stream;
+      this.dom.querySelector('.video').removeAttribute('waiting');
     } catch (error) {
       console.error('getUserMedia error', error);
       this.dom.setAttribute('camera-status', 'allow-error');

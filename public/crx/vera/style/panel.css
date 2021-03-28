@@ -11,12 +11,12 @@
   min-height: 200px;
   max-height: 100vh;
   overflow: visible;
-  background: transparent;
   padding: 12px;
   border: none;
   border-radius: var(--border-radius);
   transition: all 0.5s ease-in-out;
   transition-property: background, width, height;
+  background: var(--panel-bg-color);
 }
 #PORTAL_VERA_PANEL[layout='min'] {
   width: 260px;
@@ -28,6 +28,9 @@
 #PORTAL_VERA_PANEL[layout='min'] .invite,
 #PORTAL_VERA_PANEL[layout='min'] .join {
   display: none;
+}
+#PORTAL_VERA_PANEL[layout='min'] .close {
+  bottom: 0;
 }
 #PORTAL_VERA_PANEL[layout='min'] .close,
 #PORTAL_VERA_PANEL[layout='min'] .topbar,
@@ -78,14 +81,28 @@
 #PORTAL_VERA_PANEL[data-status='disconnected']:after {
   background-color: #ccc;
 }
-#PORTAL_VERA_PANEL[data-status='connected'] {
+#PORTAL_VERA_PANEL[data-status='streaming'] {
+  background: transparent;
+}
+#PORTAL_VERA_PANEL[data-status='connected'],
+#PORTAL_VERA_PANEL[data-status='streaming'] {
   padding-top: 40px;
 }
-#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar {
+#PORTAL_VERA_PANEL[data-status='connected']:hover,
+#PORTAL_VERA_PANEL[data-status='streaming']:hover {
+  background: var(--panel-bg-color);
+}
+#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar,
+#PORTAL_VERA_PANEL[data-status='streaming']:hover .topbar {
   display: flex;
 }
-#PORTAL_VERA_PANEL[data-status='connected']:after {
+#PORTAL_VERA_PANEL[data-status='connected']:after,
+#PORTAL_VERA_PANEL[data-status='streaming']:after {
   background-color: #48ba2b;
+}
+#PORTAL_VERA_PANEL[data-status='connected'] .topbar,
+#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar {
+  display: none;
 }
 #PORTAL_VERA_PANEL[data-status='error']:after {
   background-color: #d7322d;
@@ -299,6 +316,12 @@
 #PORTAL_VERA_PANEL .cameras .camera .video[pin='true'] .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.off.svg');
 }
+#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] video {
+  visibility: hidden;
+}
+#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] .mask.waiting {
+  display: flex;
+}
 #PORTAL_VERA_PANEL .cameras .camera .video video {
   width: 200px;
   height: 200px;
@@ -323,17 +346,22 @@
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .mask.user {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/user.svg');
 }
 #PORTAL_VERA_PANEL .cameras .camera .video .mask.error {
   display: none;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
   color: #ec3636;
+}
+#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting {
+  display: none;
+  background-color: var(--camera-bg-color);
 }
 #PORTAL_VERA_PANEL .cameras .camera .video[video='true'] .mask.user {
   display: none;

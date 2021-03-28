@@ -24,6 +24,7 @@
       }
     }
   }
+
   &[bg-rm-status='processing'] {
     canvas {
       display: none;
@@ -130,6 +131,14 @@
     &[pin='true'] .opts .opt.pin {
       background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.off.svg');
     }
+    &[waiting='true'] {
+      video {
+        visibility: hidden;
+      }
+      .mask.waiting {
+        display: flex;
+      }
+    }
     video {
       width: 200px;
       height: 200px;
@@ -154,18 +163,22 @@
       background-size: 45%;
       background-repeat: no-repeat;
       background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
       &.user {
         // display: none;
         background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/user.svg');
       }
       &.error {
         display: none;
-
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        font-weight: 800;
         color: #ec3636;
+      }
+      &.waiting {
+        display: none;
+        background-color: var(--camera-bg-color);
       }
     }
     &[video='true'] .mask.user {

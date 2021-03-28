@@ -1,4 +1,5 @@
-import { fullStreamConfig, audioStreamConfig, videoStreamConfig } from './config.js';
+import { fullStreamConfig, audioStreamConfig } from './config.js';
+import Username from './Username.js';
 import { bgRemove, bgRestore } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
@@ -86,7 +87,7 @@ class LocalCamera {
     this.dom.classList.add('local');
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
-    <div class='video' video='true' bg='true' audio='true'>
+    <div class='video' video='true' bg='true' audio='true' waiting='true'>
       <div class='mask user'></div>
 
       <div class='opts'>
@@ -99,6 +100,7 @@ class LocalCamera {
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
+      <div class='mask waiting'>Waiting</div>
       </div>
       `;
     // <div class="cover_opts" />
@@ -109,10 +111,8 @@ class LocalCamera {
   }
   initUsername() {
     // if (!window.PORTAL_USER_NAME) return;
-    let username = document.createElement('div');
-    username.classList.add('username');
-    username.innerHTML = window.PORTAL_USER_NAME || 'Guest';
-    this.dom.querySelector('.video').appendChild(username);
+    let un = new Username();
+    this.dom.querySelector('.video').appendChild(un);
   }
   initControls() {
     let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>
@@ -164,6 +164,7 @@ class LocalCamera {
     let video_only_local_stream = LOCAL_STREAM.clone();
     video_only_local_stream.getAudioTracks().forEach((t) => (t.enabled = false));
     videoDom.srcObject = video_only_local_stream;
+    this.dom.querySelector('.video').removeAttribute('waiting');
   }
 }
 export default LocalCamera;

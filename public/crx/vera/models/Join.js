@@ -1,4 +1,5 @@
 import RemoteCamera from './RemoteCamera.js';
+import Username from './Username.js';
 import { appendHistory } from './utils.js';
 class Join {
   constructor({ inviteId = null }) {
@@ -12,12 +13,8 @@ class Join {
     return this.dom;
   }
   initUsername() {
-    if (PORTAL_USER_NAME) {
-      let un = document.createElement('div');
-      un.classList.add('username');
-      un.innerText = PORTAL_USER_NAME;
-      this.dom.appendChild(un);
-    }
+    let un = new Username({ remote: true });
+    this.dom.appendChild(un);
   }
   init(inviteId) {
     // 响应加入按钮的事件
@@ -28,6 +25,7 @@ class Join {
         console.log('join event peer called');
         let remoteCamera = new RemoteCamera(inviteId);
         let cameraList = this.dom.previousElementSibling;
+        let panel = cameraList.parentElement;
         console.log('attach remote video');
         cameraList.appendChild(remoteCamera.getDom());
         // 把本地的音视频推给对方
@@ -40,6 +38,7 @@ class Join {
           REMOTE_STREAM = st;
           remoteCamera.attachStream(st);
           cameraList.setAttribute('camera-status', 'connected');
+          panel.setAttribute('data-status', 'streaming');
         });
         call.on('close', () => {
           console.log('call close');

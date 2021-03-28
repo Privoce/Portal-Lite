@@ -138,7 +138,7 @@ class PeerClient {
           REMOTE_STREAM = s;
           remoteCamera.attachStream(s);
           cameraList.setAttribute('camera-status', 'connected');
-          // panel.dom.setAttribute('camera-status', 'connected');
+          panel.dom.setAttribute('data-status', 'streaming');
         });
         call.on('close', () => {
           console.log('call close');
