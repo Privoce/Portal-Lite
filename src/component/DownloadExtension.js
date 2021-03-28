@@ -56,7 +56,7 @@ export default function DownloadExtension({ page = true }) {
       </div>
       <div className="tip">Install Portal Extension First</div>
       <a
-        href="https://chrome.google.com/webstore/detail/portal-home-of-your-web-a/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en&authuser=1"
+        href="https://chrome.google.com/webstore/detail/portal-home-of-your-web-a/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en"
         className="download"
       >
         Portal - Home of Your Web Apps

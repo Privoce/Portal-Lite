@@ -4,8 +4,9 @@ import { useWidgetSettings } from '../../hooks';
 // import { formatDistanceToNowStrict } from 'date-fns';
 import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
+import Login from '../Common/Login';
+import InstallExtension from '../Common/InstallExtension';
 import { appId, appHost } from '../../InitialConfig';
-import DownloadExt from '../../component/DownloadExtension';
 
 import StyledWrapper from './styled';
 import HistoryItem from './HistoryItem';
@@ -37,12 +38,15 @@ export default function VeraHistory({ data, name, lang, readonly }) {
       });
     } else {
       window.onload = () => {
+        console.log('trigger onload');
         let webpageCheck = !!document.documentElement.getAttribute('ext-portal');
         setExtInstalled(webpageCheck);
       };
     }
     return () => {
-      window.onlaod = null;
+      if (process.env.REACT_APP_CHROME_EXT != 'true') {
+        window.onload = null;
+      }
     };
   }, []);
   useEffect(() => {
@@ -63,8 +67,8 @@ export default function VeraHistory({ data, name, lang, readonly }) {
     }
   }, [list, readonly]);
   if (typeof extInstalled == 'undefined') return <StyledTip>Checking Extension</StyledTip>;
-  if (!extInstalled) return <DownloadExt page={false}></DownloadExt>;
-  if (!username && !checkingLogin && !readonly) return <StyledTip>Login first</StyledTip>;
+  if (!extInstalled) return <InstallExtension></InstallExtension>;
+  if (!username && !checkingLogin && !readonly) return <Login></Login>;
   if (loading && !readonly) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
   const items = readonly ? data.local : list;
