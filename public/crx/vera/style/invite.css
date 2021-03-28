@@ -33,18 +33,6 @@
   max-height: 90px;
   overflow: hidden;
 }
-.invite .link .btn {
-  border: none;
-  white-space: nowrap;
-  background-color: var(--camera-bg-color);
-  color: var(--font-color);
-  border-radius: var(--border-radius);
-  padding: 4px 10px;
-  cursor: pointer;
-}
-.invite .link .btn:active {
-  transform: scale(0.9);
-}
 .invite .users {
   width: -webkit-fill-available;
   display: flex;
@@ -70,14 +58,4 @@
 }
 .invite .users .user .name {
   font-size: 10px;
-}
-.invite .users .user .btn {
-  border: none;
-  white-space: nowrap;
-  background-color: var(--camera-bg-color);
-  color: var(--font-color);
-  border-radius: 15px;
-  font-size: 12px;
-  padding: 4px 10px;
-  cursor: pointer;
 }

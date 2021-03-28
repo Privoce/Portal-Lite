@@ -27,7 +27,7 @@
   border: none;
   outline: none;
   background-color: transparent;
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/logo.png');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -44,14 +44,4 @@
   color: #fff;
   padding: 2px 5px;
   line-height: 1.1;
-}
-#PORTAL_VERA_WIDGET > .drag {
-  border-radius: 4px;
-  width: 12px;
-  height: 30px;
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/drag-vertical.svg');
-  background-size: cover;
-  background-color: rgba(238, 238, 238, 0.4);
-  background-repeat: no-repeat;
-  background-position: center;
 }

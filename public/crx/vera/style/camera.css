@@ -10,6 +10,7 @@
   border: none;
   background: transparent;
 }
+.camera:hover .video .username,
 .camera:hover .video .opts {
   visibility: visible;
 }
@@ -47,10 +48,15 @@
   display: flex;
 }
 .camera .video .username {
+  visibility: hidden;
   position: absolute;
   top: 5px;
   right: 5px;
-  padding: 8px 10px;
+  cursor: text;
+  padding: 6px 10px;
+  border: none;
+  font-size: 18px;
+  color: var(--font-color);
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
 }
@@ -81,28 +87,28 @@
   margin-right: 6px;
 }
 .camera .video .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/bg.rm.off.svg');
 }
 .camera .video .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.off.svg');
 }
 .camera .video .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/audio.off.svg');
 }
 .camera .video .opts .opt.pin {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.svg');
 }
 .camera .video[bg='true'] .opts .opt.bg {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/bg.rm.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/bg.rm.svg');
 }
 .camera .video[video='true'] .opts .opt.video {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/video.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.on.svg');
 }
 .camera .video[audio='true'] .opts .opt.audio {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/audio.on.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/audio.on.svg');
 }
 .camera .video[pin='true'] .opts .opt.pin {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/pin.off.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.off.svg');
 }
 .camera .video video {
   width: 200px;
@@ -130,7 +136,7 @@
   background-position: center;
 }
 .camera .video .mask.user {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/user.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/user.svg');
 }
 .camera .video .mask.error {
   display: none;

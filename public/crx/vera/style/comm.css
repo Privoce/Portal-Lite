@@ -1,0 +1,23 @@
+.btn {
+  border: none;
+  white-space: nowrap;
+  background-color: var(--camera-bg-color);
+  color: var(--font-color);
+  border-radius: var(--border-radius);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in;
+}
+.btn:active {
+  transform: scale(0.9);
+}
+.drag {
+  border-radius: 4px;
+  width: 12px;
+  height: 30px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/drag-vertical.svg');
+  background-size: cover;
+  background-color: rgba(238, 238, 238, 0.4);
+  background-repeat: no-repeat;
+  background-position: center;
+}

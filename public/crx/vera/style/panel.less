@@ -51,9 +51,9 @@
       display: none;
     }
   }
-  &.host {
-    // border-color: khaki;
-  }
+  // &.host {
+  //   // border-color: khaki;
+  // }
   &:hover {
     background: var(--panel-bg-color);
     &[data-status]:after {
@@ -109,16 +109,25 @@
     width: 40px;
     height: 40px;
     opacity: 0.8;
-    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/tel.svg');
+    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/tel.svg');
     background-size: cover;
     &:hover {
       opacity: 1;
     }
   }
+  .drag {
+    // .drag();
+    position: absolute;
+    bottom: 12px;
+    left: -30px;
+    width: 20px;
+    height: 20px;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/drag.svg');
+  }
   .topbar {
     display: none;
     position: absolute;
-    top: 5px;
+    top: 10px;
     left: 0;
     justify-content: space-between;
     width: -webkit-fill-available;
@@ -132,7 +141,7 @@
       background-color: var(--button-bg-color);
       background-repeat: no-repeat;
       background-size: contain;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/invite.svg');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/invite.svg');
       background-position: center;
       background-size: 14px;
     }
