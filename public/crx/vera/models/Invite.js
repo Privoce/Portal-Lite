@@ -32,6 +32,10 @@ class Invite {
     });
     inviteBtn.addEventListener('click', () => {
       copyToClipboard(this.inviteUrl);
+      inviteBtn.innerHTML = 'Copied!';
+      setTimeout(() => {
+        inviteBtn.innerHTML = 'Copy Link';
+      }, 2000);
     });
     if (PORTAL_USER_NAME) {
       let userlist = null;
@@ -48,6 +52,7 @@ class Invite {
         console.log(error);
       }
       if (userlist && userlist.length) {
+        let inviteLink = this.inviteUrl;
         let ul = document.createElement('ul');
         ul.classList.add('users');
         userlist.forEach((user) => {
@@ -60,7 +65,14 @@ class Invite {
           avator.src = photo;
           let btn = document.createElement('button');
           btn.classList.add('btn');
-          btn.innerText = 'INVITE';
+          btn.innerText = 'Copy Link';
+          btn.addEventListener('click', () => {
+            copyToClipboard(inviteLink);
+            btn.innerHTML = 'Copied!';
+            setTimeout(() => {
+              btn.innerHTML = 'Copy Link';
+            }, 2000);
+          });
           let un = document.createElement('span');
           un.classList.add('name');
           un.innerText = username || name || nickname;
