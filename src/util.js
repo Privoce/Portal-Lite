@@ -42,4 +42,24 @@ function validateUrl(value) {
     value
   );
 }
-export { getDefaultIcon, splitToChunks, formatNumber, highlightWord, validateUrl };
+const checkExtensionInstalled = () => {
+  const checkUrl = `chrome-extension://ccegbnlnelhgaefimiaklaindffpfcmh/crx/vera/assets/icon/logo.png`;
+  return new Promise((resolve) => {
+    let img = document.createElement('img');
+    img.src = checkUrl;
+    img.onload = () => {
+      resolve(true);
+    };
+    img.onerror = () => {
+      resolve(false);
+    };
+  });
+};
+export {
+  checkExtensionInstalled,
+  getDefaultIcon,
+  splitToChunks,
+  formatNumber,
+  highlightWord,
+  validateUrl
+};

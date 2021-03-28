@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { checkExtensionInstalled } from '../../util';
 import DownloadExt from '../../component/DownloadExtension';
 const StyledTip = styled.section`
   width: 100%;
@@ -28,6 +29,7 @@ const StyledTip = styled.section`
     font-size: 0.4rem;
     font-weight: 800;
     white-space: pre-line;
+    word-break: break-all;
     &.error {
       color: red;
     }
@@ -44,21 +46,17 @@ const Result = ({ children }) => (
     {children}
   </StyledTip>
 );
-const checkUrl = `chrome-extension://ccegbnlnelhgaefimiaklaindffpfcmh/crx/vera/assets/icon/logo.png`;
 const urlParamKey = 'portal-vera-id';
 export default function Transfer() {
   const { dest } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
   const [tip, setTip] = useState('');
   useEffect(() => {
-    let img = document.createElement('img');
-    img.src = checkUrl;
-    img.onload = () => {
-      setCheckResult(true);
+    const check = async () => {
+      let installed = await checkExtensionInstalled();
+      setCheckResult(installed);
     };
-    img.onerror = () => {
-      setCheckResult(false);
-    };
+    check();
   }, []);
   useEffect(() => {
     let decodedUrl = decodeURIComponent(dest);

@@ -7,6 +7,7 @@ import { useAuthing } from '@authing/react-ui-components';
 import Login from '../Common/Login';
 import InstallExtension from '../Common/InstallExtension';
 import { appId, appHost } from '../../InitialConfig';
+import { checkExtensionInstalled } from '../../util';
 
 import StyledWrapper from './styled';
 import HistoryItem from './HistoryItem';
@@ -31,23 +32,11 @@ export default function VeraHistory({ data, name, lang, readonly }) {
   const { data: list, error, loading, username, setUsername } = useHistory(localItems);
   console.log({ list });
   useEffect(() => {
-    if (process.env.REACT_APP_CHROME_EXT == 'true') {
-      chrome.storage.local.get(['installed'], function (result) {
-        let tmp = result.installed || false;
-        setExtInstalled(tmp);
-      });
-    } else {
-      window.onload = () => {
-        console.log('trigger onload');
-        let webpageCheck = !!document.documentElement.getAttribute('ext-portal');
-        setExtInstalled(webpageCheck);
-      };
-    }
-    return () => {
-      if (process.env.REACT_APP_CHROME_EXT != 'true') {
-        window.onload = null;
-      }
+    const check = async () => {
+      let installed = await checkExtensionInstalled();
+      setExtInstalled(installed);
     };
+    check();
   }, []);
   useEffect(() => {
     const initLoginStatus = async () => {
