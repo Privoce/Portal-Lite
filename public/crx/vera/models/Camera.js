@@ -100,7 +100,14 @@ class Camera {
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
-      <div class='mask waiting'>Loading</div>
+      <div class='mask waiting'>
+        <div class='loading'>
+          <svg viewBox="0 0 50 50" class="circle">
+              <circle cx="25" cy="25" r="20" fill="none" class="path"></circle>
+          </svg>
+          <span class='txt'>Loading</span>
+        </div>
+      </div>
       </div>
       `;
     // <div class="cover_opts" />

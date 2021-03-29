@@ -31,7 +31,7 @@
     }
     background: var(--panel-bg-color);
     .close {
-      bottom: 0;
+      bottom: 8px;
     }
     .close,
     .topbar,
@@ -77,6 +77,13 @@
     background-color: #999;
     border-radius: 50%;
   }
+  &[data-status='uninitialized'] {
+    width: 440px;
+    height: 224px;
+  }
+  // &[data-status='initialized'] {
+  //   background-color: #ee7f3d;
+  // }
   &[data-status='open']:after {
     background-color: #ee7f3d;
   }

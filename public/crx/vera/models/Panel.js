@@ -12,7 +12,7 @@ class Panel {
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_PANEL';
     if (!pvid) this.dom.classList.add('host');
-    this.dom.setAttribute('data-status', 'initial');
+    this.dom.setAttribute('data-status', 'uninitialized');
     this.dom.innerHTML = `
       <div class='close'></div>
       <div class="cameras"></div>
@@ -36,6 +36,7 @@ class Panel {
         </ul>
       </div>
       `;
+    // <div class="loading"></div>
     // <div class="drag"></div>;
     this.initClose();
     this.initLayout();
