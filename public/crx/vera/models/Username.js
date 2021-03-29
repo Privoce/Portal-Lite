@@ -1,3 +1,4 @@
+import { selectText } from './utils.js';
 window.LOCAL_TMP_USERNAME = 'Guest';
 window.REMOTE_TMP_USERNAME = 'Guest';
 class Username {
@@ -8,13 +9,24 @@ class Username {
     this.dom.contentEditable = window.PORTAL_USER_NAME ? false : true;
     this.dom.classList.add('username');
     this.dom.innerHTML = tmpName;
-    this.dom.addEventListener('input', (evt) => {
-      if (remote) {
-        window.REMOTE_TMP_USERNAME = evt.target.innerText;
-      } else {
-        window.LOCAL_TMP_USERNAME = evt.target.innerText;
-      }
-    });
+    this.dom.addEventListener(
+      'input',
+      (evt) => {
+        if (remote) {
+          window.REMOTE_TMP_USERNAME = evt.target.innerText;
+        } else {
+          window.LOCAL_TMP_USERNAME = evt.target.innerText;
+        }
+      },
+      false
+    );
+    this.dom.addEventListener(
+      'click',
+      () => {
+        selectText(this.dom);
+      },
+      false
+    );
     return this.dom;
   }
 }
