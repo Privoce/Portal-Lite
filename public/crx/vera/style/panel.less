@@ -93,11 +93,16 @@
   &[data-status='disconnected']:after {
     background-color: #ccc;
   }
+  &[data-status='connected']:after {
+    background-color: #48baff;
+  }
   &[data-status='streaming'] {
     background: transparent;
+    &:after {
+      background-color: #48ba2b;
+    }
   }
 
-  &[data-status='connected'],
   &[data-status='streaming'] {
     padding-top: 40px;
     &:hover {
@@ -106,12 +111,8 @@
         display: flex;
       }
     }
-    &:after {
-      background-color: #48ba2b;
-    }
   }
-  &[data-status='connected'],
-  &[data-status='connected']:hover {
+  &[data-status='connected'] {
     .topbar {
       display: none;
     }

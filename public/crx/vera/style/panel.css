@@ -85,27 +85,25 @@
 #PORTAL_VERA_PANEL[data-status='disconnected']:after {
   background-color: #ccc;
 }
+#PORTAL_VERA_PANEL[data-status='connected']:after {
+  background-color: #48baff;
+}
 #PORTAL_VERA_PANEL[data-status='streaming'] {
   background: transparent;
 }
-#PORTAL_VERA_PANEL[data-status='connected'],
-#PORTAL_VERA_PANEL[data-status='streaming'] {
-  padding-top: 40px;
-}
-#PORTAL_VERA_PANEL[data-status='connected']:hover,
-#PORTAL_VERA_PANEL[data-status='streaming']:hover {
-  background: var(--panel-bg-color);
-}
-#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar,
-#PORTAL_VERA_PANEL[data-status='streaming']:hover .topbar {
-  display: flex;
-}
-#PORTAL_VERA_PANEL[data-status='connected']:after,
 #PORTAL_VERA_PANEL[data-status='streaming']:after {
   background-color: #48ba2b;
 }
-#PORTAL_VERA_PANEL[data-status='connected'] .topbar,
-#PORTAL_VERA_PANEL[data-status='connected']:hover .topbar {
+#PORTAL_VERA_PANEL[data-status='streaming'] {
+  padding-top: 40px;
+}
+#PORTAL_VERA_PANEL[data-status='streaming']:hover {
+  background: var(--panel-bg-color);
+}
+#PORTAL_VERA_PANEL[data-status='streaming']:hover .topbar {
+  display: flex;
+}
+#PORTAL_VERA_PANEL[data-status='connected'] .topbar {
   display: none;
 }
 #PORTAL_VERA_PANEL[data-status='error']:after {
