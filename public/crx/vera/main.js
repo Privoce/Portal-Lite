@@ -1,7 +1,6 @@
 import Widget from './models/Widget.js';
 import Panel from './models/Panel.js';
 import { peerKey, installCheckKey } from './models/config.js';
-// import Camera from './models/Camera.js';
 // 初始化挂件
 export function main() {
   const { pvid } = init();

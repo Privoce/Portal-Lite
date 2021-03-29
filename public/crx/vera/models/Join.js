@@ -1,4 +1,4 @@
-import RemoteCamera from './RemoteCamera.js';
+import Camera from './Camera.js';
 import Username from './Username.js';
 import { appendHistory } from './utils.js';
 class Join {
@@ -23,11 +23,11 @@ class Join {
       // create audio and video constraints
       try {
         console.log('join event peer called');
-        let remoteCamera = new RemoteCamera(inviteId);
+        let remoteCamera = new Camera({ remote: true, peerId: inviteId });
         let cameraList = this.dom.previousElementSibling;
         let panel = cameraList.parentElement;
         console.log('attach remote video');
-        cameraList.appendChild(remoteCamera.getDom());
+        cameraList.appendChild(remoteCamera.dom);
         // 把本地的音视频推给对方
         let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
         // 加入历史记录

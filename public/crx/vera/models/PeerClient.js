@@ -1,4 +1,4 @@
-import RemoteCamera from './RemoteCamera.js';
+import Camera from './Camera.js';
 import { appendHistory, getUsername } from './utils.js';
 import { peerConfig } from './config.js';
 
@@ -125,10 +125,10 @@ class PeerClient {
       // 加入当前remote peer列表
       REMOTE_PEER_IDS.push(call.peer);
       try {
-        let remoteCamera = new RemoteCamera(call.peer);
+        let remoteCamera = new Camera({ remote: true, peerId: call.peer });
         let cameraList = panel.dom.querySelector('.cameras');
         console.log('attach remote video');
-        cameraList.appendChild(remoteCamera.getDom());
+        cameraList.appendChild(remoteCamera.dom);
         call.answer(LOCAL_STREAM); // Answer the call with an A/V stream.
         // 写入历史记录
         appendHistory({ peerId: pvid ? pvid : MyPortalVeraPeer.id, isHost: !pvid });

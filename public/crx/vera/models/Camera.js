@@ -69,22 +69,22 @@ const handleControl = async (control, btn, root) => {
       bgRestore(root);
     }
   }
-  // if (isHost) {
-  // 给现存连接列表 依次发消息
-  let cmd = { type: isTrue ? map[control].off : map[control].on };
-  console.log('send cmd to remote camera', cmd);
-  Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
-    console.log('send to peer', pid);
-    conn.send(cmd);
-  });
-  // }
+  if (root.classList.contains('local')) {
+    // 如果是本地camera给现存连接列表 依次发消息
+    let cmd = { type: isTrue ? map[control].off : map[control].on };
+    console.log('send cmd to remote camera', cmd);
+    Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
+      console.log('send to peer', pid);
+      conn.send(cmd);
+    });
+  }
 };
-class LocalCamera {
-  constructor({ localId = null }) {
+class Camera {
+  constructor({ remote = false, peerId = null }) {
     this.dom = document.createElement('div');
-    this.dom.setAttribute('peer-id', localId);
+    this.dom.setAttribute('peer-id', peerId);
     this.dom.classList.add('camera');
-    this.dom.classList.add('local');
+    this.dom.classList.add(remote ? 'remote' : 'local');
     this.dom.innerHTML = `
     <div class='processing'>processing</div>
     <div class='video' video='true' bg='true' audio='true' waiting='true'>
@@ -96,22 +96,24 @@ class LocalCamera {
         <button class='opt audio' control='audio' title='audio'></button>
         <button class='opt pin' control='pin' title='pin'></button>
       </div>
-      <video playsinline autoplay muted='muted' ></video>
+      <video playsinline autoplay ${remote ? '' : "muted='muted'"} ></video>
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
-      <div class='mask waiting'>Waiting</div>
+      <div class='mask waiting'>Loading</div>
       </div>
       `;
     // <div class="cover_opts" />
-    this.initUsername();
+    this.initUsername(remote);
     this.initControls();
-    this.init();
-    return this.dom;
+    if (!remote) {
+      this.initLocal();
+    }
+    return { dom: this.dom, attachStream: this.attachStream };
   }
-  initUsername() {
+  initUsername(remote) {
     // if (!window.PORTAL_USER_NAME) return;
-    let un = new Username();
+    let un = new Username({ remote });
     this.dom.querySelector('.video').appendChild(un);
   }
   initControls() {
@@ -130,7 +132,8 @@ class LocalCamera {
       true
     );
   }
-  async init() {
+  // 初始化本地camera
+  async initLocal() {
     let devices = null;
     //  贴上本地视频
     try {
@@ -143,10 +146,9 @@ class LocalCamera {
       LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
         hasVideoCam ? fullStreamConfig : audioStreamConfig
       );
-      // LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(
-      //   hasVideoCam ? videoStreamConfig : audioStreamConfig
-      // );
-      this.attachStream();
+      let cloned = LOCAL_STREAM.clone();
+      cloned.getAudioTracks().forEach((t) => (t.enabled = false));
+      this.attachStream(cloned);
     } catch (error) {
       console.error('local device list', devices);
       console.error('getUserMedia error', error);
@@ -159,12 +161,21 @@ class LocalCamera {
       }
     }
   }
-  attachStream() {
-    let videoDom = this.dom.querySelector('video');
-    let video_only_local_stream = LOCAL_STREAM.clone();
-    video_only_local_stream.getAudioTracks().forEach((t) => (t.enabled = false));
-    videoDom.srcObject = video_only_local_stream;
-    this.dom.querySelector('.video').removeAttribute('waiting');
+  // remote method
+  getDom() {
+    return this.dom;
+  }
+  attachStream(stream) {
+    try {
+      //  贴上视频流
+      let videoDom = this.dom.querySelector('video');
+      videoDom.removeAttribute('waiting');
+      videoDom.srcObject = stream;
+      this.dom.querySelector('.video').removeAttribute('waiting');
+    } catch (error) {
+      console.error('getUserMedia error', error);
+      this.dom.setAttribute('camera-status', 'allow-error');
+    }
   }
 }
-export default LocalCamera;
+export default Camera;
