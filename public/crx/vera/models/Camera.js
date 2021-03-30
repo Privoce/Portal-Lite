@@ -1,5 +1,6 @@
 import { fullStreamConfig, audioStreamConfig } from './config.js';
 import Username from './Username.js';
+import Loading from './Loading.js';
 import { bgRemove, bgRestore } from './utils.js';
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
@@ -100,23 +101,29 @@ class Camera {
       <canvas class='render' width=200 height=200 ></canvas>
       <canvas class='side' width=200 height=200 ></canvas>
       <div class='mask error'>Camera Error</div>
-      <div class='mask waiting'>
-        <div class='loading'>
-          <svg viewBox="0 0 50 50" class="circle">
-              <circle cx="25" cy="25" r="20" fill="none" class="path"></circle>
-          </svg>
-          <span class='txt'>Loading</span>
-        </div>
-      </div>
-      </div>
+      <div class='mask waiting'></div>
+    </div>
       `;
+    // <div class='mask waiting'>
+    //   <div class='loading'>
+    //     <svg viewBox="0 0 50 50" class="circle">
+    //         <circle cx="25" cy="25" r="20" fill="none" class="path"></circle>
+    //     </svg>
+    //     <span class='txt'>Loading</span>
+    //   </div>
+    // </div>
     // <div class="cover_opts" />
+    this.initLoading();
     this.initUsername(remote);
     this.initControls();
     if (!remote) {
       this.initLocal();
     }
     return { dom: this.dom, attachStream: this.attachStream };
+  }
+  initLoading() {
+    let loading = new Loading();
+    this.dom.querySelector('.video .waiting').appendChild(loading);
   }
   initUsername(remote) {
     // if (!window.PORTAL_USER_NAME) return;
@@ -161,6 +168,7 @@ class Camera {
       console.error('getUserMedia error', error);
       let { name } = error;
       if (name == 'NotFoundError') {
+        // 没有摄像头，再试一次只获取麦克风的情况
         LOCAL_STREAM = await navigator.mediaDevices.getUserMedia(audioStreamConfig);
         this.attachStream();
       } else {
@@ -176,9 +184,8 @@ class Camera {
     try {
       //  贴上视频流
       let videoDom = this.dom.querySelector('video');
-      videoDom.removeAttribute('waiting');
       videoDom.srcObject = stream;
-      this.dom.querySelector('.video').removeAttribute('waiting');
+      videoDom.parentElement.removeAttribute('waiting');
     } catch (error) {
       console.error('getUserMedia error', error);
       this.dom.setAttribute('camera-status', 'allow-error');

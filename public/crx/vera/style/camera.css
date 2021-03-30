@@ -118,13 +118,6 @@
 .camera .video[waiting='true'] .mask.waiting {
   display: flex;
 }
-.camera .video[waiting='true'] .mask.waiting .loading .circle {
-  animation: loading-rotate 1.5s infinite ease-in-out;
-  /*给svg也加上一个旋转动画*/
-}
-.camera .video[waiting='true'] .mask.waiting .loading .circle .path {
-  animation: loading-dash 1.5s ease-in-out infinite;
-}
 .camera .video video {
   width: 200px;
   height: 200px;
@@ -174,6 +167,8 @@
 .camera .video .mask.waiting .loading .circle {
   width: 100px;
   height: 100px;
+  animation: loading-rotate 1.5s infinite ease-in-out;
+  /*给svg也加上一个旋转动画*/
 }
 .camera .video .mask.waiting .loading .circle .path {
   stroke: #000;
@@ -184,31 +179,13 @@
   /*设置实现长95，虚线长126*/
   stroke-dashoffset: 0;
   /*设置虚线的偏移位置*/
+  animation: loading-dash 1.5s ease-in-out infinite;
 }
 .camera .video .mask.waiting .loading .txt {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
-.camera .video[video='true'] .mask.user {
-  display: none;
-}
-.camera[camera-status='connected'] .btn {
-  display: none;
-}
-.camera[camera-status='connected'] .controls,
-.camera[camera-status='connected'] .opts {
-  display: flex;
-}
-.camera[camera-status='connected'] .invite {
-  display: none;
-}
-.camera[camera-status='allow-error'] .btn {
-  display: none;
-}
-.camera[camera-status='allow-error'] .mask.error {
-  display: flex;
 }
 @keyframes loading-dash {
   0% {
@@ -234,4 +211,23 @@
   to {
     transform: rotate(1turn);
   }
+}
+.camera .video[video='true'] .mask.user {
+  display: none;
+}
+.camera[camera-status='connected'] .btn {
+  display: none;
+}
+.camera[camera-status='connected'] .controls,
+.camera[camera-status='connected'] .opts {
+  display: flex;
+}
+.camera[camera-status='connected'] .invite {
+  display: none;
+}
+.camera[camera-status='allow-error'] .btn {
+  display: none;
+}
+.camera[camera-status='allow-error'] .mask.error {
+  display: flex;
 }

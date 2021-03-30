@@ -136,12 +136,6 @@
       }
       .mask.waiting {
         display: flex;
-        .loading .circle {
-          animation: loading-rotate 1.5s infinite ease-in-out; /*给svg也加上一个旋转动画*/
-          .path {
-            animation: loading-dash 1.5s ease-in-out infinite;
-          }
-        }
       }
     }
     video {
@@ -186,25 +180,8 @@
         background-color: var(--camera-bg-color);
         width: 100%;
         height: 100%;
-        .loading {
-          position: relative;
-          .circle {
-            width: 100px;
-            height: 100px;
-            .path {
-              stroke: #000; /*给画笔设置一个颜色*/
-              stroke-width: 3; /*设置线条的宽度*/
-              stroke-dasharray: 95, 126; /*设置实现长95，虚线长126*/
-              stroke-dashoffset: 0; /*设置虚线的偏移位置*/
-            }
-          }
-          .txt {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-          }
-        }
+        // loading
+        @import (less) './common/loading.less';
       }
     }
     &[video='true'] .mask.user {
@@ -231,26 +208,5 @@
     .mask.error {
       display: flex;
     }
-  }
-}
-@keyframes loading-dash {
-  0% {
-    stroke-dasharray: 1, 126; /*实线部分1，虚线部分126*/
-    stroke-dashoffset: 0; /*前面1/126显示实线，后面125显示空白*/
-  }
-
-  50% {
-    stroke-dasharray: 95, 126; /*实线部分95，虚线部分126*/
-    stroke-dashoffset: -31px; /*顺时针偏移31/126，即前31/126显示空白，后面3/4显示线条*/
-  }
-
-  to {
-    stroke-dasharray: 6, 120; /*实线部分6，虚线部分120*/
-    stroke-dashoffset: -120px; /*最后顺时针偏移120/126，即前120/126显示空白，后面6点显示线条部分*/
-  }
-}
-@keyframes loading-rotate {
-  to {
-    transform: rotate(1turn); // 旋转1圈
   }
 }

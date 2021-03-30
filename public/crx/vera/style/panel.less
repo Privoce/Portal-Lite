@@ -19,7 +19,15 @@
   transition: all 0.5s ease-in-out;
   transition-property: background, width, height;
   background: var(--panel-bg-color);
-
+  // loading
+  @import (less) './common/loading.less';
+  // overwrite loading
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
   &[layout='min'] {
     width: 260px;
     min-height: 40px;

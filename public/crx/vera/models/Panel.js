@@ -1,5 +1,6 @@
 import Camera from './Camera.js';
 import Invite from './Invite.js';
+import Loading from './Loading.js';
 import Join from './Join.js';
 import PeerClient from './PeerClient.js';
 window.REMOTE_PEER_IDS = [];
@@ -38,6 +39,7 @@ class Panel {
       `;
     // <div class="loading"></div>
     // <div class="drag"></div>;
+    this.initLoading();
     this.initClose();
     this.initLayout();
     this.initPeer(pvid);
@@ -52,6 +54,10 @@ class Panel {
         height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
       }
     });
+  }
+  initLoading() {
+    this.loading = new Loading();
+    this.dom.appendChild(this.loading);
   }
   initLayout() {
     let layoutContainer = this.dom.querySelector('.layout');
@@ -125,6 +131,8 @@ class Panel {
     cameraList.appendChild(CameraBox.dom);
     cameraList.insertAdjacentElement('afterend', this.inviteBox);
     this.inited = true;
+    // remove loading
+    this.loading.remove();
   }
 }
 export default Panel;

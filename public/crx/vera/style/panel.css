@@ -18,6 +18,63 @@
   transition-property: background, width, height;
   background: var(--panel-bg-color);
 }
+#PORTAL_VERA_PANEL .loading {
+  position: relative;
+}
+#PORTAL_VERA_PANEL .loading .circle {
+  width: 100px;
+  height: 100px;
+  animation: loading-rotate 1.5s infinite ease-in-out;
+  /*给svg也加上一个旋转动画*/
+}
+#PORTAL_VERA_PANEL .loading .circle .path {
+  stroke: #000;
+  /*给画笔设置一个颜色*/
+  stroke-width: 3;
+  /*设置线条的宽度*/
+  stroke-dasharray: 95, 126;
+  /*设置实现长95，虚线长126*/
+  stroke-dashoffset: 0;
+  /*设置虚线的偏移位置*/
+  animation: loading-dash 1.5s ease-in-out infinite;
+}
+#PORTAL_VERA_PANEL .loading .txt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1, 126;
+    /*实线部分1，虚线部分126*/
+    stroke-dashoffset: 0;
+    /*前面1/126显示实线，后面125显示空白*/
+  }
+  50% {
+    stroke-dasharray: 95, 126;
+    /*实线部分95，虚线部分126*/
+    stroke-dashoffset: -31px;
+    /*顺时针偏移31/126，即前31/126显示空白，后面3/4显示线条*/
+  }
+  to {
+    stroke-dasharray: 6, 120;
+    /*实线部分6，虚线部分120*/
+    stroke-dashoffset: -120px;
+    /*最后顺时针偏移120/126，即前120/126显示空白，后面6点显示线条部分*/
+  }
+}
+@keyframes loading-rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+#PORTAL_VERA_PANEL .loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
 #PORTAL_VERA_PANEL[layout='min'] {
   width: 260px;
   min-height: 40px;
@@ -326,13 +383,6 @@
 #PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] .mask.waiting {
   display: flex;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] .mask.waiting .loading .circle {
-  animation: loading-rotate 1.5s infinite ease-in-out;
-  /*给svg也加上一个旋转动画*/
-}
-#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] .mask.waiting .loading .circle .path {
-  animation: loading-dash 1.5s ease-in-out infinite;
-}
 #PORTAL_VERA_PANEL .cameras .camera .video video {
   width: 200px;
   height: 200px;
@@ -376,29 +426,6 @@
   width: 100%;
   height: 100%;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting .loading {
-  position: relative;
-}
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting .loading .circle {
-  width: 100px;
-  height: 100px;
-}
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting .loading .circle .path {
-  stroke: #000;
-  /*给画笔设置一个颜色*/
-  stroke-width: 3;
-  /*设置线条的宽度*/
-  stroke-dasharray: 95, 126;
-  /*设置实现长95，虚线长126*/
-  stroke-dashoffset: 0;
-  /*设置虚线的偏移位置*/
-}
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting .loading .txt {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
 #PORTAL_VERA_PANEL .cameras .camera .video[video='true'] .mask.user {
   display: none;
 }
@@ -417,31 +444,6 @@
 }
 #PORTAL_VERA_PANEL .cameras .camera[camera-status='allow-error'] .mask.error {
   display: flex;
-}
-@keyframes loading-dash {
-  0% {
-    stroke-dasharray: 1, 126;
-    /*实线部分1，虚线部分126*/
-    stroke-dashoffset: 0;
-    /*前面1/126显示实线，后面125显示空白*/
-  }
-  50% {
-    stroke-dasharray: 95, 126;
-    /*实线部分95，虚线部分126*/
-    stroke-dashoffset: -31px;
-    /*顺时针偏移31/126，即前31/126显示空白，后面3/4显示线条*/
-  }
-  to {
-    stroke-dasharray: 6, 120;
-    /*实线部分6，虚线部分120*/
-    stroke-dashoffset: -120px;
-    /*最后顺时针偏移120/126，即前120/126显示空白，后面6点显示线条部分*/
-  }
-}
-@keyframes loading-rotate {
-  to {
-    transform: rotate(1turn);
-  }
 }
 #PORTAL_VERA_PANEL .invite {
   box-sizing: border-box;
