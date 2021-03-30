@@ -12,8 +12,7 @@ class Panel {
     this.inited = false;
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_PANEL';
-    if (!pvid) this.dom.classList.add('host');
-    this.dom.setAttribute('data-status', 'uninitialized');
+
     this.dom.innerHTML = `
     <section class='panel'>
       <div class='close'></div>
@@ -40,6 +39,8 @@ class Panel {
     </section>
       `;
     this.panel = this.dom.querySelector('.panel');
+    if (!pvid) this.panel.classList.add('host');
+    this.panel.setAttribute('data-status', 'uninitialized');
     // <div class="loading"></div>
     // <div class="drag"></div>;
     this.initLoading();
@@ -73,7 +74,7 @@ class Panel {
           layoutContainer.querySelector('.item.curr').classList.remove('curr');
           target.classList.add('curr');
           let layout = target.getAttribute('layout');
-          this.dom.setAttribute('layout', layout);
+          this.panel.setAttribute('layout', layout);
         }
       },
       true
@@ -121,7 +122,10 @@ class Panel {
       // MyPortalVeraPeer.reconnect();
       this.init({ inviteId: pvid, localId: MyPortalVeraPeer.id });
     }
-    new PeerClient({ pvid, panel: this });
+    new PeerClient({
+      pvid,
+      panel: { dom: this.panel, init: this.init.bind(this) }
+    });
     console.log('invited peerId', pvid);
   }
   init({ inviteId, localId }) {

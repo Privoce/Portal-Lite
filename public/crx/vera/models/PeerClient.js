@@ -133,7 +133,7 @@ class PeerClient {
         // 写入历史记录
         appendHistory({ peerId: pvid ? pvid : MyPortalVeraPeer.id, isHost: !pvid });
         // 去掉邀请链接框
-        panel.inviteBox.remove();
+        panel.dom.querySelector('.invite').remove();
         call.on('stream', (s) => {
           REMOTE_STREAM = s;
           remoteCamera.attachStream(s);
