@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 const StyledWrapper = styled.section`
   z-index: 999;
   position: fixed;
@@ -20,14 +21,14 @@ const StyledWrapper = styled.section`
     padding-top: 0.75rem;
     padding-bottom: 0.2rem;
     overflow: hidden;
-  }
     .tabs {
       position: relative;
+      /* background-color: #fff; */
       display: flex;
       position: absolute;
-      left:0;
+      left: 0;
       top: 0;
-      width:100%;
+      width: 100%;
       .tab {
         padding: 0.2rem 0;
         flex: 1;
@@ -39,9 +40,8 @@ const StyledWrapper = styled.section`
     }
     .list {
       height: 100%;
-      height: -webkit-fill-available;
-      padding:  0.2rem;
-      padding-top: .1rem;
+      padding: 0.2rem;
+      padding-top: 0.1rem;
       overflow-y: scroll;
       overflow-y: overlay;
       display: grid;
@@ -76,7 +76,7 @@ const StyledWrapper = styled.section`
       height: 0.4rem;
     }
     @media screen and (max-width: 414px) {
-      width: 5rem;
+      width: 100%;
     }
   }
 `;
