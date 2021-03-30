@@ -1,69 +1,112 @@
 // widget
 #PORTAL_VERA_WIDGET {
-  cursor: pointer;
   z-index: 999;
   position: fixed;
-  left: -22px;
-  bottom: 30px;
-  width: 60px;
-  height: 50px;
-  background-color: var(--panel-bg-color);
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  padding: 5px 5px 5px 0;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: 100vh;
   display: none;
-  align-items: center;
-  justify-content: center;
-  transition: left 0.2s ease-in-out;
+  pointer-events: none;
   &.show {
     display: flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-  &:after {
-    display: none;
-    position: absolute;
-    right: -50px;
-    top: 50%;
-    transform: translateY(-50%);
-    content: '';
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid #333;
-    background-color: transparent;
-    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.svg');
-    background-size: 70%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  &:hover {
-    left: 0;
-    &:after {
-      display: block;
+  .widget {
+    pointer-events: all;
+    cursor: pointer;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .drag {
+      margin-left: -22px;
+      width: 60px;
+      height: 50px;
+      background-color: var(--widget-bg-color);
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+      padding: 5px 5px 5px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: margin-left 0.5s ease-in-out;
+      will-change: margin-left;
+      > .portal_logo {
+        width: 30px;
+        height: 30px;
+        background-color: transparent;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/logo.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      > .username {
+        white-space: nowrap;
+        position: absolute;
+        bottom: -20px;
+        left: 20px;
+        border-radius: 5px;
+        font-size: 10px;
+        border: 1px solid #eee;
+        background-color: #333;
+        color: #fff;
+        padding: 2px 5px;
+        line-height: 1.1;
+      }
+      > .handle {
+        border-radius: 4px;
+        width: 12px;
+        height: 30px;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/drag-vertical.svg');
+        background-size: cover;
+        background-color: #333;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+    .camera {
+      will-change: transform;
+      filter: drop-shadow(0 2px 4px rgba(34, 36, 38, 0.35));
+      margin-left: 8px;
+      cursor: pointer;
+      visibility: hidden;
+      content: '';
+      width: 60px;
+      height: 60px;
+      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
   }
-  > .portal_logo {
-    width: 30px;
-    height: 30px;
-    background-color: transparent;
-    background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/logo.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  .widget:hover {
+    .drag {
+      margin-left: 0;
+    }
+    .camera {
+      visibility: visible;
+      animation: AniSlideOut 0.3s ease-in forwards;
+    }
   }
-  > .username {
-    white-space: nowrap;
-    position: absolute;
-    bottom: -20px;
-    left: 20px;
-    border-radius: 5px;
-    font-size: 10px;
-    border: 1px solid #eee;
-    background-color: #333;
-    color: #fff;
-    padding: 2px 5px;
-    line-height: 1.1;
+  .widget.plain-draggable-moving {
+    .camera {
+      visibility: visible;
+    }
+    &:hover .camera {
+      animation: none;
+    }
   }
-  > .drag {
-    .drag();
+}
+
+@keyframes AniSlideOut {
+  from {
+    transform: translateX(-30px);
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
