@@ -2,7 +2,7 @@
   "name": "Portal - Home of Your Web Apps",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.8.22",
+  "version": "1.9.0",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "history", "storage"],
@@ -27,6 +27,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "exclude_matches": ["https://nicegoodthings.com/transfer/*"],
       "js": [
         "crx/vera/assets/authing.min.js",
         "crx/vera/assets/tf.min.js",
@@ -36,6 +37,11 @@
         "crx/vera/content_script.js"
       ],
       "css": ["crx/vera/style.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://nicegoodthings.com/transfer/*"],
+      "js": ["crx/vera/catch.invite.id.js"],
       "run_at": "document_idle"
     }
   ],

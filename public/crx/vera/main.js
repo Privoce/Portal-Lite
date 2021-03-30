@@ -2,8 +2,8 @@ import Widget from './models/Widget.js';
 import Panel from './models/Panel.js';
 import { peerKey, installCheckKey } from './models/config.js';
 // 初始化挂件
-export function main() {
-  const { pvid } = init();
+export async function main() {
+  const pvid = await init();
   const widget = new Widget(pvid);
   const inviteHandler = () => {
     console.log('portal vera id', pvid);
@@ -28,8 +28,21 @@ export function main() {
   widget.show();
 }
 const init = () => {
-  // localStorage.getItem()
-  document.documentElement.setAttribute(installCheckKey, 1);
-  let pvid = new URLSearchParams(location.search).get(peerKey) || null;
-  return { pvid };
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(['pvid'], function (res) {
+      // Notify that we saved.
+      console.log('pvid from storage', res.pvid);
+      if (res.pvid) {
+        chrome.storage.sync.remove('pvid', () => {
+          console.log('pvid removed');
+        });
+        resolve(res.pvid);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+  // document.documentElement.setAttribute(installCheckKey, 1);
+  // let pvid = new URLSearchParams(location.search).get(peerKey) || null;
+  // return { pvid };
 };

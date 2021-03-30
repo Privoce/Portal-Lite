@@ -4,5 +4,5 @@
   // const peerObj = await import(peerSrc);
   // console.log({ peerObj });
   const contentScript = await import(src);
-  contentScript.main(/* chrome: no need to pass it */);
+  await contentScript.main(/* chrome: no need to pass it */);
 })();
