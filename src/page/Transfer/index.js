@@ -60,9 +60,15 @@ export default function Transfer() {
   }, []);
   useEffect(() => {
     let decodedUrl = decodeURIComponent(dest);
-    let id = new URLSearchParams(new URL(decodedUrl).search).get(urlParamKey);
+    let currUrl = new URL(decodedUrl);
+    let sps = new URLSearchParams(currUrl.search);
+    let id = sps.get(urlParamKey);
     if (id && checkResult == true) {
-      location.href = decodedUrl;
+      sps.delete(urlParamKey);
+      let { origin, hash = '', pathname = '' } = currUrl;
+      console.log({ currUrl });
+      let paramsString = sps.toString() ? `?${sps.toString()}` : '';
+      location.href = `${origin}${pathname}${paramsString}${hash}`;
     } else if (checkResult === false || !id) {
       setTip(`Transfer error: \n\r ${decodedUrl}`);
     }
