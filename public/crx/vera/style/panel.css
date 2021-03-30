@@ -1,33 +1,40 @@
 #PORTAL_VERA_PANEL {
-  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+#PORTAL_VERA_PANEL .panel {
+  pointer-events: all;
   display: flex;
   align-items: center;
   gap: 15px;
-  position: fixed;
-  top: 35px;
-  right: 0;
   min-width: 100px;
   min-height: 200px;
   max-height: 100vh;
   overflow: visible;
   padding: 12px;
-  border: none;
   border-radius: var(--border-radius);
   transition: all 0.5s ease-in-out;
   transition-property: background, width, height;
   background: var(--panel-bg-color);
 }
-#PORTAL_VERA_PANEL .loading {
+#PORTAL_VERA_PANEL .panel .loading {
   position: relative;
 }
-#PORTAL_VERA_PANEL .loading .circle {
+#PORTAL_VERA_PANEL .panel .loading .circle {
   width: 100px;
   height: 100px;
   animation: loading-rotate 1.5s infinite ease-in-out;
   /*给svg也加上一个旋转动画*/
 }
-#PORTAL_VERA_PANEL .loading .circle .path {
+#PORTAL_VERA_PANEL .panel .loading .circle .path {
   stroke: #000;
   /*给画笔设置一个颜色*/
   stroke-width: 3;
@@ -38,7 +45,7 @@
   /*设置虚线的偏移位置*/
   animation: loading-dash 1.5s ease-in-out infinite;
 }
-#PORTAL_VERA_PANEL .loading .txt {
+#PORTAL_VERA_PANEL .panel .loading .txt {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -69,56 +76,56 @@
     transform: rotate(1turn);
   }
 }
-#PORTAL_VERA_PANEL .loading {
+#PORTAL_VERA_PANEL .panel .loading {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
 }
-#PORTAL_VERA_PANEL[layout='min'] {
+#PORTAL_VERA_PANEL .panel[layout='min'] {
   width: 260px;
   min-height: 40px;
   padding-top: 8px !important;
   background: var(--panel-bg-color);
 }
-#PORTAL_VERA_PANEL[layout='min'] .cameras,
-#PORTAL_VERA_PANEL[layout='min'] .invite,
-#PORTAL_VERA_PANEL[layout='min'] .join {
+#PORTAL_VERA_PANEL .panel[layout='min'] .cameras,
+#PORTAL_VERA_PANEL .panel[layout='min'] .invite,
+#PORTAL_VERA_PANEL .panel[layout='min'] .join {
   display: none;
 }
-#PORTAL_VERA_PANEL[layout='min'] .close {
+#PORTAL_VERA_PANEL .panel[layout='min'] .close {
   bottom: 8px;
 }
-#PORTAL_VERA_PANEL[layout='min'] .close,
-#PORTAL_VERA_PANEL[layout='min'] .topbar,
-#PORTAL_VERA_PANEL[layout='min'][data-status]:after {
+#PORTAL_VERA_PANEL .panel[layout='min'] .close,
+#PORTAL_VERA_PANEL .panel[layout='min'] .topbar,
+#PORTAL_VERA_PANEL .panel[layout='min'][data-status]:after {
   visibility: visible;
 }
-#PORTAL_VERA_PANEL[layout='vt'] {
+#PORTAL_VERA_PANEL .panel[layout='vt'] {
   flex-direction: column;
 }
-#PORTAL_VERA_PANEL[layout='vt'] .cameras {
+#PORTAL_VERA_PANEL .panel[layout='vt'] .cameras {
   flex-direction: column;
 }
-#PORTAL_VERA_PANEL[layout='hz'] {
+#PORTAL_VERA_PANEL .panel[layout='hz'] {
   flex-direction: row;
 }
-#PORTAL_VERA_PANEL[layout='one'] {
+#PORTAL_VERA_PANEL .panel[layout='one'] {
   gap: 0;
 }
-#PORTAL_VERA_PANEL[layout='one'] .cameras .camera.local {
+#PORTAL_VERA_PANEL .panel[layout='one'] .cameras .camera.local {
   display: none;
 }
-#PORTAL_VERA_PANEL:hover {
+#PORTAL_VERA_PANEL .panel:hover {
   background: var(--panel-bg-color);
 }
-#PORTAL_VERA_PANEL:hover[data-status]:after {
+#PORTAL_VERA_PANEL .panel:hover[data-status]:after {
   visibility: visible;
 }
-#PORTAL_VERA_PANEL:hover .close {
+#PORTAL_VERA_PANEL .panel:hover .close {
   visibility: visible;
 }
-#PORTAL_VERA_PANEL[data-status]:after {
+#PORTAL_VERA_PANEL .panel[data-status]:after {
   content: '';
   position: absolute;
   left: -15px;
@@ -129,44 +136,44 @@
   background-color: #999;
   border-radius: 50%;
 }
-#PORTAL_VERA_PANEL[data-status='uninitialized'] {
+#PORTAL_VERA_PANEL .panel[data-status='uninitialized'] {
   width: 440px;
   height: 224px;
 }
-#PORTAL_VERA_PANEL[data-status='open']:after {
+#PORTAL_VERA_PANEL .panel[data-status='open']:after {
   background-color: #ee7f3d;
 }
-#PORTAL_VERA_PANEL[data-status='close']:after {
+#PORTAL_VERA_PANEL .panel[data-status='close']:after {
   background-color: #fff;
 }
-#PORTAL_VERA_PANEL[data-status='disconnected']:after {
+#PORTAL_VERA_PANEL .panel[data-status='disconnected']:after {
   background-color: #ccc;
 }
-#PORTAL_VERA_PANEL[data-status='connected']:after {
+#PORTAL_VERA_PANEL .panel[data-status='connected']:after {
   background-color: #48baff;
 }
-#PORTAL_VERA_PANEL[data-status='streaming'] {
+#PORTAL_VERA_PANEL .panel[data-status='streaming'] {
   background: transparent;
 }
-#PORTAL_VERA_PANEL[data-status='streaming']:after {
+#PORTAL_VERA_PANEL .panel[data-status='streaming']:after {
   background-color: #48ba2b;
 }
-#PORTAL_VERA_PANEL[data-status='streaming'] {
+#PORTAL_VERA_PANEL .panel[data-status='streaming'] {
   padding-top: 40px;
 }
-#PORTAL_VERA_PANEL[data-status='streaming']:hover {
+#PORTAL_VERA_PANEL .panel[data-status='streaming']:hover {
   background: var(--panel-bg-color);
 }
-#PORTAL_VERA_PANEL[data-status='streaming']:hover .topbar {
+#PORTAL_VERA_PANEL .panel[data-status='streaming']:hover .topbar {
   display: flex;
 }
-#PORTAL_VERA_PANEL[data-status='connected'] .topbar {
+#PORTAL_VERA_PANEL .panel[data-status='connected'] .topbar {
   display: none;
 }
-#PORTAL_VERA_PANEL[data-status='error']:after {
+#PORTAL_VERA_PANEL .panel[data-status='error']:after {
   background-color: #d7322d;
 }
-#PORTAL_VERA_PANEL > .close {
+#PORTAL_VERA_PANEL .panel > .close {
   visibility: hidden;
   display: block;
   cursor: pointer;
@@ -181,10 +188,10 @@
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/tel.svg');
   background-size: cover;
 }
-#PORTAL_VERA_PANEL > .close:hover {
+#PORTAL_VERA_PANEL .panel > .close:hover {
   opacity: 1;
 }
-#PORTAL_VERA_PANEL .topbar {
+#PORTAL_VERA_PANEL .panel .topbar {
   display: none;
   position: absolute;
   top: 10px;
@@ -193,7 +200,7 @@
   width: -webkit-fill-available;
   padding: 0 12px;
 }
-#PORTAL_VERA_PANEL .topbar .add {
+#PORTAL_VERA_PANEL .panel .topbar .add {
   cursor: pointer;
   width: 40px;
   height: 18px;
@@ -206,7 +213,7 @@
   background-position: center;
   background-size: 14px;
 }
-#PORTAL_VERA_PANEL .topbar .layout {
+#PORTAL_VERA_PANEL .panel .topbar .layout {
   display: flex;
   align-items: center;
   border-radius: var(--border-radius);
@@ -214,7 +221,7 @@
   padding: 4px;
   gap: 10px;
 }
-#PORTAL_VERA_PANEL .topbar .layout .item {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item {
   position: relative;
   cursor: pointer;
   display: flex;
@@ -224,7 +231,7 @@
   width: 15px;
   height: 15px;
 }
-#PORTAL_VERA_PANEL .topbar .layout .item:after {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item:after {
   position: absolute;
   content: '';
   display: block;
@@ -232,30 +239,30 @@
   height: 100%;
   opacity: 0;
 }
-#PORTAL_VERA_PANEL .topbar .layout .item:hover,
-#PORTAL_VERA_PANEL .topbar .layout .item.curr {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item:hover,
+#PORTAL_VERA_PANEL .panel .topbar .layout .item.curr {
   background-color: var(--camera-bg-color);
 }
-#PORTAL_VERA_PANEL .topbar .layout .item.vt {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item.vt {
   flex-direction: column;
 }
-#PORTAL_VERA_PANEL .topbar .layout .item .mock {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock {
   border-radius: 1px;
   width: 4px;
   background: var(--font-color);
 }
-#PORTAL_VERA_PANEL .topbar .layout .item .mock.box {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock.box {
   height: 4px;
 }
-#PORTAL_VERA_PANEL .topbar .layout .item .mock.line {
+#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock.line {
   height: 2px;
 }
-#PORTAL_VERA_PANEL .cameras {
+#PORTAL_VERA_PANEL .panel .cameras {
   overflow: hidden;
   display: flex;
   gap: 15px;
 }
-#PORTAL_VERA_PANEL .cameras .camera {
+#PORTAL_VERA_PANEL .panel .cameras .camera {
   overflow: hidden;
   position: relative;
   width: fit-content;
@@ -267,26 +274,26 @@
   border: none;
   background: transparent;
 }
-#PORTAL_VERA_PANEL .cameras .camera:hover .video .username,
-#PORTAL_VERA_PANEL .cameras .camera:hover .video .opts {
+#PORTAL_VERA_PANEL .panel .cameras .camera:hover .video .username,
+#PORTAL_VERA_PANEL .panel .cameras .camera:hover .video .opts {
   visibility: visible;
 }
-#PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='processing'] canvas {
+#PORTAL_VERA_PANEL .panel .cameras .camera[bg-rm-status='processing'] canvas {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='processing'] .processing {
+#PORTAL_VERA_PANEL .panel .cameras .camera[bg-rm-status='processing'] .processing {
   display: block;
 }
-#PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='restore'] canvas {
+#PORTAL_VERA_PANEL .panel .cameras .camera[bg-rm-status='restore'] canvas {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='ready'] .processing {
+#PORTAL_VERA_PANEL .panel .cameras .camera[bg-rm-status='ready'] .processing {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[bg-rm-status='ready'] .video video {
+#PORTAL_VERA_PANEL .panel .cameras .camera[bg-rm-status='ready'] .video video {
   visibility: hidden;
 }
-#PORTAL_VERA_PANEL .cameras .camera .processing {
+#PORTAL_VERA_PANEL .panel .cameras .camera .processing {
   z-index: 10;
   display: none;
   text-transform: capitalize;
@@ -300,11 +307,11 @@
   font-size: 22px;
   color: var(--font-color);
 }
-#PORTAL_VERA_PANEL .cameras .camera .video {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video {
   position: relative;
   display: flex;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .username {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .username {
   visibility: hidden;
   position: absolute;
   top: 5px;
@@ -317,7 +324,7 @@
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts {
   z-index: 7;
   display: none;
   position: absolute;
@@ -327,7 +334,7 @@
   display: flex;
   visibility: hidden;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt {
   padding: 0;
   border: none;
   border-radius: var(--border-radius);
@@ -340,56 +347,56 @@
   background-position: center;
   cursor: pointer;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt:not(:last-child) {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt:not(:last-child) {
   margin-right: 6px;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt.bg {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt.bg {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/bg.rm.off.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt.video {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt.video {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.off.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt.audio {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt.audio {
   background-color: #863733;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/audio.off.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .opts .opt.pin {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[bg='true'] .opts .opt.bg {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[bg='true'] .opts .opt.bg {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/bg.rm.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[video='true'] .opts .opt.video {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[video='true'] .opts .opt.video {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.on.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[audio='true'] .opts .opt.audio {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[audio='true'] .opts .opt.audio {
   background-color: var(--button-bg-color);
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/audio.on.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[pin='true'] .opts .opt.pin {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[pin='true'] .opts .opt.pin {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/pin.off.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] video {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[waiting='true'] video {
   visibility: hidden;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[waiting='true'] .mask.waiting {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[waiting='true'] .mask.waiting {
   display: flex;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video video {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video video {
   width: 200px;
   height: 200px;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video canvas {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video canvas {
   width: 200px;
   height: 200px;
   position: absolute;
   left: 0;
   top: 0;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video canvas.side {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video canvas.side {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .mask {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .mask {
   z-index: 6;
   width: 200px;
   height: 200px;
@@ -405,39 +412,39 @@
   font-size: 14px;
   font-weight: 800;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.user {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .mask.user {
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/user.svg');
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.error {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .mask.error {
   display: none;
   color: #ec3636;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video .mask.waiting {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video .mask.waiting {
   display: none;
   background-color: var(--camera-bg-color);
   width: 100%;
   height: 100%;
 }
-#PORTAL_VERA_PANEL .cameras .camera .video[video='true'] .mask.user {
+#PORTAL_VERA_PANEL .panel .cameras .camera .video[video='true'] .mask.user {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='connected'] .btn {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .btn {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='connected'] .controls,
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='connected'] .opts {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .controls,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .opts {
   display: flex;
 }
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='connected'] .invite {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .invite {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='allow-error'] .btn {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] .btn {
   display: none;
 }
-#PORTAL_VERA_PANEL .cameras .camera[camera-status='allow-error'] .mask.error {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] .mask.error {
   display: flex;
 }
-#PORTAL_VERA_PANEL .invite {
+#PORTAL_VERA_PANEL .panel .invite {
   box-sizing: border-box;
   height: 200px;
   width: 200px;
@@ -450,7 +457,7 @@
   background-color: var(--camera-bg-color);
   border-radius: var(--border-radius);
 }
-#PORTAL_VERA_PANEL .invite .link {
+#PORTAL_VERA_PANEL .panel .invite .link {
   width: 95%;
   display: flex;
   align-items: center;
@@ -460,7 +467,7 @@
   border-radius: var(--border-radius);
   font-size: 10px;
 }
-#PORTAL_VERA_PANEL .invite .link .url {
+#PORTAL_VERA_PANEL .panel .invite .link .url {
   color: var(--font-color);
   width: 100%;
   height: fit-content;
@@ -472,7 +479,7 @@
   max-height: 90px;
   overflow: hidden;
 }
-#PORTAL_VERA_PANEL .invite .users {
+#PORTAL_VERA_PANEL .panel .invite .users {
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
@@ -481,24 +488,24 @@
   padding: 6px 4px;
   border-radius: var(--border-radius);
 }
-#PORTAL_VERA_PANEL .invite .users .user {
+#PORTAL_VERA_PANEL .panel .invite .users .user {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-#PORTAL_VERA_PANEL .invite .users .user:not(:last-child) {
+#PORTAL_VERA_PANEL .panel .invite .users .user:not(:last-child) {
   padding-bottom: 4px;
   border-bottom: 1px dashed #333;
 }
-#PORTAL_VERA_PANEL .invite .users .user .avator {
+#PORTAL_VERA_PANEL .panel .invite .users .user .avator {
   width: 25px;
   height: 25px;
   border-radius: 50%;
 }
-#PORTAL_VERA_PANEL .invite .users .user .name {
+#PORTAL_VERA_PANEL .panel .invite .users .user .name {
   font-size: 10px;
 }
-#PORTAL_VERA_PANEL .join {
+#PORTAL_VERA_PANEL .panel .join {
   box-sizing: border-box;
   height: 200px;
   width: 200px;
@@ -511,10 +518,10 @@
   background: transparent;
   border-radius: var(--border-radius);
 }
-#PORTAL_VERA_PANEL .join .btn {
+#PORTAL_VERA_PANEL .panel .join .btn {
   font-size: 22px;
 }
-#PORTAL_VERA_PANEL .join .username {
+#PORTAL_VERA_PANEL .panel .join .username {
   margin-bottom: 20px;
   min-width: 120px;
   text-align: center;

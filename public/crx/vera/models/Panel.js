@@ -15,6 +15,7 @@ class Panel {
     if (!pvid) this.dom.classList.add('host');
     this.dom.setAttribute('data-status', 'uninitialized');
     this.dom.innerHTML = `
+    <section class='panel'>
       <div class='close'></div>
       <div class="cameras"></div>
       <div class='topbar'>
@@ -36,7 +37,9 @@ class Panel {
           </li>
         </ul>
       </div>
+    </section>
       `;
+    this.panel = this.dom.querySelector('.panel');
     // <div class="loading"></div>
     // <div class="drag"></div>;
     this.initLoading();
@@ -44,20 +47,20 @@ class Panel {
     this.initLayout();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
-    new PlainDraggable(this.dom, {
+    new PlainDraggable(this.panel, {
       // handle: this.dom.querySelector('.drag'),
-      autoScroll: true,
-      containment: {
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
-      }
+      autoScroll: true
+      // containment: {
+      //   left: 0,
+      //   top: 0,
+      //   width: '100%',
+      //   height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
+      // }
     });
   }
   initLoading() {
     this.loading = new Loading();
-    this.dom.appendChild(this.loading);
+    this.panel.appendChild(this.loading);
   }
   initLayout() {
     let layoutContainer = this.dom.querySelector('.layout');
