@@ -147,7 +147,7 @@ const zh = {
         }
       },
       ['vera-history']: {
-        title: '喂来'
+        title: '来啦'
       }
     }
   }
