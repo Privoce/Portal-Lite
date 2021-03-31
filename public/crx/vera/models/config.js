@@ -22,20 +22,16 @@ const peerConfig = {
   host: 'r.nicegoodthings.com',
   // port: '80',
   path: '/ngt',
-  // config: {
-  //   iceServers: [
-  //     {
-  //       url: 'turn:13.250.13.83:3478?transport=udp',
-  //       username: 'YzYNCouZM1mhqhmseWk6',
-  //       credential: 'YzYNCouZM1mhqhmseWk6'
-  //     },
-  //     {
-  //       url: 'turn:numb.viagenie.ca',
-  //       credential: 'muazkh',
-  //       username: 'webrtc@live.com'
-  //     }
-  //   ]
-  // },
+  config: {
+    iceServers: [
+      { urls: 'stun:47.93.119.186:3478' },
+      {
+        urls: 'turn:47.93.119.186:3478',
+        username: 'a',
+        credential: 'b'
+      }
+    ]
+  },
   debug: 3
 };
 const userKey = 'portal-vera-host-user';
