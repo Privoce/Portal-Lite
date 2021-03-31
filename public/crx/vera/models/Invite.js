@@ -1,4 +1,4 @@
-import { copyToClipboard, selectText } from './utils.js';
+import { selectText, copyToClipboard } from './utils.js';
 import { peerKey, userKey } from './config.js';
 class Invite {
   constructor({ localId = null }) {
@@ -31,7 +31,9 @@ class Invite {
       selectText(evt.target);
     });
     inviteBtn.addEventListener('click', () => {
+      unlocker.enable();
       copyToClipboard(this.inviteUrl);
+      unlocker.disable();
       inviteBtn.innerHTML = 'Copied!';
       setTimeout(() => {
         inviteBtn.innerHTML = 'Copy Link';

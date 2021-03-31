@@ -2,7 +2,7 @@
   "name": "Portal - Home of Your Web Apps",
   "short_name": "Portal",
   "description": "像积木一样自由组建你的浏览器主页！",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "history", "storage"],
@@ -34,6 +34,7 @@
         "crx/vera/assets/body-pix@2.1.js",
         "crx/vera/assets/peerjs.min.js",
         "crx/vera/assets/plain.draggable.min.js",
+        "crx/vera/assets/allow.copy.js",
         "crx/vera/content_script.js"
       ],
       "css": ["crx/vera/style.css"],
