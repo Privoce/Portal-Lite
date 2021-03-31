@@ -27,16 +27,22 @@ class Widget {
       console.log('invite btn clicked');
     }
   ) {
-    this.dom.onmouseup = (evt) => {
+    this.dom.querySelector('.camera').onmouseup = (evt) => {
       console.log('widget clicked');
       // 正在拖动
       if (dragMoving) return;
       inviteHandler.call(evt);
     };
+    this.dom.querySelector('.portal_logo').onmouseup = () => {
+      chrome.runtime.sendMessage({ action: 'OPEN_HOME' }, function () {
+        /* callback */
+        console.log('send open home message');
+      });
+    };
 
     document.body.appendChild(this.dom);
     let dragEle = this.dom.querySelector('.widget');
-    // let handle = dragEle.querySelector('.drag');
+    let handle = dragEle.querySelector('.handle');
     // console.log({ handle });
     new PlainDraggable(dragEle, {
       onMove: () => {
@@ -54,7 +60,7 @@ class Widget {
       //   width: 0,
       //   height: window.innerHeight
       // },
-      // handle,
+      handle,
       autoScroll: true
     });
   }

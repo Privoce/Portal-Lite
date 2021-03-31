@@ -8,6 +8,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { key, value } = data;
     localStorage.setItem(key, value);
   }
+  if (action === 'OPEN_HOME') {
+    console.log('open home page in ext');
+    chrome.tabs.create(
+      {
+        active: true,
+        url: 'index.html'
+      },
+      null
+    );
+  }
 });
 chrome.runtime.onInstalled.addListener(function (details) {
   // 扩展环境，则注入安装标识
