@@ -8,7 +8,9 @@ class Invite {
     if (PORTAL_USER_NAME) {
       obj.searchParams.append(userKey, PORTAL_USER_NAME);
     }
-    this.inviteUrl = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}`;
+    this.inviteUrl = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}?extid=${
+      chrome.runtime.id
+    }`;
     this.dom = document.createElement('div');
     this.dom.classList.add('invite');
     this.dom.innerHTML = `

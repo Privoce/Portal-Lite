@@ -51,9 +51,12 @@ export default function Transfer() {
   const { dest } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
   const [tip, setTip] = useState('');
+
+  let extId = new URLSearchParams(location.search).get('extid');
   useEffect(() => {
     const check = async () => {
-      let installed = await checkExtensionInstalled();
+      let installed = await checkExtensionInstalled(extId);
+      console.log({ extId, installed });
       setCheckResult(installed);
     };
     check();

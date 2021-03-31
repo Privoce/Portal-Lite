@@ -42,8 +42,9 @@ function validateUrl(value) {
     value
   );
 }
-const checkExtensionInstalled = () => {
-  const checkUrl = `chrome-extension://ccegbnlnelhgaefimiaklaindffpfcmh/crx/vera/assets/icon/logo.png`;
+const checkExtensionInstalled = (extid) => {
+  extid = extid || 'ccegbnlnelhgaefimiaklaindffpfcmh';
+  const checkUrl = `chrome-extension://${extid}/crx/vera/assets/icon/logo.png`;
   return new Promise((resolve) => {
     let img = document.createElement('img');
     img.src = checkUrl;
