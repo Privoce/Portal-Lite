@@ -1,4 +1,4 @@
-import { getUsername } from './utils.js';
+// import { getUsername } from './utils.js';
 
 window.PORTAL_USER_NAME = null;
 let dragMoving = false;
@@ -16,17 +16,8 @@ class Widget {
         <div class="portal_logo"></div>
       </div>
       <div class='camera'></div>
-      </div>
+    </div>
     `;
-    getUsername().then((username) => {
-      if (username) {
-        PORTAL_USER_NAME = username;
-        let userEle = document.createElement('span');
-        userEle.classList.add('username');
-        userEle.innerHTML = username;
-        this.dom.querySelector('.widget').appendChild(userEle);
-      }
-    });
   }
   show() {
     this.dom.classList.add('show');
