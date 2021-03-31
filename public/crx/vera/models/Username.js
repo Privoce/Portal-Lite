@@ -1,21 +1,26 @@
-import { selectText } from './utils.js';
-window.LOCAL_TMP_USERNAME = 'Guest';
-window.REMOTE_TMP_USERNAME = 'Guest';
+import { selectText, getUsername } from './utils.js';
+const tmpName = 'Guest';
 class Username {
   constructor(option = { remote: false }) {
     const { remote } = option;
-    let tmpName = remote ? REMOTE_TMP_USERNAME : LOCAL_TMP_USERNAME;
     this.dom = document.createElement('div');
-    this.dom.contentEditable = window.PORTAL_USER_NAME ? false : true;
     this.dom.classList.add('username');
-    this.dom.innerHTML = tmpName;
+    if (!remote) {
+      getUsername().then((un) => {
+        this.dom.innerHTML = un || tmpName;
+        this.dom.contentEditable = un ? false : true;
+      });
+    } else {
+      this.dom.innerHTML = window.REMOTE_USERNAME || tmpName;
+      this.dom.contentEditable = window.REMOTE_USERNAME ? false : true;
+    }
     this.dom.addEventListener(
       'input',
       (evt) => {
         if (remote) {
-          window.REMOTE_TMP_USERNAME = evt.target.innerText;
+          window.REMOTE_USERNAME = evt.target.innerText;
         } else {
-          window.LOCAL_TMP_USERNAME = evt.target.innerText;
+          window.LOCAL_USERNAME = evt.target.innerText;
         }
       },
       false

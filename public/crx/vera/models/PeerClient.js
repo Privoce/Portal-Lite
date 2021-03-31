@@ -92,8 +92,6 @@ class PeerClient {
         }
         conn.on('open', () => {
           console.log('the connection is open and ready for read/write.');
-          // 放入全局变量中
-          // conn.send('hello from the other!');
           // 只有host才发初始化的消息
           if (!pvid) {
             let cmd = { type: 'INIT', data: { pids: Object.keys(PEER_DATA_CONNS) } };

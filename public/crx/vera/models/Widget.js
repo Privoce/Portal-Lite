@@ -53,13 +53,6 @@ class Widget {
         console.log('drag end');
         dragMoving = false;
       },
-      // leftTop: true,
-      // containment: {
-      //   left: 0,
-      //   top: 0,
-      //   width: 0,
-      //   height: window.innerHeight
-      // },
       handle,
       autoScroll: true
     });

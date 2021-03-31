@@ -25,7 +25,7 @@ const useWidgets = (keys = null) => {
       if (widgets) {
         let arr = [];
         widgets.forEach((key) => {
-          if (Widgets[key].extension) {
+          if (Widgets[key]?.extension) {
             arr.push(key);
             //  需要种下删除标记
           }

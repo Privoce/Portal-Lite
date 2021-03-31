@@ -13,7 +13,7 @@ window.VERA_EMITTER = window.VERA_EMITTER || createEvents();
 VERA_EMITTER.on('local.stream.ready', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
   let joinBtn = panel.querySelector('.join .btn');
-  joinBtn.removeAttribute('disabled');
+  joinBtn?.removeAttribute('disabled');
 });
 // export {
 //   emitter:

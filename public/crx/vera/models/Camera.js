@@ -114,11 +114,11 @@ class Camera {
     // </div>
     // <div class="cover_opts" />
     this.initLoading();
-    this.initUsername(remote);
     this.initControls();
     if (!remote) {
       this.initLocal();
     }
+    this.initUsername(remote);
     return { dom: this.dom, attachStream: this.attachStream };
   }
   initLoading() {
