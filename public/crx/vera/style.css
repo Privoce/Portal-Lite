@@ -176,40 +176,27 @@ table {
   justify-content: center;
 }
 #PORTAL_VERA_WIDGET .widget .drag {
-  margin-left: -22px;
-  width: 60px;
+  margin-left: -25px;
+  width: 50px;
   height: 50px;
   background-color: var(--widget-bg-color);
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  padding: 5px 5px 5px 0;
+  padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   transition: margin-left 0.5s ease-in-out;
   will-change: margin-left;
 }
 #PORTAL_VERA_WIDGET .widget .drag > .portal_logo {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background-color: transparent;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-}
-#PORTAL_VERA_WIDGET .widget .drag > .username {
-  white-space: nowrap;
-  position: absolute;
-  bottom: -20px;
-  left: 20px;
-  border-radius: 5px;
-  font-size: 10px;
-  border: 1px solid #eee;
-  background-color: #333;
-  color: #fff;
-  padding: 2px 5px;
-  line-height: 1.1;
 }
 #PORTAL_VERA_WIDGET .widget .drag > .handle {
   border-radius: 4px;
@@ -228,8 +215,8 @@ table {
   cursor: pointer;
   visibility: hidden;
   content: '';
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.svg');
   background-size: contain;
   background-repeat: no-repeat;
@@ -310,6 +297,7 @@ table {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  color: var(--font-color);
 }
 @keyframes loading-dash {
   0% {

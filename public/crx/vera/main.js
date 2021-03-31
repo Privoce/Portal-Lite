@@ -1,6 +1,6 @@
 import Widget from './models/Widget.js';
 import Panel from './models/Panel.js';
-import { peerKey, installCheckKey } from './models/config.js';
+import './models/events.js';
 // 初始化挂件
 export async function main() {
   const pvid = await init();
@@ -42,7 +42,4 @@ const init = () => {
       }
     });
   });
-  // document.documentElement.setAttribute(installCheckKey, 1);
-  // let pvid = new URLSearchParams(location.search).get(peerKey) || null;
-  // return { pvid };
 };

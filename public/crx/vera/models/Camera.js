@@ -189,6 +189,8 @@ class Camera {
     } catch (error) {
       console.error('getUserMedia error', error);
       this.dom.setAttribute('camera-status', 'allow-error');
+    } finally {
+      VERA_EMITTER.emit('local.stream.ready');
     }
   }
 }

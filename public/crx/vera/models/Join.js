@@ -6,7 +6,7 @@ class Join {
     this.dom = document.createElement('div');
     this.dom.classList.add('join');
     this.dom.innerHTML = `
-          <button class='btn'>Join</button>
+          <button disabled class='btn'>Join</button>
       `;
     this.init(inviteId);
     this.initUsername();
