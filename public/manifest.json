@@ -7,6 +7,15 @@
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "history", "storage"],
   "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
+  "browser_action": {
+    "default_icon": {
+      "16": "/favicon-16x16.png",
+      "32": "/favicon-32x32.png",
+      "48": "/android-chrome-192x192.png",
+      "128": "/android-chrome-192x192.png"
+    },
+    "default_title": "Vera - Co-browsering"
+  },
   "icons": {
     "16": "/favicon-16x16.png",
     "32": "/favicon-32x32.png",

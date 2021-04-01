@@ -1,5 +1,13 @@
 console.log('bg script ready~');
-
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.tabs.create(
+    {
+      active: true,
+      url: 'index.html'
+    },
+    null
+  );
+});
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('bg msg event fire', { request });
   const { action, data } = request;
