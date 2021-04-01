@@ -15,10 +15,9 @@ class Panel {
 
     this.dom.innerHTML = `
     <section class='panel'>
-      <div class='close'></div>
       <div class="cameras"></div>
       <div class='topbar'>
-        <div class='add'></div>
+        <div class='close'></div>
         <ul class='layout'>
           <li class="item min" layout='min'>
             <div class="mock line"></div>
@@ -37,7 +36,8 @@ class Panel {
         </ul>
       </div>
     </section>
-      `;
+        `;
+    // <div class='add'></div>
     this.panel = this.dom.querySelector('.panel');
     if (!pvid) this.panel.classList.add('host');
     this.panel.setAttribute('data-status', 'uninitialized');

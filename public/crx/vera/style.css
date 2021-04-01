@@ -421,24 +421,6 @@ table {
 #PORTAL_VERA_PANEL .panel[data-status='error']:after {
   background-color: #d7322d;
 }
-#PORTAL_VERA_PANEL .panel > .close {
-  visibility: hidden;
-  display: block;
-  cursor: pointer;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  z-index: 999;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  opacity: 0.8;
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/tel.svg');
-  background-size: cover;
-}
-#PORTAL_VERA_PANEL .panel > .close:hover {
-  opacity: 1;
-}
 #PORTAL_VERA_PANEL .panel .topbar {
   display: none;
   position: absolute;
@@ -448,18 +430,17 @@ table {
   width: -webkit-fill-available;
   padding: 0 12px;
 }
-#PORTAL_VERA_PANEL .panel .topbar .add {
+#PORTAL_VERA_PANEL .panel .topbar .close {
   cursor: pointer;
   width: 40px;
   height: 18px;
   padding: 2px;
-  border-radius: var(--border-radius);
-  background-color: var(--button-bg-color);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/invite.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/tel.svg');
+  background-size: 50%;
   background-position: center;
-  background-size: 14px;
+  background-repeat: no-repeat;
+  background-color: #eb2027;
+  border-radius: var(--border-radius);
 }
 #PORTAL_VERA_PANEL .panel .topbar .layout {
   display: flex;
