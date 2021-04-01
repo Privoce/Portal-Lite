@@ -32,11 +32,17 @@ const StyledIcon = styled.div`
     }
   }
 `;
-export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }) {
-  const { widgetSettings, importWidgetSettings } = useWidgetSettings();
+export default function AuthIcon({ setSyncing, openModal }) {
+  const { widgetSettings, importWidgetSettings, updateWidgetSetting } = useWidgetSettings();
   const [guardVisible, setGuardVisible] = useState(false);
+  const [user, setUser] = useState(null);
   const [isReg, setIsReg] = useState(false);
   const currAuthClient = useRef(null);
+  useEffect(() => {
+    if (user) {
+      updateWidgetSetting({ key: 'user', data: user });
+    }
+  }, [user]);
   useEffect(() => {
     const syncWidgetData = async () => {
       let auth = currAuthClient.current;
@@ -65,7 +71,6 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
   const handleIconClick = () => {
     if (user) {
       // 已登录的逻辑
-
       openModal();
     } else {
       // 去登陆
@@ -85,19 +90,19 @@ export default function AuthIcon({ setSyncing, user, openModal, updateUserInfo }
         });
       }
       setGuardVisible(false);
-      updateUserInfo(currUser);
+      setUser(currUser);
     }
   };
   const handleGuardLogin = async (user) => {
     console.log('login', { user });
-    updateUserInfo(user);
+    setUser(user);
     setGuardVisible(false);
   };
   const handleGuardClose = () => {
     setGuardVisible(false);
   };
   const handleRegComplete = (user) => {
-    updateUserInfo(user);
+    setUser(user);
     setIsReg(true);
     setGuardVisible(false);
   };
