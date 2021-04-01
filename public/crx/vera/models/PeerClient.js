@@ -71,6 +71,7 @@ class PeerClient {
         });
         inviteConn.on('close', () => {
           console.log('close conn invited');
+          VERA_EMITTER.emit('connect.close');
           // panel.dom.querySelector('.camera.remote .video');
         });
         inviteConn.on('error', (error) => {
@@ -108,6 +109,7 @@ class PeerClient {
 
         conn.on('close', () => {
           console.log('close conn');
+          VERA_EMITTER.emit('connect.close');
         });
         conn.on('error', (error) => {
           console.log('local connect error', error);

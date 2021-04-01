@@ -14,54 +14,41 @@ class Panel {
     this.dom.id = 'PORTAL_VERA_PANEL';
 
     this.dom.innerHTML = `
-    <section class='panel'>
-      <div class="cameras"></div>
-      <div class='topbar'>
-        <div class='close'></div>
-        <ul class='layout'>
-          <li class="item min" layout='min'>
-            <div class="mock line"></div>
-          </li>
-          <li class="item one" layout='one'>
-            <div class="mock box"></div>
-          </li>
-          <li class="item vt" layout='vt'>
-            <div class="mock box"></div>
-            <div class="mock box"></div>
-          </li>
-          <li class="item hz curr" layout='hz'>
-            <div class="mock box"></div>
-            <div class="mock box"></div>
-          </li>
-        </ul>
-      </div>
-    </section>
+      <section class='panel'>
+        <div class="cameras"></div>
+        <div class='topbar'>
+          <div class='close'></div>
+          <ul class='layout'>
+            <li class="item min" layout='min'>
+              <div class="mock line"></div>
+            </li>
+            <li class="item one" layout='one'>
+              <div class="mock box"></div>
+            </li>
+            <li class="item vt" layout='vt'>
+              <div class="mock box"></div>
+              <div class="mock box"></div>
+            </li>
+            <li class="item hz curr" layout='hz'>
+              <div class="mock box"></div>
+              <div class="mock box"></div>
+            </li>
+          </ul>
+        </div>
+      </section>
         `;
-    // <div class='add'></div>
     this.panel = this.dom.querySelector('.panel');
+    this.panel.appendChild(new Loading());
+    // <div class='add'></div>
     if (!pvid) this.panel.classList.add('host');
     this.panel.setAttribute('data-status', 'uninitialized');
-    // <div class="loading"></div>
-    // <div class="drag"></div>;
-    this.initLoading();
     this.initClose();
     this.initLayout();
     this.initPeer(pvid);
     document.body.appendChild(this.dom);
     new PlainDraggable(this.panel, {
-      // handle: this.dom.querySelector('.drag'),
       autoScroll: true
-      // containment: {
-      //   left: 0,
-      //   top: 0,
-      //   width: '100%',
-      //   height: document.body.scrollHeight == 0 ? window.innerHeight : '100%'
-      // }
     });
-  }
-  initLoading() {
-    this.loading = new Loading();
-    this.panel.appendChild(this.loading);
   }
   initLayout() {
     let layoutContainer = this.dom.querySelector('.layout');
@@ -105,12 +92,12 @@ class Panel {
               track.stop();
             }
           });
-          this.dom.remove();
           document.documentElement.removeAttribute('invite-expand');
           Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
             console.log('close the peer', pid);
             conn.close();
           });
+          VERA_EMITTER.emit('panel.close');
         }
       },
       true
@@ -138,8 +125,7 @@ class Panel {
     cameraList.appendChild(CameraBox.dom);
     cameraList.insertAdjacentElement('afterend', this.inviteBox);
     this.inited = true;
-    // remove loading
-    this.loading.remove();
+    VERA_EMITTER.emit('panel.initialized');
   }
 }
 export default Panel;

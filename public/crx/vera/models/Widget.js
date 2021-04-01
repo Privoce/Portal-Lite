@@ -3,12 +3,9 @@
 window.PORTAL_USER_NAME = null;
 let dragMoving = false;
 class Widget {
-  constructor(pvid) {
+  constructor() {
     this.dom = document.createElement('aside');
     this.dom.id = 'PORTAL_VERA_WIDGET';
-    if (pvid) {
-      this.dom.classList.add('join');
-    }
     this.dom.innerHTML = `
     <div class="widget">
       <div class='drag'>
@@ -27,11 +24,11 @@ class Widget {
       console.log('invite btn clicked');
     }
   ) {
-    this.dom.querySelector('.camera').onmouseup = (evt) => {
+    this.dom.querySelector('.camera').onmouseup = () => {
       console.log('widget clicked');
       // 正在拖动
       if (dragMoving) return;
-      inviteHandler.call(evt);
+      inviteHandler();
     };
     this.dom.querySelector('.portal_logo').onmouseup = () => {
       chrome.runtime.sendMessage({ action: 'OPEN_HOME' }, function () {

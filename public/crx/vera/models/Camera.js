@@ -190,7 +190,11 @@ class Camera {
       console.error('getUserMedia error', error);
       this.dom.setAttribute('camera-status', 'allow-error');
     } finally {
-      VERA_EMITTER.emit('local.stream.ready');
+      if (this.dom.classList.contains('remote')) {
+        VERA_EMITTER.emit('remote.stream.ready');
+      } else {
+        VERA_EMITTER.emit('local.stream.ready');
+      }
     }
   }
 }

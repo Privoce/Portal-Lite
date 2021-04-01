@@ -20,6 +20,7 @@
   max-height: 100vh;
   overflow: visible;
   padding: 12px;
+  padding-top: 40px;
   border-radius: var(--border-radius);
   transition: all 0.5s ease-in-out;
   transition-property: background, width, height;
@@ -159,23 +160,20 @@
 #PORTAL_VERA_PANEL .panel[data-status='streaming']:after {
   background-color: #48ba2b;
 }
-#PORTAL_VERA_PANEL .panel[data-status='streaming'] {
-  padding-top: 40px;
+#PORTAL_VERA_PANEL .panel[data-status='streaming'] .topbar {
+  visibility: hidden;
 }
 #PORTAL_VERA_PANEL .panel[data-status='streaming']:hover {
   background: var(--panel-bg-color);
 }
 #PORTAL_VERA_PANEL .panel[data-status='streaming']:hover .topbar {
-  display: flex;
-}
-#PORTAL_VERA_PANEL .panel[data-status='connected'] .topbar {
-  display: none;
+  visibility: visible;
 }
 #PORTAL_VERA_PANEL .panel[data-status='error']:after {
   background-color: #d7322d;
 }
 #PORTAL_VERA_PANEL .panel .topbar {
-  display: none;
+  display: flex;
   position: absolute;
   top: 10px;
   left: 0;
