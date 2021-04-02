@@ -22,6 +22,12 @@ VERA_EMITTER.on('panel.initialized', () => {
   console.log({ loadingDom });
   loadingDom.remove();
 });
+VERA_EMITTER.on('connect.ready', () => {
+  let panel = document.querySelector('#PORTAL_VERA_PANEL');
+  let loadingDom = panel.querySelector('.panel > .loading');
+  console.log({ loadingDom });
+  loadingDom.remove();
+});
 VERA_EMITTER.on('local.stream.ready', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
   let joinBtn = panel.querySelector('.join .btn');
@@ -30,21 +36,20 @@ VERA_EMITTER.on('local.stream.ready', () => {
 VERA_EMITTER.on('remote.stream.ready', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
   let inviteBox = panel.querySelector('.panel > .invite');
-  let joinBox = panel.querySelector('.panel > .join');
+  // let joinBox = panel.querySelector('.panel > .join');
   inviteBox?.remove();
-  joinBox?.remove();
+  // joinBox?.remove();
 });
 VERA_EMITTER.on('connect.close', () => {
+  // 如果有pin元素，退出
+  if (document.pictureInPictureElement) {
+    document.exitPictureInPicture();
+  }
   // const { isInvited } = data; data = { isInvited: false }
   let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
   let remoteCamera = panel.querySelector('.camera.remote');
   remoteCamera.remove();
   panel.appendChild(new Invite({ localId: MyPortalVeraPeer.id }));
-  // let panel = document.querySelector('#PORTAL_VERA_PANEL');
-  // let inviteBox = panel.querySelector('.panel > .invite');
-  // let joinBox = panel.querySelector('.panel > .join');
-  // inviteBox?.remove();
-  // joinBox?.remove();
 });
 // export {
 //   emitter:
