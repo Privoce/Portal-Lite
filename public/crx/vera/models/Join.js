@@ -1,24 +1,31 @@
 import Camera from './Camera.js';
 import Username from './Username.js';
+import Login from './Login.js';
 import { appendHistory } from './utils.js';
 class Join {
   constructor({ inviteId = null }) {
     this.dom = document.createElement('div');
     this.dom.classList.add('join');
     this.dom.innerHTML = `
-          <button disabled class='btn'>Join</button>
+        ${PORTAL_USER_NAME ? '' : `<button class="btn login">Sign In</button>`}
+        <button disabled class='btn ok'>Join</button>
       `;
     this.init(inviteId);
     this.initUsername();
     return this.dom;
   }
   initUsername() {
-    let un = new Username({ remote: true });
+    let un = new Username();
     this.dom.appendChild(un);
   }
   init(inviteId) {
+    if (!PORTAL_USER_NAME) {
+      // apend Login
+      let loginBtn = new Login({ inviteId, isHost: false });
+      this.dom.appendChild(loginBtn);
+    }
     // 响应加入按钮的事件
-    let joinBtn = this.dom.querySelector('.btn');
+    let joinBtn = this.dom.querySelector('.btn.ok');
     joinBtn.addEventListener('click', async () => {
       // create audio and video constraints
       try {

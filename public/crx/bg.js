@@ -26,10 +26,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       null
     );
   }
+  if (action === 'LOGIN') {
+    console.log('open login in ext');
+    chrome.tabs.create(
+      {
+        openerTabId: sender.tab.id,
+        active: true,
+        url: `crx/login/index.html?tid=${sender.tab.id}`
+      },
+      null
+    );
+  }
 });
-chrome.runtime.onInstalled.addListener(function (details) {
-  // 扩展环境，则注入安装标识
-  chrome.storage.local.set({ installed: true }, function () {
-    console.log('installed ');
-  });
-});
+// chrome.runtime.onInstalled.addListener(function (details) {
+//   // 扩展环境，则注入安装标识
+//   chrome.storage.local.set({ installed: true }, function () {
+//     console.log('installed ');
+//   });
+// });

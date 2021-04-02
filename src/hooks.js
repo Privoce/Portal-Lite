@@ -30,7 +30,7 @@ const useWidgets = (keys = null) => {
             //  需要种下删除标记
           }
         });
-        chrome.storage.local.set({ widgets: arr }, function () {
+        chrome.storage.sync.set({ widgets: arr }, function () {
           console.log('set widgets in ext', arr);
         });
       }

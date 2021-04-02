@@ -1,4 +1,7 @@
 import Invite from './Invite.js';
+import Username from './Username.js';
+import Join from './Join.js';
+// import Panel from './Panel.js';
 const createEvents = () => ({
   events: {},
   emit(event, ...args) {
@@ -16,6 +19,30 @@ const tabCloseHanlder = (evt) => {
   evt.returnValue = 'Vera is still in connectiong, ary you sure to quit?';
   // return 'Vera is still in connectiong, ary you sure to quit?';
 };
+VERA_EMITTER.on('login', (params = {}) => {
+  const { localId, inviteId, isHost = true, username } = params;
+  PORTAL_USER_NAME = username;
+  let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
+  if (isHost) {
+    // renew invite
+    let oldInviteBox = panel.querySelector('.invite');
+    oldInviteBox.remove();
+    let newInviteBox = new Invite({ localId });
+    panel.appendChild(newInviteBox);
+  } else {
+    // refresh join
+    let oldJoinBox = panel.querySelector('.join');
+    oldJoinBox.remove();
+    let newJoinBox = new Join({ inviteId });
+    panel.appendChild(newJoinBox);
+  }
+  // renew username
+  let oldUsername = panel.querySelector('.username');
+  oldUsername.remove();
+  let un = new Username();
+  panel.querySelector('.video').appendChild(un);
+  console.log('new panel again');
+});
 VERA_EMITTER.on('panel.close', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
   panel?.remove();

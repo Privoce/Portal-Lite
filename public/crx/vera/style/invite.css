@@ -59,3 +59,8 @@
 .invite .users .user .name {
   font-size: 10px;
 }
+.invite .login {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #c4c4c4;
+}

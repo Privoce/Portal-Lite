@@ -121,7 +121,7 @@ export default function Modal({ closeModal }) {
       clearWidgetSettings();
       if (process.env.REACT_APP_CHROME_EXT == 'true') {
         // 扩展环境，则清掉用户信息
-        chrome.storage.local.set({ user: '' }, function () {
+        chrome.storage.sync.set({ user: '' }, function () {
           console.log('clear user');
         });
       }

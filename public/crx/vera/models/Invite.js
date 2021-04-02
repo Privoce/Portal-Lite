@@ -1,5 +1,6 @@
 import { selectText, copyToClipboard } from './utils.js';
 import { peerKey, userKey } from './config.js';
+import Login from './Login.js';
 class Invite {
   constructor({ localId = null }) {
     console.log({ localId });
@@ -25,7 +26,7 @@ class Invite {
     this.init(localId);
     return this.dom;
   }
-  async init() {
+  async init(localId) {
     // 邀请按钮的点击事件
     let inviteBtn = this.dom.querySelector('.btn.copy');
     let linkBox = this.dom.querySelector('.invite .link .url');
@@ -41,6 +42,12 @@ class Invite {
         inviteBtn.innerHTML = 'Copy Link';
       }, 2000);
     });
+    if (!PORTAL_USER_NAME) {
+      // append登录按钮
+      let loginBtn = new Login({ localId });
+      this.dom.appendChild(loginBtn);
+    }
+
     if (PORTAL_USER_NAME) {
       let userlist = null;
       try {

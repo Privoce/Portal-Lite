@@ -1,11 +1,11 @@
 import { selectText, getUsername } from './utils.js';
 const tmpName = 'Guest';
 class Username {
-  constructor(option = { remote: false }) {
-    const { remote } = option;
+  constructor(option = {}) {
+    const { host = true } = option;
     this.dom = document.createElement('div');
     this.dom.classList.add('username');
-    if (!remote) {
+    if (host) {
       getUsername().then((un) => {
         this.dom.innerHTML = un || tmpName;
         this.dom.contentEditable = un ? false : true;
@@ -17,7 +17,7 @@ class Username {
     this.dom.addEventListener(
       'input',
       (evt) => {
-        if (remote) {
+        if (!host) {
           window.REMOTE_USERNAME = evt.target.innerText;
         } else {
           window.LOCAL_USERNAME = evt.target.innerText;

@@ -22,7 +22,11 @@ export async function main() {
 }
 const getPvid = () => {
   return new Promise((resolve) => {
-    chrome.storage.sync.get(['pvid'], function (res) {
+    chrome.storage.sync.get(['pvid', 'user'], function (res) {
+      // 夹带私货，不是最佳实践
+      if (res.user) {
+        window.PORTAL_USER_NAME = res.user.username;
+      }
       // Notify that we saved.
       console.log('pvid from storage', res.pvid);
       if (res.pvid) {

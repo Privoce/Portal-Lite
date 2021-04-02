@@ -87,7 +87,7 @@ const draw = async ({ key = 'local', video, canvas, offCanvas, net }) => {
 };
 function getUsername() {
   return new Promise((resolve) => {
-    chrome.storage.local.get(['user'], function (result) {
+    chrome.storage.sync.get(['user'], function (result) {
       if (result.user) {
         // resolve(result.user.username);
         let tmp = result.user.username;

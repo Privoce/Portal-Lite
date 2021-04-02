@@ -731,6 +731,11 @@ table {
 #PORTAL_VERA_PANEL .panel .invite .users .user .name {
   font-size: 10px;
 }
+#PORTAL_VERA_PANEL .panel .invite .login {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #c4c4c4;
+}
 #PORTAL_VERA_PANEL .panel .join {
   box-sizing: border-box;
   height: 200px;
@@ -746,6 +751,11 @@ table {
 }
 #PORTAL_VERA_PANEL .panel .join .btn {
   font-size: 22px;
+}
+#PORTAL_VERA_PANEL .panel .join .login {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #c4c4c4;
 }
 #PORTAL_VERA_PANEL .panel .join .username {
   margin-bottom: 20px;
