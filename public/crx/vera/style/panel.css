@@ -192,7 +192,22 @@
   background-color: #eb2027;
   border-radius: var(--border-radius);
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout {
+#PORTAL_VERA_PANEL .panel .topbar .right {
+  display: flex;
+  align-items: center;
+}
+#PORTAL_VERA_PANEL .panel .topbar .right .feedback {
+  width: 22px;
+  height: 22px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/feedback.svg');
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
+  margin-right: 5px;
+}
+#PORTAL_VERA_PANEL .panel .topbar .right .layout {
   display: flex;
   align-items: center;
   border-radius: var(--border-radius);
@@ -200,7 +215,7 @@
   padding: 4px;
   gap: 10px;
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item {
   position: relative;
   cursor: pointer;
   display: flex;
@@ -210,7 +225,7 @@
   width: 15px;
   height: 15px;
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item:after {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item:after {
   position: absolute;
   content: '';
   display: block;
@@ -218,22 +233,22 @@
   height: 100%;
   opacity: 0;
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item:hover,
-#PORTAL_VERA_PANEL .panel .topbar .layout .item.curr {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item:hover,
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item.curr {
   background-color: var(--camera-bg-color);
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item.vt {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item.vt {
   flex-direction: column;
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item .mock {
   border-radius: 1px;
   width: 4px;
   background: var(--font-color);
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock.box {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item .mock.box {
   height: 4px;
 }
-#PORTAL_VERA_PANEL .panel .topbar .layout .item .mock.line {
+#PORTAL_VERA_PANEL .panel .topbar .right .layout .item .mock.line {
   height: 2px;
 }
 #PORTAL_VERA_PANEL .panel .cameras {
@@ -484,6 +499,11 @@
 #PORTAL_VERA_PANEL .panel .invite .users .user .name {
   font-size: 10px;
 }
+#PORTAL_VERA_PANEL .panel .invite .login {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #c4c4c4;
+}
 #PORTAL_VERA_PANEL .panel .join {
   box-sizing: border-box;
   height: 200px;
@@ -499,6 +519,11 @@
 }
 #PORTAL_VERA_PANEL .panel .join .btn {
   font-size: 22px;
+}
+#PORTAL_VERA_PANEL .panel .join .login {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #c4c4c4;
 }
 #PORTAL_VERA_PANEL .panel .join .username {
   margin-bottom: 20px;

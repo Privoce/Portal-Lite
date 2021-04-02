@@ -18,22 +18,25 @@ class Panel {
         <div class="cameras"></div>
         <div class='topbar'>
           <div class='close'></div>
-          <ul class='layout'>
-            <li class="item min" layout='min'>
-              <div class="mock line"></div>
-            </li>
-            <li class="item one" layout='one'>
-              <div class="mock box"></div>
-            </li>
-            <li class="item vt" layout='vt'>
-              <div class="mock box"></div>
-              <div class="mock box"></div>
-            </li>
-            <li class="item hz curr" layout='hz'>
-              <div class="mock box"></div>
-              <div class="mock box"></div>
-            </li>
-          </ul>
+          <div class='right'>
+            <a class='feedback' title='feedback' href='https://www.surveymonkey.com/r/RMGZDW8' target='_blank'></a>
+            <ul class='layout'>
+              <li class="item min" layout='min'>
+                <div class="mock line"></div>
+              </li>
+              <li class="item one" layout='one'>
+                <div class="mock box"></div>
+              </li>
+              <li class="item vt" layout='vt'>
+                <div class="mock box"></div>
+                <div class="mock box"></div>
+              </li>
+              <li class="item hz curr" layout='hz'>
+                <div class="mock box"></div>
+                <div class="mock box"></div>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
         `;
