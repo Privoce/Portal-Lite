@@ -55,6 +55,7 @@ class PeerClient {
         let inviteConn = MyPortalVeraPeer.connect(pvid);
         console.log('connect the invite peer', pvid, inviteConn);
         inviteConn.on('open', async () => {
+          VERA_EMITTER.emit('connect.ready');
           PEER_DATA_CONNS[pvid] = inviteConn;
           inviteConn.send('hi from invited!');
           let username = await getUsername();
@@ -92,6 +93,7 @@ class PeerClient {
           PEER_DATA_CONNS[conn.peer] = conn;
         }
         conn.on('open', () => {
+          VERA_EMITTER.emit('connect.ready');
           console.log('the connection is open and ready for read/write.');
           // 只有host才发初始化的消息
           if (!pvid) {

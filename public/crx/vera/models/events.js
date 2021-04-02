@@ -11,6 +11,11 @@ const createEvents = () => ({
 });
 
 window.VERA_EMITTER = window.VERA_EMITTER || createEvents();
+const tabCloseHanlder = (evt) => {
+  evt.preventDefault();
+  evt.returnValue = 'Vera is still in connectiong, ary you sure to quit?';
+  // return 'Vera is still in connectiong, ary you sure to quit?';
+};
 VERA_EMITTER.on('panel.close', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
   panel?.remove();
@@ -23,10 +28,9 @@ VERA_EMITTER.on('panel.initialized', () => {
   loadingDom.remove();
 });
 VERA_EMITTER.on('connect.ready', () => {
-  let panel = document.querySelector('#PORTAL_VERA_PANEL');
-  let loadingDom = panel.querySelector('.panel > .loading');
-  console.log({ loadingDom });
-  loadingDom.remove();
+  //  强提醒tab关闭
+  console.log('add confirm before close');
+  window.addEventListener('beforeunload', tabCloseHanlder);
 });
 VERA_EMITTER.on('local.stream.ready', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
@@ -41,15 +45,22 @@ VERA_EMITTER.on('remote.stream.ready', () => {
   // joinBox?.remove();
 });
 VERA_EMITTER.on('connect.close', () => {
+  // const { isInvited } = data; data = { isInvited: false }
+  // 注销页面关闭事件
+  window.removeEventListener('beforeunload', tabCloseHanlder);
   // 如果有pin元素，退出
   if (document.pictureInPictureElement) {
     document.exitPictureInPicture();
   }
-  // const { isInvited } = data; data = { isInvited: false }
   let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
-  let remoteCamera = panel.querySelector('.camera.remote');
-  remoteCamera.remove();
-  panel.appendChild(new Invite({ localId: MyPortalVeraPeer.id }));
+  let inviteBox = panel.querySelector('.invite');
+  if (!inviteBox) {
+    let remoteCamera = panel.querySelector('.camera.remote');
+    if (remoteCamera) {
+      remoteCamera.remove();
+    }
+    panel.appendChild(new Invite({ localId: MyPortalVeraPeer.id }));
+  }
 });
 // export {
 //   emitter:
