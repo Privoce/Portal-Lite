@@ -3,24 +3,29 @@
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { IoIosMic } from 'react-icons/io';
-const StyledEvent = styled.li`
+const StyledItem = styled.li`
   font-size: 0.16rem;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.05rem;
-  width: 99%;
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 0.15rem;
+  height: 100%;
+  width: 100%;
 
   padding: 0.15rem 0.1rem;
   margin-bottom: 0.15rem;
   position: relative;
-  border-left: 0.14rem solid rgb(92, 70, 227);
   display: flex;
   .content {
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
     width: 100%;
     .title {
+      width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       font-size: 0.2rem;
       font-weight: 800;
       margin-bottom: 0.08rem;
@@ -30,14 +35,23 @@ const StyledEvent = styled.li`
       font-size: 0.14rem;
       color: #666;
       line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-all;
+      width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .time {
+      margin: 0.14rem 0;
+      font-size: 0.1rem;
     }
     .participants {
       display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       font-size: 0.14rem;
       color: #999;
-      padding-top: 0.1rem;
+      height: 1rem;
+      overflow-y: scroll;
       .user {
         display: flex;
         align-items: center;
@@ -45,39 +59,17 @@ const StyledEvent = styled.li`
         border-radius: 2px;
         border: 1px solid #eee;
         &:not(:last-child) {
-          margin-right: 5px;
+          margin-bottom: 0.08rem;
         }
         /* &:first-child {
           padding-left: 0;
         } */
       }
     }
-    .time {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-    > .opts {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      visibility: hidden;
-      .opt {
-        padding: 0;
-        width: 0.2rem;
-        height: 0.2rem;
-        &:not(:last-child) {
-          margin-right: 0.1rem;
-        }
-        svg {
-          width: 100%;
-          height: 100%;
-        }
-        &.link svg {
-          fill: ${({ themeColor }) => themeColor};
-        }
-      }
+    .btn {
+      background: #606368;
+      color: #fff;
+      padding: 0.1rem 0.15rem;
     }
   }
 `;
@@ -85,13 +77,13 @@ const StyledEvent = styled.li`
 export default function HistoryItem({ data = {} }) {
   const { peerId, title, url, timestamp, host, username, participants = [] } = data;
   return (
-    <StyledEvent id={timestamp}>
+    <StyledItem id={timestamp}>
       <article className="content" data-peer={peerId}>
-        <time className="time">{format(new Date(timestamp), 'PPp')}</time>
         <h2 className="title">{title}</h2>
         <a className="link" href={url} target="_blank">
           {url}
         </a>
+        <time className="time">{format(new Date(timestamp), 'PPp')}</time>
         <div className="participants">
           {[...new Set([host, username, ...participants])].map((p, idx) => {
             return (
@@ -102,7 +94,8 @@ export default function HistoryItem({ data = {} }) {
             );
           })}
         </div>
+        <button className="btn">Meet Again</button>
       </article>
-    </StyledEvent>
+    </StyledItem>
   );
 }

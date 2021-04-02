@@ -1,37 +1,15 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
-  font-size: 0.12rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  padding: 0.2rem;
   .list {
-    margin-top: 0.12rem;
+    width: 100%;
     height: 100%;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .item {
-      width: 100%;
-      position: relative;
-      > .title {
-        font-size: 0.2rem;
-        color: #ccc;
-        margin-top: 0.2rem;
-        padding-bottom: 0.1rem;
-        position: sticky;
-        top: 0;
-        /* text-shadow: 0 0 10px black; */
-        z-index: 2;
-      }
-      > .evts {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 1;
-      }
-    }
+    display: grid;
+    grid-template-columns: repeat(2, 46.5%);
+    grid-template-rows: auto;
+    grid-column-gap: 0.4rem;
+    grid-row-gap: 0.15rem;
   }
 
   .loading {
