@@ -184,8 +184,7 @@
 #PORTAL_VERA_PANEL .panel .topbar .close {
   cursor: pointer;
   width: 40px;
-  height: 18px;
-  padding: 2px;
+  height: 22px;
   background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/tel.svg');
   background-size: 50%;
   background-position: center;
