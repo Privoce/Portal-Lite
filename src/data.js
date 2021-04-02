@@ -108,6 +108,7 @@ let Widgets = {
   },
   'vera-history': {
     extension: true,
+    compact: true,
     // loadType: 'script',
     preset: true,
     title: '我的Vera历史',
