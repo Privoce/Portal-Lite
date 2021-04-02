@@ -32,6 +32,7 @@ class Join {
         let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
         // 加入历史记录
         appendHistory({ peerId: inviteId, isHost: false });
+        this.dom.remove();
         // 响应对方的音视频流
         call.on('stream', (st) => {
           REMOTE_STREAM = st;
