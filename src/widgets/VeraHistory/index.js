@@ -68,7 +68,7 @@ export default function VeraHistory({ data, name, lang, readonly }) {
         {items ? (
           <ul className="list">
             {items.map((item) => {
-              return <HistoryItem key={item.peer} data={item} />;
+              return <HistoryItem key={item.timestamp} data={item} />;
             })}
           </ul>
         ) : (

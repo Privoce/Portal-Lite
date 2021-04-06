@@ -79,8 +79,10 @@ export default function HistoryItem({ data = {} }) {
   return (
     <StyledItem id={timestamp}>
       <article className="content" data-peer={peerId}>
-        <h2 className="title">{title}</h2>
-        <a className="link" href={url} target="_blank">
+        <h2 className="title" title={title}>
+          {title}
+        </h2>
+        <a className="link" href={url} target="_blank" title={url}>
           {url}
         </a>
         <time className="time">{format(new Date(timestamp), 'PPp')}</time>
