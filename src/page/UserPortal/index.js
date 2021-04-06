@@ -8,9 +8,12 @@ import Footer from '../../component/Footer';
 import Loading from '../../component/Loading';
 
 const getFormatedData = (data) => {
-  let result = { keys: null, data: null };
-  result.keys = data.widgets?.local || [];
-  result.data = data;
+  let shares = Object.keys(data).filter((key) => {
+    return data[key].share;
+  });
+  // 可分享组件&用户选择组件做交集，可分享组件优先级高一些
+  let keys = [...new Set([...shares, ...(data.widgets?.local || [])])];
+  let result = { keys, data };
   return result;
 };
 export default function UserPortal() {
