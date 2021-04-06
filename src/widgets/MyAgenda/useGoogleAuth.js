@@ -70,7 +70,7 @@ const scopes = 'https://www.googleapis.com/auth/calendar';
 const useGoogleAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
-  const [loading, setLoading] = useState(!localEvents || !readonly);
+  const [loading, setLoading] = useState(!readonly);
   const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const [checkedCalendars, setCheckedCalendars] = useState([]);

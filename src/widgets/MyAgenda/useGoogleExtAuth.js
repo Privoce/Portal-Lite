@@ -67,7 +67,7 @@ const quickAddEventAPI = `https://www.googleapis.com/calendar/v3/calendars/prima
 // test token:ya29.a0AfH6SMAzOFJjV0HizciyTQ0ARlwWipiAND-k5OTEVYiWXANj36qVzppZKGwcrY5qlZh0wzWWztvI_VDLWlH7D0PDIwEzJOhKDcyLMb71g0O5_J5SPxc1xbCrSH5fNre2peehhZHwlONKuRzqVwCvhPzTo5w7
 const useGoogleExtAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
-  const [loading, setLoading] = useState(!localEvents || !readonly);
+  const [loading, setLoading] = useState(!readonly);
   const [reloadEvents, setReloadEvents] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const [checkedCalendars, setCheckedCalendars] = useState([]);

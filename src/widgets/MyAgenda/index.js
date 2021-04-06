@@ -42,7 +42,9 @@ export default function MyAgenda({ data, readonly, name, lang }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   // 此处很关键
   let localEvents =
-    filterOutPassed(data?.groupEvents) || getWidgetSetting({ name, key: 'groupEvents' });
+    filterOutPassed(data?.groupEvents) || readonly
+      ? null
+      : getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
   const [fromLocal, setFromLocal] = useState(!!localEvents);
   const [latestEvent, setLatestEvent] = useState(undefined);
