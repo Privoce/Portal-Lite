@@ -1,4 +1,5 @@
 import Camera from './Camera.js';
+import Cursor from './Cursor.js';
 import { appendHistory, getUsername } from './utils.js';
 import { peerConfig } from './config.js';
 
@@ -62,6 +63,8 @@ class PeerClient {
           if (username) {
             inviteConn.send({ type: 'USERNAME', data: { peerId: id, username } });
           }
+          // 显示对方鼠标
+          new Cursor({ conn: inviteConn });
           // 监听数据
           inviteConn.on('data', (cmd = {}) => {
             let { type = '', data } = cmd;
@@ -79,6 +82,7 @@ class PeerClient {
           console.log('remote connect error', error);
         });
       }
+      // new Cursor();
       console.log('peer ID', id);
       panel.dom.setAttribute('data-status', 'open');
       panel.init({ inviteId: pvid, localId: id });
@@ -95,11 +99,14 @@ class PeerClient {
         conn.on('open', () => {
           VERA_EMITTER.emit('connect.ready');
           console.log('the connection is open and ready for read/write.');
-          // 只有host才发初始化的消息
+          // host特有操作
           if (!pvid) {
+            // 发初始化消息
             let cmd = { type: 'INIT', data: { pids: Object.keys(PEER_DATA_CONNS) } };
             console.log('send connected peer ids', cmd);
             conn.send(cmd);
+            // 显示对方鼠标
+            new Cursor({ conn });
           }
           // 监听数据
           conn.on('data', (cmd = {}) => {
@@ -134,6 +141,7 @@ class PeerClient {
         call.answer(LOCAL_STREAM); // Answer the call with an A/V stream.
         // 写入历史记录
         appendHistory({ peerId: pvid ? pvid : MyPortalVeraPeer.id, isHost: !pvid });
+
         // 去掉邀请链接框
         panel.dom.querySelector('.invite').remove();
         call.on('stream', (s) => {
