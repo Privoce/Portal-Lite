@@ -34,6 +34,8 @@
   overflow: hidden;
 }
 .invite .users {
+  height: fit-content;
+  overflow: scroll;
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
@@ -41,6 +43,15 @@
   background-color: #1f1f1f;
   padding: 6px 4px;
   border-radius: var(--border-radius);
+  color: var(--font-color);
+  /* Track */
+}
+.invite .users::-webkit-scrollbar {
+  /* visibility: hidden; */
+  display: none;
+}
+.invite .users::-webkit-scrollbar-track {
+  background: transparent;
 }
 .invite .users .user {
   display: flex;
@@ -57,6 +68,7 @@
   border-radius: 50%;
 }
 .invite .users .user .name {
+  color: inherit;
   font-size: 10px;
 }
 .invite .login {

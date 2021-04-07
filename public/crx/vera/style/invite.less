@@ -36,6 +36,8 @@
     // }
   }
   .users {
+    height: fit-content;
+    overflow: scroll;
     width: -webkit-fill-available;
     display: flex;
     flex-direction: column;
@@ -43,6 +45,17 @@
     background-color: #1f1f1f;
     padding: 6px 4px;
     border-radius: var(--border-radius);
+    color: var(--font-color);
+    &::-webkit-scrollbar {
+      /* visibility: hidden; */
+      display: none;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
     .user {
       display: flex;
       justify-content: space-between;
@@ -57,6 +70,7 @@
         border-radius: 50%;
       }
       .name {
+        color: inherit;
         font-size: 10px;
       }
       // .btn {
