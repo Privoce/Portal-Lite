@@ -6,6 +6,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import StyledWrapper from './styled';
 import Skeleton from 'react-loading-skeleton';
 import Darkmode from '../../component/Darkmode';
+import Notification from '../../component/Notification';
 import Footer from '../../component/Footer';
 import { useWidgets } from '../../hooks';
 
@@ -104,7 +105,7 @@ export default function Home() {
           />
         </Suspense>
       </StyledWrapper>
-
+      <Notification />
       <Footer />
     </Suspense>
   );
