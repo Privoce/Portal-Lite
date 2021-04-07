@@ -79,27 +79,7 @@ class Panel {
         if (target.classList.contains('close')) {
           let confirmed = confirm('Are you sure to quit?');
           if (!confirmed) return;
-          this.dom.querySelectorAll('video').forEach((v) => {
-            const tracks = v.srcObject?.getTracks() || [];
-            for (let i = 0; i < tracks.length; i++) {
-              let track = tracks[i];
-              track.stop();
-            }
-            v.srcObject = null;
-          });
-          // 停掉每一次的stream
-          [LOCAL_STREAM, REMOTE_STREAM].forEach((st) => {
-            const tracks = st?.getTracks() || [];
-            for (let i = 0; i < tracks.length; i++) {
-              let track = tracks[i];
-              track.stop();
-            }
-          });
-          document.documentElement.removeAttribute('invite-expand');
-          Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
-            console.log('close the peer', pid);
-            conn.close();
-          });
+
           VERA_EMITTER.emit('panel.close');
         }
       },

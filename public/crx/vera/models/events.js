@@ -44,7 +44,32 @@ VERA_EMITTER.on('login', (params = {}) => {
   console.log('new panel again');
 });
 VERA_EMITTER.on('panel.close', () => {
+  // 去掉panel打开的标识
+  document.documentElement.removeAttribute('invite-expand');
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
+  panel.querySelectorAll('video').forEach((v) => {
+    const tracks = v.srcObject?.getTracks() || [];
+    for (let i = 0; i < tracks.length; i++) {
+      let track = tracks[i];
+      track.stop();
+    }
+    v.srcObject = null;
+  });
+  // 停掉每一次的stream
+  [LOCAL_STREAM, REMOTE_STREAM].forEach((st) => {
+    const tracks = st?.getTracks() || [];
+    for (let i = 0; i < tracks.length; i++) {
+      let track = tracks[i];
+      track.stop();
+    }
+  });
+
+  Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
+    console.log('close the peer', pid);
+    conn.close();
+  });
+  // 最后关闭panel
+
   panel?.remove();
   MyPortalVeraPeer = null;
 });
@@ -73,11 +98,16 @@ VERA_EMITTER.on('remote.stream.ready', () => {
 });
 VERA_EMITTER.on('connect.close', () => {
   // const { isInvited } = data; data = { isInvited: false }
+
   // 注销页面关闭事件
   window.removeEventListener('beforeunload', tabCloseHanlder);
   // 如果有pin元素，退出
   if (document.pictureInPictureElement) {
     document.exitPictureInPicture();
+  }
+  let cursor = document.querySelector('#VERA_CURSOR');
+  if (cursor) {
+    cursor.remove();
   }
   let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
   let inviteBox = panel.querySelector('.invite');
