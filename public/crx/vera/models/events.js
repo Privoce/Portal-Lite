@@ -12,7 +12,13 @@ const createEvents = () => ({
     return () => (this.events[event] = (this.events[event] || []).filter((i) => i !== cb));
   }
 });
-
+// remove cursor
+const removeCursor = () => {
+  let cursor = document.querySelector('#VERA_CURSOR');
+  if (cursor) {
+    cursor.remove();
+  }
+};
 window.VERA_EMITTER = window.VERA_EMITTER || createEvents();
 const tabCloseHanlder = (evt) => {
   evt.preventDefault();
@@ -68,10 +74,10 @@ VERA_EMITTER.on('panel.close', () => {
     console.log('close the peer', pid);
     conn.close();
   });
-  // 最后关闭panel
-
+  // 最后关闭panel & 去掉鼠标
   panel?.remove();
   MyPortalVeraPeer = null;
+  removeCursor();
 });
 VERA_EMITTER.on('panel.initialized', () => {
   let panel = document.querySelector('#PORTAL_VERA_PANEL');
@@ -105,10 +111,7 @@ VERA_EMITTER.on('connect.close', () => {
   if (document.pictureInPictureElement) {
     document.exitPictureInPicture();
   }
-  let cursor = document.querySelector('#VERA_CURSOR');
-  if (cursor) {
-    cursor.remove();
-  }
+  removeCursor();
   let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
   let inviteBox = panel.querySelector('.invite');
   if (!inviteBox) {
