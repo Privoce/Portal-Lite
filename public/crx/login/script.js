@@ -1,4 +1,10 @@
-const guard = new AuthingNativeJsUIComponents.AuthingGuard('6034a70af621af721e5320b9');
+const guard = new AuthingNativeJsUIComponents.AuthingGuard('6034a70af621af721e5320b9', {
+  lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
+  localesConfig: {
+    defaultLang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
+    isShowChange: true
+  }
+});
 
 // 事件监听
 const loginHandler = (user) => {

@@ -11,7 +11,12 @@ export const GuardConfig = {
   logo: 'https://nicegoodthings.com/apple-touch-icon.png',
   title: 'Portal',
   socialConnections: ['github'],
-  appHost
+  appHost,
+  lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
+  localesConfig: {
+    defaultLang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
+    isShowChange: true
+  }
 };
 
 function gtag() {
