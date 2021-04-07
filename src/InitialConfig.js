@@ -40,25 +40,25 @@ export default function InitialConfig() {
       // hotjar
       hotjar.initialize(2178003, 6);
       // webpushr.com
-      (function (w, d, s, id) {
-        if (typeof w.webpushr !== 'undefined') return;
-        w.webpushr =
-          w.webpushr ||
-          function () {
-            (w.webpushr.q = w.webpushr.q || []).push(arguments);
-          };
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        js = d.createElement(s);
-        js.id = id;
-        js.async = 1;
-        js.src = 'https://cdn.webpushr.com/app.min.js';
-        fjs.parentNode.appendChild(js);
-      })(window, document, 'script', 'webpushr-jssdk');
-      webpushr('setup', {
-        key:
-          'BOr-0CF_kFjXgrzZHz5-qtkhjlk_7kfIYHHYIfrdQ1hsRgaDl9yp_a1yX8pHoOzSWwRnTe0EuItHU6a7QAnbsmE'
-      });
+      // (function (w, d, s, id) {
+      //   if (typeof w.webpushr !== 'undefined') return;
+      //   w.webpushr =
+      //     w.webpushr ||
+      //     function () {
+      //       (w.webpushr.q = w.webpushr.q || []).push(arguments);
+      //     };
+      //   var js,
+      //     fjs = d.getElementsByTagName(s)[0];
+      //   js = d.createElement(s);
+      //   js.id = id;
+      //   js.async = 1;
+      //   js.src = 'https://cdn.webpushr.com/app.min.js';
+      //   fjs.parentNode.appendChild(js);
+      // })(window, document, 'script', 'webpushr-jssdk');
+      // webpushr('setup', {
+      //   key:
+      //     'BOr-0CF_kFjXgrzZHz5-qtkhjlk_7kfIYHHYIfrdQ1hsRgaDl9yp_a1yX8pHoOzSWwRnTe0EuItHU6a7QAnbsmE'
+      // });
     }
     const handleError = (evt) => {
       console.log('全局图片错误捕捉', evt);
