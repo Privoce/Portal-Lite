@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 // import axios from 'axios';
 import { hotjar } from 'react-hotjar';
+
 import BaiduTongji from './component/BaiduTongji';
 
 // authing config
@@ -12,11 +13,11 @@ export const GuardConfig = {
   title: 'Portal',
   socialConnections: ['github'],
   appHost,
-  lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
-  localesConfig: {
-    defaultLang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
-    isShowChange: true
-  }
+  lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US'
+  // localesConfig: {
+  //   defaultLang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US',
+  //   isShowChange: true
+  // }
 };
 
 function gtag() {

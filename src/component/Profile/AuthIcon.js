@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaUserAlt } from 'react-icons/fa';
 import { AuthingGuard } from '@authing/react-ui-components';
+import { useLanguage } from 'uselanguage';
 
 // 引入 css 文件
 import '@authing/react-ui-components/lib/index.min.css';
@@ -38,6 +39,13 @@ export default function AuthIcon({ setSyncing, openModal }) {
   const [user, setUser] = useState(null);
   const [isReg, setIsReg] = useState(false);
   const currAuthClient = useRef(null);
+  const {
+    language: { value: lang }
+  } = useLanguage();
+  useEffect(() => {
+    // update Guard language setting
+    GuardConfig.lang = lang == 'en' ? 'en-US' : 'zh-CN';
+  }, [lang]);
   useEffect(() => {
     if (user) {
       updateWidgetSetting({ key: 'user', data: user });
