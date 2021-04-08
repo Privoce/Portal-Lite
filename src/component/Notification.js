@@ -11,21 +11,21 @@ if ('serviceWorker' in navigator) {
 }
 
 const publicVapidKey =
-  'BMrfFtMtL9IWl9vchDbbbYzJlbQwplyZ_fbv8Pei8gPNna_Dr1O-Ng7U7fy0LLqz5RKIxEytTIzyk6TLrcKbN30';
+  'BLlQ54pZmqwU6k9p8IHOfSHAIslTf-kVZulE2TEI9ycrV5I_bjXFP9rrH94APAEKD_Rw31n3mwYw_1jhU-DsobQ';
 
-// const urlBase64ToUint8Array = (base64String) => {
-//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-//   // eslint-disable-next-line no-useless-escape
-//   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+const urlBase64ToUint8Array = (base64String) => {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  // eslint-disable-next-line no-useless-escape
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
 
-//   const rawData = window.atob(base64);
-//   const outputArray = new Uint8Array(rawData.length);
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
 
-//   for (let i = 0; i < rawData.length; ++i) {
-//     outputArray[i] = rawData.charCodeAt(i);
-//   }
-//   return outputArray;
-// };
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
 const StyledWrapper = styled.aside`
   display: flex;
   flex-direction: column;
@@ -52,8 +52,8 @@ export default function Notification() {
     // Subscribe to push notifications
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: publicVapidKey
-      // applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+      // applicationServerKey: publicVapidKey
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
     });
     console.log({ subscription });
     const response = await fetch(
