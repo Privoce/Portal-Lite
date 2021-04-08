@@ -27,9 +27,12 @@ const urlBase64ToUint8Array = (base64String) => {
   return outputArray;
 };
 const StyledWrapper = styled.aside`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   position: fixed;
-  top: 5px;
-  left: 5px;
+  top: 0.1rem;
+  left: 0.1rem;
   font-size: 0.2rem;
 `;
 export default function Notification() {
@@ -40,6 +43,10 @@ export default function Notification() {
   const [isSub, setIsSub] = useState(false);
   const [username, setUsername] = useState('');
   const handleSub = async () => {
+    if (!username) {
+      alert('Login First');
+      return;
+    }
     if (!('serviceWorker' in navigator)) return;
     const registration = await navigator.serviceWorker.ready;
     // Subscribe to push notifications
@@ -69,6 +76,10 @@ export default function Notification() {
   };
 
   const handleUnSub = async (name = null) => {
+    if (!username) {
+      alert('Login First');
+      return;
+    }
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.getSubscription();
     if (!subscription) return;
