@@ -38,6 +38,7 @@ const handleCmd = ({ videoContainer, cmd }) => {
     case 'USERNAME':
       let { peerId, username } = data;
       USERNAMES[peerId] = username;
+      window.REMOTE_USERNAME = username;
       break;
     default:
       break;
@@ -59,7 +60,7 @@ class PeerClient {
           VERA_EMITTER.emit('connect.ready');
           PEER_DATA_CONNS[pvid] = inviteConn;
           inviteConn.send('hi from invited!');
-          let username = await getUsername();
+          let username = window.LOCAL_USERNAME || (await getUsername());
           if (username) {
             inviteConn.send({ type: 'USERNAME', data: { peerId: id, username } });
           }

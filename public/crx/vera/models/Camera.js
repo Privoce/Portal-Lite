@@ -127,7 +127,7 @@ class Camera {
   }
   initUsername(remote) {
     // if (!window.PORTAL_USER_NAME) return;
-    let un = new Username({ host: !remote });
+    let un = new Username({ myself: !remote });
     this.dom.querySelector('.video').appendChild(un);
   }
   initControls() {

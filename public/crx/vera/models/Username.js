@@ -1,12 +1,18 @@
 import { selectText, getUsername } from './utils.js';
+import { userKey } from './config.js';
+
 const tmpName = 'Guest';
+window.REMOTE_USERNAME = new URLSearchParams(location.search).get(userKey) || '';
 class Username {
   constructor(option = {}) {
-    const { host = true } = option;
+    const { myself = true } = option;
     this.dom = document.createElement('div');
     this.dom.classList.add('username');
-    if (host) {
+    if (myself) {
       getUsername().then((un) => {
+        if (un) {
+          window.LOCAL_USERNAME = un;
+        }
         this.dom.innerHTML = un || tmpName;
         this.dom.contentEditable = un ? false : true;
       });
@@ -17,7 +23,7 @@ class Username {
     this.dom.addEventListener(
       'input',
       (evt) => {
-        if (!host) {
+        if (!myself) {
           window.REMOTE_USERNAME = evt.target.innerText;
         } else {
           window.LOCAL_USERNAME = evt.target.innerText;
