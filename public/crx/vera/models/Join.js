@@ -7,7 +7,6 @@ class Join {
     this.dom = document.createElement('div');
     this.dom.classList.add('join');
     this.dom.innerHTML = `
-        ${PORTAL_USER_NAME ? '' : `<button class="btn login">Sign In</button>`}
         <button disabled class='btn ok'>Join</button>
       `;
     this.init(inviteId);
@@ -19,7 +18,7 @@ class Join {
     this.dom.appendChild(un);
   }
   init(inviteId) {
-    if (!PORTAL_USER_NAME) {
+    if (!window.LOCAL_USERNAME) {
       // apend Login
       let loginBtn = new Login({ inviteId, isHost: false });
       this.dom.appendChild(loginBtn);
