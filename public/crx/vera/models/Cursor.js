@@ -17,13 +17,17 @@ class Cursor {
         // console.log('cursor data', { cmd });
         const { type, data } = cmd;
         if (type == 'CURSOR') {
-          const { click = false, pos = null } = data;
+          const { click = false, pos = null, selection } = data;
           if (pos) {
             const { x, y } = pos;
             this.dom.style.transform = `translate3d(${x}px,${y}px,0)`;
           }
           if (click) {
             this.dom.classList.add('clicked');
+          }
+          if (selection) {
+            console.log({ selection });
+            rangy.deserializeSelection(selection);
           }
         }
       });
@@ -55,8 +59,17 @@ class Cursor {
         },
         false
       );
-      document.addEventListener('selectionchange', (evt) => {
-        console.log(document.getSelection(), { evt });
+      document.addEventListener('mouseup', (evt) => {
+        let selection = rangy.getSelection();
+        if (selection) {
+          selection = rangy.serializeSelection(selection, true);
+          // let { startContainer, startOffset, endContainer, endOffset } = range;
+          // selectRange = { startContainer, startOffset, endContainer, endOffset };
+          conn.send({
+            type: 'CURSOR',
+            data: { selection }
+          });
+        }
       });
     }
     document.body.appendChild(this.dom);
