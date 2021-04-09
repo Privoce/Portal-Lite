@@ -1,6 +1,6 @@
 #VERA_CURSOR {
   z-index: 99999;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   display: flex;
