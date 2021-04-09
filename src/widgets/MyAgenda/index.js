@@ -41,10 +41,7 @@ const filterOutPassed = (groupEvents) => {
 export default function MyAgenda({ data, readonly, name, lang }) {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   // 此处很关键
-  let localEvents =
-    filterOutPassed(data?.groupEvents) || readonly
-      ? null
-      : getWidgetSetting({ name, key: 'groupEvents' });
+  let localEvents = readonly ? data?.groupEvents : getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
   const [fromLocal, setFromLocal] = useState(!!localEvents);
   console.log({ localEvents, fromLocal });
@@ -82,7 +79,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
   // 同步一份到本地
   useEffect(() => {
     if (!fromLocal) {
-      console.log('update data to cloud', { groupEvents });
+      // console.log('update data to cloud', { groupEvents });
       updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
     }
     // 设置最新事件
@@ -139,7 +136,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
           <div className="empty">{lang.empty}</div>
         ) : (
           <ul className="list" ref={listEle}>
-            {Object.entries(groupEvents || {})
+            {Object.entries(filterOutPassed(groupEvents) || {})
               .sort(([a], [b]) => {
                 return new Date(a) - new Date(b);
               })
