@@ -47,6 +47,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
       : getWidgetSetting({ name, key: 'groupEvents' });
   const listEle = useRef(null);
   const [fromLocal, setFromLocal] = useState(!!localEvents);
+  console.log({ localEvents, fromLocal });
   const [latestEvent, setLatestEvent] = useState(undefined);
 
   const {
@@ -70,6 +71,10 @@ export default function MyAgenda({ data, readonly, name, lang }) {
     setFromLocal(false);
     syncData();
   };
+  const handleAddEvent = (input) => {
+    setFromLocal(false);
+    return addEvent(input);
+  };
   const handleHighlightClick = () => {
     let hlBlock = listEle.current.querySelector('.highlight');
     hlBlock?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -77,6 +82,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
   // 同步一份到本地
   useEffect(() => {
     if (!fromLocal) {
+      console.log('update data to cloud', { groupEvents });
       updateWidgetSetting({ name, key: 'groupEvents', data: groupEvents });
     }
     // 设置最新事件
@@ -121,7 +127,7 @@ export default function MyAgenda({ data, readonly, name, lang }) {
                 <AddEvent
                   lang={lang.addEvent}
                   calendar={calendars.find((c) => c.primary == true)}
-                  addEvent={addEvent}
+                  addEvent={handleAddEvent}
                 />
               </>
             )}
