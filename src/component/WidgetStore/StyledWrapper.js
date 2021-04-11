@@ -40,14 +40,14 @@ const StyledWrapper = styled.section`
       }
     }
     .list {
-      height: fit-content;
+      height: 100%;
       padding: 0.2rem;
       overflow-y: scroll;
       overflow-y: overlay;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 0.15rem;
-      justify-items: center;
+      grid-auto-rows: max-content;
       @media screen and (max-width: 414px) {
         grid-template-columns: repeat(1, 1fr);
       }
