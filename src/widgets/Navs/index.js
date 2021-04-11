@@ -45,7 +45,7 @@ const StyledSection = styled.section`
     }
   }
 `;
-export default function Navs({ readonly = false, data, name, lang }) {
+export default function Navs({ readonly = true, data, name, lang }) {
   const { menuVisible, position, widget, showMenu } = useContextMenu(false);
   const { data: navs, histories, addNav, removeNav, updateNavs } = useNavData(name, data);
   const [modalVisible, setModalVisible] = useState(false);
