@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     width:auto !important;
   }
   *{
+    color:inherit;
     box-sizing:border-box;
     outline:none;
     -webkit-text-size-adjust: none;

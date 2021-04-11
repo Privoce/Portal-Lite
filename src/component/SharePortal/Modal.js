@@ -22,11 +22,9 @@ const StyledWrapper = styled.section`
   .modal {
     position: relative;
     border-radius: 0.05rem;
-    color: #222;
-    background-color: #fff;
+    background-color: var(--modal-bg-color, #fff);
     padding: 0.3rem 0.4rem;
     .title {
-      color: #000;
       font-size: 0.22rem;
       font-weight: 800;
       display: flex;

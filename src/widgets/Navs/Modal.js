@@ -24,7 +24,7 @@ const StyledWrapper = styled.section`
   align-items: center;
   .modal {
     position: relative;
-    background: #fff;
+    background: var(--modal-bg-color, #fff);
     border-radius: 0.04rem;
     /* padding: 0.7rem 0.25rem 0.35rem 0.25rem; */
     padding: 0.7rem 0.25rem 0 0.25rem;

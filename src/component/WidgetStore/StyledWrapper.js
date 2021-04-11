@@ -13,7 +13,7 @@ const StyledWrapper = styled.section`
   align-items: center;
   .modal {
     position: relative;
-    background: #fff;
+    background-color: var(--modal-bg-color);
     border-radius: 0.04rem;
     height: 90vh;
     width: 80vw;
@@ -21,6 +21,7 @@ const StyledWrapper = styled.section`
     padding-top: 0.75rem;
     padding-bottom: 0.2rem;
     overflow: hidden;
+    color: var(--modal-font-color, #333);
     .tabs {
       position: relative;
       /* background-color: #fff; */
@@ -39,9 +40,8 @@ const StyledWrapper = styled.section`
       }
     }
     .list {
-      height: 100%;
+      height: fit-content;
       padding: 0.2rem;
-      padding-top: 0.1rem;
       overflow-y: scroll;
       overflow-y: overlay;
       display: grid;

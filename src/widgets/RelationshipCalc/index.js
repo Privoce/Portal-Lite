@@ -81,8 +81,7 @@ const StyledWrapper = styled.section`
     grid-gap: 0.06rem;
     .btn {
       font-size: 0.24rem;
-      background: #fff;
-      color: #000;
+      background: var(--widget-bg-color, #fff);
       padding: 0.14rem 0;
       border: 1px solid #d4d4d4;
       border-radius: 5px;

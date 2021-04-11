@@ -17,13 +17,12 @@ const StyledWrapper = styled.section`
       cursor: pointer;
       width: 0.6rem;
       height: 0.6rem;
-      background-color: #fff;
       border-radius: 50%;
       padding: 0.1rem;
       z-index: 996;
       display: flex;
       align-items: center;
-      box-shadow: 0 0 5px #333;
+      box-shadow: 0 0 5px var(--box-shadow-color, #333);
       svg {
         color: #606368;
         transition: all 0.5s;
@@ -31,7 +30,6 @@ const StyledWrapper = styled.section`
       }
     }
     .setting {
-      /* display: none; */
       margin-bottom: 0.15rem;
       position: relative;
       display: none;
@@ -66,12 +64,6 @@ const StyledWrapper = styled.section`
       }
     }
     &.expanded {
-      /* .toggle {
-        background-color: #f1f1f1;
-        svg {
-          transform: rotate(45deg);
-        }
-      } */
       .setting {
         display: block;
       }

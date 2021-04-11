@@ -7,7 +7,6 @@ import { GoRepoForked } from 'react-icons/go';
 
 import IconDev from '../Common/Icons/Developer';
 const StyledWrapper = styled.div`
-  background: #fff;
   height: 100%;
   ul {
     display: flex;
@@ -17,12 +16,10 @@ const StyledWrapper = styled.div`
     padding-left: 0;
   }
   .list {
-    /* border: 1px solid #ccc; */
     padding-bottom: 0.4rem;
     margin: 0;
   }
   .tabs {
-    /* z-index: 995; */
     position: absolute;
     bottom: 0.05rem;
     left: 0.2rem;

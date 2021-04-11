@@ -52,19 +52,11 @@ const StyledDeveloper = styled(StyledCard)`
   }
   .detail {
     display: flex;
-    /* width: 66%; */
-    /* justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap; */
-
     .popular {
       display: flex;
       flex-direction: column;
-      /* width: 4rem; */
-      /* padding-top: 0.1rem; */
       .repo_name {
         font-size: 0.2rem;
-        color: #222;
         margin-bottom: 0.05rem;
       }
       .desc {

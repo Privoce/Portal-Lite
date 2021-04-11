@@ -11,7 +11,6 @@ const StyledWrapper = styled.div`
     border: none;
     font-size: 0.13rem;
     font-weight: 400;
-    /* color: #999999; */
     line-height: 0.18rem;
     padding: 0.22rem 0.25rem;
   }

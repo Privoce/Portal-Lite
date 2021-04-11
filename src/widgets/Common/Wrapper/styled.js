@@ -15,13 +15,13 @@ const StyledWrapper = styled.div`
     position: relative;
     width: 100%;
     height: 3.1rem;
-    background: #ffffff;
+    color: var(--widget-font-color, #333);
+    background-color: var(--widget-bg-color, #fff);
     box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
     border-radius: 0.24rem;
-    border: 0.01rem solid #ececec;
+    border: 0.01rem solid var(--widget-border-color, #ececec);
     padding: 0.29rem 0.21rem;
     transition: all 0.8s ease-in-out;
-
     .remove {
       cursor: pointer;
       bottom: 0.05rem;
@@ -60,7 +60,7 @@ const StyledWrapper = styled.div`
     text-align: center;
     font-size: 0.14rem;
     font-weight: 400;
-    color: #333;
+    color: var(--widget-title-font-color, #333);
     line-height: 0.2rem;
     padding-top: 0.1rem;
     padding-bottom: 0.24rem;
@@ -91,8 +91,7 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 0.14rem;
-    color: #000;
-    background-color: #fff;
+    background-color: var(--widget-setting-bg-color, #fff);
     padding: 0.14rem;
     user-select: none;
     border-radius: 5px;

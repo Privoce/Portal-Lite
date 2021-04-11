@@ -43,8 +43,6 @@ const StyledWrapper = styled.div`
     margin: 0.1rem 0 0 0;
     font-size: 0.14rem;
     font-weight: 400;
-    color: #333;
-    text-shadow: 0 0 4px #fff;
     line-height: 0.2rem;
     text-align: center;
     width: 100%;

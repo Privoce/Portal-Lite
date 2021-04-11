@@ -82,7 +82,6 @@ const StyledRepo = styled(StyledCard)`
 
     .star {
       font-size: 0.12rem;
-      color: #222;
       padding: 0.04rem 0.08rem;
       border-radius: 5px;
       border: 1px solid #ccc;

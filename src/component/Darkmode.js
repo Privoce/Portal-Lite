@@ -3,43 +3,42 @@ import Darkmode from 'darkmode-js';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useWidgetSettings } from '../hooks';
 const StyledG = createGlobalStyle`
-.darkmode--activated{
-  h1,h2,h3{
-    color:#eee !important;
+  :root{
+    /* common */
+    --box-shadow-color:#333;
+    --input-bg-color:#666;
+    --input-font-color:#eee;
+    --input-border-color:#666;
+    /* widget */
+    --widget-bg-color:#fff;
+    --widget-setting-bg-color:#fff;
+    --widget-title-font-color:#333;
+    --widget-border-color:#ececec;
+    --widget-link-color:#bbdaff;
+    --widget-font-color:#000;
+    --widget-box-shadow-color:#999;
+    /* modal */
+    --modal-bg-color:#fff;
+    --modal-font-color:#222;
   }
-  input,textarea{
-    border-color:#666 !important;
-    background: #333 !important;
-    color: #eee !important;
+  .darkmode--activated {
+    /* common */
+     --box-shadow-color:#ccc;
+    --input-bg-color:#666;
+    --input-font-color:#eee;
+    --input-border-color:#666;
+    /* widget */
+    --widget-bg-color:#333;
+    --widget-setting-bg-color:#aaa;
+    --widget-title-font-color:#fff;
+    --widget-border-color:#666;
+    --widget-link-color:#bbdaff;
+    --widget-font-color:#ccc;
+    --widget-box-shadow-color:#999;
+    /* modal */
+    --modal-bg-color:#333;
+    --modal-font-color:#fff;
   }
-  .widget[type='widget'] .container{
-    background-color:#333;
-    border-color:#666;
-    box-shadow:0rem 0rem 0.08rem 0rem #999;
-     .list .item .txt{
-      color:#aaa;
-    }
-  }
-  .modal{
-    background:#333 !important;
-    .tabs .tab{
-      color:#eee;
-    }
-    .widget{
-      border-color: #999;
-    }
-  }
-  .widget[type='nav'] .container{
-    .inside,.inside:hover{
-      .icon{
-        box-shadow:none;
-      }
-      .title{
-        text-shadow: 0 0 5px #000;
-      }
-    }
-  }
-}
 `;
 const StyledButton = styled.button`
   font-size: 0.26rem;

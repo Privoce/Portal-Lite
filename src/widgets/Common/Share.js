@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { IoMdClose } from 'react-icons/io';
+import { BiLink } from 'react-icons/bi';
 
 import { useWidgetSettings } from '../../hooks';
 import { appId, appHost } from '../../InitialConfig';
@@ -23,11 +24,10 @@ const StyledWrapper = styled.div`
   .modal {
     position: relative;
     border-radius: 0.05rem;
-    color: #222;
-    background-color: #fff;
+    color: var(--modal-font-color, #333);
+    background-color: var(--modal-bg-color, #fff);
     padding: 0.3rem 0.4rem;
     .title {
-      color: #000;
       font-size: 0.22rem;
       font-weight: 800;
       display: flex;
@@ -81,7 +81,6 @@ const StyledWrapper = styled.div`
     }
     .body {
       margin-top: 0.2rem;
-      color: #333;
       font-size: 0.18rem;
       .tip {
         color: #666;
@@ -92,7 +91,8 @@ const StyledWrapper = styled.div`
         font-size: 0.12rem;
         user-select: text;
         white-space: nowrap;
-        overflow: scroll;
+        overflow-y: hidden;
+        overflow-x: scroll;
         max-width: 3.5rem;
         line-height: 2;
         border: 1px solid #eee;
@@ -108,7 +108,6 @@ const StyledWrapper = styled.div`
       .btn {
         border-radius: 0.5rem;
         border: 1px solid #7a3cf0;
-        background-color: #fff;
         font-size: 0.18rem;
         padding: 0.08rem 0.12rem;
         color: #7e65c8;
@@ -116,6 +115,8 @@ const StyledWrapper = styled.div`
 
         &.copy,
         &.login {
+          align-items: center;
+          display: flex;
           background-color: #7a3cf0;
           color: #fff;
           &[disabled] {
@@ -216,6 +217,7 @@ export default function Share({ name, lang, closeModal }) {
           >
             {username ? (
               <button disabled={!canShare} className="btn copy">
+                <BiLink />
                 {copied ? lang.copied : lang.copy}
               </button>
             ) : (

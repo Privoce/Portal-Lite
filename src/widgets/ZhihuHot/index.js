@@ -13,7 +13,6 @@ const StyledWrapper = styled.section`
   height: 100%;
   .empty {
     font-size: 0.2rem;
-    color: #666;
   }
   .wrapper {
     margin: 0;
@@ -64,7 +63,6 @@ const StyledWrapper = styled.section`
         display: flex;
         flex-direction: row;
         align-items: center;
-        color: #222;
         .left {
           display: flex;
           flex: 2;
