@@ -46,14 +46,16 @@ const StyledWrapper = styled.section`
       }
       .url,
       .title {
+        background: none;
         margin-bottom: 0.1rem;
         font-size: 0.16rem;
         font-weight: 400;
-        color: #080808;
         line-height: 0.22rem;
         padding: 0.1rem 0.08rem;
         border-radius: 0.04rem;
         border: 0.01rem solid #e0e0e0;
+        border-color: var(--input-border-color, #e0e0e0);
+        color: var(--input-font-color, #080008);
         &::placeholder {
           font-size: 0.14rem;
         }

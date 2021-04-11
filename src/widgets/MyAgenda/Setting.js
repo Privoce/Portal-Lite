@@ -9,7 +9,8 @@ const StyledWrapper = styled.div`
   height: 100%;
   background-color: rgba(22, 22, 22, 0.2);
   .panel {
-    background-color: #fff;
+    background-color: var(--modal-bg-color, #fff);
+    color: var(--modal-font-color);
     padding: 0.1rem 0.14rem;
     border: 1px solid #eee;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);

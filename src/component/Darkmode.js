@@ -6,8 +6,8 @@ const StyledG = createGlobalStyle`
   :root{
     /* common */
     --box-shadow-color:#333;
-    --input-bg-color:#666;
-    --input-font-color:#eee;
+    --input-bg-color:#fff;
+    --input-font-color:#222;
     --input-border-color:#666;
     /* widget */
     --widget-bg-color:#fff;
@@ -17,6 +17,7 @@ const StyledG = createGlobalStyle`
     --widget-link-color:#bbdaff;
     --widget-font-color:#000;
     --widget-box-shadow-color:#999;
+
     /* modal */
     --modal-bg-color:#fff;
     --modal-font-color:#222;
@@ -26,7 +27,7 @@ const StyledG = createGlobalStyle`
      --box-shadow-color:#ccc;
     --input-bg-color:#666;
     --input-font-color:#eee;
-    --input-border-color:#666;
+    --input-border-color:#ccc;
     /* widget */
     --widget-bg-color:#333;
     --widget-setting-bg-color:#aaa;
