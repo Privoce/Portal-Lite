@@ -1,0 +1,52 @@
+{
+  "extName": {
+    "message": "Portal - Home of Your Web Apps",
+    "description": "Portal name"
+  },
+  "extDescription": {
+    "message": "像积木一样自由组建你的浏览器主页！",
+    "description": "Portal description"
+  },
+  "login": {
+    "message": "Login"
+  },
+  "tipLoading": {
+    "message": "Loading"
+  },
+  "tipDisableVideo": {
+    "message": "disable camera"
+  },
+  "tipDisableAudio": {
+    "message": "disable audio"
+  },
+  "tipRemoveBg": {
+    "message": "remove background"
+  },
+  "tipPin": {
+    "message": "pin"
+  },
+  "tipFeedback": {
+    "message": "feedback"
+  },
+  "tipProcessing": {
+    "message": "processing"
+  },
+  "copy": {
+    "message": "Copy"
+  },
+  "copied": {
+    "message": "Copied"
+  },
+  "invite": {
+    "message": "Invite"
+  },
+  "invited": {
+    "message": "Invited"
+  },
+  "join": {
+    "message": "Join"
+  },
+  "quitConfirm": {
+    "message": "are you sure to quit?"
+  }
+}

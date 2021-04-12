@@ -1,5 +1,6 @@
+const loadingTxt = chrome.i18n.getMessage('tipLoading');
 class Loading {
-  constructor(params = { tip: 'Loading' }) {
+  constructor(params = { tip: loadingTxt }) {
     const { tip } = params;
     this.dom = document.createElement('div');
     this.dom.classList.add('loading');

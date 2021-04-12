@@ -1,0 +1,52 @@
+{
+  "extName": {
+    "message": "Portal - 新一代网络之家",
+    "description": "Portal name"
+  },
+  "extDescription": {
+    "message": "像积木一样自由组建你的浏览器主页！",
+    "description": "Portal description"
+  },
+  "login": {
+    "message": "登录"
+  },
+  "tipLoading": {
+    "message": "加载中"
+  },
+  "tipDisableVideo": {
+    "message": "禁用视频"
+  },
+  "tipDisableAudio": {
+    "message": "禁用音频"
+  },
+  "tipRemoveBg": {
+    "message": "去背景"
+  },
+  "tipPin": {
+    "message": "画中画"
+  },
+  "tipFeedback": {
+    "message": "反馈"
+  },
+  "tipProcessing": {
+    "message": "处理中"
+  },
+  "copy": {
+    "message": "复制"
+  },
+  "copied": {
+    "message": "已复制"
+  },
+  "invite": {
+    "message": "邀请"
+  },
+  "invited": {
+    "message": "已邀请"
+  },
+  "join": {
+    "message": "加入"
+  },
+  "quitConfirm": {
+    "message": "确定退出？"
+  }
+}

@@ -425,7 +425,22 @@
 #PORTAL_VERA_PANEL .panel .cameras .camera .video[video='true'] .mask.user {
   display: none;
 }
-#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .btn {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn {
   display: none;
 }
 #PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .controls,
@@ -435,11 +450,60 @@
 #PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='connected'] .invite {
   display: none;
 }
-#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] .btn {
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn {
   display: none;
 }
 #PORTAL_VERA_PANEL .panel .cameras .camera[camera-status='allow-error'] .mask.error {
   display: flex;
+}
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn {
+  border: none;white-space: nowrap;background-color: var(--camera-bg-color);color: var(--font-color);border-radius: var(--border-radius);padding: 4px 10px;cursor: pointer;transition: transform 0.3s ease-in;
+}
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .join .btn:active,
+#PORTAL_VERA_PANEL .panel #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .join .btn:active {
+  transform: scale(0.9);
 }
 #PORTAL_VERA_PANEL .panel .invite {
   box-sizing: border-box;
@@ -477,6 +541,8 @@
   overflow: hidden;
 }
 #PORTAL_VERA_PANEL .panel .invite .users {
+  height: fit-content;
+  overflow: scroll;
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
@@ -484,6 +550,15 @@
   background-color: #1f1f1f;
   padding: 6px 4px;
   border-radius: var(--border-radius);
+  color: var(--font-color);
+  /* Track */
+}
+#PORTAL_VERA_PANEL .panel .invite .users::-webkit-scrollbar {
+  /* visibility: hidden; */
+  display: none;
+}
+#PORTAL_VERA_PANEL .panel .invite .users::-webkit-scrollbar-track {
+  background: transparent;
 }
 #PORTAL_VERA_PANEL .panel .invite .users .user {
   display: flex;
@@ -500,6 +575,7 @@
   border-radius: 50%;
 }
 #PORTAL_VERA_PANEL .panel .invite .users .user .name {
+  color: inherit;
   font-size: 10px;
 }
 #PORTAL_VERA_PANEL .panel .invite .login {
@@ -512,7 +588,7 @@
   height: 200px;
   width: 200px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   justify-content: center;
@@ -520,7 +596,11 @@
   background: transparent;
   border-radius: var(--border-radius);
 }
-#PORTAL_VERA_PANEL .panel .join .btn {
+#PORTAL_VERA_PANEL .panel .join .btn,
+#PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user .btn,
+#PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .users .user #PORTAL_VERA_PANEL .panel .invite .link .btn,
+#PORTAL_VERA_PANEL .panel .join #PORTAL_VERA_PANEL .panel .invite .link #PORTAL_VERA_PANEL .panel .invite .users .user .btn {
   font-size: 22px;
 }
 #PORTAL_VERA_PANEL .panel .join .login {

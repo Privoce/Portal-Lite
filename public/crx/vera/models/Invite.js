@@ -1,6 +1,11 @@
 import { selectText, copyToClipboard } from './utils.js';
 import { peerKey, userKey } from './config.js';
 import Login from './Login.js';
+const inviteTxt = chrome.i18n.getMessage('invite');
+const invitedTxt = chrome.i18n.getMessage('invited');
+const copyTxt = chrome.i18n.getMessage('copy');
+const copiedTxt = chrome.i18n.getMessage('copied');
+
 class Invite {
   constructor({ localId = null }) {
     console.log({ localId });
@@ -19,7 +24,7 @@ class Invite {
       <span class='url'>
         ${this.inviteUrl}
       </span>
-      <button class="btn copy">Copy Link</button>
+      <button class="btn copy">${copyTxt}</button>
     </div>
       `;
     // <div class="cover_opts" />
@@ -37,9 +42,9 @@ class Invite {
       unlocker.enable();
       copyToClipboard(this.inviteUrl);
       unlocker.disable();
-      inviteBtn.innerHTML = 'Copied!';
+      inviteBtn.innerHTML = copiedTxt;
       setTimeout(() => {
-        inviteBtn.innerHTML = 'Copy Link';
+        inviteBtn.innerHTML = copyTxt;
       }, 2000);
     });
     if (!PORTAL_USER_NAME) {
@@ -76,12 +81,12 @@ class Invite {
           avator.src = photo;
           let btn = document.createElement('button');
           btn.classList.add('btn');
-          btn.innerText = 'Copy Link';
+          btn.innerText = inviteTxt;
           btn.addEventListener('click', () => {
             copyToClipboard(inviteLink);
-            btn.innerHTML = 'Copied!';
+            btn.innerHTML = invitedTxt;
             setTimeout(() => {
-              btn.innerHTML = 'Copy Link';
+              btn.innerHTML = inviteTxt;
             }, 2000);
           });
           let un = document.createElement('span');

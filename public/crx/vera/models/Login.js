@@ -1,8 +1,9 @@
 class Login {
   constructor(option = {}) {
     const { isHost = true, localId, inviteId } = option;
+    const loginTxt = chrome.i18n.getMessage('login');
     this.dom = document.createElement('button');
-    this.dom.innerHTML = 'Sign In';
+    this.dom.innerHTML = loginTxt;
     this.dom.classList.add('btn');
     this.dom.classList.add('login');
     this.dom.addEventListener(

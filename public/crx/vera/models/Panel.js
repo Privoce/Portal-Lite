@@ -6,6 +6,8 @@ import PeerClient from './PeerClient.js';
 window.REMOTE_PEER_IDS = [];
 window.REMOTE_STREAM = null;
 window.LOCAL_STREAM = null;
+const tipFeedback = chrome.i18n.getMessage('feedback');
+const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 class Panel {
   constructor(pvid = null) {
@@ -19,7 +21,7 @@ class Panel {
         <div class='topbar'>
           <div class='close'></div>
           <div class='right'>
-            <a class='feedback' title='feedback' href='https://www.surveymonkey.com/r/RMGZDW8' target='_blank'></a>
+            <a class='feedback' title='${tipFeedback}' href='https://www.surveymonkey.com/r/RMGZDW8' target='_blank'></a>
             <ul class='layout'>
               <li class="item min" layout='min'>
                 <div class="mock line"></div>
@@ -77,7 +79,7 @@ class Panel {
         console.log('click ', { target });
 
         if (target.classList.contains('close')) {
-          let confirmed = confirm('Are you sure to quit?');
+          let confirmed = confirm(quitConfirmTxt);
           if (!confirmed) return;
 
           VERA_EMITTER.emit('panel.close');

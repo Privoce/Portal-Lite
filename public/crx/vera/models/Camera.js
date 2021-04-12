@@ -2,6 +2,11 @@ import { fullStreamConfig, audioStreamConfig } from './config.js';
 import Username from './Username.js';
 import Loading from './Loading.js';
 import { bgRemove, bgRestore } from './utils.js';
+const tipVideo = chrome.i18n.getMessage('tipDisableVideo');
+const tipAudio = chrome.i18n.getMessage('tipDisableAudio');
+const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg');
+const tipProcessing = chrome.i18n.getMessage('tipProcessing');
+const tipPin = chrome.i18n.getMessage('tipPin');
 const handleControl = async (control, btn, root) => {
   let videoEle = btn.parentElement.nextElementSibling;
   let videoContainer = videoEle.parentElement;
@@ -87,15 +92,15 @@ class Camera {
     this.dom.classList.add('camera');
     this.dom.classList.add(remote ? 'remote' : 'local');
     this.dom.innerHTML = `
-    <div class='processing'>processing</div>
+    <div class='processing'>${tipProcessing}</div>
     <div class='video' video='true' bg='true' audio='true' waiting='true'>
       <div class='mask user'></div>
 
       <div class='opts'>
-        <button class='opt bg' control='bg' title='clear background'></button>
-        <button class='opt video' control='video' title='video'></button>
-        <button class='opt audio' control='audio' title='audio'></button>
-        <button class='opt pin' control='pin' title='pin'></button>
+        <button class='opt bg' control='bg' title='${tipRemoveBg}'></button>
+        <button class='opt video' control='video' title='${tipVideo}'></button>
+        <button class='opt audio' control='audio' title='${tipAudio}'></button>
+        <button class='opt pin' control='pin' title='${tipPin}'></button>
       </div>
       <video playsinline autoplay ${remote ? '' : "muted='muted'"} ></video>
       <canvas class='render' width=200 height=200 ></canvas>
@@ -104,15 +109,6 @@ class Camera {
       <div class='mask waiting'></div>
     </div>
       `;
-    // <div class='mask waiting'>
-    //   <div class='loading'>
-    //     <svg viewBox="0 0 50 50" class="circle">
-    //         <circle cx="25" cy="25" r="20" fill="none" class="path"></circle>
-    //     </svg>
-    //     <span class='txt'>Loading</span>
-    //   </div>
-    // </div>
-    // <div class="cover_opts" />
     this.initLoading();
     this.initControls();
     if (!remote) {

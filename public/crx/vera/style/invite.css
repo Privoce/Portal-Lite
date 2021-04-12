@@ -33,6 +33,19 @@
   max-height: 90px;
   overflow: hidden;
 }
+.invite .link .btn {
+  border: none;
+  white-space: nowrap;
+  background-color: var(--camera-bg-color);
+  color: var(--font-color);
+  border-radius: var(--border-radius);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in;
+}
+.invite .link .btn:active {
+  transform: scale(0.9);
+}
 .invite .users {
   height: fit-content;
   overflow: scroll;
@@ -70,6 +83,19 @@
 .invite .users .user .name {
   color: inherit;
   font-size: 10px;
+}
+.invite .users .user .btn {
+  border: none;
+  white-space: nowrap;
+  background-color: var(--camera-bg-color);
+  color: var(--font-color);
+  border-radius: var(--border-radius);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in;
+}
+.invite .users .user .btn:active {
+  transform: scale(0.9);
 }
 .invite .login {
   margin-top: 15px;

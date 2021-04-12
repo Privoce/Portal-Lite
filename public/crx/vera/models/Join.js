@@ -2,12 +2,14 @@ import Camera from './Camera.js';
 import Username from './Username.js';
 import Login from './Login.js';
 import { appendHistory } from './utils.js';
+const joinTxt = chrome.i18n.getMessage('join');
+
 class Join {
   constructor({ inviteId = null }) {
     this.dom = document.createElement('div');
     this.dom.classList.add('join');
     this.dom.innerHTML = `
-        <button disabled class='btn ok'>Join</button>
+        <button disabled class='btn ok'>${joinTxt}</button>
       `;
     this.init(inviteId);
     this.initUsername();
