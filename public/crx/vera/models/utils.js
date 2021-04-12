@@ -91,6 +91,8 @@ function getUsername() {
       if (result.user) {
         // resolve(result.user.username);
         let tmp = result.user.username;
+        // 赋值全局变量
+        window.LOCAL_USERNAME = tmp;
         resolve(tmp);
       } else {
         resolve(null);
@@ -131,5 +133,93 @@ async function appendHistory({ peerId, isHost }) {
   }
   return data;
 }
+const toggleCameraControl = async (control, root) => {
+  let videoContainer = root.querySelector('.video');
+  let videoEle = videoContainer.querySelector('video');
+  let isLocal = root.classList.contains('local');
+  let isTrue;
+  let map = {
+    audio: {
+      on: 'AUDIO_ON',
+      off: 'AUDIO_OFF'
+    },
+    video: {
+      on: 'VIDEO_ON',
+      off: 'VIDEO_OFF'
+    },
+    bg: {
+      on: 'RS_BG',
+      off: 'RM_BG'
+    }
+  };
 
-export { getUsername, appendHistory, copyToClipboard, selectText, bgRestore, bgRemove };
+  if (control == 'bg') {
+    // 如果视频被禁用了，就地返回
+    let disabled = videoEle.srcObject.getVideoTracks().some((t) => t.enabled == false);
+    if (disabled) return;
+  }
+  if (['bg', 'pin', 'audio', 'video'].includes(control)) {
+    isTrue = videoContainer.getAttribute(control) == 'true';
+    if (isTrue) {
+      videoContainer.removeAttribute(control);
+    } else {
+      videoContainer.setAttribute(control, true);
+    }
+  }
+
+  if (control == 'pin') {
+    // pin
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    }
+    if (!isTrue) {
+      videoEle.requestPictureInPicture().catch((error) => {
+        // Error handling
+        console.log('pip error', error);
+      });
+      videoEle.onleavepictureinpicture = () => {
+        videoContainer.removeAttribute('pin');
+      };
+    }
+    return;
+  }
+  // 禁用音视频
+  if (control == 'audio' || control == 'video') {
+    let tracks =
+      control == 'audio'
+        ? videoEle.srcObject.getAudioTracks()
+        : videoEle.srcObject.getVideoTracks();
+    tracks.forEach((t) => {
+      console.log('before', { t });
+      t.enabled = !isTrue;
+      console.log('after', { t });
+    });
+  }
+  // 去背景
+  if (control == 'bg') {
+    if (isTrue) {
+      await bgRemove(root);
+    } else {
+      bgRestore(root);
+    }
+  }
+  if (isLocal) {
+    // 如果是本地camera给现存连接列表 依次发消息
+    let cmd = { type: isTrue ? map[control].off : map[control].on };
+    console.log('send cmd to remote camera', cmd);
+    Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
+      console.log('send to peer', pid);
+      conn.send(cmd);
+    });
+  }
+};
+
+export {
+  getUsername,
+  appendHistory,
+  copyToClipboard,
+  selectText,
+  bgRestore,
+  bgRemove,
+  toggleCameraControl
+};

@@ -1,90 +1,13 @@
 import { fullStreamConfig, audioStreamConfig } from './config.js';
 import Username from './Username.js';
 import Loading from './Loading.js';
-import { bgRemove, bgRestore } from './utils.js';
+import { toggleCameraControl } from './utils.js';
 const tipVideo = chrome.i18n.getMessage('tipDisableVideo');
 const tipAudio = chrome.i18n.getMessage('tipDisableAudio');
 const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg');
 const tipProcessing = chrome.i18n.getMessage('tipProcessing');
 const tipPin = chrome.i18n.getMessage('tipPin');
-const handleControl = async (control, btn, root) => {
-  let videoEle = btn.parentElement.nextElementSibling;
-  let videoContainer = videoEle.parentElement;
-  // let isHost = root.classList.contains('local');
-  let isTrue;
-  let map = {
-    audio: {
-      on: 'AUDIO_ON',
-      off: 'AUDIO_OFF'
-    },
-    video: {
-      on: 'VIDEO_ON',
-      off: 'VIDEO_OFF'
-    },
-    bg: {
-      on: 'RS_BG',
-      off: 'RM_BG'
-    }
-  };
-  if (control == 'bg') {
-    // 如果视频被禁用了，就地返回
-    let disabled = videoEle.srcObject.getVideoTracks().some((t) => t.enabled == false);
-    if (disabled) return;
-  }
-  if (['bg', 'pin', 'audio', 'video'].includes(control)) {
-    isTrue = videoContainer.getAttribute(control) == 'true';
-    if (isTrue) {
-      videoContainer.removeAttribute(control);
-    } else {
-      videoContainer.setAttribute(control, true);
-    }
-  }
-  // pin
-  if (control == 'pin') {
-    if (document.pictureInPictureElement) {
-      document.exitPictureInPicture();
-    }
-    if (!isTrue) {
-      videoEle.requestPictureInPicture().catch((error) => {
-        // Error handling
-        console.log('pip error', error);
-      });
-      videoEle.onleavepictureinpicture = () => {
-        videoContainer.removeAttribute('pin');
-      };
-    }
-    return;
-  }
-  // 禁用音视频
-  if (control == 'audio' || control == 'video') {
-    let tracks =
-      control == 'audio'
-        ? videoEle.srcObject.getAudioTracks()
-        : videoEle.srcObject.getVideoTracks();
-    tracks.forEach((t) => {
-      console.log('before', { t });
-      t.enabled = !isTrue;
-      console.log('after', { t });
-    });
-  }
-  // 去背景
-  if (control == 'bg') {
-    if (isTrue) {
-      await bgRemove(root);
-    } else {
-      bgRestore(root);
-    }
-  }
-  if (root.classList.contains('local')) {
-    // 如果是本地camera给现存连接列表 依次发消息
-    let cmd = { type: isTrue ? map[control].off : map[control].on };
-    console.log('send cmd to remote camera', cmd);
-    Object.entries(PEER_DATA_CONNS).forEach(([pid, conn]) => {
-      console.log('send to peer', pid);
-      conn.send(cmd);
-    });
-  }
-};
+
 class Camera {
   constructor({ remote = false, peerId = null }) {
     this.dom = document.createElement('div');
@@ -110,7 +33,7 @@ class Camera {
     </div>
       `;
     this.initLoading();
-    this.initControls();
+    this.initControls(remote);
     if (!remote) {
       this.initLocal();
     }
@@ -126,17 +49,18 @@ class Camera {
     let un = new Username({ myself: !remote });
     this.dom.querySelector('.video').appendChild(un);
   }
-  initControls() {
-    let controls = [...this.dom.querySelectorAll('.opts .opt')].map((opt) =>
-      opt.getAttribute('control')
-    );
+  initControls(remote = false) {
+    // 对方的camera只让Pin
+    let controls = remote
+      ? ['pin']
+      : [...this.dom.querySelectorAll('.opts .opt')].map((opt) => opt.getAttribute('control'));
     this.dom.addEventListener(
       'click',
       ({ target }) => {
         console.log('clicked', { target });
         let control = target.getAttribute('control');
         if (controls.includes(control)) {
-          handleControl(control, target, this.dom);
+          toggleCameraControl(control, this.dom);
         }
       },
       true

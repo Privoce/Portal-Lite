@@ -1,39 +1,25 @@
 import Camera from './Camera.js';
 import Cursor from './Cursor.js';
-import { appendHistory, getUsername } from './utils.js';
+import { appendHistory, getUsername, toggleCameraControl } from './utils.js';
 import { peerConfig } from './config.js';
 
 window.MyPortalVeraPeer = null;
 window.PEER_DATA_CONNS = {};
 window.USERNAMES = {};
-const handleCmd = ({ videoContainer, cmd }) => {
+const handleCmd = ({ cameraContainer, cmd }) => {
   let { type = '', data } = cmd;
   switch (type) {
     case 'RM_BG':
-      if (videoContainer.getAttribute('bg') == 'true') {
-        videoContainer.querySelector('.opt.bg').click();
-      }
-      break;
     case 'RS_BG':
-      if (videoContainer.getAttribute('bg') !== 'true') {
-        videoContainer.querySelector('.opt.bg').click();
-      }
+      toggleCameraControl('bg', cameraContainer);
       break;
     case 'VIDEO_ON':
-      videoContainer.setAttribute('video', true);
-      REMOTE_STREAM.getVideoTracks().forEach((t) => (t.enabled = true));
-      break;
     case 'VIDEO_OFF':
-      videoContainer.removeAttribute('video');
-      REMOTE_STREAM.getVideoTracks().forEach((t) => (t.enabled = false));
+      toggleCameraControl('video', cameraContainer);
       break;
     case 'AUDIO_ON':
-      videoContainer.setAttribute('audio', true);
-      REMOTE_STREAM.getAudioTracks().forEach((t) => (t.enabled = true));
-      break;
     case 'AUDIO_OFF':
-      videoContainer.removeAttribute('audio');
-      REMOTE_STREAM.getAudioTracks().forEach((t) => (t.enabled = false));
+      toggleCameraControl('audio', cameraContainer);
       break;
     case 'USERNAME':
       let { peerId, username } = data;
@@ -60,7 +46,8 @@ class PeerClient {
           VERA_EMITTER.emit('connect.ready');
           PEER_DATA_CONNS[pvid] = inviteConn;
           inviteConn.send('hi from invited!');
-          let username = window.LOCAL_USERNAME || (await getUsername());
+          let currName = await getUsername();
+          let username = currName;
           if (username) {
             inviteConn.send({ type: 'USERNAME', data: { peerId: id, username } });
           }
@@ -70,8 +57,8 @@ class PeerClient {
           inviteConn.on('data', (cmd = {}) => {
             let { type = '', data } = cmd;
             console.log(`invited received: `, cmd, type, data);
-            let videoContainer = panel.dom.querySelector('.camera.remote .video');
-            handleCmd({ videoContainer, cmd });
+            let cameraContainer = panel.dom.querySelector('.camera.remote');
+            handleCmd({ cameraContainer, cmd });
           });
         });
         inviteConn.on('close', () => {
@@ -112,8 +99,8 @@ class PeerClient {
           // 监听数据
           conn.on('data', (cmd = {}) => {
             console.log(`local received: `, cmd);
-            let videoContainer = panel.dom.querySelector('.camera.remote .video');
-            handleCmd({ videoContainer, cmd });
+            let cameraContainer = panel.dom.querySelector('.camera.remote');
+            handleCmd({ cameraContainer, cmd });
           });
         });
 
