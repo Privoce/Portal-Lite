@@ -1,7 +1,7 @@
 import Camera from './Camera.js';
 import Username from './Username.js';
 import Login from './Login.js';
-import { appendHistory } from './utils.js';
+import { appendHistory, getUsername } from './utils.js';
 const joinTxt = chrome.i18n.getMessage('join');
 
 class Join {
@@ -20,11 +20,13 @@ class Join {
     this.dom.appendChild(un);
   }
   init(inviteId) {
-    if (!window.LOCAL_USERNAME) {
-      // apend Login
-      let loginBtn = new Login({ inviteId, isHost: false });
-      this.dom.appendChild(loginBtn);
-    }
+    getUsername().then((un) => {
+      if (!un) {
+        // apend Login
+        let loginBtn = new Login({ inviteId, isHost: false });
+        this.dom.appendChild(loginBtn);
+      }
+    });
     // 响应加入按钮的事件
     let joinBtn = this.dom.querySelector('.btn.ok');
     joinBtn.addEventListener('click', async () => {
