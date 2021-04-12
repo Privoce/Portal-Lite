@@ -11,7 +11,7 @@ const StyledItem = styled.li`
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 0.15rem;
-  border: 0.01rem solid #eee;
+  border: 0.01rem solid var(--border-color, #eee);
   overflow: hidden;
   .icon {
     display: flex;
@@ -34,7 +34,7 @@ const StyledItem = styled.li`
   .intro {
     width: 100%;
     height: 100%;
-    background-color: rgba(2, 2, 2, 0.8);
+    background-color: rgba(2, 2, 2, 0.95);
     color: #fff;
     display: flex;
     flex-direction: column;

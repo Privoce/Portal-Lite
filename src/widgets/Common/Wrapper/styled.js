@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
     height: 3.1rem;
     color: var(--widget-font-color, #333);
     background-color: var(--widget-bg-color, #fff);
-    box-shadow: 0rem 0rem 0.08rem 0rem #dfdfdf;
+    box-shadow: 0rem 0rem 0.08rem 0rem var(--box-shadow-color, #dfdfdf);
     border-radius: 0.24rem;
     border: 0.01rem solid var(--widget-border-color, #ececec);
     padding: 0.29rem 0.21rem;

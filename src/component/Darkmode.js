@@ -5,10 +5,11 @@ import { useWidgetSettings } from '../hooks';
 const StyledG = createGlobalStyle`
   :root{
     /* common */
-    --box-shadow-color:#333;
+    --border-color:#efefef;
+    --box-shadow-color:#dfdfdf;
     --input-bg-color:#fff;
     --input-font-color:#222;
-    --input-border-color:#666;
+    --input-border-color:#e0e0e0;
     /* widget */
     --widget-bg-color:#fff;
     --widget-setting-bg-color:#fff;
@@ -24,7 +25,8 @@ const StyledG = createGlobalStyle`
   }
   .darkmode--activated {
     /* common */
-     --box-shadow-color:#ccc;
+    --border-color:#666;
+    --box-shadow-color:#333;
     --input-bg-color:#666;
     --input-font-color:#eee;
     --input-border-color:#ccc;

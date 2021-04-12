@@ -35,7 +35,7 @@ const StyledWrapper = styled.section`
         flex: 1;
         border-bottom: 1px solid #606368;
         &.selected {
-          border-bottom: 3px solid #000;
+          border-bottom: 3px solid var(--modal-font-color, #000);
         }
       }
     }
