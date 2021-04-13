@@ -47,7 +47,7 @@ const en = {
       },
       opts: {
         shareModal: {
-          title: 'Share',
+          title: 'Share with friends',
           tip: 'Share this widget with the link',
           loginTip: 'Please login first.',
           copy: 'Copy Link',
@@ -60,8 +60,9 @@ const en = {
         share: 'Share',
         open: { newTab: 'Open in new tab', standalone: 'Open in new window' },
         sizes: {
-          middle: 'Medium',
-          large: 'Large'
+          mini: 'm',
+          middle: 'M',
+          large: 'L'
         }
       }
     },

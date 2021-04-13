@@ -10,11 +10,6 @@ import IconClose from '../Icons/Close';
 
 import { useWidgetSettings } from '../../../hooks';
 // import IconClose from './Icons/CircleClose';
-const SizeMap = {
-  middle: '中',
-  large: '大',
-  mini: '小'
-};
 const isExt = window.IS_CHROME_EXT;
 export default function WidgetWrapper({
   data = null,
@@ -155,7 +150,7 @@ export default function WidgetWrapper({
                     className={`size ${currSize == key ? 'curr' : ''}`}
                     key={key}
                   >
-                    {SizeMap[key]}
+                    {lang.opts.sizes[key]}
                   </span>
                 );
               })}
