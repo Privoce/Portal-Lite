@@ -20,15 +20,17 @@ class Join {
     this.dom.appendChild(un);
   }
   init(inviteId) {
+    let joinBtn = this.dom.querySelector('.btn.ok');
     getUsername().then((un) => {
       if (!un) {
         // apend Login
         let loginBtn = new Login({ inviteId, isHost: false });
         this.dom.appendChild(loginBtn);
+      } else {
+        joinBtn.removeAttribute('disabled');
       }
     });
     // 响应加入按钮的事件
-    let joinBtn = this.dom.querySelector('.btn.ok');
     joinBtn.addEventListener('click', async () => {
       // create audio and video constraints
       try {
