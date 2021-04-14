@@ -1,10 +1,10 @@
 {
   "extName": {
-    "message": "Portal - Home of Your Web Apps",
+    "message": "Vera - Cobrowse Doc, Figma, PDF.",
     "description": "Portal name"
   },
   "extDescription": {
-    "message": "像积木一样自由组建你的浏览器主页！",
+    "message": "Cobrowse any website with your teammates!",
     "description": "Portal description"
   },
   "login": {
