@@ -26,7 +26,7 @@ class Widget {
   ) {
     this.dom.querySelector('.camera').onmouseup = () => {
       console.log('widget clicked');
-      // 正在拖动
+      // 正在拖动...
       if (dragMoving) return;
       inviteHandler();
     };

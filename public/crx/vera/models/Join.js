@@ -33,33 +33,39 @@ class Join {
     // 响应加入按钮的事件
     joinBtn.addEventListener('click', async () => {
       // create audio and video constraints
-      try {
-        console.log('join event peer called');
-        let remoteCamera = new Camera({ remote: true, peerId: inviteId });
-        let cameraList = this.dom.previousElementSibling;
-        let panel = cameraList.parentElement;
-        console.log('attach remote video');
-        cameraList.appendChild(remoteCamera.dom);
-        // 把本地的音视频推给对方
-        let call = MyPortalVeraPeer.call(inviteId, LOCAL_STREAM);
-        // 加入历史记录
-        appendHistory({ peerId: inviteId, isHost: false });
-        this.dom.remove();
-        // 响应对方的音视频流
-        call.on('stream', (st) => {
-          REMOTE_STREAM = st;
-          remoteCamera.attachStream(st);
-          cameraList.setAttribute('camera-status', 'connected');
-          panel.setAttribute('data-status', 'streaming');
-        });
-        call.on('close', () => {
-          console.log('call close');
-        });
-      } catch (error) {
-        this.dom.setAttribute('camera-status', 'allow-error');
-        console.log('join event peer called,error');
-        console.error('Failed to get local stream', error);
-      }
+      let pids = [...new Set([...OTHER_PEER_IDS, inviteId])];
+      console.log('connect ids', pids);
+      pids.forEach((pid) => {
+        try {
+          console.log('join event peer called');
+          let remoteCamera = new Camera({ remote: true, peerId: pid });
+          let cameraList = this.dom.previousElementSibling;
+          let panel = cameraList.parentElement;
+          console.log('attach remote video');
+          cameraList.appendChild(remoteCamera.dom);
+          // 把本地的音视频推给对方
+          let call = MyPortalVeraPeer.call(pid, LOCAL_STREAM);
+          // 加入历史记录
+          appendHistory({ peerId: pid, isHost: false });
+
+          // 响应对方的音视频流
+          call.on('stream', (st) => {
+            REMOTE_STREAM = st;
+            remoteCamera.attachStream(st);
+            cameraList.setAttribute('camera-status', 'connected');
+            panel.setAttribute('data-status', 'streaming');
+          });
+          call.on('close', () => {
+            console.log('call close');
+          });
+        } catch (error) {
+          this.dom.setAttribute('camera-status', 'allow-error');
+          console.log('join event peer called,error');
+          console.error('Failed to get local stream', error);
+        }
+      });
+      // 最后移除join
+      this.dom.remove();
     });
   }
 }

@@ -102,7 +102,7 @@ VERA_EMITTER.on('remote.stream.ready', () => {
   inviteBox?.remove();
   // joinBox?.remove();
 });
-VERA_EMITTER.on('connect.close', () => {
+VERA_EMITTER.on('connect.close', ({ pid }) => {
   // const { isInvited } = data; data = { isInvited: false }
 
   // 注销页面关闭事件
@@ -113,13 +113,20 @@ VERA_EMITTER.on('connect.close', () => {
   }
   removeCursor();
   let panel = document.querySelector('#PORTAL_VERA_PANEL .panel');
-  let inviteBox = panel.querySelector('.invite');
-  if (!inviteBox) {
-    let remoteCamera = panel.querySelector('.camera.remote');
-    if (remoteCamera) {
-      remoteCamera.remove();
+  // 只删除对应的camera
+  let tmpCamera = panel.querySelector(`[peer-id='${pid}']`);
+  tmpCamera?.remove();
+  let currRomoteCameras = panel.querySelectorAll('.camera.remote');
+  // 最后一个的逻辑
+  if (currRomoteCameras.length == 0) {
+    let inviteBox = panel.querySelector('.invite');
+    if (!inviteBox) {
+      let remoteCamera = panel.querySelector('.camera.remote');
+      if (remoteCamera) {
+        remoteCamera.remove();
+      }
+      panel.appendChild(new Invite({ localId: MyPortalVeraPeer.id }));
     }
-    panel.appendChild(new Invite({ localId: MyPortalVeraPeer.id }));
   }
 });
 // export {

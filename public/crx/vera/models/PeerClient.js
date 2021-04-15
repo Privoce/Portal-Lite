@@ -4,11 +4,23 @@ import { appendHistory, getUsername, toggleCameraControl } from './utils.js';
 import { peerConfig } from './config.js';
 
 window.MyPortalVeraPeer = null;
+window.OTHER_PEER_IDS = [];
 window.PEER_DATA_CONNS = {};
 window.USERNAMES = {};
 const handleCmd = ({ cameraContainer, cmd }) => {
   let { type = '', data } = cmd;
   switch (type) {
+    case 'INIT':
+      console.log('from init data', { data });
+      if (data) {
+        let { peerIds = [] } = data;
+        OTHER_PEER_IDS = peerIds;
+        // 与每个peer建立 datachannel
+        peerIds.forEach((pid) => {
+          initDatachannel(pid, MyPortalVeraPeer.id);
+        });
+      }
+      break;
     case 'RM_BG':
     case 'RS_BG':
       toggleCameraControl('bg', cameraContainer);
@@ -30,45 +42,48 @@ const handleCmd = ({ cameraContainer, cmd }) => {
       break;
   }
 };
+const initDatachannel = (oppositePid, myPid) => {
+  let dataConn = MyPortalVeraPeer.connect(oppositePid);
+  console.log('connect the datachannel peer');
+  dataConn.on('open', async () => {
+    VERA_EMITTER.emit('connect.ready');
+    PEER_DATA_CONNS[oppositePid] = dataConn;
+    dataConn.send('hi from invited!');
+    let currName = await getUsername();
+    let username = currName;
+    if (username) {
+      dataConn.send({ type: 'USERNAME', data: { peerId: myPid, username } });
+    }
+    // 显示对方鼠标
+    // new Cursor({ conn: dataConn });
+    // 监听数据
+    dataConn.on('data', (cmd = {}) => {
+      let { type = '', data } = cmd;
+      console.log(`invited received: `, cmd, type, data);
+      let cameraContainer = document.querySelector(`[peer-id='${dataConn.peer}'] .remote`);
+      handleCmd({ cameraContainer, cmd });
+    });
+  });
+  dataConn.on('close', () => {
+    console.log('close conn invited');
+    VERA_EMITTER.emit('connect.close', { pid: dataConn.peer });
+    // panel.dom.querySelector('.camera.remote .video');
+  });
+  dataConn.on('error', (error) => {
+    console.log('remote connect error', error);
+  });
+};
 class PeerClient {
   constructor({ pvid, panel }) {
     // init peerjs
     MyPortalVeraPeer = MyPortalVeraPeer
       ? new Peer(MyPortalVeraPeer.id, peerConfig)
       : new Peer(peerConfig);
-    console.log('my peer', MyPortalVeraPeer);
     MyPortalVeraPeer.on('open', (id) => {
-      // 受邀者，则主动连接host
+      // 受邀者，则主动连接host建立datachannel
+      console.log('peer id same?:', MyPortalVeraPeer.id, id);
       if (pvid) {
-        let inviteConn = MyPortalVeraPeer.connect(pvid);
-        console.log('connect the invite peer', pvid, inviteConn);
-        inviteConn.on('open', async () => {
-          VERA_EMITTER.emit('connect.ready');
-          PEER_DATA_CONNS[pvid] = inviteConn;
-          inviteConn.send('hi from invited!');
-          let currName = await getUsername();
-          let username = currName;
-          if (username) {
-            inviteConn.send({ type: 'USERNAME', data: { peerId: id, username } });
-          }
-          // 显示对方鼠标
-          new Cursor({ conn: inviteConn });
-          // 监听数据
-          inviteConn.on('data', (cmd = {}) => {
-            let { type = '', data } = cmd;
-            console.log(`invited received: `, cmd, type, data);
-            let cameraContainer = panel.dom.querySelector('.camera.remote');
-            handleCmd({ cameraContainer, cmd });
-          });
-        });
-        inviteConn.on('close', () => {
-          console.log('close conn invited');
-          VERA_EMITTER.emit('connect.close');
-          // panel.dom.querySelector('.camera.remote .video');
-        });
-        inviteConn.on('error', (error) => {
-          console.log('remote connect error', error);
-        });
+        initDatachannel(pvid, id);
       }
       // new Cursor();
       console.log('peer ID', id);
@@ -80,21 +95,24 @@ class PeerClient {
         console.log('incoming peer connection!', conn);
         panel.dom.setAttribute('data-status', 'connected');
         // 如果是host，来自remote的连接，需要回应？
+        PEER_DATA_CONNS[conn.peer] = conn;
         if (!pvid) {
           MyPortalVeraPeer.connect(conn.peer);
-          PEER_DATA_CONNS[conn.peer] = conn;
         }
         conn.on('open', () => {
           VERA_EMITTER.emit('connect.ready');
           console.log('the connection is open and ready for read/write.');
           // host特有操作
           if (!pvid) {
-            // 发初始化消息
-            let cmd = { type: 'INIT', data: { pids: Object.keys(PEER_DATA_CONNS) } };
+            // 发初始化消息:包含除了新建立的链接之外的连接
+            let cmd = {
+              type: 'INIT',
+              data: { peerIds: Object.keys(PEER_DATA_CONNS).filter((id) => id !== conn.peer) }
+            };
             console.log('send connected peer ids', cmd);
             conn.send(cmd);
             // 显示对方鼠标
-            new Cursor({ conn });
+            // new Cursor({ conn });
           }
           // 监听数据
           conn.on('data', (cmd = {}) => {
@@ -106,7 +124,8 @@ class PeerClient {
 
         conn.on('close', () => {
           console.log('close conn');
-          VERA_EMITTER.emit('connect.close');
+          delete PEER_DATA_CONNS[conn.peer];
+          VERA_EMITTER.emit('connect.close', { pid: conn.peer });
         });
         conn.on('error', (error) => {
           console.log('local connect error', error);
@@ -131,7 +150,7 @@ class PeerClient {
         appendHistory({ peerId: pvid ? pvid : MyPortalVeraPeer.id, isHost: !pvid });
 
         // 去掉邀请链接框
-        panel.dom.querySelector('.invite').remove();
+        panel.dom.querySelector('.invite')?.remove();
         call.on('stream', (s) => {
           REMOTE_STREAM = s;
           remoteCamera.attachStream(s);
