@@ -21,6 +21,8 @@
     }
   },
   "globals": {
+    "Peer":true,
+    "PlainDraggable":true,
     "webpushr":true,
     "chrome":true
   },
