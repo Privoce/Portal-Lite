@@ -30,14 +30,23 @@ export default function Vera() {
   const [invitePeerId, setInvitePeerId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
-  window.TOGGLE_VERA_PANEL = () => {
-    setVisible((prev) => !prev);
-  };
+
   useEffect(() => {
-    if (invitePeerId) {
-      setVisible(true);
+    window.TOGGLE_VERA_PANEL = () => {
+      console.log('toggle visible', { visible });
+      if (visible) {
+        // 去除标记
+        document.documentElement.removeAttribute('invite-expand');
+      } else {
+        // 添加标记
+        document.documentElement.setAttribute('invite-expand', 1);
+      }
+      setVisible((prev) => !prev);
+    };
+    if (invitePeerId && !visible) {
+      window.TOGGLE_VERA_PANEL();
     }
-  }, [invitePeerId]);
+  }, [invitePeerId, visible]);
   useEffect(() => {
     const getPvid = () => {
       chrome.storage.sync.get(['pvid'], function (res) {
@@ -45,7 +54,7 @@ export default function Vera() {
         const { pvid = null } = res;
         console.log('pvid from storage', pvid);
         if (pvid) {
-          // 立即删掉，方式下次访问依然存在
+          // 立即删掉，防止下次访问依然存在
           chrome.storage.sync.remove('pvid', () => {
             console.log('pvid removed');
           });
@@ -54,10 +63,9 @@ export default function Vera() {
         setLoading(false);
       });
     };
-    if (visible) {
-      getPvid();
-    }
-  }, [visible]);
+    // 显示的时候 再执行
+    getPvid();
+  }, []);
   if (!visible) return null;
   return (
     <StyledWrapper>

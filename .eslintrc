@@ -21,6 +21,8 @@
     }
   },
   "globals": {
+    "tf":true,
+    "bodyPix":true,
     "Peer":true,
     "PlainDraggable":true,
     "webpushr":true,

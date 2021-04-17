@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import emitter, { EVENTS } from './useEmitter';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
   // port: '80',
@@ -15,31 +16,18 @@ const peerConfig = {
   }
   // debug: 3
 };
-window.MyPortalVeraPeer = window.MyPortalVeraPeer || null;
-window.PEER_DATA_CONNECTIONS = window.PEER_DATA_CONNECTIONS || {};
-window.PEER_MEDIA_CONNECTIONS = window.PEER_MEDIA_CONNECTIONS || {};
-window.PEER_STRAMS = window.PEER_STRAMS || {};
 const usePeer = ({ invitePeerId = null }) => {
-  const [myPeer, setMyPeer] = useState(window.MyPortalVeraPeer);
+  const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
   const [error, setError] = useState(null);
-  const [dataConns, setDataConns] = useState(window.PEER_DATA_CONNECTIONS);
-  const [mediaConns, setMediaConns] = useState(window.PEER_MEDIA_CONNECTIONS);
-  const [streams, setStreams] = useState(window.PEER_STRAMS);
-  // 更新全局
-  useEffect(() => {
-    window.PEER_DATA_CONNECTIONS = dataConns;
-  }, [dataConns]);
-  useEffect(() => {
-    window.PEER_MEDIA_CONNECTIONS = mediaConns;
-  }, [mediaConns]);
+  const [dataConns, setDataConns] = useState({});
+  const [mediaConns, setMediaConns] = useState({});
+  const [streams, setStreams] = useState({});
   // 初始化Peer
   useEffect(() => {
     if (!myPeer) {
       let tmp = new Peer(peerConfig);
       setMyPeer(tmp);
-      // 赋值到全局变量
-      window.MyPortalVeraPeer = tmp;
     }
   }, [myPeer]);
   const initDataChannel = (conn) => {
@@ -50,7 +38,7 @@ const usePeer = ({ invitePeerId = null }) => {
         delete prev[conn.peer];
         return { ...prev };
       });
-      // 顺带把视频链接也关掉
+      // 顺带把视频连接也关掉
       mediaConns[conn.peer]?.close();
     });
     conn.on('error', (err) => {
@@ -58,13 +46,14 @@ const usePeer = ({ invitePeerId = null }) => {
     });
     conn.on('open', () => {
       console.log('peer data connection open');
-      // 如果是房主，则发送已经建立的链接集合
+      // 如果是房主，则发送已经建立的连接集合
       if (!invitePeerId) {
         conn.send({
           type: 'CONNECTIONS',
-          data: Object.keys(window.PEER_DATA_CONNECTIONS)
+          data: Object.keys(dataConns)
         });
       }
+      console.log('new dataChannel added:', conn.peer);
       // 更新到dataConnections集合里
       setDataConns((prev) => {
         prev[conn.peer] = conn;
@@ -80,6 +69,9 @@ const usePeer = ({ invitePeerId = null }) => {
           let newConn = myPeer.connect(id);
           initDataChannel(newConn);
         });
+      }
+      if (type.startsWith('CC_')) {
+        emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
       }
     });
   };
@@ -127,7 +119,7 @@ const usePeer = ({ invitePeerId = null }) => {
 
           // 房主主动连接对方？存疑
           if (!invitePeerId) {
-            myPeer.connect(dataConn.peer);
+            initDataChannel(myPeer.connect(dataConn.peer));
           }
           initDataChannel(dataConn);
         });
@@ -143,18 +135,15 @@ const usePeer = ({ invitePeerId = null }) => {
       myPeer.on('disconnected', () => {
         console.log('peer connection disconnected');
         setStatus('disconnected');
-        // cleanUp();
       });
       myPeer.on('close', () => {
         console.log('peer connection close');
         setStatus('close');
-        // cleanUp();
       });
       myPeer.on('error', (err) => {
         console.log('peer connection error');
         setStatus('error');
         setError(err.type);
-        // cleanUp();
       });
     }
     // return () => {
@@ -162,13 +151,6 @@ const usePeer = ({ invitePeerId = null }) => {
     // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myPeer, invitePeerId]);
-  // const cleanUp = () => {
-  //   if (myPeer) {
-  //     myPeer.disconnect();
-  //     myPeer.destroy();
-  //   }
-  //   setMyPeer(null);
-  // };
   const shutdownPeer = () => {
     console.log({ dataConns, mediaConns });
     Object.entries(mediaConns).forEach(([, conn]) => {

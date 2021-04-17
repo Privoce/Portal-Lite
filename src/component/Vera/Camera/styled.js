@@ -12,11 +12,17 @@ const StyledWrapper = styled.div`
   border-radius: var(--border-radius);
   border: none;
   background: transparent;
-  &:hover {
-    .video {
-      .username,
-      .opts {
-        visibility: visible;
+  &.remote {
+    .video .username,
+    .opts {
+      visibility: hidden;
+    }
+    &:hover {
+      .video {
+        .username,
+        .opts {
+          visibility: visible;
+        }
       }
     }
   }
@@ -37,28 +43,18 @@ const StyledWrapper = styled.div`
   .video {
     position: relative;
     display: flex;
-    .username {
+    &.hidden video {
       visibility: hidden;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: text;
-      padding: 6px 10px;
-      border: none;
-      font-size: 18px;
-      color: var(--font-color);
-      border-radius: var(--border-radius);
-      background-color: var(--button-bg-color);
     }
+
     .opts {
       z-index: 7;
-      display: none;
       position: absolute;
       bottom: 5px;
       left: 5px;
       padding: 5px;
       display: flex;
-      visibility: hidden;
+      /* visibility: hidden; */
       .opt {
         padding: 0;
         // opacity: 0.6;
@@ -76,33 +72,32 @@ const StyledWrapper = styled.div`
           margin-right: 6px;
         }
         &.bg {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.off.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.off.svg`});
+          }
         }
         &.video {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.off.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.on.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.off.svg`});
+          }
         }
         &.audio {
-          background-color: #863733;
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.off.svg`});
+          background-color: var(--button-bg-color);
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
+          &[data-status='false'] {
+            background-color: #863733;
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.off.svg`});
+          }
         }
         &.pin {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.off.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.svg`});
+          }
         }
       }
-    }
-    // 打开态
-    &[bg='true'] .opts .opt.bg {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
-    }
-    &[video='true'] .opts .opt.video {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.on.svg`});
-    }
-    &[audio='true'] .opts .opt.audio {
-      background-color: var(--button-bg-color);
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
-    }
-    &[pin='true'] .opts .opt.pin {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.off.svg`});
     }
   }
 `;

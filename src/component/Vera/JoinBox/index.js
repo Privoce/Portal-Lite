@@ -33,7 +33,7 @@ export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }
         {joinTxt}
       </Button>
       <Login />
-      <Username />
+      <Username readonly={false} fixed={false} />
     </StyledBox>
   );
 }

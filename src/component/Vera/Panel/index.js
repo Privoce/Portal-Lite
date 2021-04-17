@@ -53,9 +53,8 @@ export default function Panel({ invitePeerId = null }) {
     let isConfirmed = confirm(quitConfirmTxt);
     if (isConfirmed) {
       shutdownPeer();
+      window.TOGGLE_VERA_PANEL();
     }
-    // 去除标记
-    document.documentElement.removeAttribute('invite-expand');
   };
   let cameraListVisible = layout !== 'min';
   let localCameraVisible = layout !== 'one';
@@ -65,10 +64,21 @@ export default function Panel({ invitePeerId = null }) {
     <StyledWrapper ref={panelRef} className={layout} data-status={status}>
       {cameraListVisible && (
         <div className="cameras">
-          {localCameraVisible && <Camera peerId={peer?.id} remote={false} />}
+          {localCameraVisible && (
+            <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
+          )}
           {Object.entries(mediaConnections).map(([pid]) => {
             let st = streams[pid];
-            return st && <Camera peerId={pid} remote={true} key={pid} mediaStream={streams[pid]} />;
+            return (
+              st && (
+                <Camera
+                  peerId={pid}
+                  key={pid}
+                  dataConnection={dataConnections[pid]}
+                  mediaStream={streams[pid]}
+                />
+              )
+            );
           })}
         </div>
       )}
