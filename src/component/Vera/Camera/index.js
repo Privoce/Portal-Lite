@@ -3,6 +3,7 @@ import Loading from '../Loading';
 import Username from '../Username';
 import emitter, { EVENTS } from '../hooks/useEmitter';
 
+import ErrorMask from './ErrorMask';
 import OffMask from './CameraOffMask';
 import BgOffMask from './BgRemoveMask';
 import useUserMedia from '../hooks/useUserMedia';
@@ -23,15 +24,18 @@ export default function Camera({
   const [status, setStatus] = useState(mediaStream ? 'ready' : 'loading');
   const [stream, setStream] = useState(mediaStream);
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
-  const { enableStream } = useUserMedia();
+  const { enableStream, error } = useUserMedia();
   const videoRef = useRef(null);
   useEffect(() => {
     const attachLocalStream = async () => {
       let localStream = await enableStream();
-      let cloned = localStream.clone();
-      cloned.getAudioTracks().forEach((t) => (t.enabled = false));
-      setStatus('ready');
-      setStream(cloned);
+      console.log({ localStream });
+      if (localStream) {
+        let cloned = localStream.clone();
+        cloned.getAudioTracks().forEach((t) => (t.enabled = false));
+        setStatus('ready');
+        setStream(cloned);
+      }
     };
     if (!remote) {
       attachLocalStream();
@@ -145,11 +149,12 @@ export default function Camera({
     const { status } = target.dataset;
     setBackground({ keep: status !== 'true' });
   };
+  if (error) return <ErrorMask tip={error.tip} />;
   if (status == 'loading') return <Loading />;
   const { pin, video, audio, bg } = controls;
   if (status == 'ready')
     return (
-      <StyledWrapper data-peer={peerId} className={remote ? 'remote' : ''}>
+      <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'}>
         <div className={`video ${!bg ? 'hidden' : ''}`}>
           <Username local={!remote} name={username} />
           <div className="opts">
@@ -180,6 +185,7 @@ export default function Camera({
               title={tipPin}
             ></button>
           </div>
+
           {!video && <OffMask />}
           {!bg && <BgOffMask video={videoRef.current} />}
           <video ref={videoRef} playsInline autoPlay muted={remote ? false : 'muted'}></video>

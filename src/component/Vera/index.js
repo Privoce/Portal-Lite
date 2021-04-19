@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Panel from './Panel';
-import { reset } from 'styled-reset';
+// import { reset } from 'styled-reset';
 
 const StyledWrapper = styled.section`
   position: fixed;
@@ -16,7 +16,7 @@ const StyledWrapper = styled.section`
   justify-content: flex-end;
 `;
 const GlobalStyle = createGlobalStyle`
- ${reset}
+
   :root {
       --vera-widget-bg-color: #000;
       --panel-bg-color: #323639;

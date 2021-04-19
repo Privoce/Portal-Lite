@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useUsername from './hooks/useUsername';
 const StyledWrapper = styled.div`
+  line-height: 1;
   max-width: 100px;
   user-select: text;
   width: 100%;

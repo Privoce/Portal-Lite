@@ -38,8 +38,24 @@ const StyledWrapper = styled.aside`
   &[data-status='close']:after {
     background-color: #fff;
   }
-  &[data-status='call']:after {
-    background-color: #85e89e;
+  &[data-status='call']:not(.min),
+  &[data-status='streaming']:not(.min) {
+    &:after {
+      background-color: #85e89e;
+    }
+    background: transparent;
+
+    .topbar,
+    &:after {
+      visibility: hidden;
+    }
+    &:hover {
+      background: var(--panel-bg-color);
+      .topbar,
+      &:after {
+        visibility: visible;
+      }
+    }
   }
   &[data-status='connected']:after {
     background-color: #48baff;
@@ -55,9 +71,17 @@ const StyledWrapper = styled.aside`
   }
   &.one {
     gap: 0;
+    .cameras .local {
+      display: none;
+    }
   }
   &.min {
-    min-height: auto;
+    min-height: fit-content;
+    min-width: 240px;
+    padding-bottom: 2px;
+    .cameras {
+      display: none;
+    }
   }
   .topbar {
     display: flex;

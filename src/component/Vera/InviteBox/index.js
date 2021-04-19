@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import StyledBox from './styled';
 import Button from '../Button';
+import Loading from '../Loading';
 import InviteList from './InviteList';
 import useCopy from '../hooks/useCopy';
 import useUsername from '../hooks/useUsername';
@@ -8,7 +9,7 @@ const copyTxt = chrome.i18n.getMessage('copy');
 const copiedTxt = chrome.i18n.getMessage('copied');
 
 export default function InviteBox({ peerId = '' }) {
-  const [inviteUrl, setInviteUrl] = useState('...');
+  const [inviteUrl, setInviteUrl] = useState('');
   const { username } = useUsername();
   const { copied, copy } = useCopy();
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function InviteBox({ peerId = '' }) {
       setInviteUrl(url);
     }
   }, [peerId]);
+  if (!inviteUrl) return <Loading />;
 
   return (
     <StyledBox>

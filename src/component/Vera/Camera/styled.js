@@ -12,17 +12,15 @@ const StyledWrapper = styled.div`
   border-radius: var(--border-radius);
   border: none;
   background: transparent;
-  &.remote {
-    .video .username,
-    .opts {
-      visibility: hidden;
-    }
-    &:hover {
-      .video {
-        .username,
-        .opts {
-          visibility: visible;
-        }
+  .video .username,
+  .opts {
+    visibility: hidden;
+  }
+  &:hover {
+    .video {
+      .username,
+      .opts {
+        visibility: visible;
       }
     }
   }

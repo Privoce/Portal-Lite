@@ -1,6 +1,7 @@
-import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
+import Loading from '../Loading';
 import Username from '../Username';
 import Login from '../Login';
 import useUsername from '../hooks/useUsername';
@@ -20,6 +21,7 @@ const StyledBox = styled.div`
   border-radius: var(--border-radius);
 `;
 export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }) {
+  const [loading, setLoading] = useState(false);
   const { username } = useUsername();
   const handleJoin = () => {
     console.log({ peerIds });
@@ -28,10 +30,12 @@ export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }
       console.log({ newMediaConn });
       addMediaConnection(newMediaConn);
     });
+    setLoading(true);
   };
+  if (loading) return <Loading />;
   return (
     <StyledBox>
-      <Button className="btn ok" onClick={handleJoin}>
+      <Button className="ok large" onClick={handleJoin}>
         {joinTxt}
       </Button>
       <Username local={true} readonly={false} fixed={false} />

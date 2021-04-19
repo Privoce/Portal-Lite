@@ -17,7 +17,7 @@ const peerConfig = {
   }
   // debug: 3
 };
-
+let init_connects = false;
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -44,7 +44,7 @@ const usePeer = ({ invitePeerId = null }) => {
         });
         if (Object.keys(dataConns).length == 0) {
           // 无论是哪一方，重置为等待连接的初始状态
-          setStatus('reset');
+          // setStatus('reset');
           window.removeEventListener('beforeunload', preventCloseTabHandler);
         }
         // 顺带把视频连接也关掉
@@ -72,12 +72,13 @@ const usePeer = ({ invitePeerId = null }) => {
         conn.on('data', (obj) => {
           console.log('invited peer data connection data', obj);
           const { type = '', data } = obj;
-          if (type == 'CONNECTIONS') {
+          if (type == 'CONNECTIONS' && !init_connects) {
             data.forEach((id) => {
               // 遍历房主发过来的连接
               let newConn = myPeer.connect(id);
               initDataChannel(newConn);
             });
+            init_connects = true;
           }
           if (type == 'USERNAME') {
             // 更新到usernames集合里
@@ -96,7 +97,7 @@ const usePeer = ({ invitePeerId = null }) => {
           return { ...prev };
         });
         // 不再是等待连接的初始状态
-        setStatus('reset');
+        // setStatus('reset');
       });
     },
     [invitePeerId, myPeer]
@@ -136,6 +137,7 @@ const usePeer = ({ invitePeerId = null }) => {
       });
     });
     mediaConn.on('stream', (st) => {
+      setStatus('streaming');
       console.log('peer media connection stream', st);
       setStreams((prev) => {
         prev[mediaConn.peer] = st;
@@ -162,6 +164,7 @@ const usePeer = ({ invitePeerId = null }) => {
 
           // 房主主动连接对方？存疑
           if (!invitePeerId) {
+            console.log('peer connection host connect remote');
             initDataChannel(myPeer.connect(dataConn.peer));
           }
           initDataChannel(dataConn);
@@ -184,7 +187,7 @@ const usePeer = ({ invitePeerId = null }) => {
         setStatus('close');
       });
       myPeer.on('error', (err) => {
-        console.log('peer connection error');
+        console.log('peer connection error', err);
         setStatus('error');
         setError(err.type);
       });

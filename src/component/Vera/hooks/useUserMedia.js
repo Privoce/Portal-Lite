@@ -19,6 +19,9 @@ const fullStreamConfig = {
   },
   audio: true
 };
+const Tips = {
+  ['NotAllowedError']: 'Permission denied'
+};
 window.LOCAL_MEDIA_STREAM = window.LOCAL_MEDIA_STREAM || null;
 export default function useUserMedia() {
   const [mediaStream, setMediaStream] = useState(window.LOCAL_MEDIA_STREAM);
@@ -54,9 +57,13 @@ export default function useUserMedia() {
       // 既没有摄像头 也没有麦克风
       return null;
     } catch (error) {
-      console.log(error);
       let { name } = error;
-      setError(name);
+      console.log(error, { name });
+      setError({
+        type: name,
+        tip: Tips[name]
+      });
+      return null;
     }
   };
   const stopStream = () => {

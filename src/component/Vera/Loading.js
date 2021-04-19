@@ -23,8 +23,8 @@ const AniRotate = keyframes`
 `;
 const StyledLoading = styled.div`
   position: relative;
-  min-width: 200px;
-  min-height: 200px;
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,9 +54,9 @@ const svg = (
     <circle cx="25" cy="25" r="20" fill="none" className="path"></circle>
   </svg>
 );
-export default function Loading({ tip = loadingTxt }) {
+export default function Loading({ tip = loadingTxt, size = 200 }) {
   return (
-    <StyledLoading>
+    <StyledLoading size={size}>
       {svg}
       <span className="txt">{tip}</span>
     </StyledLoading>

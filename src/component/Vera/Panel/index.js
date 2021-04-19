@@ -22,6 +22,7 @@ const layouts = {
     </>
   )
 };
+let used = false;
 export default function Panel({ invitePeerId = null }) {
   const {
     peer,
@@ -42,6 +43,12 @@ export default function Panel({ invitePeerId = null }) {
     let tmp = target.getAttribute('layout');
     setLayout(tmp);
   };
+  // 视频过
+  useEffect(() => {
+    if (Object.keys(streams).length) {
+      used = true;
+    }
+  }, [streams]);
   // 拖拽
   useEffect(() => {
     if (panelRef) {
@@ -57,42 +64,44 @@ export default function Panel({ invitePeerId = null }) {
       window.TOGGLE_VERA_PANEL();
     }
   };
-  let cameraListVisible = layout !== 'min';
-  let localCameraVisible = layout !== 'one';
   let noConnection = Object.keys(mediaConnections).length == 0;
   // let reset='reset'==status;
-  // let remoteCameraVisible = layout !== 'min';
+  let miniLayout = layout == 'min';
+  let boxVisible = noConnection && !miniLayout;
   return (
     <StyledWrapper ref={panelRef} className={layout} data-status={status}>
-      {cameraListVisible && (
-        <div className="cameras">
-          {localCameraVisible && (
-            <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
-          )}
-          {Object.entries(mediaConnections).map(([pid]) => {
-            let st = streams[pid];
-            return (
-              st && (
-                <Camera
-                  username={usernames[pid]}
-                  peerId={pid}
-                  key={pid}
-                  dataConnection={dataConnections[pid]}
-                  mediaStream={streams[pid]}
-                />
-              )
-            );
-          })}
-        </div>
-      )}
-      {noConnection && !invitePeerId && <Invite peerId={peer?.id} />}
-      {noConnection && invitePeerId && (
-        <Join
-          peerClient={peer}
-          peerIds={Object.keys(dataConnections)}
-          addMediaConnection={addMediaConnection}
-        />
-      )}
+      <div className="cameras">
+        <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
+        {Object.entries(mediaConnections).map(([pid]) => {
+          let st = streams[pid];
+          return (
+            st && (
+              <Camera
+                username={usernames[pid]}
+                peerId={pid}
+                key={pid}
+                dataConnection={dataConnections[pid]}
+                mediaStream={streams[pid]}
+              />
+            )
+          );
+        })}
+      </div>
+      {boxVisible ? (
+        invitePeerId ? (
+          used ? (
+            <Invite peerId={peer?.id} />
+          ) : (
+            <Join
+              peerClient={peer}
+              peerIds={Object.keys(dataConnections)}
+              addMediaConnection={addMediaConnection}
+            />
+          )
+        ) : (
+          <Invite peerId={peer?.id} />
+        )
+      ) : null}
       <div className="topbar">
         <div className="close" onClick={handleClose}></div>
         <div className="right">
