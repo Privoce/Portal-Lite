@@ -38,6 +38,9 @@ const StyledWrapper = styled.aside`
   &[data-status='close']:after {
     background-color: #fff;
   }
+  &[data-status='call']:after {
+    background-color: #85e89e;
+  }
   &[data-status='connected']:after {
     background-color: #48baff;
   }

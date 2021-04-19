@@ -43,6 +43,8 @@ const StyledWrapper = styled.div`
   .video {
     position: relative;
     display: flex;
+    width: 200px;
+    height: 200px;
     &.hidden video {
       visibility: hidden;
     }

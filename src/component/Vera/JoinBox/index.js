@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import Username from '../Username';
 import Login from '../Login';
+import useUsername from '../hooks/useUsername';
 const joinTxt = chrome.i18n.getMessage('join');
 
 const StyledBox = styled.div`
@@ -19,6 +20,7 @@ const StyledBox = styled.div`
   border-radius: var(--border-radius);
 `;
 export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }) {
+  const { username } = useUsername();
   const handleJoin = () => {
     console.log({ peerIds });
     peerIds.forEach((id) => {
@@ -32,8 +34,8 @@ export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }
       <Button className="btn ok" onClick={handleJoin}>
         {joinTxt}
       </Button>
-      <Login />
-      <Username readonly={false} fixed={false} />
+      <Username local={true} readonly={false} fixed={false} />
+      {username ? null : <Login />}
     </StyledBox>
   );
 }

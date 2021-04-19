@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import emitter, { EVENTS } from './useEmitter';
+import { getUsername, appendVeraHistory, preventCloseTabHandler } from './utils';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
   // port: '80',
@@ -16,6 +17,7 @@ const peerConfig = {
   }
   // debug: 3
 };
+
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -23,6 +25,8 @@ const usePeer = ({ invitePeerId = null }) => {
   const [dataConns, setDataConns] = useState({});
   const [mediaConns, setMediaConns] = useState({});
   const [streams, setStreams] = useState({});
+  const [usernames, setUsernames] = useState({});
+
   // 初始化Peer
   useEffect(() => {
     if (!myPeer) {
@@ -30,57 +34,90 @@ const usePeer = ({ invitePeerId = null }) => {
       setMyPeer(tmp);
     }
   }, [myPeer]);
-  const initDataChannel = (conn) => {
-    conn.on('close', () => {
-      console.log('peer data connection close');
-      // 更新到dataConnections集合里
-      setDataConns((prev) => {
-        delete prev[conn.peer];
-        return { ...prev };
-      });
-      // 顺带把视频连接也关掉
-      mediaConns[conn.peer]?.close();
-    });
-    conn.on('error', (err) => {
-      console.log('peer data connection error', err);
-    });
-    conn.on('open', () => {
-      console.log('peer data connection open');
-      // 如果是房主，则发送已经建立的连接集合
-      if (!invitePeerId) {
-        conn.send({
-          type: 'CONNECTIONS',
-          data: Object.keys(dataConns)
+  const initDataChannel = useCallback(
+    (conn) => {
+      const clearUpConnect = () => {
+        // 更新到dataConnections集合里
+        setDataConns((prev) => {
+          delete prev[conn.peer];
+          return { ...prev };
         });
-      }
-      console.log('new dataChannel added:', conn.peer);
-      // 更新到dataConnections集合里
-      setDataConns((prev) => {
-        prev[conn.peer] = conn;
-        return { ...prev };
+        if (Object.keys(dataConns).length == 0) {
+          // 无论是哪一方，重置为等待连接的初始状态
+          setStatus('reset');
+          window.removeEventListener('beforeunload', preventCloseTabHandler);
+        }
+        // 顺带把视频连接也关掉
+        mediaConns[conn.peer]?.close();
+      };
+      conn.on('close', () => {
+        console.log('peer data connection close');
+        clearUpConnect();
       });
-    });
-    conn.on('data', (obj) => {
-      console.log('invited peer data connection data', obj);
-      const { type = '', data } = obj;
-      if (type == 'CONNECTIONS') {
-        data.forEach((id) => {
-          // 遍历房主发过来的连接
-          let newConn = myPeer.connect(id);
-          initDataChannel(newConn);
+      conn.on('error', (err) => {
+        console.log('peer data connection error', err);
+        clearUpConnect();
+      });
+      conn.on('open', () => {
+        console.log('peer data connection open');
+        // 如果是房主，则发送已经建立的连接集合
+        if (!invitePeerId) {
+          conn.send({
+            type: 'CONNECTIONS',
+            data: Object.keys(dataConns)
+          });
+        }
+        console.log('new dataChannel added:', conn.peer);
+        // 开始监听消息
+        conn.on('data', (obj) => {
+          console.log('invited peer data connection data', obj);
+          const { type = '', data } = obj;
+          if (type == 'CONNECTIONS') {
+            data.forEach((id) => {
+              // 遍历房主发过来的连接
+              let newConn = myPeer.connect(id);
+              initDataChannel(newConn);
+            });
+          }
+          if (type == 'USERNAME') {
+            // 更新到usernames集合里
+            setUsernames((prev) => {
+              prev[conn.peer] = data;
+              return { ...prev };
+            });
+          }
+          if (type.startsWith('CC_')) {
+            emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
+          }
         });
-      }
-      if (type.startsWith('CC_')) {
-        emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
-      }
-    });
-  };
+        // 更新到dataConnections集合里
+        setDataConns((prev) => {
+          prev[conn.peer] = conn;
+          return { ...prev };
+        });
+        // 不再是等待连接的初始状态
+        setStatus('reset');
+      });
+    },
+    [invitePeerId, myPeer]
+  );
   const addMediaConnection = (mediaConn) => {
     // 更新到mediaConnections集合里
     setMediaConns((prev) => {
       prev[mediaConn.peer] = mediaConn;
       return { ...prev };
     });
+    // 发送自己这边的用户名
+    getUsername(true).then((un) => {
+      if (un) {
+        dataConns[mediaConn.peer]?.send({
+          type: 'USERNAME',
+          data: un
+        });
+      }
+    });
+    // 新增vera历史记录
+    appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
     console.log({ mediaConns });
     mediaConn.on('close', () => {
       console.log('peer media connection close');
@@ -92,6 +129,11 @@ const usePeer = ({ invitePeerId = null }) => {
     });
     mediaConn.on('error', (err) => {
       console.log('peer media connection error', err);
+      // 更新到dataConnections集合里
+      setMediaConns((prev) => {
+        delete prev[mediaConn.peer];
+        return { ...prev };
+      });
     });
     mediaConn.on('stream', (st) => {
       console.log('peer media connection stream', st);
@@ -114,6 +156,7 @@ const usePeer = ({ invitePeerId = null }) => {
         }
         // 有连接请求过来
         myPeer.on('connection', (dataConn) => {
+          window.addEventListener('beforeunload', preventCloseTabHandler);
           console.log('peer data connection incoming', dataConn);
           setStatus('connected');
 
@@ -168,6 +211,7 @@ const usePeer = ({ invitePeerId = null }) => {
     mediaConnections: mediaConns,
     addMediaConnection,
     streams,
+    usernames,
     status,
     error
   };

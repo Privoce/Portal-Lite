@@ -3,11 +3,13 @@ import StyledBox from './styled';
 import Button from '../Button';
 import InviteList from './InviteList';
 import useCopy from '../hooks/useCopy';
+import useUsername from '../hooks/useUsername';
 const copyTxt = chrome.i18n.getMessage('copy');
 const copiedTxt = chrome.i18n.getMessage('copied');
 
 export default function InviteBox({ peerId = '' }) {
   const [inviteUrl, setInviteUrl] = useState('...');
+  const { username } = useUsername();
   const { copied, copy } = useCopy();
   useEffect(() => {
     if (peerId) {
@@ -33,7 +35,7 @@ export default function InviteBox({ peerId = '' }) {
           {copied ? copiedTxt : copyTxt}
         </Button>
       </div>
-      <InviteList link={inviteUrl} />
+      <InviteList username={username} link={inviteUrl} />
     </StyledBox>
   );
 }

@@ -48,7 +48,7 @@ const fetcher = (...args) =>
   fetch(...args)
     .then((res) => res.json())
     .then((resp) => resp.data);
-export default function InviteList({ link = '', username = 'Tristan' }) {
+export default function InviteList({ link = '', username = '' }) {
   const { copied, copy } = useCopy();
   const { data, error } = useSWR(
     username

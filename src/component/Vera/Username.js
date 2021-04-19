@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import useUsername from './hooks/useUsername';
 const StyledWrapper = styled.div`
   max-width: 100px;
-  > input {
-    width: 100%;
-    border: none;
-    text-align: center;
-    padding: 10px 12px;
-    font-size: 18px;
-    color: var(--font-color);
-    border-radius: var(--border-radius);
-    background-color: var(--button-bg-color);
-  }
+  user-select: text;
+  width: 100%;
+  width: -webkit-fill-available;
+  border: none;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 18px;
+  color: var(--font-color);
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg-color);
   &.fixed {
-    max-width: auto;
     position: absolute;
     top: 5px;
     right: 5px;
@@ -22,31 +22,47 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Username({ username = 'Tristan', readonly = true, fixed = true }) {
-  const [name, setName] = useState(username);
-  // const handleLogin = () => {
-  //   chrome.runtime.sendMessage({ action: 'LOGIN' }, function () {
-  //     /* callback */
-  //     console.log('send login message');
-  //   });
-  // };
-  // useEffect(() => {
-  //   // 监听
-  //   chrome.runtime.onMessage.addListener((request) => {
-  //     console.log({ request });
-  //     if (request.user) {
-  //       let { username } = request.user;
-  //       console.log({ username });
-  //       // VERA_EMITTER.emit('login', { isHost, localId, inviteId, username });
-  //     }
-  //   });
-  // }, []);
+const selectText = (node) => {
+  // node = document.getElementById(node);
+
+  if (document.body.createTextRange) {
+    const range = document.body.createTextRange();
+    range.moveToElementText(node);
+    range.select();
+  } else if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  } else {
+    console.warn('Could not select text in node: Unsupported browser.');
+  }
+};
+export default function Username({ local = false, name = 'Guest', readonly = true, fixed = true }) {
+  const { username, updateUsername } = useUsername();
+  const [finalName, setFinalName] = useState((local ? username || 'Guest' : name) || 'Guest');
+  useEffect(() => {
+    if (local && username) {
+      setFinalName(username);
+    }
+  }, [username, local]);
   const handleChange = ({ target }) => {
-    setName(target.value);
+    let newVal = target.innerText;
+    updateUsername(newVal);
+  };
+  const handleClick = ({ target }) => {
+    selectText(target);
   };
   return (
-    <StyledWrapper className={`username ${fixed ? 'fixed' : ''}`}>
-      <input type="text" value={name} onChange={handleChange} readOnly={readonly} />
+    <StyledWrapper
+      className={`username ${fixed ? 'fixed' : ''}`}
+      contentEditable={!readonly}
+      onClick={handleClick}
+      type="text"
+      onInput={username ? null : handleChange}
+    >
+      {finalName}
     </StyledWrapper>
   );
 }

@@ -14,6 +14,7 @@ const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg');
 const tipPin = chrome.i18n.getMessage('tipPin');
 // status: loading ready error
 export default function Camera({
+  username = 'Guest',
   peerId,
   remote = true,
   mediaStream = null,
@@ -150,7 +151,7 @@ export default function Camera({
     return (
       <StyledWrapper data-peer={peerId} className={remote ? 'remote' : ''}>
         <div className={`video ${!bg ? 'hidden' : ''}`}>
-          <Username />
+          <Username local={!remote} name={username} />
           <div className="opts">
             <button
               className="opt bg"

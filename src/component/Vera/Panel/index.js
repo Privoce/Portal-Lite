@@ -30,6 +30,7 @@ export default function Panel({ invitePeerId = null }) {
     mediaConnections,
     addMediaConnection,
     streams,
+    usernames,
     status
   } = usePeer({
     invitePeerId
@@ -59,6 +60,7 @@ export default function Panel({ invitePeerId = null }) {
   let cameraListVisible = layout !== 'min';
   let localCameraVisible = layout !== 'one';
   let noConnection = Object.keys(mediaConnections).length == 0;
+  // let reset='reset'==status;
   // let remoteCameraVisible = layout !== 'min';
   return (
     <StyledWrapper ref={panelRef} className={layout} data-status={status}>
@@ -72,6 +74,7 @@ export default function Panel({ invitePeerId = null }) {
             return (
               st && (
                 <Camera
+                  username={usernames[pid]}
                   peerId={pid}
                   key={pid}
                   dataConnection={dataConnections[pid]}
