@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 const StyledWrapper = styled.aside`
+  font-family: sans-serif;
   position: absolute;
   right: 0;
   top: 50%;

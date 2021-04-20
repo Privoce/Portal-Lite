@@ -10,6 +10,15 @@
   "login": {
     "message": "登录"
   },
+  "reg": {
+    "message": "注册"
+  },
+  "joinAsGuest": {
+    "message": "游客身份加入"
+  },
+  "tipLogin": {
+    "message": "请登录/注册"
+  },
   "tipLoading": {
     "message": "加载中"
   },

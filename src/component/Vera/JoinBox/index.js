@@ -6,6 +6,7 @@ import Username from '../Username';
 import Login from '../Login';
 import useUsername from '../hooks/useUsername';
 const joinTxt = chrome.i18n.getMessage('join');
+const joinAsGuestTxt = chrome.i18n.getMessage('joinAsGuest');
 
 const StyledBox = styled.div`
   box-sizing: border-box;
@@ -15,10 +16,17 @@ const StyledBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  justify-content: center;
+  justify-content: space-around;
   padding: 5px;
+  padding-top: 30px;
   background: transparent;
   border-radius: var(--border-radius);
+  .btns {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    width: 100%;
+  }
 `;
 export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }) {
   const [loading, setLoading] = useState(false);
@@ -35,11 +43,13 @@ export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }
   if (loading) return <Loading />;
   return (
     <StyledBox>
-      <Button className="ok large" onClick={handleJoin}>
-        {joinTxt}
-      </Button>
       <Username local={true} readonly={false} fixed={false} />
-      {username ? null : <Login />}
+      <div className="btns">
+        {username ? null : <Login />}
+        <Button className="blue" onClick={handleJoin}>
+          {username ? joinTxt : joinAsGuestTxt}
+        </Button>
+      </div>
     </StyledBox>
   );
 }

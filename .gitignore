@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+*.map
 # production
 /build
 /crx

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useUsername from './hooks/useUsername';
+import { selectText } from './hooks/utils';
 const StyledWrapper = styled.div`
   line-height: 1;
   max-width: 100px;
@@ -23,23 +24,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-const selectText = (node) => {
-  // node = document.getElementById(node);
 
-  if (document.body.createTextRange) {
-    const range = document.body.createTextRange();
-    range.moveToElementText(node);
-    range.select();
-  } else if (window.getSelection) {
-    const selection = window.getSelection();
-    const range = document.createRange();
-    range.selectNodeContents(node);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  } else {
-    console.warn('Could not select text in node: Unsupported browser.');
-  }
-};
 export default function Username({ local = false, name = 'Guest', readonly = true, fixed = true }) {
   const { username, updateUsername } = useUsername();
   const [finalName, setFinalName] = useState((local ? username || 'Guest' : name) || 'Guest');

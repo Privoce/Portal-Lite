@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import Button from './Button';
 const loginTxt = chrome.i18n.getMessage('login');
-export default function Login() {
+const regTxt = chrome.i18n.getMessage('reg');
+export default function Login({ type = 'login' }) {
   const handleLogin = () => {
     chrome.runtime.sendMessage({ action: 'LOGIN' }, function () {
       /* callback */
@@ -19,5 +20,5 @@ export default function Login() {
       }
     });
   }, []);
-  return <Button onClick={handleLogin}>{loginTxt}</Button>;
+  return <Button onClick={handleLogin}>{type == 'login' ? loginTxt : regTxt}</Button>;
 }

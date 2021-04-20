@@ -36,6 +36,7 @@ export default function Panel({ invitePeerId = null }) {
   } = usePeer({
     invitePeerId
   });
+
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
   const handleLayout = ({ target }) => {
@@ -60,6 +61,12 @@ export default function Panel({ invitePeerId = null }) {
   const handleClose = () => {
     let isConfirmed = confirm(quitConfirmTxt);
     if (isConfirmed) {
+      console.log('clean up stream');
+      let cameras = [...panelRef.current.querySelectorAll('video')];
+      cameras.forEach((c) => {
+        c.srcObject?.getTracks().forEach((t) => t.stop());
+        c.srcObject = null;
+      });
       shutdownPeer();
       window.TOGGLE_VERA_PANEL();
     }

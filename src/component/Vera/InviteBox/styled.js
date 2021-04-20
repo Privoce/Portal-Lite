@@ -13,7 +13,8 @@ const StyledBox = styled.div`
   background-color: var(--camera-bg-color);
   border-radius: var(--border-radius);
   .link {
-    width: 95%;
+    width: 100%;
+    width: -webkit-fill-available;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,6 +23,7 @@ const StyledBox = styled.div`
     border-radius: var(--border-radius);
     font-size: 10px;
     .url {
+      user-select: text;
       color: var(--font-color);
       width: 100%;
       height: fit-content;

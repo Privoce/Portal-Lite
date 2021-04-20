@@ -10,6 +10,15 @@
   "login": {
     "message": "Login"
   },
+  "reg": {
+    "message": "Sign Up"
+  },
+  "joinAsGuest": {
+    "message": "Join as Guest"
+  },
+  "tipLogin": {
+    "message": "To store history, please:"
+  },
   "tipLoading": {
     "message": "Loading"
   },

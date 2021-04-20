@@ -13,6 +13,10 @@ const tipAudio = chrome.i18n.getMessage('tipDisableAudio');
 const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg');
 // const tipProcessing = chrome.i18n.getMessage('tipProcessing');
 const tipPin = chrome.i18n.getMessage('tipPin');
+let triggerByCmd = {
+  video: false,
+  audio: false
+};
 // status: loading ready error
 export default function Camera({
   username = 'Guest',
@@ -42,8 +46,9 @@ export default function Camera({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remote]);
+
   useEffect(() => {
-    if (videoRef && stream) {
+    if (videoRef.current && stream) {
       console.log('video ref', videoRef.current);
       videoRef.current.srcObject = stream;
     }
@@ -55,17 +60,17 @@ export default function Camera({
       console.log('data connection msg in camra', pid, peerId, type);
       switch (type) {
         case 'CC_VIDEO_ON':
-          setMedia({ type: 'video', enable: true });
+          setMedia({ type: 'video', enable: true, cmd: true });
           break;
         case 'CC_VIDEO_OFF':
-          setMedia({ type: 'video', enable: false });
+          setMedia({ type: 'video', enable: false, cmd: true });
           break;
 
         case 'CC_AUDIO_ON':
-          setMedia({ type: 'audio', enable: true });
+          setMedia({ type: 'audio', enable: true, cmd: true });
           break;
         case 'CC_AUDIO_OFF':
-          setMedia({ type: 'audio', enable: false });
+          setMedia({ type: 'audio', enable: false, cmd: true });
           break;
         case 'CC_BG_ON':
           setBackground({ keep: true });
@@ -107,9 +112,13 @@ export default function Camera({
     }
   };
   // 音视频
-  const setMedia = ({ type = 'video', enable = true }) => {
+  const setMedia = ({ type = 'video', enable = true, cmd = false }) => {
     console.log('start toggle media');
     const tracks = type == 'video' ? stream.getVideoTracks() : stream.getAudioTracks();
+    // 巨复杂的一个判断：当前状态是button置的，而且cmd想开启
+    if (cmd && !triggerByCmd[type] && enable && tracks.filter((t) => t.enabled == false).length) {
+      return;
+    }
     tracks.forEach((t) => {
       t.enabled = enable;
     });
@@ -124,6 +133,8 @@ export default function Camera({
         conn.send(cmd);
       });
     }
+    // 更新全局标识
+    triggerByCmd[type] = cmd;
   };
   // 背景
   const setBackground = ({ keep = true }) => {
@@ -140,12 +151,16 @@ export default function Camera({
     }
   };
   const handleMediaControl = ({ target }) => {
-    if (remote) return;
+    // if (remote) return;
     const { type, status } = target.dataset;
-    setMedia({ type, enable: status !== 'true' });
+    let isOn = status == 'true';
+    if (isOn || (!isOn && !triggerByCmd[type])) {
+      setMedia({ type, enable: status !== 'true' });
+    }
   };
   const handleBgControl = ({ target }) => {
-    if (remote) return;
+    const { video } = controls;
+    if (remote || !video) return;
     const { status } = target.dataset;
     setBackground({ keep: status !== 'true' });
   };

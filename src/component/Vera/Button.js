@@ -11,6 +11,9 @@ const StyledButton = styled.button`
   transition: transform 0.3s ease-in;
   font-size: 14px;
   line-height: 1.4;
+  &.blue {
+    background-color: #5480f4;
+  }
   &.large {
     font-size: 22px;
     padding-right: 20px;

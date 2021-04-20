@@ -1,3 +1,20 @@
+const selectText = (node) => {
+  // node = document.getElementById(node);
+
+  if (document.body.createTextRange) {
+    const range = document.body.createTextRange();
+    range.moveToElementText(node);
+    range.select();
+  } else if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  } else {
+    console.warn('Could not select text in node: Unsupported browser.');
+  }
+};
 function getUsername(withFake = false) {
   return new Promise((resolve) => {
     let arr = withFake ? ['user', 'fakename'] : ['user'];
@@ -46,4 +63,4 @@ const preventCloseTabHandler = (evt) => {
   // return 'Vera is still in connectiong, ary you sure to quit?';
 };
 
-export { getUsername, appendVeraHistory, preventCloseTabHandler };
+export { selectText, getUsername, appendVeraHistory, preventCloseTabHandler };
