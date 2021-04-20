@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useData from '../Common/hooks/useData';
 import Loading from '../Common/Loading';
 const StyledWrapper = styled.section`
   display: flex;
@@ -89,25 +89,12 @@ const TagMap = {
   ['荐']: 'recomm'
 };
 export default function WeiboHot() {
-  const [hots, setHots] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errTip, setErrTip] = useState('');
-  useEffect(() => {
-    const getHots = async () => {
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/weibo/hot`);
-      const { code, data, msg } = await list.json();
-      setLoading(false);
-      if (code != 0) {
-        setErrTip(msg);
-        return;
-      }
-      setHots(data);
-    };
-    getHots();
-  }, []);
+  const { error, loading, data: hots } = useData(
+    `${process.env.REACT_APP_SERVICE_DOMAIN}/service/weibo/hot`
+  );
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   if (loading) return <Loading />;
   return (

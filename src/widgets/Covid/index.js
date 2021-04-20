@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import IconCovid from '../Common/Icons/Covid';
 import Loading from '../Common/Loading';
 import Block from './Block';
 import List from './List';
+import useData from '../Common/hooks/useData';
 const StyledWrapper = styled.section`
   width: 100%;
   height: 100%;
@@ -42,31 +43,15 @@ const StyledWrapper = styled.section`
 `;
 // http://health.people.com.cn/GB/26466/431463/431576/index.html
 export default function Covid() {
-  const [loading, setLoading] = useState(true);
-  const [errTip, setErrTip] = useState('');
   const [listVisible, setListVisible] = useState(false);
-  const [data, setData] = useState(null);
+  const { data, error, loading } = useData(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/covid`);
   const toggleListVisible = () => {
     setListVisible((prev) => !prev);
   };
-  useEffect(() => {
-    const getData = async () => {
-      const resp = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/covid`);
-      const { data } = await resp.json();
-      if (!data) {
-        setLoading(false);
-        setErrTip('⚠️接口出错啦⚠️');
-        return;
-      }
-      setData(data);
-      setLoading(false);
-      // console.log({ info });
-    };
-    getData();
-  }, []);
+
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   if (loading) return <Loading />;
   const {

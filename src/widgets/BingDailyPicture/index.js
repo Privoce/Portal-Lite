@@ -9,6 +9,7 @@ import { useWidgetSettings } from '../../hooks';
 import Loading from '../Common/Loading';
 import IconDownload from '../Common/Icons/Download';
 import IconWall from '../Common/Icons/Wall';
+import useData from '../Common/hooks/useData';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination]);
 const StyledWrapper = styled.section`
@@ -85,24 +86,11 @@ const StyledWrapper = styled.section`
 `;
 export default function BingDailyPicture() {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  const [pics, setPics] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errTip, setErrTip] = useState('');
   const [currWallpaper, setCurrWallpaper] = useState(getWidgetSetting({ key: 'bg' }));
+  const { data: list, loading, error } = useData(
+    `${process.env.REACT_APP_SERVICE_DOMAIN}/service/bing/wp/7`
+  );
 
-  useEffect(() => {
-    const getPics = async () => {
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/bing/wp/7`);
-      const { code, data, msg } = await list.json();
-      if (code != 0) {
-        setErrTip(msg);
-        return;
-      }
-      setPics(data);
-      setLoading(false);
-    };
-    getPics();
-  }, []);
   const handleSetBG = (url) => {
     setCurrWallpaper(url);
     updateWidgetSetting({
@@ -117,8 +105,8 @@ export default function BingDailyPicture() {
   }, [currWallpaper]);
   if (loading) return <Loading />;
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   return (
     <StyledWrapper>
@@ -140,7 +128,7 @@ export default function BingDailyPicture() {
           mySwiper.update();
         }}
       >
-        {pics.map((n) => {
+        {list.map((n) => {
           const { url, copyright } = n;
           return (
             <SwiperSlide key={url}>

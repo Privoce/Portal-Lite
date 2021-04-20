@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import Pets from './Pets';
 import { useWidgetSettings } from '../../hooks';
-
+import usePets from './usePets';
 import Loading from '../Common/Loading';
 // import IconDownload from '../Common/Icons/Download';
 // install Swiper components
@@ -62,46 +62,25 @@ const StyledWrapper = styled.section`
   }
 `;
 export default function PetPics({ name, data, toggleWidgetSettingVisible }) {
-  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
+  const { getWidgetSetting } = useWidgetSettings();
   let localPics = getWidgetSetting({ name, key: 'pics' });
-  const [pet, setPet] = useState(data?.pet || getWidgetSetting({ name, key: 'pet' }) || 'shibes');
-  const [hasLocalData, setHasLocalData] = useState(!!(data?.pics || localPics));
-  const [pics, setPics] = useState(data?.pics || localPics || []);
-  const [loading, setLoading] = useState(pics.length ? false : true);
-  const [errTip, setErrTip] = useState('');
-
-  useEffect(() => {
-    const getPics = async () => {
-      setLoading(true);
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/animals/${pet}`);
-      const { code, data, msg } = await list.json();
-      if (code != 0) {
-        setErrTip(msg);
-        return;
-      }
-      setPics(data);
-      updateWidgetSetting({ name, key: 'pics', data });
-      setLoading(false);
-    };
-    if (!hasLocalData) {
-      getPics();
-      updateWidgetSetting({ name, key: 'pet', data: pet });
-    }
-  }, [pet, name, hasLocalData]);
-  const updatePet = (pet) => {
-    setPet(pet);
-    setHasLocalData(false);
+  const { updatePet, loading, pet, pets: pics, error } = usePets(
+    data?.pet || getWidgetSetting({ name, key: 'pet' }) || 'shibes',
+    data?.pics || localPics || []
+  );
+  const handleUpdatePet = (pet) => {
+    updatePet(pet);
   };
   if (loading) return <Loading />;
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   return (
     <>
       <Pets
         currPet={pet}
-        updatePet={updatePet}
+        updatePet={handleUpdatePet}
         name={name}
         toggleWidgetSettingVisible={toggleWidgetSettingVisible}
       />

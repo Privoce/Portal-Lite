@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Loading from '../Common/Loading';
 import IconClose from '../Common/Icons/Close';
+import useData from '../Common/hooks/useData';
 
 const StyledWrapper = styled.section`
   height: 100%;
@@ -125,23 +126,10 @@ const getCNDate = (year = false) => {
   return dateStr;
 };
 export default function TodayInHistory() {
-  const [events, setEvents] = useState([]);
   const [details, setDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errTip, setErrTip] = useState('');
-  useEffect(() => {
-    const getHots = async () => {
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/history/today`);
-      const { code, data, msg } = await list.json();
-      setLoading(false);
-      if (code != 0) {
-        setErrTip(msg);
-        return;
-      }
-      setEvents(data);
-    };
-    getHots();
-  }, []);
+  const { data: events, loading, error } = useData(
+    `${process.env.REACT_APP_SERVICE_DOMAIN}/service/history/today`
+  );
   const handleEventClick = ({ link, detail }) => {
     if (detail) {
       const { title, content } = detail;
@@ -153,8 +141,8 @@ export default function TodayInHistory() {
   };
   if (loading) return <Loading />;
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   return (
     <StyledWrapper>

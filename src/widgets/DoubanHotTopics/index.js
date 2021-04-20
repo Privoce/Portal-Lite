@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Loading from '../Common/Loading';
+import useData from '../Common/hooks/useData';
 
 const StyledWrapper = styled.section`
   height: fit-content;
@@ -58,26 +58,13 @@ const StyledWrapper = styled.section`
   }
 `;
 export default function MPDaily() {
-  const [hots, setHots] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errTip, setErrTip] = useState('');
-  useEffect(() => {
-    const getHots = async () => {
-      const list = await fetch(`${process.env.REACT_APP_SERVICE_DOMAIN}/service/douban/topic/hot`);
-      const { code, data, msg } = await list.json();
-      setLoading(false);
-      if (code != 0) {
-        setErrTip(msg);
-        return;
-      }
-      setHots(data);
-    };
-    getHots();
-  }, []);
+  const { data: hots, loading, error } = useData(
+    `${process.env.REACT_APP_SERVICE_DOMAIN}/service/douban/topic/hot`
+  );
   if (loading) return <Loading />;
   // 抛错
-  if (errTip) {
-    throw new Error(errTip);
+  if (error) {
+    throw new Error(error);
   }
   return (
     <StyledWrapper>
