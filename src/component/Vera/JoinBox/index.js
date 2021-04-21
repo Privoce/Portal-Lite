@@ -24,7 +24,7 @@ const StyledBox = styled.div`
   .btns {
     display: flex;
     justify-content: center;
-    gap: 70px;
+    gap: 50px;
     width: 100%;
   }
 `;
