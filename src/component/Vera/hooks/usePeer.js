@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import emitter, { EVENTS } from './useEmitter';
+import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
 import { getUsername, appendVeraHistory, preventCloseTabHandler } from './utils';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
@@ -34,6 +35,17 @@ const usePeer = ({ invitePeerId = null }) => {
       setMyPeer(tmp);
     }
   }, [myPeer]);
+  useEffect(() => {
+    let keys = Object.keys(dataConns);
+    if (keys.length) {
+      keys.forEach((k) => {
+        // 初始化鼠标
+        console.log('start init cursor');
+        initCursor({ id: k, username: usernames[k] });
+        bindCursorSync({ conn: dataConns[k] });
+      });
+    }
+  }, [dataConns, usernames]);
   const initDataChannel = useCallback(
     (conn) => {
       const clearUpConnect = () => {
@@ -49,6 +61,8 @@ const usePeer = ({ invitePeerId = null }) => {
         }
         // 顺带把视频连接也关掉
         mediaConns[conn.peer]?.close();
+        // 销毁鼠标
+        destoryCursor({ id: conn.peer });
       };
       conn.on('close', () => {
         console.log('peer data connection close');
@@ -90,12 +104,16 @@ const usePeer = ({ invitePeerId = null }) => {
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
           }
+          if (type.startsWith('CURSOR')) {
+            emitter.emit(type, { pid: conn.peer, data });
+          }
         });
         // 更新到dataConnections集合里
         setDataConns((prev) => {
           prev[conn.peer] = conn;
           return { ...prev };
         });
+
         // 不再是等待连接的初始状态
         // setStatus('reset');
       });
