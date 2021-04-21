@@ -59,8 +59,8 @@ export default function Panel({ invitePeerId = null }) {
     }
   }, []);
   const handleClose = () => {
-    let isConfirmed = confirm(quitConfirmTxt);
-    if (isConfirmed) {
+    let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
+    if (letGo) {
       console.log('clean up stream');
       let cameras = [...panelRef.current.querySelectorAll('video')];
       cameras.forEach((c) => {
