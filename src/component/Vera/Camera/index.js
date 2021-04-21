@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import Loading from '../Loading';
+import { useState, useEffect, useRef, memo } from 'react';
 import Username from '../Username';
 import emitter, { EVENTS } from '../hooks/useEmitter';
 
@@ -18,14 +17,14 @@ let triggerByCmd = {
   audio: false
 };
 // status: loading ready error
-export default function Camera({
+function Camera({
   username = 'Guest',
   peerId,
   remote = true,
   mediaStream = null,
   dataConnections = null
 }) {
-  const [status, setStatus] = useState(mediaStream ? 'ready' : 'loading');
+  const [loaded, setLoaded] = useState(false);
   const [stream, setStream] = useState(mediaStream);
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
   const { enableStream, error } = useUserMedia();
@@ -37,7 +36,6 @@ export default function Camera({
       if (localStream) {
         let cloned = localStream.clone();
         cloned.getAudioTracks().forEach((t) => (t.enabled = false));
-        setStatus('ready');
         setStream(cloned);
       }
     };
@@ -48,10 +46,7 @@ export default function Camera({
   }, [remote]);
 
   useEffect(() => {
-    if (videoRef.current && stream) {
-      console.log('video ref', videoRef.current);
-      videoRef.current.srcObject = stream;
-    }
+    videoRef.current.srcObject = stream;
   }, [stream]);
   useEffect(() => {
     // 来自远程对方的消息
@@ -164,47 +159,50 @@ export default function Camera({
     const { status } = target.dataset;
     setBackground({ keep: status !== 'true' });
   };
+  const handleLoad = () => {
+    setLoaded(true);
+  };
   if (error) return <ErrorMask tip={error.tip} />;
-  if (status == 'loading') return <Loading />;
   const { pin, video, audio, bg } = controls;
-  if (status == 'ready')
-    return (
-      <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'}>
-        <div className={`video ${!bg ? 'hidden' : ''}`}>
-          <Username local={!remote} name={username} />
-          <div className="opts">
-            <button
-              className="opt bg"
-              onClick={handleBgControl}
-              data-status={bg}
-              title={tipRemoveBg}
-            ></button>
-            <button
-              className="opt video"
-              onClick={handleMediaControl}
-              data-type={'video'}
-              data-status={video}
-              title={tipVideo}
-            ></button>
-            <button
-              className="opt audio"
-              onClick={handleMediaControl}
-              data-type={'audio'}
-              data-status={audio}
-              title={tipAudio}
-            ></button>
-            <button
-              className="opt pin"
-              onClick={handlePin}
-              data-status={pin}
-              title={tipPin}
-            ></button>
-          </div>
-
-          {!video && <OffMask />}
-          {!bg && <BgOffMask video={videoRef.current} />}
-          <video ref={videoRef} playsInline autoPlay muted={remote ? false : 'muted'}></video>
+  return (
+    <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'}>
+      <div className={`video ${!bg ? 'hidden' : ''}`}>
+        <Username local={!remote} name={username} />
+        <div className="opts">
+          <button
+            className="opt bg"
+            onClick={handleBgControl}
+            data-status={bg}
+            title={tipRemoveBg}
+          ></button>
+          <button
+            className="opt video"
+            onClick={handleMediaControl}
+            data-type={'video'}
+            data-status={video}
+            title={tipVideo}
+          ></button>
+          <button
+            className="opt audio"
+            onClick={handleMediaControl}
+            data-type={'audio'}
+            data-status={audio}
+            title={tipAudio}
+          ></button>
+          <button className="opt pin" onClick={handlePin} data-status={pin} title={tipPin}></button>
         </div>
-      </StyledWrapper>
-    );
+
+        {(!video || !loaded) && <OffMask />}
+        {!bg && <BgOffMask video={videoRef.current} />}
+        <video
+          ref={videoRef}
+          onPlay={handleLoad}
+          playsInline
+          autoPlay
+          muted={remote ? false : 'muted'}
+        ></video>
+      </div>
+    </StyledWrapper>
+  );
 }
+export default memo(Camera);
