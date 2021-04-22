@@ -124,19 +124,22 @@ const usePeer = ({ invitePeerId = null }) => {
     [invitePeerId, myPeer]
   );
   const addMediaConnection = (mediaConn) => {
+    // 先占位
+    setStreams((prev) => {
+      prev[mediaConn.peer] = null;
+      return { ...prev };
+    });
     // 更新到mediaConnections集合里
     setMediaConns((prev) => {
       prev[mediaConn.peer] = mediaConn;
       return { ...prev };
     });
     // 发送自己这边的用户名
-    getUsername(true).then((un) => {
-      if (un) {
-        dataConns[mediaConn.peer]?.send({
-          type: 'USERNAME',
-          data: un
-        });
-      }
+    getUsername(true).then((un = null) => {
+      dataConns[mediaConn.peer]?.send({
+        type: 'USERNAME',
+        data: un
+      });
     });
     // 新增vera历史记录
     appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
