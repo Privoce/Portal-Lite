@@ -41,8 +41,10 @@ const usePeer = ({ invitePeerId = null }) => {
       keys.forEach((k) => {
         // 初始化鼠标
         console.log('start init cursor');
-        initCursor({ id: k, username: usernames[k] });
-        bindCursorSync({ conn: dataConns[k] });
+        let inited = initCursor({ id: k, username: usernames[k] });
+        if (inited) {
+          bindCursorSync({ conn: dataConns[k] });
+        }
       });
     }
   }, [dataConns, usernames]);
@@ -58,6 +60,7 @@ const usePeer = ({ invitePeerId = null }) => {
           // 无论是哪一方，重置为等待连接的初始状态
           // setStatus('reset');
           window.removeEventListener('beforeunload', preventCloseTabHandler);
+          setStatus('waiting');
         }
         // 顺带把视频连接也关掉
         mediaConns[conn.peer]?.close();
