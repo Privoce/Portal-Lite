@@ -63,4 +63,25 @@ const preventCloseTabHandler = (evt) => {
   // return 'Vera is still in connectiong, ary you sure to quit?';
 };
 
-export { selectText, getUsername, appendVeraHistory, preventCloseTabHandler };
+function throttle(fn, interval = 200) {
+  // 维护上次执行的时间
+  let last = 0;
+  let inter = 0;
+  return function () {
+    const context = this;
+    const args = arguments;
+    const now = Date.now();
+    // 根据当前时间和上次执行时间的差值判断是否频繁
+    if (now - last >= interval) {
+      last = now;
+      clearTimeout(inter);
+      fn.apply(context, args);
+    } else {
+      setTimeout(() => {
+        fn.apply(context, args);
+      }, interval);
+    }
+  };
+}
+
+export { throttle, selectText, getUsername, appendVeraHistory, preventCloseTabHandler };

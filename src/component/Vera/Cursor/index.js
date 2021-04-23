@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import emitter, { EVENTS } from '../hooks/useEmitter';
+import { throttle } from '../hooks/utils';
 import StyledCursor from './styled';
 export default function Cursor({ id, username = 'Guest' }) {
   const wrapper = useRef(null);
@@ -59,14 +60,14 @@ const bindCursorSync = ({ conn }) => {
   console.log('bind cursor sync');
   document.addEventListener(
     'mousemove',
-    (evt) => {
+    throttle((evt) => {
       const { clientX, clientY } = evt;
       const { scrollTop, scrollLeft } = document.scrollingElement;
       conn.send({
         type: EVENTS.CURSOR_MOVE,
         data: { pos: { x: clientX + scrollLeft, y: clientY + scrollTop } }
       });
-    },
+    }),
     false
   );
   document.addEventListener(
