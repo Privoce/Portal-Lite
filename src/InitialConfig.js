@@ -11,7 +11,7 @@ export const GuardConfig = {
   mode: 'modal',
   logo: 'https://nicegoodthings.com/apple-touch-icon.png',
   title: 'Portal',
-  socialConnections: ['github', 'google', 'dingtalk'],
+  socialConnections: ['github', 'google', 'dingtalk', 'weibo'],
   appHost,
   lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US'
   // localesConfig: {
