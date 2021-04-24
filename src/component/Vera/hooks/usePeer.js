@@ -18,7 +18,7 @@ const peerConfig = {
   }
   // debug: 3
 };
-let cursors={};
+let init_connects = false;
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -39,15 +39,12 @@ const usePeer = ({ invitePeerId = null }) => {
     let keys = Object.keys(dataConns);
     if (keys.length) {
       keys.forEach((k) => {
-        let currConn=dataConns[k];
-         if(!cursors[k]&& currConn.open) {
         // 初始化鼠标
         console.log('start init cursor');
         let inited = initCursor({ id: k, username: usernames[k] });
         if (inited) {
-          bindCursorSync({ conn: currConn });
-          cursors[k]=true;
-        }}
+          bindCursorSync({ conn: dataConns[k] });
+        }
       });
     }
   }, [dataConns, usernames]);
@@ -67,14 +64,8 @@ const usePeer = ({ invitePeerId = null }) => {
         }
         // 顺带把视频连接也关掉
         mediaConns[conn.peer]?.close();
-        // 更新到mediaConnections集合里
-        setMediaConns((prev) => {
-         delete prev[conn.peer];
-         return { ...prev };
-       });
         // 销毁鼠标
         destoryCursor({ id: conn.peer });
-        delete cursors[conn.peer];
       };
       conn.on('close', () => {
         console.log('peer data connection close');
@@ -98,12 +89,13 @@ const usePeer = ({ invitePeerId = null }) => {
         conn.on('data', (obj) => {
           console.log('invited peer data connection data', obj);
           const { type = '', data } = obj;
-          if (type == 'CONNECTIONS' ) {
+          if (type == 'CONNECTIONS' && !init_connects) {
             data.forEach((id) => {
               // 遍历房主发过来的连接
               let newConn = myPeer.connect(id);
               initDataChannel(newConn);
             });
+            init_connects = true;
           }
           if (type == 'USERNAME') {
             // 更新到usernames集合里
@@ -132,6 +124,11 @@ const usePeer = ({ invitePeerId = null }) => {
     [invitePeerId, myPeer]
   );
   const addMediaConnection = (mediaConn) => {
+    // 先占位
+    setStreams((prev) => {
+      prev[mediaConn.peer] = null;
+      return { ...prev };
+    });
     // 更新到mediaConnections集合里
     setMediaConns((prev) => {
       prev[mediaConn.peer] = mediaConn;

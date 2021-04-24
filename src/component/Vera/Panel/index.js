@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Camera from '../Camera';
-import Loading from '../Loading';
+// import Loading from '../Loading';
 import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
@@ -80,9 +80,8 @@ export default function Panel({ invitePeerId = null }) {
     <StyledWrapper ref={panelRef} className={layout} data-status={status}>
       <div className="cameras">
         <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
-        {Object.entries(mediaConnections).map(([pid]) => {
-           let st = streams[pid];
-          return st ? (
+        {Object.entries(streams).map(([pid, st]) => {
+          return (
             <Camera
               username={usernames[pid]}
               peerId={pid}
@@ -90,8 +89,6 @@ export default function Panel({ invitePeerId = null }) {
               dataConnection={dataConnections[pid]}
               mediaStream={st}
             />
-          ) : (
-            <Loading />
           );
         })}
       </div>
