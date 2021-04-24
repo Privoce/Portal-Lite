@@ -25,7 +25,11 @@ export default function Cursor({ id, username = 'Guest' }) {
       //  不是当前鼠标的更新数据
       if (pid !== id) return;
       const { selection } = data;
-      rangy.deserializeSelection(selection);
+      try {
+        rangy.deserializeSelection(selection);
+      } catch (error) {
+        console.error(error);
+      }
     });
   }, []);
   const handleAniEnd = () => {

@@ -25,7 +25,6 @@ function Camera({
   dataConnections = null
 }) {
   const [loaded, setLoaded] = useState(false);
-  const [stream, setStream] = useState(mediaStream);
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
   const { enableStream, error } = useUserMedia();
   const videoRef = useRef(null);
@@ -36,7 +35,7 @@ function Camera({
       if (localStream) {
         let cloned = localStream.clone();
         cloned.getAudioTracks().forEach((t) => (t.enabled = false));
-        setStream(cloned);
+        videoRef.current.srcObject = cloned;
       }
     };
     if (!remote) {
@@ -46,8 +45,10 @@ function Camera({
   }, [remote]);
 
   useEffect(() => {
-    videoRef.current.srcObject = stream;
-  }, [stream]);
+    if (mediaStream) {
+      videoRef.current.srcObject = mediaStream;
+    }
+  }, [mediaStream]);
   useEffect(() => {
     // 来自远程对方的消息
     emitter.on(EVENTS.CAMERA_CONTROL, ({ pid, type }) => {
@@ -109,6 +110,7 @@ function Camera({
   // 音视频
   const setMedia = ({ type = 'video', enable = true, cmd = false }) => {
     console.log('start toggle media');
+    let stream = videoRef.current.srcObject;
     const tracks = type == 'video' ? stream.getVideoTracks() : stream.getAudioTracks();
     // 巨复杂的一个判断：当前状态是button置的，而且cmd想开启
     if (cmd && !triggerByCmd[type] && enable && tracks.filter((t) => t.enabled == false).length) {
