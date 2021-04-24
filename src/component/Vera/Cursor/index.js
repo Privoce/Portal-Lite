@@ -60,6 +60,11 @@ const destoryCursor = ({ id }) => {
   let wrapper = document.getElementById(id);
   wrapper?.remove();
 };
+const sendData = (conn, data) => {
+  if (conn.open) {
+    conn.send(data);
+  }
+};
 const bindCursorSync = ({ conn }) => {
   console.log('bind cursor sync');
   document.addEventListener(
@@ -67,7 +72,7 @@ const bindCursorSync = ({ conn }) => {
     throttle((evt) => {
       const { clientX, clientY } = evt;
       const { scrollTop, scrollLeft } = document.scrollingElement;
-      conn.send({
+      sendData(conn, {
         type: EVENTS.CURSOR_MOVE,
         data: { pos: { x: clientX + scrollLeft, y: clientY + scrollTop } }
       });
@@ -77,7 +82,7 @@ const bindCursorSync = ({ conn }) => {
   document.addEventListener(
     'mousedown',
     () => {
-      conn.send({
+      sendData(conn, {
         type: EVENTS.CURSOR_CLICK,
         data: { click: true }
       });
@@ -90,7 +95,7 @@ const bindCursorSync = ({ conn }) => {
       let selection = rangy.getSelection();
       if (selection) {
         selection = rangy.serializeSelection(selection, true);
-        conn.send({
+        sendData(conn, {
           type: EVENTS.CURSOR_SELECT,
           data: { selection }
         });

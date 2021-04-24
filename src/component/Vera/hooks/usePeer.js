@@ -56,14 +56,6 @@ const usePeer = ({ invitePeerId = null }) => {
           delete prev[conn.peer];
           return { ...prev };
         });
-        if (Object.keys(dataConns).length == 0) {
-          // 无论是哪一方，重置为等待连接的初始状态
-          // setStatus('reset');
-          window.removeEventListener('beforeunload', preventCloseTabHandler);
-          setStatus('waiting');
-        }
-        // 顺带把视频连接也关掉
-        mediaConns[conn.peer]?.close();
         // 销毁鼠标
         destoryCursor({ id: conn.peer });
       };
@@ -121,54 +113,61 @@ const usePeer = ({ invitePeerId = null }) => {
         // setStatus('reset');
       });
     },
-    [invitePeerId, myPeer]
+    [invitePeerId, myPeer, dataConns, mediaConns]
   );
-  const addMediaConnection = (mediaConn) => {
-    // 先占位
-    setStreams((prev) => {
-      prev[mediaConn.peer] = null;
-      return { ...prev };
-    });
-    // 更新到mediaConnections集合里
-    setMediaConns((prev) => {
-      prev[mediaConn.peer] = mediaConn;
-      return { ...prev };
-    });
-    // 发送自己这边的用户名
-    getUsername(true).then((un = null) => {
-      dataConns[mediaConn.peer]?.send({
-        type: 'USERNAME',
-        data: un
-      });
-    });
-    // 新增vera历史记录
-    appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
-    console.log({ mediaConns });
-    mediaConn.on('close', () => {
-      console.log('peer media connection close');
-      // 更新到dataConnections集合里
+  const addMediaConnection = useCallback(
+    (mediaConn) => {
+      const clearUpConnect = () => {
+        // remove stream
+        setStreams((prev) => {
+          delete prev[mediaConn.peer];
+          return { ...prev };
+        });
+        setMediaConns((prev) => {
+          delete prev[mediaConn.peer];
+          return { ...prev };
+        });
+        if (Object.keys(mediaConns).length == 0) {
+          // 无论是哪一方，重置为等待连接的初始状态
+          window.removeEventListener('beforeunload', preventCloseTabHandler);
+          setStatus('waiting');
+        }
+      };
+      // 更新到mediaConnections集合里
       setMediaConns((prev) => {
-        delete prev[mediaConn.peer];
+        prev[mediaConn.peer] = mediaConn;
         return { ...prev };
       });
-    });
-    mediaConn.on('error', (err) => {
-      console.log('peer media connection error', err);
-      // 更新到dataConnections集合里
-      setMediaConns((prev) => {
-        delete prev[mediaConn.peer];
-        return { ...prev };
+      // 发送自己这边的用户名
+      getUsername(true).then((un = null) => {
+        dataConns[mediaConn.peer]?.send({
+          type: 'USERNAME',
+          data: un
+        });
       });
-    });
-    mediaConn.on('stream', (st) => {
-      setStatus('streaming');
-      console.log('peer media connection stream', st);
-      setStreams((prev) => {
-        prev[mediaConn.peer] = st;
-        return { ...prev };
+      // 新增vera历史记录
+      appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
+      // console.log({ mediaConns });
+      mediaConn.on('close', () => {
+        console.log('peer media connection close');
+        clearUpConnect();
       });
-    });
-  };
+      mediaConn.on('error', (err) => {
+        console.log('peer media connection error', err);
+        clearUpConnect();
+      });
+      mediaConn.on('stream', (st) => {
+        setStatus('streaming');
+        console.log('peer media connection stream', st);
+        setStreams((prev) => {
+          prev[mediaConn.peer] = st;
+          return { ...prev };
+        });
+      });
+    },
+    [invitePeerId, usernames]
+  );
+
   useEffect(() => {
     if (myPeer) {
       myPeer.on('open', () => {
@@ -209,6 +208,9 @@ const usePeer = ({ invitePeerId = null }) => {
       myPeer.on('close', () => {
         console.log('peer connection close');
         setStatus('close');
+        Object.keys(mediaConns).forEach((k) => {
+          mediaConns[k].close();
+        });
       });
       myPeer.on('error', (err) => {
         console.log('peer connection error', err);
