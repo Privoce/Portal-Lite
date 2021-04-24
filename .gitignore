@@ -22,7 +22,10 @@
 .env.development.local
 .env.test.local
 .env.production.local
-
+*hot-update.js
+asset-manifest.json
+indexExt.chunk.js
+runtime-indexExt.bundle.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
