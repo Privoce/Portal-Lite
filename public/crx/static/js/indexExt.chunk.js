@@ -994,6 +994,527 @@ module.exports = ({
 
 /***/ }),
 
+/***/ "./node_modules/dequal/lite/index.mjs":
+/*!********************************************!*\
+  !*** ./node_modules/dequal/lite/index.mjs ***!
+  \********************************************/
+/*! exports provided: dequal */
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dequal", function() { return dequal; });
+var has = Object.prototype.hasOwnProperty;
+function dequal(foo, bar) {
+  var ctor, len;
+  if (foo === bar) return true;
+
+  if (foo && bar && (ctor = foo.constructor) === bar.constructor) {
+    if (ctor === Date) return foo.getTime() === bar.getTime();
+    if (ctor === RegExp) return foo.toString() === bar.toString();
+
+    if (ctor === Array) {
+      if ((len = foo.length) === bar.length) {
+        while (len-- && dequal(foo[len], bar[len]));
+      }
+
+      return len === -1;
+    }
+
+    if (!ctor || typeof foo === 'object') {
+      len = 0;
+
+      for (ctor in foo) {
+        if (has.call(foo, ctor) && ++len && !has.call(bar, ctor)) return false;
+        if (!(ctor in bar) || !dequal(foo[ctor], bar[ctor])) return false;
+      }
+
+      return Object.keys(bar).length === len;
+    }
+  }
+
+  return foo !== foo && bar !== bar;
+}
+
+/***/ }),
+
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+var R = typeof Reflect === 'object' ? Reflect : null;
+var ReflectApply = R && typeof R.apply === 'function' ? R.apply : function ReflectApply(target, receiver, args) {
+  return Function.prototype.apply.call(target, receiver, args);
+};
+var ReflectOwnKeys;
+
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys;
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+};
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+
+module.exports = EventEmitter;
+module.exports.once = once; // Backwards-compat with node 0.10.x
+
+EventEmitter.EventEmitter = EventEmitter;
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined; // By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+
+var defaultMaxListeners = 10;
+
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function () {
+    return defaultMaxListeners;
+  },
+  set: function (arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function () {
+  if (this._events === undefined || this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+}; // Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+
+
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+
+  this._maxListeners = n;
+  return this;
+};
+
+function _getMaxListeners(that) {
+  if (that._maxListeners === undefined) return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return _getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+
+  var doError = type === 'error';
+  var events = this._events;
+  if (events !== undefined) doError = doError && events.error === undefined;else if (!doError) return false; // If there is no 'error' event listener then throw.
+
+  if (doError) {
+    var er;
+    if (args.length > 0) er = args[0];
+
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    } // At least give some kind of context to the user
+
+
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+  if (handler === undefined) return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+
+    for (var i = 0; i < len; ++i) ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+  checkListener(listener);
+  events = target._events;
+
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type, listener.listener ? listener.listener : listener); // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+
+      events = target._events;
+    }
+
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] = prepend ? [listener, existing] : [existing, listener]; // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    } // Check for listener leak
+
+
+    m = _getMaxListeners(target);
+
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true; // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+
+      var w = new Error('Possible EventEmitter memory leak detected. ' + existing.length + ' ' + String(type) + ' listeners ' + 'added. Use emitter.setMaxListeners() to ' + 'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener = function prependListener(type, listener) {
+  return _addListener(this, type, listener, true);
+};
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0) return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = {
+    fired: false,
+    wrapFn: undefined,
+    target: target,
+    type: type,
+    listener: listener
+  };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener = function prependOnceListener(type, listener) {
+  checkListener(listener);
+  this.prependListener(type, _onceWrap(this, type, listener));
+  return this;
+}; // Emits a 'removeListener' event if and only if the listener was removed.
+
+
+EventEmitter.prototype.removeListener = function removeListener(type, listener) {
+  var list, events, position, i, originalListener;
+  checkListener(listener);
+  events = this._events;
+  if (events === undefined) return this;
+  list = events[type];
+  if (list === undefined) return this;
+
+  if (list === listener || list.listener === listener) {
+    if (--this._eventsCount === 0) this._events = Object.create(null);else {
+      delete events[type];
+      if (events.removeListener) this.emit('removeListener', type, list.listener || listener);
+    }
+  } else if (typeof list !== 'function') {
+    position = -1;
+
+    for (i = list.length - 1; i >= 0; i--) {
+      if (list[i] === listener || list[i].listener === listener) {
+        originalListener = list[i].listener;
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0) return this;
+    if (position === 0) list.shift();else {
+      spliceOne(list, position);
+    }
+    if (list.length === 1) events[type] = list[0];
+    if (events.removeListener !== undefined) this.emit('removeListener', type, originalListener || listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners = function removeAllListeners(type) {
+  var listeners, events, i;
+  events = this._events;
+  if (events === undefined) return this; // not listening for removeListener, no need to emit
+
+  if (events.removeListener === undefined) {
+    if (arguments.length === 0) {
+      this._events = Object.create(null);
+      this._eventsCount = 0;
+    } else if (events[type] !== undefined) {
+      if (--this._eventsCount === 0) this._events = Object.create(null);else delete events[type];
+    }
+
+    return this;
+  } // emit removeListener for all listeners on all events
+
+
+  if (arguments.length === 0) {
+    var keys = Object.keys(events);
+    var key;
+
+    for (i = 0; i < keys.length; ++i) {
+      key = keys[i];
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+
+    this.removeAllListeners('removeListener');
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+    return this;
+  }
+
+  listeners = events[type];
+
+  if (typeof listeners === 'function') {
+    this.removeListener(type, listeners);
+  } else if (listeners !== undefined) {
+    // LIFO order
+    for (i = listeners.length - 1; i >= 0; i--) {
+      this.removeListener(type, listeners[i]);
+    }
+  }
+
+  return this;
+};
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+  if (events === undefined) return [];
+  var evlistener = events[type];
+  if (evlistener === undefined) return [];
+  if (typeof evlistener === 'function') return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+  return unwrap ? unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function (emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+
+  for (var i = 0; i < n; ++i) copy[i] = arr[i];
+
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++) list[index] = list[index + 1];
+
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+
+  return ret;
+}
+
+function once(emitter, name) {
+  return new Promise(function (resolve, reject) {
+    function errorListener(err) {
+      emitter.removeListener(name, resolver);
+      reject(err);
+    }
+
+    function resolver() {
+      if (typeof emitter.removeListener === 'function') {
+        emitter.removeListener('error', errorListener);
+      }
+
+      resolve([].slice.call(arguments));
+    }
+
+    ;
+    eventTargetAgnosticAddListener(emitter, name, resolver, {
+      once: true
+    });
+
+    if (name !== 'error') {
+      addErrorHandlerIfEventEmitter(emitter, errorListener, {
+        once: true
+      });
+    }
+  });
+}
+
+function addErrorHandlerIfEventEmitter(emitter, handler, flags) {
+  if (typeof emitter.on === 'function') {
+    eventTargetAgnosticAddListener(emitter, 'error', handler, flags);
+  }
+}
+
+function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
+  if (typeof emitter.on === 'function') {
+    if (flags.once) {
+      emitter.once(name, listener);
+    } else {
+      emitter.on(name, listener);
+    }
+  } else if (typeof emitter.addEventListener === 'function') {
+    // EventTarget does not have `error` event semantics like Node
+    // EventEmitters, we do not listen for `error` events here.
+    emitter.addEventListener(name, function wrapListener(arg) {
+      // IE does not have builtin `{ once: true }` support so we
+      // have to do it manually.
+      if (flags.once) {
+        emitter.removeEventListener(name, wrapListener);
+      }
+
+      listener(arg);
+    });
+  } else {
+    throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type ' + typeof emitter);
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":
 /*!**********************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
@@ -37299,36 +37820,1852 @@ var Ue = function () {
 
 /***/ }),
 
-/***/ "./node_modules/styled-reset/lib/esm/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/styled-reset/lib/esm/index.js ***!
-  \****************************************************/
-/*! exports provided: reset, Reset, default */
+/***/ "./node_modules/swr/esm/cache.js":
+/*!***************************************!*\
+  !*** ./node_modules/swr/esm/cache.js ***!
+  \***************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reset", function() { return reset; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Reset", function() { return Reset; });
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-var __makeTemplateObject = undefined && undefined.__makeTemplateObject || function (cooked, raw) {
-  if (Object.defineProperty) {
-    Object.defineProperty(cooked, "raw", {
-      value: raw
-    });
-  } else {
-    cooked.raw = raw;
+/* harmony import */ var _libs_hash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/hash */ "./node_modules/swr/esm/libs/hash.js");
+
+
+var Cache =
+/** @class */
+function () {
+  function Cache(initialData) {
+    if (initialData === void 0) {
+      initialData = {};
+    }
+
+    this.cache = new Map(Object.entries(initialData));
+    this.subs = [];
   }
 
-  return cooked;
+  Cache.prototype.get = function (key) {
+    var _key = this.serializeKey(key)[0];
+    return this.cache.get(_key);
+  };
+
+  Cache.prototype.set = function (key, value) {
+    var _key = this.serializeKey(key)[0];
+    this.cache.set(_key, value);
+    this.notify();
+  };
+
+  Cache.prototype.keys = function () {
+    return Array.from(this.cache.keys());
+  };
+
+  Cache.prototype.has = function (key) {
+    var _key = this.serializeKey(key)[0];
+    return this.cache.has(_key);
+  };
+
+  Cache.prototype.clear = function () {
+    this.cache.clear();
+    this.notify();
+  };
+
+  Cache.prototype.delete = function (key) {
+    var _key = this.serializeKey(key)[0];
+    this.cache.delete(_key);
+    this.notify();
+  }; // TODO: introduce namespace for the cache
+
+
+  Cache.prototype.serializeKey = function (key) {
+    var args = null;
+
+    if (typeof key === 'function') {
+      try {
+        key = key();
+      } catch (err) {
+        // dependencies not ready
+        key = '';
+      }
+    }
+
+    if (Array.isArray(key)) {
+      // args array
+      args = key;
+      key = Object(_libs_hash__WEBPACK_IMPORTED_MODULE_0__["default"])(key);
+    } else {
+      // convert null to ''
+      key = String(key || '');
+    }
+
+    var errorKey = key ? 'err@' + key : '';
+    var isValidatingKey = key ? 'validating@' + key : '';
+    return [key, args, errorKey, isValidatingKey];
+  };
+
+  Cache.prototype.subscribe = function (listener) {
+    var _this = this;
+
+    if (typeof listener !== 'function') {
+      throw new Error('Expected the listener to be a function.');
+    }
+
+    var isSubscribed = true;
+    this.subs.push(listener);
+    return function () {
+      if (!isSubscribed) return;
+      isSubscribed = false;
+
+      var index = _this.subs.indexOf(listener);
+
+      if (index > -1) {
+        _this.subs[index] = _this.subs[_this.subs.length - 1];
+        _this.subs.length--;
+      }
+    };
+  }; // Notify Cache subscribers about a change in the cache
+
+
+  Cache.prototype.notify = function () {
+    for (var _i = 0, _a = this.subs; _i < _a.length; _i++) {
+      var listener = _a[_i];
+      listener();
+    }
+  };
+
+  return Cache;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Cache);
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/config.js":
+/*!****************************************!*\
+  !*** ./node_modules/swr/esm/config.js ***!
+  \****************************************/
+/*! exports provided: cache, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cache", function() { return cache; });
+/* harmony import */ var dequal_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dequal/lite */ "./node_modules/dequal/lite/index.mjs");
+/* harmony import */ var _cache__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cache */ "./node_modules/swr/esm/cache.js");
+/* harmony import */ var _libs_web_preset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/web-preset */ "./node_modules/swr/esm/libs/web-preset.js");
+var __assign = undefined && undefined.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
 };
 
- // prettier-ignore
 
-var reset = Object(styled_components__WEBPACK_IMPORTED_MODULE_0__["css"])(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n/* http://meyerweb.com/eric/tools/css/reset/\n   v5.0.1 | 20191019\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, menu, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmain, menu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, main, menu, nav, section {\n  display: block;\n}\n/* HTML5 hidden-attribute fix for newer browsers */\n*[hidden] {\n    display: none;\n}\nbody {\n  line-height: 1;\n}\nmenu, ol, ul {\n  list-style: none;\n}\nblockquote, q {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n"], ["\n/* http://meyerweb.com/eric/tools/css/reset/\n   v5.0.1 | 20191019\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, menu, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmain, menu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, main, menu, nav, section {\n  display: block;\n}\n/* HTML5 hidden-attribute fix for newer browsers */\n*[hidden] {\n    display: none;\n}\nbody {\n  line-height: 1;\n}\nmenu, ol, ul {\n  list-style: none;\n}\nblockquote, q {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n"])));
-var Reset = Object(styled_components__WEBPACK_IMPORTED_MODULE_0__["createGlobalStyle"])(templateObject_2 || (templateObject_2 = __makeTemplateObject(["", ""], ["", ""])), reset);
-/* harmony default export */ __webpack_exports__["default"] = (reset);
-var templateObject_1, templateObject_2;
+
+ // cache
+
+var cache = new _cache__WEBPACK_IMPORTED_MODULE_1__["default"](); // error retry
+
+function onErrorRetry(_, __, config, revalidate, opts) {
+  if (!config.isDocumentVisible()) {
+    // if it's hidden, stop
+    // it will auto revalidate when focus
+    return;
+  }
+
+  if (typeof config.errorRetryCount === 'number' && opts.retryCount > config.errorRetryCount) {
+    return;
+  } // exponential backoff
+
+
+  var count = Math.min(opts.retryCount, 8);
+  var timeout = ~~((Math.random() + 0.5) * (1 << count)) * config.errorRetryInterval;
+  setTimeout(revalidate, timeout, opts);
+} // client side: need to adjust the config
+// based on the browser status
+// slow connection (<= 70Kbps)
+
+
+var slowConnection = typeof window !== 'undefined' && // @ts-ignore
+navigator['connection'] && // @ts-ignore
+['slow-2g', '2g'].indexOf(navigator['connection'].effectiveType) !== -1; // config
+
+var defaultConfig = __assign({
+  // events
+  onLoadingSlow: function () {},
+  onSuccess: function () {},
+  onError: function () {},
+  onErrorRetry: onErrorRetry,
+  errorRetryInterval: (slowConnection ? 10 : 5) * 1000,
+  focusThrottleInterval: 5 * 1000,
+  dedupingInterval: 2 * 1000,
+  loadingTimeout: (slowConnection ? 5 : 3) * 1000,
+  refreshInterval: 0,
+  revalidateOnFocus: true,
+  revalidateOnReconnect: true,
+  refreshWhenHidden: false,
+  refreshWhenOffline: false,
+  shouldRetryOnError: true,
+  suspense: false,
+  compare: dequal_lite__WEBPACK_IMPORTED_MODULE_0__["dequal"],
+  isPaused: function () {
+    return false;
+  }
+}, _libs_web_preset__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+
+/* harmony default export */ __webpack_exports__["default"] = (defaultConfig);
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/env.js":
+/*!*************************************!*\
+  !*** ./node_modules/swr/esm/env.js ***!
+  \*************************************/
+/*! exports provided: IS_SERVER, rAF, useIsomorphicLayoutEffect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IS_SERVER", function() { return IS_SERVER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rAF", function() { return rAF; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIsomorphicLayoutEffect", function() { return useIsomorphicLayoutEffect; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var IS_SERVER = typeof window === 'undefined' || // @ts-ignore
+!!(typeof Deno !== 'undefined' && Deno && Deno.version && Deno.version.deno); // polyfill for requestAnimationFrame
+
+var rAF = IS_SERVER ? null : window['requestAnimationFrame'] ? function (f) {
+  return window['requestAnimationFrame'](f);
+} : function (f) {
+  return setTimeout(f, 1);
+}; // React currently throws a warning when using useLayoutEffect on the server.
+// To get around it, we can conditionally useEffect on the server (no-op) and
+// useLayoutEffect in the browser.
+
+var useIsomorphicLayoutEffect = IS_SERVER ? react__WEBPACK_IMPORTED_MODULE_0__["useEffect"] : react__WEBPACK_IMPORTED_MODULE_0__["useLayoutEffect"];
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/swr/esm/index.js ***!
+  \***************************************/
+/*! exports provided: default, trigger, mutate, SWRConfig, useSWRInfinite, cache */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _use_swr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./use-swr */ "./node_modules/swr/esm/use-swr.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "trigger", function() { return _use_swr__WEBPACK_IMPORTED_MODULE_0__["trigger"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mutate", function() { return _use_swr__WEBPACK_IMPORTED_MODULE_0__["mutate"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SWRConfig", function() { return _use_swr__WEBPACK_IMPORTED_MODULE_0__["SWRConfig"]; });
+
+/* harmony import */ var _use_swr_infinite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./use-swr-infinite */ "./node_modules/swr/esm/use-swr-infinite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSWRInfinite", function() { return _use_swr_infinite__WEBPACK_IMPORTED_MODULE_1__["useSWRInfinite"]; });
+
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./node_modules/swr/esm/config.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cache", function() { return _config__WEBPACK_IMPORTED_MODULE_2__["cache"]; });
+
+// `useSWR` and related APIs
+
+/* harmony default export */ __webpack_exports__["default"] = (_use_swr__WEBPACK_IMPORTED_MODULE_0__["default"]);
+ // `useSWRInfinite`
+
+ // Cache related, to be replaced by the new APIs
+
+
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/libs/hash.js":
+/*!*******************************************!*\
+  !*** ./node_modules/swr/esm/libs/hash.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hash; });
+// use WeakMap to store the object->key mapping
+// so the objects can be garbage collected.
+// WeakMap uses a hashtable under the hood, so the lookup
+// complexity is almost O(1).
+var table = new WeakMap(); // counter of the key
+
+var counter = 0; // hashes an array of objects and returns a string
+
+function hash(args) {
+  if (!args.length) return '';
+  var key = 'arg';
+
+  for (var i = 0; i < args.length; ++i) {
+    if (args[i] === null) {
+      key += '@null';
+      continue;
+    }
+
+    var _hash = void 0;
+
+    if (typeof args[i] !== 'object' && typeof args[i] !== 'function') {
+      // need to consider the case that args[i] is a string:
+      // args[i]        _hash
+      // "undefined" -> '"undefined"'
+      // undefined   -> 'undefined'
+      // 123         -> '123'
+      // "null"      -> '"null"'
+      if (typeof args[i] === 'string') {
+        _hash = '"' + args[i] + '"';
+      } else {
+        _hash = String(args[i]);
+      }
+    } else {
+      if (!table.has(args[i])) {
+        _hash = counter;
+        table.set(args[i], counter++);
+      } else {
+        _hash = table.get(args[i]);
+      }
+    }
+
+    key += '@' + _hash;
+  }
+
+  return key;
+}
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/libs/web-preset.js":
+/*!*************************************************!*\
+  !*** ./node_modules/swr/esm/libs/web-preset.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Due to bug https://bugs.chromium.org/p/chromium/issues/detail?id=678075,
+ * it's not reliable to detect if the browser is currently online or offline
+ * based on `navigator.onLine`.
+ * As a work around, we always assume it's online on first load, and change
+ * the status upon `online` or `offline` events.
+ */
+var online = true;
+
+var isOnline = function () {
+  return online;
+};
+
+var isDocumentVisible = function () {
+  if (typeof document !== 'undefined' && document.visibilityState !== undefined) {
+    return document.visibilityState !== 'hidden';
+  } // always assume it's visible
+
+
+  return true;
+};
+
+var fetcher = function (url) {
+  return fetch(url).then(function (res) {
+    return res.json();
+  });
+};
+
+var registerOnFocus = function (cb) {
+  if (typeof window !== 'undefined' && window.addEventListener !== undefined && typeof document !== 'undefined' && document.addEventListener !== undefined) {
+    // focus revalidate
+    document.addEventListener('visibilitychange', function () {
+      return cb();
+    }, false);
+    window.addEventListener('focus', function () {
+      return cb();
+    }, false);
+  }
+};
+
+var registerOnReconnect = function (cb) {
+  if (typeof window !== 'undefined' && window.addEventListener !== undefined) {
+    // reconnect revalidate
+    window.addEventListener('online', function () {
+      online = true;
+      cb();
+    }, false); // nothing to revalidate, just update the status
+
+    window.addEventListener('offline', function () {
+      return online = false;
+    }, false);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  isOnline: isOnline,
+  isDocumentVisible: isDocumentVisible,
+  fetcher: fetcher,
+  registerOnFocus: registerOnFocus,
+  registerOnReconnect: registerOnReconnect
+});
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/swr-config-context.js":
+/*!****************************************************!*\
+  !*** ./node_modules/swr/esm/swr-config-context.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var SWRConfigContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["createContext"])({});
+SWRConfigContext.displayName = 'SWRConfigContext';
+/* harmony default export */ __webpack_exports__["default"] = (SWRConfigContext);
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/use-swr-infinite.js":
+/*!**************************************************!*\
+  !*** ./node_modules/swr/esm/use-swr-infinite.js ***!
+  \**************************************************/
+/*! exports provided: useSWRInfinite */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSWRInfinite", function() { return useSWRInfinite; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./node_modules/swr/esm/config.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./env */ "./node_modules/swr/esm/env.js");
+/* harmony import */ var _swr_config_context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./swr-config-context */ "./node_modules/swr/esm/swr-config-context.js");
+/* harmony import */ var _use_swr__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./use-swr */ "./node_modules/swr/esm/use-swr.js");
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = undefined && undefined.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function () {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) try {
+      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+      if (y = 0, t) op = [op[0] & 2, t.value];
+
+      switch (op[0]) {
+        case 0:
+        case 1:
+          t = op;
+          break;
+
+        case 4:
+          _.label++;
+          return {
+            value: op[1],
+            done: false
+          };
+
+        case 5:
+          _.label++;
+          y = op[1];
+          op = [0];
+          continue;
+
+        case 7:
+          op = _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+
+        default:
+          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+            _ = 0;
+            continue;
+          }
+
+          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+            _.label = op[1];
+            break;
+          }
+
+          if (op[0] === 6 && _.label < t[1]) {
+            _.label = t[1];
+            t = op;
+            break;
+          }
+
+          if (t && _.label < t[2]) {
+            _.label = t[2];
+
+            _.ops.push(op);
+
+            break;
+          }
+
+          if (t[2]) _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+      }
+
+      op = body.call(thisArg, _);
+    } catch (e) {
+      op = [6, e];
+      y = 0;
+    } finally {
+      f = t = 0;
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+var __rest = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+}; // TODO: use @ts-expect-error
+
+
+
+
+
+
+
+
+function useSWRInfinite() {
+  var _this = this;
+
+  var args = [];
+
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
+
+  var getKey = args[0];
+  var config = Object.assign({}, _config__WEBPACK_IMPORTED_MODULE_1__["default"], Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_swr_config_context__WEBPACK_IMPORTED_MODULE_3__["default"]), args.length > 2 ? args[2] : args.length === 2 && typeof args[1] === 'object' ? args[1] : {}); // in typescript args.length > 2 is not same as args.lenth === 3
+  // we do a safe type assertion here
+  // args.length === 3
+
+  var fn = args.length > 2 ? args[1] : args.length === 2 && typeof args[1] === 'function' ? args[1] : config.fetcher;
+
+  var _a = config.initialSize,
+      initialSize = _a === void 0 ? 1 : _a,
+      _b = config.revalidateAll,
+      revalidateAll = _b === void 0 ? false : _b,
+      _c = config.persistSize,
+      persistSize = _c === void 0 ? false : _c,
+      extraConfig = __rest(config // get the serialized key of the first page
+  , ["initialSize", "revalidateAll", "persistSize"]); // get the serialized key of the first page
+
+
+  var firstPageKey = null;
+
+  try {
+    ;
+    firstPageKey = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].serializeKey(getKey(0, null))[0];
+  } catch (err) {// not ready
+  }
+
+  var rerender = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({})[1]; // we use cache to pass extra info (context) to fetcher so it can be globally shared
+  // here we get the key of the fetcher context cache
+
+  var contextCacheKey = null;
+
+  if (firstPageKey) {
+    contextCacheKey = 'ctx@' + firstPageKey;
+  } // page size is also cached to share the page data between hooks having the same key
+
+
+  var pageSizeCacheKey = null;
+
+  if (firstPageKey) {
+    pageSizeCacheKey = 'len@' + firstPageKey;
+  }
+
+  var didMountRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(false);
+  var resolvePageSize = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
+    var cachedPageSize = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(pageSizeCacheKey);
+    return typeof cachedPageSize !== 'undefined' ? cachedPageSize : initialSize;
+  }, [pageSizeCacheKey, initialSize]); // keep the last page size to restore it with the persistSize option
+
+  var lastPageSizeRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(resolvePageSize()); // every time the key changes, we reset the page size if it's not persisted
+
+  Object(_env__WEBPACK_IMPORTED_MODULE_2__["useIsomorphicLayoutEffect"])(function () {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    } // If the key has been changed, we keep the current page size if persistSize is enabled
+
+
+    _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(pageSizeCacheKey, persistSize ? lastPageSizeRef.current : initialSize); // initialSize isn't allowed to change during the lifecycle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstPageKey]); // keep the data inside a ref
+
+  var dataRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(); // actual swr of all pages
+
+  var swr = Object(_use_swr__WEBPACK_IMPORTED_MODULE_4__["default"])(firstPageKey ? ['inf', firstPageKey] : null, function () {
+    return __awaiter(_this, void 0, void 0, function () {
+      var _a, originalData, force, data, pageSize, previousPageData, i, _b, pageKey, pageArgs, pageData, shouldFetchPage;
+
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            _a = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(contextCacheKey) || {}, originalData = _a.data, force = _a.force;
+            data = [];
+            pageSize = resolvePageSize();
+            previousPageData = null;
+            i = 0;
+            _c.label = 1;
+
+          case 1:
+            if (!(i < pageSize)) return [3
+            /*break*/
+            , 8];
+            _b = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].serializeKey(getKey(i, previousPageData)), pageKey = _b[0], pageArgs = _b[1];
+
+            if (!pageKey) {
+              // pageKey is falsy, stop fetching next pages
+              return [3
+              /*break*/
+              , 8];
+            }
+
+            pageData = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(pageKey);
+            shouldFetchPage = revalidateAll || force || typeof pageData === 'undefined' || typeof force === 'undefined' && i === 0 && typeof dataRef.current !== 'undefined' || originalData && !config.compare(originalData[i], pageData);
+            if (!shouldFetchPage) return [3
+            /*break*/
+            , 6];
+            if (!(pageArgs !== null)) return [3
+            /*break*/
+            , 3];
+            return [4
+            /*yield*/
+            , fn.apply(void 0, pageArgs)];
+
+          case 2:
+            pageData = _c.sent();
+            return [3
+            /*break*/
+            , 5];
+
+          case 3:
+            return [4
+            /*yield*/
+            , fn(pageKey)];
+
+          case 4:
+            pageData = _c.sent();
+            _c.label = 5;
+
+          case 5:
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(pageKey, pageData);
+            _c.label = 6;
+
+          case 6:
+            data.push(pageData);
+            previousPageData = pageData;
+            _c.label = 7;
+
+          case 7:
+            ++i;
+            return [3
+            /*break*/
+            , 1];
+
+          case 8:
+            // once we executed the data fetching based on the context, clear the context
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].delete(contextCacheKey); // return the data
+
+            return [2
+            /*return*/
+            , data];
+        }
+      });
+    });
+  }, extraConfig); // update dataRef
+
+  Object(_env__WEBPACK_IMPORTED_MODULE_2__["useIsomorphicLayoutEffect"])(function () {
+    dataRef.current = swr.data;
+  }, [swr.data]);
+  var mutate = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (data, shouldRevalidate) {
+    if (shouldRevalidate === void 0) {
+      shouldRevalidate = true;
+    }
+
+    if (shouldRevalidate && typeof data !== 'undefined') {
+      // we only revalidate the pages that are changed
+      var originalData = dataRef.current;
+      _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(contextCacheKey, {
+        data: originalData,
+        force: false
+      });
+    } else if (shouldRevalidate) {
+      // calling `mutate()`, we revalidate all pages
+      _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(contextCacheKey, {
+        force: true
+      });
+    }
+
+    return swr.mutate(data, shouldRevalidate);
+  }, // swr.mutate is always the same reference
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [contextCacheKey]); // extend the SWR API
+
+  var setSize = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (arg) {
+    var size;
+
+    if (typeof arg === 'function') {
+      size = arg(resolvePageSize());
+    } else if (typeof arg === 'number') {
+      size = arg;
+    }
+
+    if (typeof size === 'number') {
+      _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(pageSizeCacheKey, size);
+      lastPageSizeRef.current = size;
+    }
+
+    rerender({});
+    return mutate(function (v) {
+      return v;
+    });
+  }, // immutability of rerender is guaranteed by React, but react-hooks/exhaustive-deps doesn't recognize it
+  // from `rerender = useState({})[1], so we put rerender here
+  [pageSizeCacheKey, resolvePageSize, mutate, rerender]); // Use getter functions to avoid unnecessary re-renders caused by triggering all the getters of the returned swr object
+
+  var swrInfinite = {
+    size: resolvePageSize(),
+    setSize: setSize,
+    mutate: mutate
+  };
+  Object.defineProperties(swrInfinite, {
+    error: {
+      get: function () {
+        return swr.error;
+      },
+      enumerable: true
+    },
+    data: {
+      get: function () {
+        return swr.data;
+      },
+      enumerable: true
+    },
+    // revalidate will be deprecated in the 1.x release
+    // because mutate() covers the same use case of revalidate().
+    // This remains only for backward compatibility
+    revalidate: {
+      get: function () {
+        return swr.revalidate;
+      },
+      enumerable: true
+    },
+    isValidating: {
+      get: function () {
+        return swr.isValidating;
+      },
+      enumerable: true
+    }
+  });
+  return swrInfinite;
+}
+
+
+
+/***/ }),
+
+/***/ "./node_modules/swr/esm/use-swr.js":
+/*!*****************************************!*\
+  !*** ./node_modules/swr/esm/use-swr.js ***!
+  \*****************************************/
+/*! exports provided: trigger, mutate, SWRConfig, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trigger", function() { return trigger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mutate", function() { return mutate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SWRConfig", function() { return SWRConfig; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./node_modules/swr/esm/config.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./env */ "./node_modules/swr/esm/env.js");
+/* harmony import */ var _swr_config_context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./swr-config-context */ "./node_modules/swr/esm/swr-config-context.js");
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = undefined && undefined.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function () {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) try {
+      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+      if (y = 0, t) op = [op[0] & 2, t.value];
+
+      switch (op[0]) {
+        case 0:
+        case 1:
+          t = op;
+          break;
+
+        case 4:
+          _.label++;
+          return {
+            value: op[1],
+            done: false
+          };
+
+        case 5:
+          _.label++;
+          y = op[1];
+          op = [0];
+          continue;
+
+        case 7:
+          op = _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+
+        default:
+          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+            _ = 0;
+            continue;
+          }
+
+          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+            _.label = op[1];
+            break;
+          }
+
+          if (op[0] === 6 && _.label < t[1]) {
+            _.label = t[1];
+            t = op;
+            break;
+          }
+
+          if (t && _.label < t[2]) {
+            _.label = t[2];
+
+            _.ops.push(op);
+
+            break;
+          }
+
+          if (t[2]) _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+      }
+
+      op = body.call(thisArg, _);
+    } catch (e) {
+      op = [6, e];
+      y = 0;
+    } finally {
+      f = t = 0;
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+}; // TODO: use @ts-expect-error
+
+
+
+
+
+ // global state managers
+
+var CONCURRENT_PROMISES = {};
+var CONCURRENT_PROMISES_TS = {};
+var FOCUS_REVALIDATORS = {};
+var RECONNECT_REVALIDATORS = {};
+var CACHE_REVALIDATORS = {};
+var MUTATION_TS = {};
+var MUTATION_END_TS = {}; // generate strictly increasing timestamps
+
+var now = function () {
+  var ts = 0;
+  return function () {
+    return ++ts;
+  };
+}(); // setup DOM events listeners for `focus` and `reconnect` actions
+
+
+if (!_env__WEBPACK_IMPORTED_MODULE_2__["IS_SERVER"]) {
+  var revalidate_1 = function (revalidators) {
+    if (!_config__WEBPACK_IMPORTED_MODULE_1__["default"].isDocumentVisible() || !_config__WEBPACK_IMPORTED_MODULE_1__["default"].isOnline()) return;
+
+    for (var key in revalidators) {
+      if (revalidators[key][0]) revalidators[key][0]();
+    }
+  };
+
+  if (typeof _config__WEBPACK_IMPORTED_MODULE_1__["default"].registerOnFocus === 'function') {
+    _config__WEBPACK_IMPORTED_MODULE_1__["default"].registerOnFocus(function () {
+      return revalidate_1(FOCUS_REVALIDATORS);
+    });
+  }
+
+  if (typeof _config__WEBPACK_IMPORTED_MODULE_1__["default"].registerOnReconnect === 'function') {
+    _config__WEBPACK_IMPORTED_MODULE_1__["default"].registerOnReconnect(function () {
+      return revalidate_1(RECONNECT_REVALIDATORS);
+    });
+  }
+}
+
+var trigger = function (_key, shouldRevalidate) {
+  if (shouldRevalidate === void 0) {
+    shouldRevalidate = true;
+  } // we are ignoring the second argument which correspond to the arguments
+  // the fetcher will receive when key is an array
+
+
+  var _a = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].serializeKey(_key),
+      key = _a[0],
+      keyErr = _a[2],
+      keyValidating = _a[3];
+
+  if (!key) return Promise.resolve();
+  var updaters = CACHE_REVALIDATORS[key];
+
+  if (key && updaters) {
+    var currentData = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key);
+    var currentError = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(keyErr);
+    var currentIsValidating = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(keyValidating);
+    var promises = [];
+
+    for (var i = 0; i < updaters.length; ++i) {
+      promises.push(updaters[i](shouldRevalidate, currentData, currentError, currentIsValidating, i > 0));
+    } // return new updated value
+
+
+    return Promise.all(promises).then(function () {
+      return _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key);
+    });
+  }
+
+  return Promise.resolve(_config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key));
+};
+
+var broadcastState = function (key, data, error, isValidating) {
+  var updaters = CACHE_REVALIDATORS[key];
+
+  if (key && updaters) {
+    for (var i = 0; i < updaters.length; ++i) {
+      updaters[i](false, data, error, isValidating);
+    }
+  }
+};
+
+var mutate = function (_key, _data, shouldRevalidate) {
+  if (shouldRevalidate === void 0) {
+    shouldRevalidate = true;
+  }
+
+  return __awaiter(void 0, void 0, void 0, function () {
+    var _a, key, keyErr, beforeMutationTs, beforeConcurrentPromisesTs, data, error, isAsyncMutation, err_1, shouldAbort, updaters, promises, i;
+
+    return __generator(this, function (_b) {
+      switch (_b.label) {
+        case 0:
+          _a = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].serializeKey(_key), key = _a[0], keyErr = _a[2];
+          if (!key) return [2
+          /*return*/
+          ]; // if there is no new data to update, let's just revalidate the key
+
+          if (typeof _data === 'undefined') return [2
+          /*return*/
+          , trigger(_key, shouldRevalidate) // update global timestamps
+          ]; // update global timestamps
+
+          MUTATION_TS[key] = now() - 1;
+          MUTATION_END_TS[key] = 0;
+          beforeMutationTs = MUTATION_TS[key];
+          beforeConcurrentPromisesTs = CONCURRENT_PROMISES_TS[key];
+          isAsyncMutation = false;
+
+          if (_data && typeof _data === 'function') {
+            // `_data` is a function, call it passing current cache value
+            try {
+              _data = _data(_config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key));
+            } catch (err) {
+              // if `_data` function throws an error synchronously, it shouldn't be cached
+              _data = undefined;
+              error = err;
+            }
+          }
+
+          if (!(_data && typeof _data.then === 'function')) return [3
+          /*break*/
+          , 5]; // `_data` is a promise
+
+          isAsyncMutation = true;
+          _b.label = 1;
+
+        case 1:
+          _b.trys.push([1, 3,, 4]);
+
+          return [4
+          /*yield*/
+          , _data];
+
+        case 2:
+          data = _b.sent();
+          return [3
+          /*break*/
+          , 4];
+
+        case 3:
+          err_1 = _b.sent();
+          error = err_1;
+          return [3
+          /*break*/
+          , 4];
+
+        case 4:
+          return [3
+          /*break*/
+          , 6];
+
+        case 5:
+          data = _data;
+          _b.label = 6;
+
+        case 6:
+          shouldAbort = function () {
+            // check if other mutations have occurred since we've started this mutation
+            if (beforeMutationTs !== MUTATION_TS[key] || beforeConcurrentPromisesTs !== CONCURRENT_PROMISES_TS[key]) {
+              if (error) throw error;
+              return true;
+            }
+          }; // if there's a race we don't update cache or broadcast change, just return the data
+
+
+          if (shouldAbort()) return [2
+          /*return*/
+          , data];
+
+          if (typeof data !== 'undefined') {
+            // update cached data
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(key, data);
+          } // always update or reset the error
+
+
+          _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(keyErr, error); // reset the timestamp to mark the mutation has ended
+
+          MUTATION_END_TS[key] = now() - 1;
+
+          if (!isAsyncMutation) {
+            // we skip broadcasting if there's another mutation happened synchronously
+            if (shouldAbort()) return [2
+            /*return*/
+            , data];
+          }
+
+          updaters = CACHE_REVALIDATORS[key];
+
+          if (updaters) {
+            promises = [];
+
+            for (i = 0; i < updaters.length; ++i) {
+              promises.push(updaters[i](!!shouldRevalidate, data, error, undefined, i > 0));
+            } // return new updated value
+
+
+            return [2
+            /*return*/
+            , Promise.all(promises).then(function () {
+              if (error) throw error;
+              return _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key);
+            })];
+          } // throw error or return data to be used by caller of mutate
+
+
+          if (error) throw error;
+          return [2
+          /*return*/
+          , data];
+      }
+    });
+  });
+};
+
+function useSWR() {
+  var _this = this;
+
+  var args = [];
+
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
+
+  var _key = args[0];
+  var config = Object.assign({}, _config__WEBPACK_IMPORTED_MODULE_1__["default"], Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_swr_config_context__WEBPACK_IMPORTED_MODULE_3__["default"]), args.length > 2 ? args[2] : args.length === 2 && typeof args[1] === 'object' ? args[1] : {}); // in typescript args.length > 2 is not same as args.lenth === 3
+  // we do a safe type assertion here
+  // args.length === 3
+
+  var fn = args.length > 2 ? args[1] : args.length === 2 && typeof args[1] === 'function' ? args[1] :
+  /**
+      pass fn as null will disable revalidate
+      https://paco.sh/blog/shared-hook-state-with-swr
+    */
+  args[1] === null ? args[1] : config.fetcher; // we assume `key` as the identifier of the request
+  // `key` can change but `fn` shouldn't
+  // (because `revalidate` only depends on `key`)
+  // `keyErr` is the cache key for error objects
+
+  var _a = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].serializeKey(_key),
+      key = _a[0],
+      fnArgs = _a[1],
+      keyErr = _a[2],
+      keyValidating = _a[3];
+
+  var configRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(config);
+  Object(_env__WEBPACK_IMPORTED_MODULE_2__["useIsomorphicLayoutEffect"])(function () {
+    configRef.current = config;
+  });
+
+  var willRevalidateOnMount = function () {
+    return config.revalidateOnMount || !config.initialData && config.revalidateOnMount === undefined;
+  };
+
+  var resolveData = function () {
+    var cachedData = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key);
+    return typeof cachedData === 'undefined' ? config.initialData : cachedData;
+  };
+
+  var resolveIsValidating = function () {
+    return !!_config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(keyValidating) || key && willRevalidateOnMount();
+  };
+
+  var initialData = resolveData();
+  var initialError = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(keyErr);
+  var initialIsValidating = resolveIsValidating(); // if a state is accessed (data, error or isValidating),
+  // we add the state to dependencies so if the state is
+  // updated in the future, we can trigger a rerender
+
+  var stateDependencies = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])({
+    data: false,
+    error: false,
+    isValidating: false
+  });
+  var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])({
+    data: initialData,
+    error: initialError,
+    isValidating: initialIsValidating
+  }); // display the data label in the React DevTools next to SWR hooks
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useDebugValue"])(stateRef.current.data);
+  var rerender = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({})[1];
+  var dispatch = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (payload) {
+    var shouldUpdateState = false;
+
+    for (var k in payload) {
+      // @ts-ignore
+      if (stateRef.current[k] === payload[k]) {
+        continue;
+      } // @ts-ignore
+
+
+      stateRef.current[k] = payload[k]; // @ts-ignore
+
+      if (stateDependencies.current[k]) {
+        shouldUpdateState = true;
+      }
+    }
+
+    if (shouldUpdateState) {
+      // if component is unmounted, should skip rerender
+      // if component is not mounted, should skip rerender
+      if (unmountedRef.current || !initialMountedRef.current) return;
+      rerender({});
+    }
+  }, // config.suspense isn't allowed to change during the lifecycle
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  []); // error ref inside revalidate (is last request errored?)
+
+  var unmountedRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(false);
+  var keyRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(key); // check if component is mounted in suspense mode
+
+  var initialMountedRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(false); // do unmount check for callbacks
+
+  var eventsCallback = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (event) {
+    var _a;
+
+    var params = [];
+
+    for (var _i = 1; _i < arguments.length; _i++) {
+      params[_i - 1] = arguments[_i];
+    }
+
+    if (unmountedRef.current) return;
+    if (!initialMountedRef.current) return;
+    if (key !== keyRef.current) return; // @ts-ignore
+
+    (_a = configRef.current)[event].apply(_a, params);
+  }, [key]);
+  var boundMutate = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (data, shouldRevalidate) {
+    return mutate(keyRef.current, data, shouldRevalidate);
+  }, []);
+
+  var addRevalidator = function (revalidators, callback) {
+    if (!revalidators[key]) {
+      revalidators[key] = [callback];
+    } else {
+      revalidators[key].push(callback);
+    }
+
+    return function () {
+      var keyedRevalidators = revalidators[key];
+      var index = keyedRevalidators.indexOf(callback);
+
+      if (index >= 0) {
+        // O(1): faster than splice
+        keyedRevalidators[index] = keyedRevalidators[keyedRevalidators.length - 1];
+        keyedRevalidators.pop();
+      }
+    };
+  }; // start a revalidation
+
+
+  var revalidate = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (revalidateOpts) {
+    if (revalidateOpts === void 0) {
+      revalidateOpts = {};
+    }
+
+    return __awaiter(_this, void 0, void 0, function () {
+      var _a, retryCount, _b, dedupe, loading, shouldDeduping, newData, startAt, newState, err_2;
+
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (!key || !fn) return [2
+            /*return*/
+            , false];
+            if (unmountedRef.current) return [2
+            /*return*/
+            , false];
+            if (configRef.current.isPaused()) return [2
+            /*return*/
+            , false];
+            _a = revalidateOpts.retryCount, retryCount = _a === void 0 ? 0 : _a, _b = revalidateOpts.dedupe, dedupe = _b === void 0 ? false : _b;
+            loading = true;
+            shouldDeduping = typeof CONCURRENT_PROMISES[key] !== 'undefined' && dedupe;
+            _c.label = 1;
+
+          case 1:
+            _c.trys.push([1, 6,, 7]);
+
+            dispatch({
+              isValidating: true
+            });
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(keyValidating, true);
+
+            if (!shouldDeduping) {
+              // also update other hooks
+              broadcastState(key, stateRef.current.data, stateRef.current.error, true);
+            }
+
+            newData = void 0;
+            startAt = void 0;
+            if (!shouldDeduping) return [3
+            /*break*/
+            , 3]; // there's already an ongoing request,
+            // this one needs to be deduplicated.
+
+            startAt = CONCURRENT_PROMISES_TS[key];
+            return [4
+            /*yield*/
+            , CONCURRENT_PROMISES[key]];
+
+          case 2:
+            newData = _c.sent();
+            return [3
+            /*break*/
+            , 5];
+
+          case 3:
+            // if no cache being rendered currently (it shows a blank page),
+            // we trigger the loading slow event.
+            if (config.loadingTimeout && !_config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key)) {
+              setTimeout(function () {
+                if (loading) eventsCallback('onLoadingSlow', key, config);
+              }, config.loadingTimeout);
+            }
+
+            if (fnArgs !== null) {
+              CONCURRENT_PROMISES[key] = fn.apply(void 0, fnArgs);
+            } else {
+              CONCURRENT_PROMISES[key] = fn(key);
+            }
+
+            CONCURRENT_PROMISES_TS[key] = startAt = now();
+            return [4
+            /*yield*/
+            , CONCURRENT_PROMISES[key]];
+
+          case 4:
+            newData = _c.sent();
+            setTimeout(function () {
+              delete CONCURRENT_PROMISES[key];
+              delete CONCURRENT_PROMISES_TS[key];
+            }, config.dedupingInterval); // trigger the success event,
+            // only do this for the original request.
+
+            eventsCallback('onSuccess', newData, key, config);
+            _c.label = 5;
+
+          case 5:
+            // if there're other ongoing request(s), started after the current one,
+            // we need to ignore the current one to avoid possible race conditions:
+            //   req1------------------>res1        (current one)
+            //        req2---------------->res2
+            // the request that fired later will always be kept.
+            if (CONCURRENT_PROMISES_TS[key] > startAt) {
+              return [2
+              /*return*/
+              , false];
+            } // if there're other mutations(s), overlapped with the current revalidation:
+            // case 1:
+            //   req------------------>res
+            //       mutate------>end
+            // case 2:
+            //         req------------>res
+            //   mutate------>end
+            // case 3:
+            //   req------------------>res
+            //       mutate-------...---------->
+            // we have to ignore the revalidation result (res) because it's no longer fresh.
+            // meanwhile, a new revalidation should be triggered when the mutation ends.
+
+
+            if (MUTATION_TS[key] && ( // case 1
+            startAt <= MUTATION_TS[key] || // case 2
+            startAt <= MUTATION_END_TS[key] || // case 3
+            MUTATION_END_TS[key] === 0)) {
+              dispatch({
+                isValidating: false
+              });
+              return [2
+              /*return*/
+              , false];
+            }
+
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(keyErr, undefined);
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(keyValidating, false);
+            newState = {
+              isValidating: false
+            };
+
+            if (typeof stateRef.current.error !== 'undefined') {
+              // we don't have an error
+              newState.error = undefined;
+            }
+
+            if (!config.compare(stateRef.current.data, newData)) {
+              // deep compare to avoid extra re-render
+              // data changed
+              newState.data = newData;
+              _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(key, newData);
+            } // merge the new state
+
+
+            dispatch(newState);
+
+            if (!shouldDeduping) {
+              // also update other hooks
+              broadcastState(key, newData, newState.error, false);
+            }
+
+            return [3
+            /*break*/
+            , 7];
+
+          case 6:
+            err_2 = _c.sent();
+            delete CONCURRENT_PROMISES[key];
+            delete CONCURRENT_PROMISES_TS[key];
+
+            if (configRef.current.isPaused()) {
+              dispatch({
+                isValidating: false
+              });
+              return [2
+              /*return*/
+              , false];
+            }
+
+            _config__WEBPACK_IMPORTED_MODULE_1__["cache"].set(keyErr, err_2); // get a new error
+            // don't use deep equal for errors
+
+            if (stateRef.current.error !== err_2) {
+              // we keep the stale data
+              dispatch({
+                isValidating: false,
+                error: err_2
+              });
+
+              if (!shouldDeduping) {
+                // also broadcast to update other hooks
+                broadcastState(key, undefined, err_2, false);
+              }
+            } // events and retry
+
+
+            eventsCallback('onError', err_2, key, config);
+
+            if (config.shouldRetryOnError) {
+              // when retrying, we always enable deduping
+              eventsCallback('onErrorRetry', err_2, key, config, revalidate, {
+                retryCount: retryCount + 1,
+                dedupe: true
+              });
+            }
+
+            return [3
+            /*break*/
+            , 7];
+
+          case 7:
+            loading = false;
+            return [2
+            /*return*/
+            , true];
+        }
+      });
+    });
+  }, // dispatch is immutable, and `eventsCallback`, `fnArgs`, `keyErr`, and `keyValidating` are based on `key`,
+  // so we can them from the deps array.
+  //
+  // FIXME:
+  // `fn` and `config` might be changed during the lifecycle,
+  // but they might be changed every render like this.
+  // useSWR('key', () => fetch('/api/'), { suspense: true })
+  // So we omit the values from the deps array
+  // even though it might cause unexpected behaviors.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [key]); // mounted (client side rendering)
+
+  Object(_env__WEBPACK_IMPORTED_MODULE_2__["useIsomorphicLayoutEffect"])(function () {
+    if (!key) return undefined; // after `key` updates, we need to mark it as mounted
+
+    unmountedRef.current = false;
+    var isUpdating = initialMountedRef.current;
+    initialMountedRef.current = true; // after the component is mounted (hydrated),
+    // we need to update the data from the cache
+    // and trigger a revalidation
+
+    var currentHookData = stateRef.current.data;
+    var latestKeyedData = resolveData(); // update the state if the key changed (not the inital render) or cache updated
+
+    keyRef.current = key;
+
+    if (!config.compare(currentHookData, latestKeyedData)) {
+      dispatch({
+        data: latestKeyedData
+      });
+    } // revalidate with deduping
+
+
+    var softRevalidate = function () {
+      return revalidate({
+        dedupe: true
+      });
+    }; // trigger a revalidation
+
+
+    if (isUpdating || willRevalidateOnMount()) {
+      if (typeof latestKeyedData !== 'undefined' && !_env__WEBPACK_IMPORTED_MODULE_2__["IS_SERVER"]) {
+        // delay revalidate if there's cache
+        // to not block the rendering
+        // @ts-ignore it's safe to use requestAnimationFrame in browser
+        Object(_env__WEBPACK_IMPORTED_MODULE_2__["rAF"])(softRevalidate);
+      } else {
+        softRevalidate();
+      }
+    }
+
+    var pending = false;
+
+    var onFocus = function () {
+      if (pending || !configRef.current.revalidateOnFocus) return;
+      pending = true;
+      softRevalidate();
+      setTimeout(function () {
+        return pending = false;
+      }, configRef.current.focusThrottleInterval);
+    };
+
+    var onReconnect = function () {
+      if (configRef.current.revalidateOnReconnect) {
+        softRevalidate();
+      }
+    }; // register global cache update listener
+
+
+    var onUpdate = function (shouldRevalidate, updatedData, updatedError, updatedIsValidating, dedupe) {
+      if (shouldRevalidate === void 0) {
+        shouldRevalidate = true;
+      }
+
+      if (dedupe === void 0) {
+        dedupe = true;
+      } // update hook state
+
+
+      var newState = {};
+      var needUpdate = false;
+
+      if (typeof updatedData !== 'undefined' && !config.compare(stateRef.current.data, updatedData)) {
+        newState.data = updatedData;
+        needUpdate = true;
+      } // always update error
+      // because it can be `undefined`
+
+
+      if (stateRef.current.error !== updatedError) {
+        newState.error = updatedError;
+        needUpdate = true;
+      }
+
+      if (typeof updatedIsValidating !== 'undefined' && stateRef.current.isValidating !== updatedIsValidating) {
+        newState.isValidating = updatedIsValidating;
+        needUpdate = true;
+      }
+
+      if (needUpdate) {
+        dispatch(newState);
+      }
+
+      if (shouldRevalidate) {
+        if (dedupe) {
+          return softRevalidate();
+        } else {
+          return revalidate();
+        }
+      }
+
+      return false;
+    };
+
+    var unsubFocus = addRevalidator(FOCUS_REVALIDATORS, onFocus);
+    var unsubReconnect = addRevalidator(RECONNECT_REVALIDATORS, onReconnect);
+    var unsubUpdate = addRevalidator(CACHE_REVALIDATORS, onUpdate);
+    return function () {
+      // cleanup
+      dispatch = function () {
+        return null;
+      }; // mark it as unmounted
+
+
+      unmountedRef.current = true;
+      unsubFocus();
+      unsubReconnect();
+      unsubUpdate();
+    };
+  }, [key, revalidate]);
+  Object(_env__WEBPACK_IMPORTED_MODULE_2__["useIsomorphicLayoutEffect"])(function () {
+    var timer = null;
+
+    var tick = function () {
+      return __awaiter(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              if (!(!stateRef.current.error && (configRef.current.refreshWhenHidden || configRef.current.isDocumentVisible()) && (configRef.current.refreshWhenOffline || configRef.current.isOnline()))) return [3
+              /*break*/
+              , 2]; // only revalidate when the page is visible
+              // if API request errored, we stop polling in this round
+              // and let the error retry function handle it
+
+              return [4
+              /*yield*/
+              , revalidate({
+                dedupe: true
+              })];
+
+            case 1:
+              // only revalidate when the page is visible
+              // if API request errored, we stop polling in this round
+              // and let the error retry function handle it
+              _a.sent();
+
+              _a.label = 2;
+
+            case 2:
+              // Read the latest refreshInterval
+              if (configRef.current.refreshInterval && timer) {
+                timer = setTimeout(tick, configRef.current.refreshInterval);
+              }
+
+              return [2
+              /*return*/
+              ];
+          }
+        });
+      });
+    };
+
+    if (configRef.current.refreshInterval) {
+      timer = setTimeout(tick, configRef.current.refreshInterval);
+    }
+
+    return function () {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    };
+  }, [config.refreshInterval, config.refreshWhenHidden, config.refreshWhenOffline, revalidate]); // suspense
+
+  var latestData;
+  var latestError;
+
+  if (config.suspense) {
+    // in suspense mode, we can't return empty state
+    // (it should be suspended)
+    // try to get data and error from cache
+    latestData = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(key);
+    latestError = _config__WEBPACK_IMPORTED_MODULE_1__["cache"].get(keyErr);
+
+    if (typeof latestData === 'undefined') {
+      latestData = initialData;
+    }
+
+    if (typeof latestError === 'undefined') {
+      latestError = initialError;
+    }
+
+    if (typeof latestData === 'undefined' && typeof latestError === 'undefined') {
+      // need to start the request if it hasn't
+      if (!CONCURRENT_PROMISES[key]) {
+        // trigger revalidate immediately
+        // to get the promise
+        // in this revalidate, should not rerender
+        revalidate();
+      }
+
+      if (CONCURRENT_PROMISES[key] && typeof CONCURRENT_PROMISES[key].then === 'function') {
+        // if it is a promise
+        throw CONCURRENT_PROMISES[key];
+      } // it's a value, return it directly (override)
+
+
+      latestData = CONCURRENT_PROMISES[key];
+    }
+
+    if (typeof latestData === 'undefined' && latestError) {
+      // in suspense mode, throw error if there's no content
+      throw latestError;
+    }
+  } // define returned state
+  // can be memorized since the state is a ref
+
+
+  var memoizedState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () {
+    // revalidate will be deprecated in the 1.x release
+    // because mutate() covers the same use case of revalidate().
+    // This remains only for backward compatibility
+    var state = {
+      revalidate: revalidate,
+      mutate: boundMutate
+    };
+    Object.defineProperties(state, {
+      error: {
+        // `key` might be changed in the upcoming hook re-render,
+        // but the previous state will stay
+        // so we need to match the latest key and data (fallback to `initialData`)
+        get: function () {
+          stateDependencies.current.error = true;
+
+          if (config.suspense) {
+            return latestError;
+          }
+
+          return keyRef.current === key ? stateRef.current.error : initialError;
+        },
+        enumerable: true
+      },
+      data: {
+        get: function () {
+          stateDependencies.current.data = true;
+
+          if (config.suspense) {
+            return latestData;
+          }
+
+          return keyRef.current === key ? stateRef.current.data : initialData;
+        },
+        enumerable: true
+      },
+      isValidating: {
+        get: function () {
+          stateDependencies.current.isValidating = true;
+          return key ? stateRef.current.isValidating : false;
+        },
+        enumerable: true
+      }
+    });
+    return state; // `config.suspense` isn't allowed to change during the lifecycle.
+    // `boundMutate` is immutable, and the immutability of `revalidate` depends on `key`
+    // so we can omit them from the deps array,
+    // but we put it to enable react-hooks/exhaustive-deps rule.
+    // `initialData` and `initialError` are not initial values
+    // because they are changed during the lifecycle
+    // so we should add them in the deps array.
+  }, [revalidate, initialData, initialError, boundMutate, key, config.suspense, latestError, latestData]);
+  return memoizedState;
+}
+
+Object.defineProperty(_swr_config_context__WEBPACK_IMPORTED_MODULE_3__["default"].Provider, 'default', {
+  value: _config__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
+var SWRConfig = _swr_config_context__WEBPACK_IMPORTED_MODULE_3__["default"].Provider;
+
+/* harmony default export */ __webpack_exports__["default"] = (useSWR);
 
 /***/ }),
 
@@ -38159,6 +40496,201 @@ module.exports = function (module) {
 
 /***/ }),
 
+/***/ "./node_modules/webpack/hot/dev-server.js":
+/*!***********************************!*\
+  !*** (webpack)/hot/dev-server.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+/*globals window __webpack_hash__ */
+if (true) {
+  var lastHash;
+
+  var upToDate = function upToDate() {
+    return lastHash.indexOf(__webpack_require__.h()) >= 0;
+  };
+
+  var log = __webpack_require__(/*! ./log */ "./node_modules/webpack/hot/log.js");
+
+  var check = function check() {
+    module.hot.check(true).then(function (updatedModules) {
+      if (!updatedModules) {
+        log("warning", "[HMR] Cannot find update. Need to do a full reload!");
+        log("warning", "[HMR] (Probably because of restarting the webpack-dev-server)");
+        window.location.reload();
+        return;
+      }
+
+      if (!upToDate()) {
+        check();
+      }
+
+      __webpack_require__(/*! ./log-apply-result */ "./node_modules/webpack/hot/log-apply-result.js")(updatedModules, updatedModules);
+
+      if (upToDate()) {
+        log("info", "[HMR] App is up to date.");
+      }
+    }).catch(function (err) {
+      var status = module.hot.status();
+
+      if (["abort", "fail"].indexOf(status) >= 0) {
+        log("warning", "[HMR] Cannot apply update. Need to do a full reload!");
+        log("warning", "[HMR] " + log.formatError(err));
+        window.location.reload();
+      } else {
+        log("warning", "[HMR] Update failed: " + log.formatError(err));
+      }
+    });
+  };
+
+  var hotEmitter = __webpack_require__(/*! ./emitter */ "./node_modules/webpack/hot/emitter.js");
+
+  hotEmitter.on("webpackHotUpdate", function (currentHash) {
+    lastHash = currentHash;
+
+    if (!upToDate() && module.hot.status() === "idle") {
+      log("info", "[HMR] Checking for updates on the server...");
+      check();
+    }
+  });
+  log("info", "[HMR] Waiting for update signal from WDS...");
+} else {}
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/emitter.js":
+/*!********************************!*\
+  !*** (webpack)/hot/emitter.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var EventEmitter = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+
+module.exports = new EventEmitter();
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/log-apply-result.js":
+/*!*****************************************!*\
+  !*** (webpack)/hot/log-apply-result.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+module.exports = function (updatedModules, renewedModules) {
+  var unacceptedModules = updatedModules.filter(function (moduleId) {
+    return renewedModules && renewedModules.indexOf(moduleId) < 0;
+  });
+
+  var log = __webpack_require__(/*! ./log */ "./node_modules/webpack/hot/log.js");
+
+  if (unacceptedModules.length > 0) {
+    log("warning", "[HMR] The following modules couldn't be hot updated: (They would need a full reload!)");
+    unacceptedModules.forEach(function (moduleId) {
+      log("warning", "[HMR]  - " + moduleId);
+    });
+  }
+
+  if (!renewedModules || renewedModules.length === 0) {
+    log("info", "[HMR] Nothing hot updated.");
+  } else {
+    log("info", "[HMR] Updated modules:");
+    renewedModules.forEach(function (moduleId) {
+      if (typeof moduleId === "string" && moduleId.indexOf("!") !== -1) {
+        var parts = moduleId.split("!");
+        log.groupCollapsed("info", "[HMR]  - " + parts.pop());
+        log("info", "[HMR]  - " + moduleId);
+        log.groupEnd("info");
+      } else {
+        log("info", "[HMR]  - " + moduleId);
+      }
+    });
+    var numberIds = renewedModules.every(function (moduleId) {
+      return typeof moduleId === "number";
+    });
+    if (numberIds) log("info", "[HMR] Consider using the NamedModulesPlugin for module names.");
+  }
+};
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/log.js":
+/*!****************************!*\
+  !*** (webpack)/hot/log.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var logLevel = "info";
+
+function dummy() {}
+
+function shouldLog(level) {
+  var shouldLog = logLevel === "info" && level === "info" || ["info", "warning"].indexOf(logLevel) >= 0 && level === "warning" || ["info", "warning", "error"].indexOf(logLevel) >= 0 && level === "error";
+  return shouldLog;
+}
+
+function logGroup(logFn) {
+  return function (level, msg) {
+    if (shouldLog(level)) {
+      logFn(msg);
+    }
+  };
+}
+
+module.exports = function (level, msg) {
+  if (shouldLog(level)) {
+    if (level === "info") {
+      console.log(msg);
+    } else if (level === "warning") {
+      console.warn(msg);
+    } else if (level === "error") {
+      console.error(msg);
+    }
+  }
+};
+/* eslint-disable node/no-unsupported-features/node-builtins */
+
+
+var group = console.group || dummy;
+var groupCollapsed = console.groupCollapsed || dummy;
+var groupEnd = console.groupEnd || dummy;
+/* eslint-enable node/no-unsupported-features/node-builtins */
+
+module.exports.group = logGroup(group);
+module.exports.groupCollapsed = logGroup(groupCollapsed);
+module.exports.groupEnd = logGroup(groupEnd);
+
+module.exports.setLogLevel = function (level) {
+  logLevel = level;
+};
+
+module.exports.formatError = function (err) {
+  var message = err.message;
+  var stack = err.stack;
+
+  if (!stack) {
+    return message;
+  } else if (stack.indexOf(message) < 0) {
+    return message + "\n" + stack;
+  } else {
+    return stack;
+  }
+};
+
+/***/ }),
+
 /***/ "./src/component/Vera/Button.js":
 /*!**************************************!*\
   !*** ./src/component/Vera/Button.js ***!
@@ -38183,11 +40715,540 @@ const StyledButton = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].b
   padding: 4px 10px;
   cursor: pointer;
   transition: transform 0.3s ease-in;
+  font-size: 14px;
+  line-height: 1.4;
+  &.blue {
+    background-color: #5480f4;
+  }
+  &.large {
+    font-size: 22px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
   &:active {
     transform: scale(0.9);
   }
 `;
 /* harmony default export */ __webpack_exports__["default"] = (StyledButton);
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/Camera/BgRemoveMask.js":
+/*!***************************************************!*\
+  !*** ./src/component/Vera/Camera/BgRemoveMask.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BgRemoveMask; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Camera/BgRemoveMask.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    &.side {
+      display: none;
+    }
+  }
+  .tip {
+    text-transform: capitalize;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--camera-bg-color);
+    font-size: 22px;
+    color: var(--font-color);
+  }
+`;
+_c = StyledWrapper;
+let STOP = false;
+
+const draw = async ({
+  video,
+  canvas,
+  offCanvas,
+  net
+}) => {
+  if (STOP) return;
+  let ctx = canvas.getContext('2d');
+  console.log('start draw');
+  let offCtx = offCanvas.getContext('2d');
+  offCtx.drawImage(video, 0, 0);
+  const res = await net.segmentPerson(offCanvas); // document.getElementById('i').style.display = 'none';
+
+  tf.tidy(() => {
+    const maskTensor = tf.tensor3d(res.data, [200, 200, 1]);
+    const imageTensor = tf.browser.fromPixels(offCanvas);
+    const t1 = tf.mul(imageTensor, maskTensor);
+    const t2 = tf.concat([t1, tf.mul(maskTensor, 255)], 2);
+    t2.data().then(rawData => {
+      const rawImageData = new ImageData(new Uint8ClampedArray(rawData), 200, 200);
+      ctx.putImageData(rawImageData, 0, 0);
+      ctx.scale(-1, 1);
+      ctx.translate(-canvas.width, 0);
+    });
+  });
+  requestAnimationFrame(draw.bind(undefined, {
+    video,
+    canvas,
+    offCanvas,
+    net
+  }));
+};
+
+const bgRemove = async (videoEle, canvas, offCanvas) => {
+  const net = await bodyPix.load({
+    architecture: 'MobileNetV1',
+    outputStride: 16,
+    multiplier: 0.75,
+    quantBytes: 2
+  });
+  draw({
+    video: videoEle,
+    canvas,
+    offCanvas,
+    net
+  });
+};
+
+function BgRemoveMask({
+  video
+}) {
+  _s();
+
+  const [processing, setProcessing] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
+  const renderRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  const side = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    const startProcess = async () => {
+      await bgRemove(video, renderRef.current, side.current);
+      setProcessing(false);
+    };
+
+    if (video) {
+      console.log('start processing');
+      STOP = false;
+      startProcess();
+    }
+
+    return () => {
+      console.log('bg remove off');
+      STOP = true;
+    };
+  }, [video]);
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(StyledWrapper, {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("canvas", {
+      ref: side,
+      className: "side",
+      width: "200",
+      height: "200"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 84,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("canvas", {
+      ref: renderRef,
+      className: "render",
+      width: "200",
+      height: "200"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 85,
+      columnNumber: 7
+    }, this), processing && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("div", {
+      className: "tip",
+      children: "processing"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 86,
+      columnNumber: 22
+    }, this)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 83,
+    columnNumber: 5
+  }, this);
+}
+
+_s(BgRemoveMask, "ghLgJ54WYsdNJOBu0V7q63TqT8k=");
+
+_c2 = BgRemoveMask;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "StyledWrapper");
+__webpack_require__.$Refresh$.register(_c2, "BgRemoveMask");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/Camera/CameraOffMask.js":
+/*!****************************************************!*\
+  !*** ./src/component/Vera/Camera/CameraOffMask.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CameraOffMask; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Camera/CameraOffMask.js";
+
+
+
+const StyledMask = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+  z-index: 6;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/user.svg`});
+`;
+_c = StyledMask;
+function CameraOffMask() {
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(StyledMask, {}, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 21,
+    columnNumber: 10
+  }, this);
+}
+_c2 = CameraOffMask;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "StyledMask");
+__webpack_require__.$Refresh$.register(_c2, "CameraOffMask");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/Camera/ErrorMask.js":
+/*!************************************************!*\
+  !*** ./src/component/Vera/Camera/ErrorMask.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ErrorMask; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Camera/ErrorMask.js";
+
+
+
+const StyledMask = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+  z-index: 6;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  .tip {
+    font-size: 18px;
+    color: red;
+    font-weight: 800;
+  }
+`;
+_c = StyledMask;
+function ErrorMask({
+  tip = 'Error'
+}) {
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(StyledMask, {
+    children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("div", {
+      className: "tip",
+      children: tip
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 21,
+      columnNumber: 7
+    }, this)
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 20,
+    columnNumber: 5
+  }, this);
+}
+_c2 = ErrorMask;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "StyledMask");
+__webpack_require__.$Refresh$.register(_c2, "ErrorMask");
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
@@ -38275,14 +41336,17 @@ if (true) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Loading */ "./src/component/Vera/Loading.js");
-/* harmony import */ var _hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks/useUserMedia */ "./src/component/Vera/hooks/useUserMedia.js");
-/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/Camera/styled.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Username__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Username */ "./src/component/Vera/Username.js");
+/* harmony import */ var _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks/useEmitter */ "./src/component/Vera/hooks/useEmitter.js");
+/* harmony import */ var _ErrorMask__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ErrorMask */ "./src/component/Vera/Camera/ErrorMask.js");
+/* harmony import */ var _CameraOffMask__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CameraOffMask */ "./src/component/Vera/Camera/CameraOffMask.js");
+/* harmony import */ var _BgRemoveMask__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./BgRemoveMask */ "./src/component/Vera/Camera/BgRemoveMask.js");
+/* harmony import */ var _hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../hooks/useUserMedia */ "./src/component/Vera/hooks/useUserMedia.js");
+/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/Camera/styled.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
@@ -38294,133 +41358,364 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 
+
+
+
+
 const tipVideo = chrome.i18n.getMessage('tipDisableVideo');
 const tipAudio = chrome.i18n.getMessage('tipDisableAudio');
 const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg'); // const tipProcessing = chrome.i18n.getMessage('tipProcessing');
 
-const tipPin = chrome.i18n.getMessage('tipPin'); // status: loading ready error
+const tipPin = chrome.i18n.getMessage('tipPin');
+let triggerByCmd = {
+  video: false,
+  audio: false
+}; // status: loading ready error
 
 function Camera({
+  username = 'Guest',
   peerId,
   remote = true,
-  mediaStream = null
+  mediaStream = null,
+  dataConnections = null
 }) {
   _s();
 
-  const [status, setStatus] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(mediaStream ? 'ready' : 'loading');
+  const [loaded, setLoaded] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
   const [stream, setStream] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(mediaStream);
+  const [controls, setControls] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
+    pin: false,
+    video: true,
+    audio: true,
+    bg: true
+  });
   const {
-    enableStream
-  } = Object(_hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    enableStream,
+    error
+  } = Object(_hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_6__["default"])();
   const videoRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     const attachLocalStream = async () => {
       let localStream = await enableStream();
-      let cloned = localStream.clone();
-      cloned.getAudioTracks().forEach(t => t.enabled = false);
-      setStatus('ready');
-      setStream(cloned);
+      console.log({
+        localStream
+      });
+
+      if (localStream) {
+        let cloned = localStream.clone();
+        cloned.getAudioTracks().forEach(t => t.enabled = false);
+        setStream(cloned);
+      }
     };
 
     if (!remote) {
       attachLocalStream();
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [remote]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (videoRef && stream) {
-      console.log('video ref', videoRef.current);
-      videoRef.current.srcObject = stream;
-    }
+    videoRef.current.srcObject = stream;
   }, [stream]);
-  if (status == 'loading') return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(_Loading__WEBPACK_IMPORTED_MODULE_1__["default"], {}, void 0, false, {
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    // 来自远程对方的消息
+    _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["default"].on(_hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CAMERA_CONTROL, ({
+      pid,
+      type
+    }) => {
+      if (pid !== peerId) return;
+      console.log('data connection msg in camra', pid, peerId, type);
+
+      switch (type) {
+        case 'CC_VIDEO_ON':
+          setMedia({
+            type: 'video',
+            enable: true,
+            cmd: true
+          });
+          break;
+
+        case 'CC_VIDEO_OFF':
+          setMedia({
+            type: 'video',
+            enable: false,
+            cmd: true
+          });
+          break;
+
+        case 'CC_AUDIO_ON':
+          setMedia({
+            type: 'audio',
+            enable: true,
+            cmd: true
+          });
+          break;
+
+        case 'CC_AUDIO_OFF':
+          setMedia({
+            type: 'audio',
+            enable: false,
+            cmd: true
+          });
+          break;
+
+        case 'CC_BG_ON':
+          setBackground({
+            keep: true
+          });
+          break;
+
+        case 'CC_BG_OFF':
+          setBackground({
+            keep: false
+          });
+          break;
+
+        default:
+          break;
+      }
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [peerId]); // 画中画
+
+  const handlePin = () => {
+    const {
+      pin
+    } = controls;
+
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    }
+
+    if (!pin) {
+      let videoEle = videoRef.current;
+      videoEle.requestPictureInPicture().then(() => {
+        setControls(prev => {
+          return { ...prev,
+            pin: true
+          };
+        });
+
+        videoEle.onleavepictureinpicture = () => {
+          setControls(prev => {
+            return { ...prev,
+              pin: false
+            };
+          });
+        };
+      }).catch(error => {
+        // Error handling
+        console.log('pip error', error);
+      });
+    }
+  }; // 音视频
+
+
+  const setMedia = ({
+    type = 'video',
+    enable = true,
+    cmd = false
+  }) => {
+    console.log('start toggle media');
+    const tracks = type == 'video' ? stream.getVideoTracks() : stream.getAudioTracks(); // 巨复杂的一个判断：当前状态是button置的，而且cmd想开启
+
+    if (cmd && !triggerByCmd[type] && enable && tracks.filter(t => t.enabled == false).length) {
+      return;
+    }
+
+    tracks.forEach(t => {
+      t.enabled = enable;
+    });
+    setControls(prev => {
+      return { ...prev,
+        [type]: enable
+      };
+    }); // 如果是host，则同步给每个连接
+
+    if (dataConnections) {
+      let cmd = {
+        type: `CC_${type.toUpperCase()}_${enable ? 'ON' : 'OFF'}`
+      };
+      Object.entries(dataConnections).forEach(([, conn]) => {
+        console.log('send msg to connection', conn.peer);
+        conn.send(cmd);
+      });
+    } // 更新全局标识
+
+
+    triggerByCmd[type] = cmd;
+  }; // 背景
+
+
+  const setBackground = ({
+    keep = true
+  }) => {
+    setControls(prev => {
+      return { ...prev,
+        bg: keep
+      };
+    }); // 如果是host，则同步给每个连接
+
+    if (dataConnections) {
+      let cmd = {
+        type: `CC_BG_${keep ? 'ON' : 'OFF'}`
+      };
+      Object.entries(dataConnections).forEach(([, conn]) => {
+        console.log('send msg to connection', conn.peer);
+        conn.send(cmd);
+      });
+    }
+  };
+
+  const handleMediaControl = ({
+    target
+  }) => {
+    // if (remote) return;
+    const {
+      type,
+      status
+    } = target.dataset;
+    let isOn = status == 'true';
+
+    if (isOn || !isOn && !triggerByCmd[type]) {
+      setMedia({
+        type,
+        enable: status !== 'true'
+      });
+    }
+  };
+
+  const handleBgControl = ({
+    target
+  }) => {
+    const {
+      video
+    } = controls;
+    if (remote || !video) return;
+    const {
+      status
+    } = target.dataset;
+    setBackground({
+      keep: status !== 'true'
+    });
+  };
+
+  const handleLoad = () => {
+    setLoaded(true);
+  };
+
+  if (error) return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])(_ErrorMask__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    tip: error.tip
+  }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 34,
-    columnNumber: 35
+    lineNumber: 165,
+    columnNumber: 21
   }, this);
-  if (status == 'ready') return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  const {
+    pin,
+    video,
+    audio,
+    bg
+  } = controls;
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_7__["default"], {
     "data-peer": peerId,
-    children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("div", {
-      className: "video",
-      video: "true",
-      bg: "true",
-      audio: "true",
-      waiting: "true",
-      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("div", {
-        className: "mask user"
+    className: remote ? 'remote' : 'local',
+    children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("div", {
+      className: `video ${!bg ? 'hidden' : ''}`,
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])(_Username__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        local: !remote,
+        name: username
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 39,
-        columnNumber: 11
-      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("div", {
+        lineNumber: 170,
+        columnNumber: 9
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("div", {
         className: "opts",
-        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("button", {
+        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("button", {
           className: "opt bg",
-          control: "bg",
+          onClick: handleBgControl,
+          "data-status": bg,
           title: tipRemoveBg
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 42,
-          columnNumber: 13
-        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("button", {
+          lineNumber: 172,
+          columnNumber: 11
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("button", {
           className: "opt video",
-          control: "video",
+          onClick: handleMediaControl,
+          "data-type": 'video',
+          "data-status": video,
           title: tipVideo
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 43,
-          columnNumber: 13
-        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("button", {
+          lineNumber: 178,
+          columnNumber: 11
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("button", {
           className: "opt audio",
-          control: "audio",
+          onClick: handleMediaControl,
+          "data-type": 'audio',
+          "data-status": audio,
           title: tipAudio
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 44,
-          columnNumber: 13
-        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("button", {
+          lineNumber: 185,
+          columnNumber: 11
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("button", {
           className: "opt pin",
-          control: "pin",
+          onClick: handlePin,
+          "data-status": pin,
           title: tipPin
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 45,
-          columnNumber: 13
+          lineNumber: 192,
+          columnNumber: 11
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 41,
-        columnNumber: 11
-      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])("video", {
+        lineNumber: 171,
+        columnNumber: 9
+      }, this), (!video || !loaded) && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])(_CameraOffMask__WEBPACK_IMPORTED_MODULE_4__["default"], {}, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 195,
+        columnNumber: 33
+      }, this), !bg && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])(_BgRemoveMask__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        video: videoRef.current
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 196,
+        columnNumber: 17
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__["jsxDEV"])("video", {
         ref: videoRef,
+        onPlay: handleLoad,
         playsInline: true,
         autoPlay: true,
         muted: remote ? false : 'muted'
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 47,
-        columnNumber: 11
+        lineNumber: 197,
+        columnNumber: 9
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 38,
-      columnNumber: 9
+      lineNumber: 169,
+      columnNumber: 7
     }, this)
   }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 37,
-    columnNumber: 7
+    lineNumber: 168,
+    columnNumber: 5
   }, this);
 }
 
-_s(Camera, "1J2p/F1YrKqm5Y1fcF7ojlIXd1U=", false, function () {
-  return [_hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_2__["default"]];
+_s(Camera, "MDD28DlD4J52Tid4gjR/nd73vrc=", false, function () {
+  return [_hooks_useUserMedia__WEBPACK_IMPORTED_MODULE_6__["default"]];
 });
 
 _c = Camera;
+/* harmony default export */ __webpack_exports__["default"] = (_c2 = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["memo"])(Camera));
 
-var _c;
+var _c, _c2;
 
 __webpack_require__.$Refresh$.register(_c, "Camera");
+__webpack_require__.$Refresh$.register(_c2, "%default%");
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
@@ -38526,6 +41821,10 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   border-radius: var(--border-radius);
   border: none;
   background: transparent;
+  .video .username,
+  .opts {
+    visibility: hidden;
+  }
   &:hover {
     .video {
       .username,
@@ -38551,28 +41850,20 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   .video {
     position: relative;
     display: flex;
-    .username {
+    width: 200px;
+    height: 200px;
+    &.hidden video {
       visibility: hidden;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: text;
-      padding: 6px 10px;
-      border: none;
-      font-size: 18px;
-      color: var(--font-color);
-      border-radius: var(--border-radius);
-      background-color: var(--button-bg-color);
     }
+
     .opts {
       z-index: 7;
-      display: none;
       position: absolute;
       bottom: 5px;
       left: 5px;
       padding: 5px;
       display: flex;
-      visibility: hidden;
+      /* visibility: hidden; */
       .opt {
         padding: 0;
         // opacity: 0.6;
@@ -38590,37 +41881,861 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
           margin-right: 6px;
         }
         &.bg {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.off.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.off.svg`});
+          }
         }
         &.video {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.off.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.on.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.off.svg`});
+          }
         }
         &.audio {
-          background-color: #863733;
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.off.svg`});
+          background-color: var(--button-bg-color);
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
+          &[data-status='false'] {
+            background-color: #863733;
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.off.svg`});
+          }
         }
         &.pin {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.svg`});
+          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.off.svg`});
+          &[data-status='false'] {
+            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.svg`});
+          }
         }
       }
-    }
-    // 打开态
-    &[bg='true'] .opts .opt.bg {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
-    }
-    &[video='true'] .opts .opt.video {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.on.svg`});
-    }
-    &[audio='true'] .opts .opt.audio {
-      background-color: var(--button-bg-color);
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
-    }
-    &[pin='true'] .opts .opt.pin {
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.off.svg`});
     }
   }
 `;
 /* harmony default export */ __webpack_exports__["default"] = (StyledWrapper);
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/Cursor/index.js":
+/*!********************************************!*\
+  !*** ./src/component/Vera/Cursor/index.js ***!
+  \********************************************/
+/*! exports provided: default, initCursor, destoryCursor, bindCursorSync */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cursor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initCursor", function() { return initCursor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destoryCursor", function() { return destoryCursor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindCursorSync", function() { return bindCursorSync; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks/useEmitter */ "./src/component/Vera/hooks/useEmitter.js");
+/* harmony import */ var _hooks_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../hooks/utils */ "./src/component/Vera/hooks/utils.js");
+/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/Cursor/styled.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Cursor/index.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+
+
+
+function Cursor({
+  id,
+  username = 'Guest'
+}) {
+  _s();
+
+  const wrapper = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    console.log(wrapper.current);
+    _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["default"].on(_hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_MOVE, ({
+      pid,
+      data
+    }) => {
+      //  不是当前鼠标的更新数据
+      if (pid !== id) return;
+      const {
+        pos: {
+          x,
+          y
+        }
+      } = data;
+      wrapper.current.style.transform = `translate3d(${x}px,${y}px,0)`; // console.log('data connection msg in cursor', pid, id, data);
+    });
+    _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["default"].on(_hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_CLICK, ({
+      pid
+    }) => {
+      //  不是当前鼠标的更新数据
+      if (pid !== id) return;
+      wrapper.current.classList.add('clicked');
+    });
+    _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["default"].on(_hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_SELECT, ({
+      pid,
+      data
+    }) => {
+      //  不是当前鼠标的更新数据
+      if (pid !== id) return;
+
+      try {
+        const {
+          selection
+        } = data;
+        rangy.deserializeSelection(selection);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }, []);
+
+  const handleAniEnd = () => {
+    wrapper.current.classList.remove('clicked');
+  };
+
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    id: id,
+    ref: wrapper,
+    onAnimationEnd: handleAniEnd,
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("div", {
+      className: "circle"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 41,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("div", {
+      className: "pointer"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 42,
+      columnNumber: 7
+    }, this), username ? /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("span", {
+      className: "name",
+      children: username
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 43,
+      columnNumber: 19
+    }, this) : null]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 40,
+    columnNumber: 5
+  }, this);
+}
+
+_s(Cursor, "WHr8hq6aG1PTfvrLfR8RaAq5tP4=");
+
+_c = Cursor;
+
+const initCursor = ({
+  id,
+  username
+}) => {
+  if (typeof username == 'undefined') return false;
+  let wrapper = document.getElementById(id); // 存在了
+
+  if (!wrapper) {
+    console.log('cursor init');
+    wrapper = document.createElement('aside');
+    wrapper.id = id;
+    document.body.appendChild(wrapper);
+  }
+
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(Cursor, {
+    id: id,
+    username: username
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 57,
+    columnNumber: 19
+  }, undefined), wrapper);
+  return true;
+};
+
+const destoryCursor = ({
+  id
+}) => {
+  let wrapper = document.getElementById(id);
+  wrapper === null || wrapper === void 0 ? void 0 : wrapper.remove();
+};
+
+const bindCursorSync = ({
+  conn
+}) => {
+  console.log('bind cursor sync');
+  document.addEventListener('mousemove', Object(_hooks_utils__WEBPACK_IMPORTED_MODULE_3__["throttle"])(evt => {
+    const {
+      clientX,
+      clientY
+    } = evt;
+    const {
+      scrollTop,
+      scrollLeft
+    } = document.scrollingElement;
+    conn.send({
+      type: _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_MOVE,
+      data: {
+        pos: {
+          x: clientX + scrollLeft,
+          y: clientY + scrollTop
+        }
+      }
+    });
+  }), false);
+  document.addEventListener('mousedown', () => {
+    conn.send({
+      type: _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_CLICK,
+      data: {
+        click: true
+      }
+    });
+  }, false);
+  document.addEventListener('mouseup', () => {
+    let selection = rangy.getSelection();
+
+    if (selection) {
+      selection = rangy.serializeSelection(selection, true);
+      conn.send({
+        type: _hooks_useEmitter__WEBPACK_IMPORTED_MODULE_2__["EVENTS"].CURSOR_SELECT,
+        data: {
+          selection
+        }
+      });
+    }
+  }, false);
+};
+
+
+
+var _c;
+
+__webpack_require__.$Refresh$.register(_c, "Cursor");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/Cursor/styled.js":
+/*!*********************************************!*\
+  !*** ./src/component/Vera/Cursor/styled.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+
+const AniScaleIn = styled_components__WEBPACK_IMPORTED_MODULE_0__["keyframes"]`
+  from {
+    transform: scale(0.5, 0.5);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(2.5, 2.5);
+    opacity: 0;
+  }
+`;
+const StyledCursor = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div`
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  .circle {
+    border-radius: 50%;
+    background-color: deepskyblue;
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+  }
+  &.clicked .circle {
+    animation: ${AniScaleIn} 0.5s cubic-bezier(0.36, 0.11, 0.89, 0.32);
+    // animation-iteration-count: 2;
+  }
+  .pointer {
+    width: 25px;
+    height: 25px;
+    background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/cursor.svg`});
+    background-size: contain;
+    filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.8));
+  }
+  .name {
+    margin-top: 5px;
+    font-size: 10px;
+    color: #333;
+    padding: 4px 6px;
+    background-color: #f4ea2a;
+  }
+`;
+/* harmony default export */ __webpack_exports__["default"] = (StyledCursor);
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/InviteBox/InviteList.js":
+/*!****************************************************!*\
+  !*** ./src/component/Vera/InviteBox/InviteList.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InviteList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! swr */ "./node_modules/swr/esm/index.js");
+/* harmony import */ var _hooks_useCopy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../hooks/useCopy */ "./src/component/Vera/hooks/useCopy.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Button */ "./src/component/Vera/Button.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/InviteBox/InviteList.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+
+
+
+const inviteTxt = chrome.i18n.getMessage('invite');
+const invitedTxt = chrome.i18n.getMessage('invited');
+const StyledList = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul`
+  height: fit-content;
+  overflow: scroll;
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: #1f1f1f;
+  padding: 6px 4px;
+  border-radius: var(--border-radius);
+  color: var(--font-color);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:not(:last-child) {
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #333;
+    }
+    .avator {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+    }
+    .name {
+      color: inherit;
+      font-size: 10px;
+    }
+  }
+`;
+_c = StyledList;
+
+const fetcher = (...args) => fetch(...args).then(res => res.json()).then(resp => resp.data);
+
+function InviteList({
+  link = '',
+  username = ''
+}) {
+  _s();
+
+  const {
+    copied,
+    copy
+  } = Object(_hooks_useCopy__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  const {
+    data,
+    error
+  } = Object(swr__WEBPACK_IMPORTED_MODULE_2__["default"])(username ? `https://api.yangerxiao.com/service/authing/vera/${encodeURIComponent(username)}/userlist` : null, fetcher);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {}, [username]);
+
+  const handleCopy = ({
+    target
+  }) => {
+    console.log('copy invite link');
+    if (copied) return;
+    target.innerText = invitedTxt;
+    copy(link);
+    console.log('copied invite link');
+    setTimeout(() => {
+      target.innerText = inviteTxt;
+    }, 1500);
+  }; // loading
+
+
+  if (!data) return null;
+  if (error) return 'error';
+  if (data) return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(StyledList, {
+    children: data.map(user => {
+      const {
+        username,
+        name,
+        nickname,
+        photo
+      } = user;
+      const finalName = username || name || nickname;
+      return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("li", {
+        className: "user",
+        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("img", {
+          src: photo,
+          alt: "avator",
+          className: "avator"
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 81,
+          columnNumber: 15
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])("span", {
+          className: "name",
+          children: finalName
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 82,
+          columnNumber: 15
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          onClick: handleCopy,
+          children: inviteTxt
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 84,
+          columnNumber: 15
+        }, this)]
+      }, user.finalName, true, {
+        fileName: _jsxFileName,
+        lineNumber: 80,
+        columnNumber: 13
+      }, this);
+    })
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 75,
+    columnNumber: 7
+  }, this);
+}
+
+_s(InviteList, "Ai2D0RyU9aBR8X6K0kyqw2yEE3s=", false, function () {
+  return [_hooks_useCopy__WEBPACK_IMPORTED_MODULE_3__["default"], swr__WEBPACK_IMPORTED_MODULE_2__["default"]];
+});
+
+_c2 = InviteList;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "StyledList");
+__webpack_require__.$Refresh$.register(_c2, "InviteList");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/InviteBox/LoginArea.js":
+/*!***************************************************!*\
+  !*** ./src/component/Vera/InviteBox/LoginArea.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LoginBox; });
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Login */ "./src/component/Vera/Login.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/InviteBox/LoginArea.js";
+// import { useEffect } from 'react';
+
+
+
+const tipLogin = chrome.i18n.getMessage('tipLogin');
+const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div`
+  height: fit-content;
+  overflow: scroll;
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #000;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  color: var(--font-color);
+  .tip {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+  .btns {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 5px;
+  }
+`;
+_c = StyledBox;
+function LoginBox() {
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(StyledBox, {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("div", {
+      className: "tip",
+      children: tipLogin
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 30,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])("div", {
+      className: "btns",
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(_Login__WEBPACK_IMPORTED_MODULE_1__["default"], {}, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 32,
+        columnNumber: 9
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(_Login__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        type: "reg"
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 33,
+        columnNumber: 9
+      }, this)]
+    }, void 0, true, {
+      fileName: _jsxFileName,
+      lineNumber: 31,
+      columnNumber: 7
+    }, this)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 29,
+    columnNumber: 5
+  }, this);
+}
+_c2 = LoginBox;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "StyledBox");
+__webpack_require__.$Refresh$.register(_c2, "LoginBox");
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
@@ -38711,10 +42826,16 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InviteBox; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/InviteBox/styled.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Button */ "./src/component/Vera/Button.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Loading */ "./src/component/Vera/Loading.js");
+/* harmony import */ var _InviteList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InviteList */ "./src/component/Vera/InviteBox/InviteList.js");
+/* harmony import */ var _LoginArea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./LoginArea */ "./src/component/Vera/InviteBox/LoginArea.js");
+/* harmony import */ var _hooks_useCopy__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../hooks/useCopy */ "./src/component/Vera/hooks/useCopy.js");
+/* harmony import */ var _hooks_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../hooks/utils */ "./src/component/Vera/hooks/utils.js");
+/* harmony import */ var _hooks_useUsername__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../hooks/useUsername */ "./src/component/Vera/hooks/useUsername.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
@@ -38725,7 +42846,201 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 
-const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+
+
+
+
+
+
+const copyTxt = chrome.i18n.getMessage('copy');
+const copiedTxt = chrome.i18n.getMessage('copied');
+function InviteBox({
+  peerId = ''
+}) {
+  _s();
+
+  const [inviteUrl, setInviteUrl] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+  const {
+    username
+  } = Object(_hooks_useUsername__WEBPACK_IMPORTED_MODULE_8__["default"])();
+  const {
+    copied,
+    copy
+  } = Object(_hooks_useCopy__WEBPACK_IMPORTED_MODULE_6__["default"])();
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (peerId) {
+      let obj = new URL(location.href);
+      obj.searchParams.append('portal-vera-id', peerId); //  if (PORTAL_USER_NAME) {
+      //    obj.searchParams.append(userKey, PORTAL_USER_NAME);
+      //  }
+
+      const url = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}?extid=${chrome.runtime.id}`;
+      setInviteUrl(url);
+    }
+  }, [peerId]);
+
+  const handleLinkClick = ({
+    target
+  }) => {
+    Object(_hooks_utils__WEBPACK_IMPORTED_MODULE_7__["selectText"])(target);
+  };
+
+  const handleCopyClick = () => {
+    unlocker.enable();
+    copy(inviteUrl);
+    unlocker.disable();
+  };
+
+  if (!inviteUrl) return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_Loading__WEBPACK_IMPORTED_MODULE_3__["default"], {}, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 39,
+    columnNumber: 26
+  }, this);
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])("div", {
+      className: "link",
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])("span", {
+        className: "url",
+        onClick: handleLinkClick,
+        children: inviteUrl
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 44,
+        columnNumber: 9
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        className: "blue",
+        onClick: handleCopyClick,
+        children: copied ? copiedTxt : copyTxt
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 47,
+        columnNumber: 9
+      }, this)]
+    }, void 0, true, {
+      fileName: _jsxFileName,
+      lineNumber: 43,
+      columnNumber: 7
+    }, this), username ? /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_InviteList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      username: username,
+      link: inviteUrl
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 51,
+      columnNumber: 19
+    }, this) : /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_LoginArea__WEBPACK_IMPORTED_MODULE_5__["default"], {}, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 51,
+      columnNumber: 73
+    }, this)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 42,
+    columnNumber: 5
+  }, this);
+}
+
+_s(InviteBox, "oU8K3qeiaeyJSAlxz9hOUybz9C4=", false, function () {
+  return [_hooks_useUsername__WEBPACK_IMPORTED_MODULE_8__["default"], _hooks_useCopy__WEBPACK_IMPORTED_MODULE_6__["default"]];
+});
+
+_c = InviteBox;
+
+var _c;
+
+__webpack_require__.$Refresh$.register(_c, "InviteBox");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/InviteBox/styled.js":
+/*!************************************************!*\
+  !*** ./src/component/Vera/InviteBox/styled.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+
+const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div`
   box-sizing: border-box;
   height: 200px;
   width: 200px;
@@ -38738,7 +43053,8 @@ const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
   background-color: var(--camera-bg-color);
   border-radius: var(--border-radius);
   .link {
-    width: 95%;
+    width: 100%;
+    width: -webkit-fill-available;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38747,6 +43063,7 @@ const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
     border-radius: var(--border-radius);
     font-size: 10px;
     .url {
+      user-select: text;
       color: var(--font-color);
       width: 100%;
       height: fit-content;
@@ -38805,92 +43122,7 @@ const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
     background-color: #c4c4c4;
   }
 `;
-_c = StyledBox;
-const inviteTxt = chrome.i18n.getMessage('invite');
-const invitedTxt = chrome.i18n.getMessage('invited');
-const copyTxt = chrome.i18n.getMessage('copy');
-const copiedTxt = chrome.i18n.getMessage('copied');
-
-const copyToClipboard = str => {
-  const el = document.createElement('textarea');
-  el.value = str;
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-};
-
-function InviteBox({
-  peerId = ''
-}) {
-  _s();
-
-  const [inviteUrl, setInviteUrl] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('...');
-  const [copied, setCopied] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (peerId) {
-      let obj = new URL(location.href);
-      obj.searchParams.append('portal-vera-id', peerId); //  if (PORTAL_USER_NAME) {
-      //    obj.searchParams.append(userKey, PORTAL_USER_NAME);
-      //  }
-
-      const url = `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}?extid=${chrome.runtime.id}`;
-      setInviteUrl(url);
-    }
-  }, [peerId]);
-
-  const handleCopy = () => {
-    if (copied) return;
-    copyToClipboard(inviteUrl);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  };
-
-  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])(StyledBox, {
-    children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])("div", {
-      className: "link",
-      contentEditable: true,
-      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])("span", {
-        className: "url",
-        children: inviteUrl
-      }, void 0, false, {
-        fileName: _jsxFileName,
-        lineNumber: 126,
-        columnNumber: 9
-      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        className: "btn copy",
-        onClick: handleCopy,
-        children: copied ? copiedTxt : copyTxt
-      }, void 0, false, {
-        fileName: _jsxFileName,
-        lineNumber: 127,
-        columnNumber: 9
-      }, this)]
-    }, void 0, true, {
-      fileName: _jsxFileName,
-      lineNumber: 125,
-      columnNumber: 7
-    }, this)
-  }, void 0, false, {
-    fileName: _jsxFileName,
-    lineNumber: 124,
-    columnNumber: 5
-  }, this);
-}
-
-_s(InviteBox, "BLB0a1afqyTZyX/4U7PzN4nPy70=");
-
-_c2 = InviteBox;
-
-var _c, _c2;
-
-__webpack_require__.$Refresh$.register(_c, "StyledBox");
-__webpack_require__.$Refresh$.register(_c2, "InviteBox");
+/* harmony default export */ __webpack_exports__["default"] = (StyledBox);
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
@@ -38983,14 +43215,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Button */ "./src/component/Vera/Button.js");
-/* harmony import */ var _Username__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Username */ "./src/component/Vera/Username.js");
-/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Login */ "./src/component/Vera/Login.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Loading */ "./src/component/Vera/Loading.js");
+/* harmony import */ var _Username__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Username */ "./src/component/Vera/Username.js");
+/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Login */ "./src/component/Vera/Login.js");
+/* harmony import */ var _hooks_useUsername__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../hooks/useUsername */ "./src/component/Vera/hooks/useUsername.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
-var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/JoinBox/index.js";
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/JoinBox/index.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
 
 
 
@@ -38998,6 +43236,7 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 const joinTxt = chrome.i18n.getMessage('join');
+const joinAsGuestTxt = chrome.i18n.getMessage('joinAsGuest');
 const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
   box-sizing: border-box;
   height: 200px;
@@ -39006,10 +43245,17 @@ const StyledBox = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  justify-content: center;
+  justify-content: space-around;
   padding: 5px;
+  padding-top: 30px;
   background: transparent;
   border-radius: var(--border-radius);
+  .btns {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+  }
 `;
 _c = StyledBox;
 function JoinBox({
@@ -39017,6 +43263,13 @@ function JoinBox({
   peerIds = [],
   addMediaConnection
 }) {
+  _s();
+
+  const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+  const {
+    username
+  } = Object(_hooks_useUsername__WEBPACK_IMPORTED_MODULE_6__["default"])();
+
   const handleJoin = () => {
     console.log({
       peerIds
@@ -39028,32 +43281,54 @@ function JoinBox({
       });
       addMediaConnection(newMediaConn);
     });
+    setLoading(true);
   };
 
-  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(StyledBox, {
-    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      className: "btn ok",
-      onClick: handleJoin,
-      children: joinTxt
+  if (loading) return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Loading__WEBPACK_IMPORTED_MODULE_3__["default"], {}, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 43,
+    columnNumber: 23
+  }, this);
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(StyledBox, {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Username__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      local: true,
+      readonly: false,
+      fixed: false
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 46,
       columnNumber: 7
-    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(_Login__WEBPACK_IMPORTED_MODULE_4__["default"], {}, void 0, false, {
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
+      className: "btns",
+      children: [username ? null : /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Login__WEBPACK_IMPORTED_MODULE_5__["default"], {}, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 48,
+        columnNumber: 28
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        className: "blue",
+        onClick: handleJoin,
+        children: username ? joinTxt : joinAsGuestTxt
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 49,
+        columnNumber: 9
+      }, this)]
+    }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 35,
-      columnNumber: 7
-    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__["jsxDEV"])(_Username__WEBPACK_IMPORTED_MODULE_3__["default"], {}, void 0, false, {
-      fileName: _jsxFileName,
-      lineNumber: 36,
+      lineNumber: 47,
       columnNumber: 7
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 31,
+    lineNumber: 45,
     columnNumber: 5
   }, this);
 }
+
+_s(JoinBox, "aOgWAWX+dh0FRTpc18Gnpdr8FcI=", false, function () {
+  return [_hooks_useUsername__WEBPACK_IMPORTED_MODULE_6__["default"]];
+});
+
 _c2 = JoinBox;
 
 var _c, _c2;
@@ -39181,8 +43456,12 @@ const AniRotate = styled_components__WEBPACK_IMPORTED_MODULE_0__["keyframes"]`
 `;
 const StyledLoading = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div`
   position: relative;
-  min-width: 200px;
-  min-height: 200px;
+  width: ${({
+  size
+}) => `${size}px`};
+  height: ${({
+  size
+}) => `${size}px`};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39199,6 +43478,7 @@ const StyledLoading = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
     }
   }
   .txt {
+    font-size: 14px;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -39221,30 +43501,32 @@ const svg = /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1
     className: "path"
   }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 54,
+    lineNumber: 55,
     columnNumber: 5
   }, undefined)
 }, void 0, false, {
   fileName: _jsxFileName,
-  lineNumber: 53,
+  lineNumber: 54,
   columnNumber: 3
 }, undefined);
 
 function Loading({
-  tip = loadingTxt
+  tip = loadingTxt,
+  size = 200
 }) {
   return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__["jsxDEV"])(StyledLoading, {
+    size: size,
     children: [svg, /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__["jsxDEV"])("span", {
       className: "txt",
       children: tip
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 61,
+      lineNumber: 62,
       columnNumber: 7
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 59,
+    lineNumber: 60,
     columnNumber: 5
   }, this);
 }
@@ -39357,7 +43639,10 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 const loginTxt = chrome.i18n.getMessage('login');
-function Login() {
+const regTxt = chrome.i18n.getMessage('reg');
+function Login({
+  type = 'login'
+}) {
   _s();
 
   const handleLogin = () => {
@@ -39388,10 +43673,10 @@ function Login() {
   }, []);
   return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_2__["jsxDEV"])(_Button__WEBPACK_IMPORTED_MODULE_1__["default"], {
     onClick: handleLogin,
-    children: loginTxt
+    children: type == 'login' ? loginTxt : regTxt
   }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 22,
+    lineNumber: 23,
     columnNumber: 10
   }, this);
 }
@@ -39494,12 +43779,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Camera__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Camera */ "./src/component/Vera/Camera/index.js");
-/* harmony import */ var _InviteBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../InviteBox */ "./src/component/Vera/InviteBox/index.js");
-/* harmony import */ var _JoinBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../JoinBox */ "./src/component/Vera/JoinBox/index.js");
-/* harmony import */ var _hooks_usePeer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks/usePeer */ "./src/component/Vera/hooks/usePeer.js");
-/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/Panel/styled.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Loading */ "./src/component/Vera/Loading.js");
+/* harmony import */ var _InviteBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../InviteBox */ "./src/component/Vera/InviteBox/index.js");
+/* harmony import */ var _JoinBox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../JoinBox */ "./src/component/Vera/JoinBox/index.js");
+/* harmony import */ var _hooks_usePeer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../hooks/usePeer */ "./src/component/Vera/hooks/usePeer.js");
+/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styled */ "./src/component/Vera/Panel/styled.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
@@ -39514,54 +43800,56 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 
+
 const tipFeedback = chrome.i18n.getMessage('feedback');
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 const layouts = {
-  min: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+  min: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
     className: "mock line"
-  }, void 0, false, {
-    fileName: _jsxFileName,
-    lineNumber: 10,
-    columnNumber: 8
-  }, undefined),
-  one: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
-    className: "mock box"
   }, void 0, false, {
     fileName: _jsxFileName,
     lineNumber: 11,
     columnNumber: 8
   }, undefined),
-  vt: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["Fragment"], {
-    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
-      className: "mock box"
-    }, void 0, false, {
-      fileName: _jsxFileName,
-      lineNumber: 14,
-      columnNumber: 7
-    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+  one: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
+    className: "mock box"
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 12,
+    columnNumber: 8
+  }, undefined),
+  vt: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["Fragment"], {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
       className: "mock box"
     }, void 0, false, {
       fileName: _jsxFileName,
       lineNumber: 15,
       columnNumber: 7
-    }, undefined)]
-  }, void 0, true),
-  hz: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["Fragment"], {
-    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
       className: "mock box"
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 20,
+      lineNumber: 16,
       columnNumber: 7
-    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+    }, undefined)]
+  }, void 0, true),
+  hz: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["Fragment"], {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
       className: "mock box"
     }, void 0, false, {
       fileName: _jsxFileName,
       lineNumber: 21,
       columnNumber: 7
+    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
+      className: "mock box"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 22,
+      columnNumber: 7
     }, undefined)]
   }, void 0, true)
 };
+let used = false;
 function Panel({
   invitePeerId = null
 }) {
@@ -39574,8 +43862,9 @@ function Panel({
     mediaConnections,
     addMediaConnection,
     streams,
+    usernames,
     status
-  } = Object(_hooks_usePeer__WEBPACK_IMPORTED_MODULE_4__["default"])({
+  } = Object(_hooks_usePeer__WEBPACK_IMPORTED_MODULE_5__["default"])({
     invitePeerId
   });
   const [layout, setLayout] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('hz');
@@ -39587,8 +43876,14 @@ function Panel({
     if (target.classList.contains('curr')) return;
     let tmp = target.getAttribute('layout');
     setLayout(tmp);
-  }; // 拖拽
+  }; // 视频过
 
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (Object.keys(streams).length) {
+      used = true;
+    }
+  }, [streams]); // 拖拽
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     if (panelRef) {
@@ -39599,121 +43894,139 @@ function Panel({
   }, []);
 
   const handleClose = () => {
-    let isConfirmed = confirm(quitConfirmTxt);
+    let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
 
-    if (isConfirmed) {
+    if (letGo) {
+      console.log('clean up stream');
+      let cameras = [...panelRef.current.querySelectorAll('video')];
+      cameras.forEach(c => {
+        var _c$srcObject;
+
+        (_c$srcObject = c.srcObject) === null || _c$srcObject === void 0 ? void 0 : _c$srcObject.getTracks().forEach(t => t.stop());
+        c.srcObject = null;
+      });
       shutdownPeer();
-    } // 去除标记
-
-
-    document.documentElement.removeAttribute('invite-expand');
+      window.TOGGLE_VERA_PANEL();
+    }
   };
 
-  let cameraListVisible = layout !== 'min';
-  let localCameraVisible = layout !== 'one';
-  let noConnection = Object.keys(mediaConnections).length == 0; // let remoteCameraVisible = layout !== 'min';
+  let noConnection = Object.keys(mediaConnections).length == 0; // let reset='reset'==status;
 
-  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  let miniLayout = layout == 'min';
+  let boxVisible = noConnection && !miniLayout;
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_styled__WEBPACK_IMPORTED_MODULE_6__["default"], {
     ref: panelRef,
     className: layout,
     "data-status": status,
-    children: [cameraListVisible && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
       className: "cameras",
-      children: [localCameraVisible && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(_Camera__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Camera__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        dataConnections: dataConnections,
         peerId: peer === null || peer === void 0 ? void 0 : peer.id,
         remote: false
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 68,
-        columnNumber: 34
+        lineNumber: 82,
+        columnNumber: 9
       }, this), Object.entries(mediaConnections).map(([pid]) => {
         let st = streams[pid];
-        return st && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(_Camera__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        return st ? /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Camera__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          username: usernames[pid],
           peerId: pid,
-          remote: true,
-          mediaStream: streams[pid]
+          dataConnection: dataConnections[pid],
+          mediaStream: st
         }, pid, false, {
           fileName: _jsxFileName,
-          lineNumber: 71,
-          columnNumber: 26
+          lineNumber: 86,
+          columnNumber: 13
+        }, this) : /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], {}, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 94,
+          columnNumber: 13
         }, this);
       })]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 67,
-      columnNumber: 9
-    }, this), noConnection && !invitePeerId && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(_InviteBox__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      lineNumber: 81,
+      columnNumber: 7
+    }, this), boxVisible ? invitePeerId ? used ? /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_InviteBox__WEBPACK_IMPORTED_MODULE_3__["default"], {
       peerId: peer === null || peer === void 0 ? void 0 : peer.id
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 75,
-      columnNumber: 41
-    }, this), noConnection && invitePeerId && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])(_JoinBox__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      lineNumber: 101,
+      columnNumber: 13
+    }, this) : /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_JoinBox__WEBPACK_IMPORTED_MODULE_4__["default"], {
       peerClient: peer,
       peerIds: Object.keys(dataConnections),
       addMediaConnection: addMediaConnection
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 77,
-      columnNumber: 9
-    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+      lineNumber: 103,
+      columnNumber: 13
+    }, this) : /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_InviteBox__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      peerId: peer === null || peer === void 0 ? void 0 : peer.id
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 110,
+      columnNumber: 11
+    }, this) : null, /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
       className: "topbar",
-      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
         className: "close",
         onClick: handleClose
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 84,
+        lineNumber: 114,
         columnNumber: 9
-      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("div", {
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("div", {
         className: "right",
-        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("a", {
+        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("a", {
           className: "feedback",
           title: `${tipFeedback}`,
           href: "https://www.surveymonkey.com/r/RMGZDW8",
           target: "_blank"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 86,
+          lineNumber: 116,
           columnNumber: 11
-        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("ul", {
+        }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("ul", {
           className: "layout",
           children: Object.entries(layouts).map(([key, mocks]) => {
-            return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__["jsxDEV"])("li", {
+            return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])("li", {
               onClick: handleLayout,
               className: `item ${key} ${key == layout ? 'curr' : ''}`,
               layout: key,
               children: mocks
             }, key, false, {
               fileName: _jsxFileName,
-              lineNumber: 95,
+              lineNumber: 125,
               columnNumber: 17
             }, this);
           })
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 92,
+          lineNumber: 122,
           columnNumber: 11
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 85,
+        lineNumber: 115,
         columnNumber: 9
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 83,
+      lineNumber: 113,
       columnNumber: 7
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 65,
+    lineNumber: 80,
     columnNumber: 5
   }, this);
 }
 
-_s(Panel, "rPmGa7WxACMmWx8WJNJEwvGMYXw=", false, function () {
-  return [_hooks_usePeer__WEBPACK_IMPORTED_MODULE_4__["default"]];
+_s(Panel, "vUNy4phWWj54p3fVDV0P0KBS2o4=", false, function () {
+  return [_hooks_usePeer__WEBPACK_IMPORTED_MODULE_5__["default"]];
 });
 
 _c = Panel;
@@ -39814,6 +44127,7 @@ __webpack_require__.$Refresh$.setup(module.i);
 
 
 const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].aside`
+  font-family: sans-serif;
   position: absolute;
   right: 0;
   top: 50%;
@@ -39852,6 +44166,25 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   &[data-status='close']:after {
     background-color: #fff;
   }
+  &[data-status='call']:not(.min),
+  &[data-status='streaming']:not(.min) {
+    &:after {
+      background-color: #85e89e;
+    }
+    background: transparent;
+
+    .topbar,
+    &:after {
+      visibility: hidden;
+    }
+    &:hover {
+      background: var(--panel-bg-color);
+      .topbar,
+      &:after {
+        visibility: visible;
+      }
+    }
+  }
   &[data-status='connected']:after {
     background-color: #48baff;
   }
@@ -39866,9 +44199,17 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   }
   &.one {
     gap: 0;
+    .cameras .local {
+      display: none;
+    }
   }
   &.min {
-    min-height: auto;
+    min-height: fit-content;
+    min-width: 240px;
+    padding-bottom: 2px;
+    .cameras {
+      display: none;
+    }
   }
   .topbar {
     display: flex;
@@ -40049,60 +44390,347 @@ if (true) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Username; });
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _hooks_useUsername__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks/useUsername */ "./src/component/Vera/hooks/useUsername.js");
+/* harmony import */ var _hooks_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/utils */ "./src/component/Vera/hooks/utils.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
-var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Username.js";
-// import { useEffect } from 'react';
+var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/Vera/Username.js",
+    _s = __webpack_require__.$Refresh$.signature();
 
 
-const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div`
-  min-width: 120px;
+
+
+
+
+const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+  line-height: 1;
+  max-width: 100px;
+  user-select: text;
+  width: 100%;
+  width: -webkit-fill-available;
+  border: none;
   text-align: center;
   padding: 10px 12px;
-  cursor: text;
   font-size: 18px;
   color: var(--font-color);
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
+  &.fixed {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    > input {
+      padding: 6px 8px;
+    }
+  }
 `;
 _c = StyledWrapper;
-function Username() {
-  // const handleLogin = () => {
-  //   chrome.runtime.sendMessage({ action: 'LOGIN' }, function () {
-  //     /* callback */
-  //     console.log('send login message');
-  //   });
-  // };
-  // useEffect(() => {
-  //   // 监听
-  //   chrome.runtime.onMessage.addListener((request) => {
-  //     console.log({ request });
-  //     if (request.user) {
-  //       let { username } = request.user;
-  //       console.log({ username });
-  //       // VERA_EMITTER.emit('login', { isHost, localId, inviteId, username });
-  //     }
-  //   });
-  // }, []);
-  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__["jsxDEV"])(StyledWrapper, {
-    contentEditable: true,
-    className: "username"
+function Username({
+  local = false,
+  name = 'Guest',
+  readonly = true,
+  fixed = true
+}) {
+  _s();
+
+  const {
+    username,
+    updateUsername
+  } = Object(_hooks_useUsername__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  const [finalName, setFinalName] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])((local ? username || 'Guest' : name) || 'Guest');
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (local && username) {
+      setFinalName(username);
+    }
+  }, [username, local]);
+
+  const handleChange = ({
+    target
+  }) => {
+    let newVal = target.innerText;
+    updateUsername(newVal);
+  };
+
+  const handleClick = ({
+    target
+  }) => {
+    Object(_hooks_utils__WEBPACK_IMPORTED_MODULE_3__["selectText"])(target);
+  };
+
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(StyledWrapper, {
+    className: `username ${fixed ? 'fixed' : ''}`,
+    contentEditable: !readonly,
+    onClick: handleClick,
+    type: "text",
+    onInput: username ? null : handleChange,
+    children: finalName
   }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 31,
-    columnNumber: 10
+    lineNumber: 44,
+    columnNumber: 5
   }, this);
 }
+
+_s(Username, "eYDzwBVIwf4W8Vwv3MVqOzuV/Vw=", false, function () {
+  return [_hooks_useUsername__WEBPACK_IMPORTED_MODULE_2__["default"]];
+});
+
 _c2 = Username;
 
 var _c, _c2;
 
 __webpack_require__.$Refresh$.register(_c, "StyledWrapper");
 __webpack_require__.$Refresh$.register(_c2, "Username");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/hooks/useCopy.js":
+/*!*********************************************!*\
+  !*** ./src/component/Vera/hooks/useCopy.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return useCopy; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _s = __webpack_require__.$Refresh$.signature();
+
+
+
+const copyToClipboard = str => {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+
+function useCopy() {
+  _s();
+
+  const [copied, setCopied] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+
+  const copy = (content = '') => {
+    if (copied || !content) return;
+    copyToClipboard(content);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
+  return {
+    copied,
+    copy
+  };
+}
+
+_s(useCopy, "NE86rL3vg4NVcTTWDavsT0hUBJs=");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/hooks/useEmitter.js":
+/*!************************************************!*\
+  !*** ./src/component/Vera/hooks/useEmitter.js ***!
+  \************************************************/
+/*! exports provided: default, EVENTS */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENTS", function() { return EVENTS; });
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+window.VERA_EMITTER = window.VERA_EMITTER || {
+  events: {},
+
+  emit(event, ...args) {
+    (this.events[event] || []).forEach(i => i(...args));
+  },
+
+  on(event, cb) {
+    (this.events[event] = this.events[event] || []).push(cb);
+    return () => this.events[event] = (this.events[event] || []).filter(i => i !== cb);
+  }
+
+};
+const emitter = window.VERA_EMITTER;
+/* harmony default export */ __webpack_exports__["default"] = (emitter);
+const EVENTS = {
+  CURSOR_SELECT: 'CURSOR.SELECT',
+  CURSOR_MOVE: 'CURSOR.MOVE',
+  CURSOR_CLICK: 'CURSOR.CLICK',
+  CAMERA_CONTROL: 'CAMERA.CONTROL',
+  USERNAME: 'USERNAME'
+};
+
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
@@ -40192,10 +44820,16 @@ if (true) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _useEmitter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useEmitter */ "./src/component/Vera/hooks/useEmitter.js");
+/* harmony import */ var _Cursor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Cursor */ "./src/component/Vera/Cursor/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/component/Vera/hooks/utils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
 var _s = __webpack_require__.$Refresh$.signature();
+
+
+
 
 
 const peerConfig = {
@@ -40213,89 +44847,152 @@ const peerConfig = {
   } // debug: 3
 
 };
-window.MyPortalVeraPeer = window.MyPortalVeraPeer || null;
-window.PEER_DATA_CONNECTIONS = window.PEER_DATA_CONNECTIONS || {};
-window.PEER_MEDIA_CONNECTIONS = window.PEER_MEDIA_CONNECTIONS || {};
-window.PEER_STRAMS = window.PEER_STRAMS || {};
+let cursors = {};
 
 const usePeer = ({
   invitePeerId = null
 }) => {
   _s();
 
-  const [myPeer, setMyPeer] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(window.MyPortalVeraPeer);
+  const [myPeer, setMyPeer] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null);
   const [status, setStatus] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('waiting');
   const [error, setError] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null);
-  const [dataConns, setDataConns] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(window.PEER_DATA_CONNECTIONS);
-  const [mediaConns, setMediaConns] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(window.PEER_MEDIA_CONNECTIONS);
-  const [streams, setStreams] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(window.PEER_STRAMS); // 更新全局
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    window.PEER_DATA_CONNECTIONS = dataConns;
-  }, [dataConns]);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    window.PEER_MEDIA_CONNECTIONS = mediaConns;
-  }, [mediaConns]); // 初始化Peer
+  const [dataConns, setDataConns] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({});
+  const [mediaConns, setMediaConns] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({});
+  const [streams, setStreams] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({});
+  const [usernames, setUsernames] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}); // 初始化Peer
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     if (!myPeer) {
       let tmp = new Peer(peerConfig);
-      setMyPeer(tmp); // 赋值到全局变量
-
-      window.MyPortalVeraPeer = tmp;
+      setMyPeer(tmp);
     }
   }, [myPeer]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    let keys = Object.keys(dataConns);
 
-  const initDataChannel = conn => {
-    conn.on('close', () => {
+    if (keys.length) {
+      keys.forEach(k => {
+        let currConn = dataConns[k];
+
+        if (!cursors[k] && currConn.open) {
+          // 初始化鼠标
+          console.log('start init cursor');
+          let inited = Object(_Cursor__WEBPACK_IMPORTED_MODULE_2__["initCursor"])({
+            id: k,
+            username: usernames[k]
+          });
+
+          if (inited) {
+            Object(_Cursor__WEBPACK_IMPORTED_MODULE_2__["bindCursorSync"])({
+              conn: currConn
+            });
+            cursors[k] = true;
+          }
+        }
+      });
+    }
+  }, [dataConns, usernames]);
+  const initDataChannel = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(conn => {
+    const clearUpConnect = () => {
       var _mediaConns$conn$peer;
 
-      console.log('peer data connection close'); // 更新到dataConnections集合里
-
+      // 更新到dataConnections集合里
       setDataConns(prev => {
         delete prev[conn.peer];
         return { ...prev
         };
-      }); // 顺带把视频链接也关掉
+      });
 
-      (_mediaConns$conn$peer = mediaConns[conn.peer]) === null || _mediaConns$conn$peer === void 0 ? void 0 : _mediaConns$conn$peer.close();
+      if (Object.keys(dataConns).length == 0) {
+        // 无论是哪一方，重置为等待连接的初始状态
+        // setStatus('reset');
+        window.removeEventListener('beforeunload', _utils__WEBPACK_IMPORTED_MODULE_3__["preventCloseTabHandler"]);
+        setStatus('waiting');
+      } // 顺带把视频连接也关掉
+
+
+      (_mediaConns$conn$peer = mediaConns[conn.peer]) === null || _mediaConns$conn$peer === void 0 ? void 0 : _mediaConns$conn$peer.close(); // 更新到mediaConnections集合里
+
+      setMediaConns(prev => {
+        delete prev[conn.peer];
+        return { ...prev
+        };
+      }); // 销毁鼠标
+
+      Object(_Cursor__WEBPACK_IMPORTED_MODULE_2__["destoryCursor"])({
+        id: conn.peer
+      });
+      delete cursors[conn.peer];
+    };
+
+    conn.on('close', () => {
+      console.log('peer data connection close');
+      clearUpConnect();
     });
     conn.on('error', err => {
       console.log('peer data connection error', err);
+      clearUpConnect();
     });
     conn.on('open', () => {
-      console.log('peer data connection open'); // 如果是房主，则发送已经建立的链接集合
+      console.log('peer data connection open'); // 如果是房主，则发送已经建立的连接集合
 
       if (!invitePeerId) {
         conn.send({
           type: 'CONNECTIONS',
-          data: Object.keys(window.PEER_DATA_CONNECTIONS)
+          data: Object.keys(dataConns)
         });
-      } // 更新到dataConnections集合里
+      }
 
+      console.log('new dataChannel added:', conn.peer); // 开始监听消息
+
+      conn.on('data', obj => {
+        console.log('invited peer data connection data', obj);
+        const {
+          type = '',
+          data
+        } = obj;
+
+        if (type == 'CONNECTIONS') {
+          data.forEach(id => {
+            // 遍历房主发过来的连接
+            let newConn = myPeer.connect(id);
+            initDataChannel(newConn);
+          });
+        }
+
+        if (type == 'USERNAME') {
+          // 更新到usernames集合里
+          setUsernames(prev => {
+            prev[conn.peer] = data;
+            return { ...prev
+            };
+          });
+        }
+
+        if (type.startsWith('CC_')) {
+          _useEmitter__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_useEmitter__WEBPACK_IMPORTED_MODULE_1__["EVENTS"].CAMERA_CONTROL, {
+            pid: conn.peer,
+            type
+          });
+        }
+
+        if (type.startsWith('CURSOR')) {
+          _useEmitter__WEBPACK_IMPORTED_MODULE_1__["default"].emit(type, {
+            pid: conn.peer,
+            data
+          });
+        }
+      }); // 更新到dataConnections集合里
 
       setDataConns(prev => {
         prev[conn.peer] = conn;
         return { ...prev
         };
-      });
+      }); // 不再是等待连接的初始状态
+      // setStatus('reset');
     });
-    conn.on('data', obj => {
-      console.log('invited peer data connection data', obj);
-      const {
-        type = '',
-        data
-      } = obj;
-
-      if (type == 'CONNECTIONS') {
-        data.forEach(id => {
-          // 遍历房主发过来的连接
-          let newConn = myPeer.connect(id);
-          initDataChannel(newConn);
-        });
-      }
-    });
-  };
+  }, [invitePeerId, myPeer]);
 
   const addMediaConnection = mediaConn => {
     // 更新到mediaConnections集合里
@@ -40303,6 +45000,21 @@ const usePeer = ({
       prev[mediaConn.peer] = mediaConn;
       return { ...prev
       };
+    }); // 发送自己这边的用户名
+
+    Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getUsername"])(true).then((un = null) => {
+      var _dataConns$mediaConn$;
+
+      (_dataConns$mediaConn$ = dataConns[mediaConn.peer]) === null || _dataConns$mediaConn$ === void 0 ? void 0 : _dataConns$mediaConn$.send({
+        type: 'USERNAME',
+        data: un
+      });
+    }); // 新增vera历史记录
+
+    Object(_utils__WEBPACK_IMPORTED_MODULE_3__["appendVeraHistory"])({
+      peerId: mediaConn.peer,
+      isHost: !invitePeerId,
+      usernames
     });
     console.log({
       mediaConns
@@ -40317,9 +45029,16 @@ const usePeer = ({
       });
     });
     mediaConn.on('error', err => {
-      console.log('peer media connection error', err);
+      console.log('peer media connection error', err); // 更新到dataConnections集合里
+
+      setMediaConns(prev => {
+        delete prev[mediaConn.peer];
+        return { ...prev
+        };
+      });
     });
     mediaConn.on('stream', st => {
+      setStatus('streaming');
       console.log('peer media connection stream', st);
       setStreams(prev => {
         prev[mediaConn.peer] = st;
@@ -40343,11 +45062,13 @@ const usePeer = ({
 
 
         myPeer.on('connection', dataConn => {
+          window.addEventListener('beforeunload', _utils__WEBPACK_IMPORTED_MODULE_3__["preventCloseTabHandler"]);
           console.log('peer data connection incoming', dataConn);
           setStatus('connected'); // 房主主动连接对方？存疑
 
           if (!invitePeerId) {
-            myPeer.connect(dataConn.peer);
+            console.log('peer connection host connect remote');
+            initDataChannel(myPeer.connect(dataConn.peer));
           }
 
           initDataChannel(dataConn);
@@ -40363,30 +45084,27 @@ const usePeer = ({
       });
       myPeer.on('disconnected', () => {
         console.log('peer connection disconnected');
-        setStatus('disconnected'); // cleanUp();
+        setStatus('disconnected');
       });
       myPeer.on('close', () => {
         console.log('peer connection close');
-        setStatus('close'); // cleanUp();
+        setStatus('close');
       });
       myPeer.on('error', err => {
-        console.log('peer connection error');
+        console.log('peer connection error', err);
         setStatus('error');
-        setError(err.type); // cleanUp();
+        setError(err.type);
       });
     } // return () => {
     //   cleanUp();
     // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [myPeer, invitePeerId]); // const cleanUp = () => {
-  //   if (myPeer) {
-  //     myPeer.disconnect();
-  //     myPeer.destroy();
-  //   }
-  //   setMyPeer(null);
-  // };
+  }, [myPeer, invitePeerId]);
 
   const shutdownPeer = () => {
+    var _window$LOCAL_MEDIA_S;
+
     console.log({
       dataConns,
       mediaConns
@@ -40397,6 +45115,10 @@ const usePeer = ({
     Object.entries(dataConns).forEach(([, conn]) => {
       conn.close();
     });
+    (_window$LOCAL_MEDIA_S = window.LOCAL_MEDIA_STREAM) === null || _window$LOCAL_MEDIA_S === void 0 ? void 0 : _window$LOCAL_MEDIA_S.getTracks().forEach(t => {
+      t.stop();
+    });
+    window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
   };
 
@@ -40407,12 +45129,13 @@ const usePeer = ({
     mediaConnections: mediaConns,
     addMediaConnection,
     streams,
+    usernames,
     status,
     error
   };
 };
 
-_s(usePeer, "7qSWQSwfMnhrctmD1v5suMhJhvA=");
+_s(usePeer, "9LK1W0LXXd9T16oj8fZwc3yYhyU=");
 
 /* harmony default export */ __webpack_exports__["default"] = (usePeer);
 
@@ -40547,6 +45270,9 @@ const fullStreamConfig = {
   },
   audio: true
 };
+const Tips = {
+  ['NotAllowedError']: 'Permission denied'
+};
 window.LOCAL_MEDIA_STREAM = window.LOCAL_MEDIA_STREAM || null;
 function useUserMedia() {
   _s();
@@ -40581,11 +45307,17 @@ function useUserMedia() {
 
       return null;
     } catch (error) {
-      console.log(error);
       let {
         name
       } = error;
-      setError(name);
+      console.log(error, {
+        name
+      });
+      setError({
+        type: name,
+        tip: Tips[name]
+      });
+      return null;
     }
   };
 
@@ -40684,6 +45416,359 @@ if (true) {
 
 /***/ }),
 
+/***/ "./src/component/Vera/hooks/useUsername.js":
+/*!*************************************************!*\
+  !*** ./src/component/Vera/hooks/useUsername.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _s = __webpack_require__.$Refresh$.signature();
+
+
+
+const useUsername = (defaultName = '') => {
+  _s();
+
+  const [name, setName] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(defaultName);
+  const [fake, setFake] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    chrome.storage.sync.get(['user', 'fakename'], res => {
+      console.log('local user data', res.user, res.fakename);
+      const {
+        user = null,
+        fakename = null
+      } = res;
+
+      if (user) {
+        setName(user.username);
+        setFake(false);
+      } else if (fakename) {
+        setName(fakename);
+        setFake(true);
+      }
+    });
+    chrome.storage.onChanged.addListener((changes, area) => {
+      var _changes$user, _changes$fakename;
+
+      console.log({
+        changes,
+        area
+      });
+
+      if (area == 'sync' && ((_changes$user = changes.user) === null || _changes$user === void 0 ? void 0 : _changes$user.newValue)) {
+        let {
+          username
+        } = changes.user.newValue;
+        setName(username);
+        setFake(false);
+      }
+
+      if (area == 'sync' && ((_changes$fakename = changes.fakename) === null || _changes$fakename === void 0 ? void 0 : _changes$fakename.newValue)) {
+        let newName = changes.fakename.newValue;
+        setName(newName);
+        setFake(true);
+      }
+    });
+    return () => {// chrome.storage.onChanged = null;
+    };
+  }, []);
+
+  const updateUsername = name => {
+    chrome.storage.sync.set({
+      fakename: name
+    }, () => {
+      // Notify that we saved.
+      console.log('set fakename');
+    });
+  };
+
+  return {
+    username: name,
+    fake,
+    updateUsername
+  };
+};
+
+_s(useUsername, "BeprMZ4/i0zlHQwgXO4ylRB4Ays=");
+
+/* harmony default export */ __webpack_exports__["default"] = (useUsername);
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
+/***/ "./src/component/Vera/hooks/utils.js":
+/*!*******************************************!*\
+  !*** ./src/component/Vera/hooks/utils.js ***!
+  \*******************************************/
+/*! exports provided: throttle, selectText, getUsername, appendVeraHistory, preventCloseTabHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "throttle", function() { return throttle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectText", function() { return selectText; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUsername", function() { return getUsername; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendVeraHistory", function() { return appendVeraHistory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "preventCloseTabHandler", function() { return preventCloseTabHandler; });
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+const selectText = node => {
+  // node = document.getElementById(node);
+  if (document.body.createTextRange) {
+    const range = document.body.createTextRange();
+    range.moveToElementText(node);
+    range.select();
+  } else if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  } else {
+    console.warn('Could not select text in node: Unsupported browser.');
+  }
+};
+
+function getUsername(withFake = false) {
+  return new Promise(resolve => {
+    let arr = withFake ? ['user', 'fakename'] : ['user'];
+    chrome.storage.sync.get(arr, result => {
+      var _result$user, _result$user2;
+
+      let name = withFake ? ((_result$user = result.user) === null || _result$user === void 0 ? void 0 : _result$user.username) || result.fakename : (_result$user2 = result.user) === null || _result$user2 === void 0 ? void 0 : _result$user2.username;
+      resolve(name);
+    });
+  });
+}
+
+async function appendVeraHistory({
+  peerId,
+  isHost,
+  usernames
+}) {
+  let un = await getUsername();
+  if (!un) return;
+  const putMethod = {
+    method: 'PUT',
+    // Method itself
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8' // Indicates the content
+
+    },
+    body: JSON.stringify({
+      title: document.title,
+      url: location.href,
+      timestamp: new Date().getTime(),
+      peerId,
+      host: isHost ? un : '',
+      username: un,
+      participants: Object.values(usernames)
+    }) // We send data in JSON format
+
+  };
+  let data = {
+    code: -1
+  };
+
+  try {
+    // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
+    let resp = await fetch(`https://api.yangerxiao.com/service/authing/${encodeURIComponent(un)}/udf/vera`, putMethod);
+    data = await resp.json();
+  } catch (error) {
+    console.log(error);
+  }
+
+  return data;
+}
+
+const preventCloseTabHandler = evt => {
+  evt.preventDefault();
+  evt.returnValue = 'Vera is still in connectiong, ary you sure to quit?'; // return 'Vera is still in connectiong, ary you sure to quit?';
+};
+
+function throttle(fn, interval = 200) {
+  // 维护上次执行的时间
+  let last = 0;
+  let inter = 0;
+  return function () {
+    const context = this;
+    const args = arguments;
+    const now = Date.now(); // 根据当前时间和上次执行时间的差值判断是否频繁
+
+    if (now - last >= interval) {
+      last = now;
+      clearTimeout(inter);
+      fn.apply(context, args);
+    } else {
+      setTimeout(() => {
+        fn.apply(context, args);
+      }, interval);
+    }
+  };
+}
+
+
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ }),
+
 /***/ "./src/component/Vera/index.js":
 /*!*************************************!*\
   !*** ./src/component/Vera/index.js ***!
@@ -40698,9 +45783,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _Panel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Panel */ "./src/component/Vera/Panel/index.js");
-/* harmony import */ var styled_reset__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-reset */ "./node_modules/styled-reset/lib/esm/index.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 __webpack_require__.$Refresh$.setup(module.i);
 
@@ -40709,7 +45793,7 @@ var _jsxFileName = "/Users/tristan/Workspace/projects/Portal-Lite/src/component/
 
 
 
-
+ // import { reset } from 'styled-reset';
 
 
 const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].section`
@@ -40723,10 +45807,31 @@ const StyledWrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  line-height: 1;
 `;
 _c = StyledWrapper;
 const GlobalStyle = styled_components__WEBPACK_IMPORTED_MODULE_1__["createGlobalStyle"]`
- ${styled_reset__WEBPACK_IMPORTED_MODULE_3__["reset"]}
+  ol, ul {
+    list-style: none;
+  }
+  html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  b, u, i, center,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td,
+  article, aside, canvas, details, embed,
+  figure, figcaption, footer, header, hgroup,
+  menu, nav, output, ruby, section, summary,
+  time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+  }
   :root {
       --vera-widget-bg-color: #000;
       --panel-bg-color: #323639;
@@ -40743,16 +45848,31 @@ function Vera() {
   const [invitePeerId, setInvitePeerId] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null);
   const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
   const [visible, setVisible] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
-
-  window.TOGGLE_VERA_PANEL = () => {
-    setVisible(prev => !prev);
-  };
-
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (invitePeerId) {
-      setVisible(true);
+    window.TOGGLE_VERA_PANEL = () => {
+      console.log('toggle visible', {
+        visible
+      });
+
+      if (visible) {
+        // 去除标记
+        document.documentElement.removeAttribute('invite-expand');
+      } else {
+        // 添加标记
+        document.documentElement.setAttribute('invite-expand', 1);
+      }
+
+      if (visible) {
+        setInvitePeerId(null);
+      }
+
+      setVisible(prev => !prev);
+    };
+
+    if (invitePeerId && !visible) {
+      window.TOGGLE_VERA_PANEL();
     }
-  }, [invitePeerId]);
+  }, [invitePeerId, visible]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     const getPvid = () => {
       chrome.storage.sync.get(['pvid'], function (res) {
@@ -40763,7 +45883,7 @@ function Vera() {
         console.log('pvid from storage', pvid);
 
         if (pvid) {
-          // 立即删掉，方式下次访问依然存在
+          // 立即删掉，防止下次访问依然存在
           chrome.storage.sync.remove('pvid', () => {
             console.log('pvid removed');
           });
@@ -40772,28 +45892,27 @@ function Vera() {
 
         setLoading(false);
       });
-    };
+    }; // 显示的时候 再执行
 
-    if (visible) {
-      getPvid();
-    }
-  }, [visible]);
+
+    getPvid();
+  }, []);
   if (!visible) return null;
-  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(StyledWrapper, {
-    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(GlobalStyle, {}, void 0, false, {
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])(StyledWrapper, {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])(GlobalStyle, {}, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 64,
+      lineNumber: 96,
       columnNumber: 7
-    }, this), !loading && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__["jsxDEV"])(_Panel__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }, this), !loading && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__["jsxDEV"])(_Panel__WEBPACK_IMPORTED_MODULE_2__["default"], {
       invitePeerId: invitePeerId
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 65,
+      lineNumber: 97,
       columnNumber: 20
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 63,
+    lineNumber: 95,
     columnNumber: 5
   }, this);
 }
@@ -40995,13 +46114,14 @@ if (true) {
 
 /***/ }),
 
-/***/ 1:
-/*!**********************************************************************************************************************************************************************!*\
-  !*** multi ./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js ./node_modules/react-dev-utils/webpackHotDevClient.js ./src/index.ext.js ***!
-  \**********************************************************************************************************************************************************************/
+/***/ 3:
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** multi (webpack)/hot/dev-server.js ./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js ./node_modules/react-dev-utils/webpackHotDevClient.js ./src/index.ext.js ***!
+  \**************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(/*! /Users/tristan/Workspace/projects/Portal-Lite/node_modules/webpack/hot/dev-server.js */"./node_modules/webpack/hot/dev-server.js");
 __webpack_require__(/*! /Users/tristan/Workspace/projects/Portal-Lite/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js */"./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js");
 __webpack_require__(/*! /Users/tristan/Workspace/projects/Portal-Lite/node_modules/react-dev-utils/webpackHotDevClient.js */"./node_modules/react-dev-utils/webpackHotDevClient.js");
 module.exports = __webpack_require__(/*! /Users/tristan/Workspace/projects/Portal-Lite/src/index.ext.js */"./src/index.ext.js");
@@ -41009,5 +46129,5 @@ module.exports = __webpack_require__(/*! /Users/tristan/Workspace/projects/Porta
 
 /***/ })
 
-},[[1,"runtime-indexExt"]]]);
+},[[3,"runtime-indexExt"]]]);
 //# sourceMappingURL=indexExt.chunk.js.map
