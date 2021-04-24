@@ -18,7 +18,7 @@ const peerConfig = {
   }
   // debug: 3
 };
-let init_connects = false;
+const Cursors = {};
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -39,11 +39,15 @@ const usePeer = ({ invitePeerId = null }) => {
     let keys = Object.keys(dataConns);
     if (keys.length) {
       keys.forEach((k) => {
-        // 初始化鼠标
-        console.log('start init cursor');
-        let inited = initCursor({ id: k, username: usernames[k] });
-        if (inited) {
-          bindCursorSync({ conn: dataConns[k] });
+        let currConn = dataConns[k];
+        if (!Cursors[k] && currConn.open) {
+          // 初始化鼠标
+          console.log('start init cursor');
+          let inited = initCursor({ id: k, username: usernames[k] });
+          if (inited) {
+            bindCursorSync({ conn: dataConns[k] });
+            Cursors[k] = true;
+          }
         }
       });
     }
@@ -58,6 +62,7 @@ const usePeer = ({ invitePeerId = null }) => {
         });
         // 销毁鼠标
         destoryCursor({ id: conn.peer });
+        delete Cursors[conn.peer];
       };
       conn.on('close', () => {
         console.log('peer data connection close');
@@ -81,13 +86,12 @@ const usePeer = ({ invitePeerId = null }) => {
         conn.on('data', (obj) => {
           console.log('invited peer data connection data', obj);
           const { type = '', data } = obj;
-          if (type == 'CONNECTIONS' && !init_connects) {
+          if (type == 'CONNECTIONS') {
             data.forEach((id) => {
               // 遍历房主发过来的连接
               let newConn = myPeer.connect(id);
               initDataChannel(newConn);
             });
-            init_connects = true;
           }
           if (type == 'USERNAME') {
             // 更新到usernames集合里
@@ -208,9 +212,6 @@ const usePeer = ({ invitePeerId = null }) => {
       myPeer.on('close', () => {
         console.log('peer connection close');
         setStatus('close');
-        Object.keys(mediaConns).forEach((k) => {
-          mediaConns[k].close();
-        });
       });
       myPeer.on('error', (err) => {
         console.log('peer connection error', err);
@@ -223,7 +224,7 @@ const usePeer = ({ invitePeerId = null }) => {
     // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myPeer, invitePeerId]);
-  const shutdownPeer = () => {
+  const shutdownPeer = useCallback(() => {
     console.log({ dataConns, mediaConns });
     Object.entries(mediaConns).forEach(([, conn]) => {
       conn.close();
@@ -236,7 +237,7 @@ const usePeer = ({ invitePeerId = null }) => {
     });
     window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
-  };
+  }, [myPeer, dataConns, mediaConns]);
   return {
     shutdownPeer,
     peer: myPeer,
