@@ -43,6 +43,7 @@ const StyledItem = styled.li`
     user-select: none;
     transition: opacity 0.5s;
     .title {
+      text-align: center;
       color: inherit;
       font-size: 0.24rem;
       font-weight: 800;

@@ -9,4 +9,6 @@ const zh = merge.all([enLang, zhLang]);
 const es = merge.all([enLang, esLang]);
 const pt = merge.all([enLang, ptLang]);
 // console.log({ en, zh, es, pt });
-export default [zh, en, es, pt];
+const arr = navigator.language == 'zh-CN' ? [zh, en, es, pt] : [en, zh, es, pt];
+
+export default arr;

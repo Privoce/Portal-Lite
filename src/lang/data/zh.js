@@ -137,6 +137,7 @@ const zh = {
       },
       ['my-agenda']: {
         title: '我的日程',
+        description: '您的私人定制日程组件',
         locale: 'zh-CN',
         empty: '暂无事件',
         fetching: '正在获取日程数据，请耐心等候...',
@@ -147,7 +148,8 @@ const zh = {
         }
       },
       ['vera-history']: {
-        title: '来啦'
+        title: '来啦',
+        description: 'Vera 插件产生的历史记录'
       }
     }
   }

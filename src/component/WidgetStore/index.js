@@ -34,12 +34,19 @@ const isRecent = (ct, ut) => {
 };
 
 // let other_params = {};
-export default function Modal({ addWidget, removeWidget, addedWidgets }) {
+export default function Modal({ locale = null, addWidget, removeWidget, addedWidgets }) {
   const [visible, setVisible] = useState(false);
   const [tab, setTab] = useState('new');
   const [list, setList] = useState([]);
   useEffect(() => {
-    const taggedWidgets = Object.entries(Widgets).map(([key, widget]) => {
+    let ws = Object.entries(Widgets);
+    let localeWidgets = locale
+      ? ws.filter(([, wd]) => {
+          if (typeof wd.locales == 'undefined') return true;
+          return wd.locales.includes(locale);
+        })
+      : ws;
+    const taggedWidgets = localeWidgets.map(([key, widget]) => {
       const added = addedWidgets.includes(key);
       return { key, added, ...widget };
     });
@@ -47,11 +54,12 @@ export default function Modal({ addWidget, removeWidget, addedWidgets }) {
       return w.added == (tab !== 'new');
     });
     setList(tmps);
-  }, [addedWidgets, tab]);
+  }, [addedWidgets, tab, locale]);
   const {
     language: {
       words: {
-        modal: { widgets: lang }
+        modal: { widgets: lang },
+        widgets
       }
     }
   } = useLanguage();
@@ -107,17 +115,31 @@ export default function Modal({ addWidget, removeWidget, addedWidgets }) {
               </div>
               {list.length ? (
                 <ul className="list">
-                  {list.map(({ key, title, description, screenshot, created, updated, added }) => {
-                    const recent = isRecent(created, updated);
-                    return (
-                      <Item
-                        key={title}
-                        data={{ title, description, screenshot, added, recent }}
-                        addWidget={handleAddClick.bind(null, key)}
-                        removeWidget={handleRemoveClick.bind(null, key)}
-                      />
-                    );
-                  })}
+                  {list.map(
+                    ({
+                      key,
+                      title: oTitle,
+                      description: oDesc,
+                      screenshot,
+                      created,
+                      updated,
+                      added
+                    }) => {
+                      const recent = isRecent(created, updated);
+                      let title = widgets[key]?.title ? widgets[key].title : oTitle;
+                      let description = widgets[key]?.description
+                        ? widgets[key].description
+                        : oDesc;
+                      return (
+                        <Item
+                          key={title}
+                          data={{ title, description, screenshot, added, recent }}
+                          addWidget={handleAddClick.bind(null, key)}
+                          removeWidget={handleRemoveClick.bind(null, key)}
+                        />
+                      );
+                    }
+                  )}
                 </ul>
               ) : (
                 <div className="empty">

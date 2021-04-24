@@ -84,7 +84,8 @@ let Widgets = {
     comp: <Covid />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.covid.data.png',
     created: '2020-12-24',
-    updated: '2020-12-28'
+    updated: '2020-12-28',
+    locales: ['zh-CN']
   },
   'us-covid-info': {
     title: '🇺🇸 美国新冠疫情概况',
@@ -94,7 +95,8 @@ let Widgets = {
     comp: <USCovid />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.usa.covid.png',
     created: '2021-02-01',
-    updated: '2021-02-02'
+    updated: '2021-02-02',
+    locales: ['en-US']
   },
   'wb-hot': {
     title: '微博热搜',
@@ -104,7 +106,8 @@ let Widgets = {
     comp: <WeiboHot />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.weibo.png',
     created: '2020-12-17',
-    updated: '2020-12-28'
+    updated: '2020-12-28',
+    locales: ['zh-CN']
   },
   'vera-history': {
     extension: true,
@@ -117,7 +120,7 @@ let Widgets = {
     sizes: ['middle', 'large'],
     comp: <VeraHistory />,
     enableSetting: false,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.google.calendar.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.vera.history.jpg',
     created: '2021-03-22',
     updated: '2021-03-22'
   },
@@ -130,9 +133,10 @@ let Widgets = {
     sizes: ['middle', 'large'],
     comp: <MyAgenda />,
     enableSetting: true,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.google.calendar.png',
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.gc.png',
     created: '2021-02-24',
-    updated: '2021-03-14'
+    updated: '2021-03-14',
+    locales: ['en-US']
   },
   weather: {
     loadType: 'script',
@@ -144,7 +148,8 @@ let Widgets = {
     comp: <Weather />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.weather.png',
     created: '2020-12-04',
-    updated: '2020-12-23'
+    updated: '2020-12-23',
+    locales: ['zh-CN']
   },
   'relationship-calc': {
     title: '👨‍👩‍👧‍👦 亲戚关系计算器',
@@ -156,7 +161,8 @@ let Widgets = {
     disableScroll: true,
     comp: <RelationshipCalc />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.relationship.calc.png',
-    created: '2021-02-08'
+    created: '2021-02-08',
+    locales: ['zh-CN']
   },
   'timezone-clock': {
     title: '国际时钟',
@@ -180,7 +186,8 @@ let Widgets = {
     comp: <YiYan />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.yiyan.png',
     created: '2021-01-18',
-    updated: '2021-01-27'
+    updated: '2021-01-27',
+    locales: ['zh-CN']
   },
   'pet-pics': {
     title: '宠物图集',
@@ -190,7 +197,8 @@ let Widgets = {
     disableScroll: true,
     comp: <PetPics />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.pet.pics.png',
-    created: '2021-02-3'
+    created: '2021-02-3',
+    locales: ['zh-CN']
   },
 
   'mp-daily-hot': {
@@ -198,7 +206,8 @@ let Widgets = {
     description: '公众号实时热文，你想了解的，都在这里！',
     sizes: ['middle', 'large'],
     comp: <MPDaily />,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.mp.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.mp.png',
+    locales: ['zh-CN']
   },
   'daily-shici': {
     title: '今日诗词',
@@ -206,7 +215,8 @@ let Widgets = {
     compact: true,
     sizes: ['middle', 'large'],
     comp: <DailyShici />,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.daily.shici.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.daily.shici.png',
+    locales: ['zh-CN']
   },
   'zhihu-hot': {
     title: '知乎热搜榜',
@@ -215,7 +225,8 @@ let Widgets = {
     description: '知乎实时热搜，你想了解的，都在这里！',
     compact: true,
     comp: <ZhihuHot />,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.zhihu.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.hot.zhihu.png',
+    locales: ['zh-CN']
   },
   'gh-dashboard': {
     title: 'Github个人仓库',
@@ -234,14 +245,16 @@ let Widgets = {
     comp: <BingDailyPicture />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.bing.pics.png',
     created: '2021-01-18',
-    updated: '2021-01-27'
+    updated: '2021-01-27',
+    locales: ['zh-CN']
   },
   'douban-topic-hot': {
     title: '豆瓣24小时话题',
     description: '直达豆瓣24小时热门话题',
     comp: <DoubanHotTopics />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.douban.topic.png',
-    created: '2021-01-19'
+    created: '2021-01-19',
+    locales: ['zh-CN']
   },
   'today-in-history': {
     title: '历史上的今天',
@@ -250,7 +263,8 @@ let Widgets = {
     sizes: ['middle', 'large'],
     comp: <TodayInHistory />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.today.in.history.png',
-    created: '2021-03-03'
+    created: '2021-03-03',
+    locales: ['zh-CN']
   },
 
   'gh-trending': {
@@ -282,14 +296,16 @@ let Widgets = {
     disableScroll: true,
     compact: true,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.life.progress.png',
-    created: '2021-02-03'
+    created: '2021-02-03',
+    locales: ['zh-CN']
   },
   'yin-note': {
     title: '印象笔记',
     description: '快速录入印象笔记【暂未开发】',
     disableScroll: true,
     comp: <YinNote />,
-    screenshot: 'https://static.nicegoodthings.com/privoce/widget.yinxiang.note.png'
+    screenshot: 'https://static.nicegoodthings.com/privoce/widget.yinxiang.note.png',
+    locales: ['zh-CN']
   }
 };
 // 过滤掉不适合在浏览器扩展里加载的小组件

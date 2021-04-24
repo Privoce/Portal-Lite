@@ -29,6 +29,7 @@ const WidgetSection = lazy(() => import(/* webpackChunkName: "block.widgets" */ 
 export default function Home() {
   const { widgets, removeWidget, updateWidgetData, addWidget } = useWidgets();
   const [settingExpanded, setSettingExpanded] = useState(false);
+  const [locale] = useState(navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US');
   const [syncing, setSyncing] = useState(false);
   const [darkTip, setDarkTip] = useState('');
   const { language } = useLanguage();
@@ -62,6 +63,7 @@ export default function Home() {
             {
               comp: (
                 <WidgetStore
+                  locale={locale}
                   addedWidgets={widgets}
                   removeWidget={removeWidget}
                   addWidget={addWidget}

@@ -6,10 +6,18 @@ import { appId, appHost } from './InitialConfig';
 import { Widgets } from './data';
 
 // 小组件
+const locale = navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US';
 const useWidgets = (keys = null) => {
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   let wgKeys = Object.entries(Widgets)
-    .filter(([, val]) => val.preset == true)
+    .filter(([, val]) => {
+      // 过滤掉不符合语言设置的
+      let isPreset = val.preset == true;
+      let isNoLocale = val.locales === undefined;
+      if (isNoLocale && isPreset) return true;
+      let isBingo = val.locales?.includes(locale);
+      return isBingo && isPreset;
+    })
     .map(([key]) => key);
   const initialKeys = getWidgetSetting({ key: 'local', name: 'widgets' }) || wgKeys;
   console.log({ initialKeys, keys });
