@@ -18,7 +18,6 @@ const peerConfig = {
   }
   // debug: 3
 };
-const Cursors = {};
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -35,23 +34,6 @@ const usePeer = ({ invitePeerId = null }) => {
       setMyPeer(tmp);
     }
   }, [myPeer]);
-  useEffect(() => {
-    let keys = Object.keys(dataConns);
-    if (keys.length) {
-      keys.forEach((k) => {
-        let currConn = dataConns[k];
-        if (!Cursors[k] && currConn.open) {
-          // 初始化鼠标
-          console.log('start init cursor');
-          let inited = initCursor({ id: k, username: usernames[k] });
-          if (inited) {
-            bindCursorSync({ conn: dataConns[k] });
-            Cursors[k] = true;
-          }
-        }
-      });
-    }
-  }, [dataConns, usernames]);
   const initDataChannel = useCallback(
     (conn) => {
       const clearUpConnect = () => {
@@ -60,9 +42,9 @@ const usePeer = ({ invitePeerId = null }) => {
           delete prev[conn.peer];
           return { ...prev };
         });
+        mediaConns[conn.peer]?.close();
         // 销毁鼠标
         destoryCursor({ id: conn.peer });
-        delete Cursors[conn.peer];
       };
       conn.on('close', () => {
         console.log('peer data connection close');
@@ -99,6 +81,11 @@ const usePeer = ({ invitePeerId = null }) => {
               prev[conn.peer] = data;
               return { ...prev };
             });
+            // 同时初始化鼠标
+            let inited = initCursor({ id: conn.peer, username: data });
+            if (inited) {
+              bindCursorSync({ conn });
+            }
           }
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
@@ -112,9 +99,6 @@ const usePeer = ({ invitePeerId = null }) => {
           prev[conn.peer] = conn;
           return { ...prev };
         });
-
-        // 不再是等待连接的初始状态
-        // setStatus('reset');
       });
     },
     [invitePeerId, myPeer, dataConns, mediaConns]
