@@ -103,58 +103,55 @@ const usePeer = ({ invitePeerId = null }) => {
     },
     [invitePeerId, myPeer, dataConns, mediaConns]
   );
-  const addMediaConnection = useCallback(
-    (mediaConn) => {
-      const clearUpConnect = () => {
-        // remove stream
-        setStreams((prev) => {
-          delete prev[mediaConn.peer];
-          return { ...prev };
-        });
-        setMediaConns((prev) => {
-          delete prev[mediaConn.peer];
-          return { ...prev };
-        });
-        if (Object.keys(mediaConns).length == 0) {
-          // 无论是哪一方，重置为等待连接的初始状态
-          window.removeEventListener('beforeunload', preventCloseTabHandler);
-          setStatus('waiting');
-        }
-      };
-      // 更新到mediaConnections集合里
-      setMediaConns((prev) => {
-        prev[mediaConn.peer] = mediaConn;
+  const addMediaConnection = (mediaConn) => {
+    const clearUpConnect = () => {
+      // remove stream
+      setStreams((prev) => {
+        delete prev[mediaConn.peer];
         return { ...prev };
       });
-      // 发送自己这边的用户名
-      getUsername(true).then((un = null) => {
-        dataConns[mediaConn.peer]?.send({
-          type: 'USERNAME',
-          data: un
-        });
+      setMediaConns((prev) => {
+        delete prev[mediaConn.peer];
+        return { ...prev };
       });
-      // 新增vera历史记录
-      appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
-      // console.log({ mediaConns });
-      mediaConn.on('close', () => {
-        console.log('peer media connection close');
-        clearUpConnect();
+      if (Object.keys(mediaConns).length == 0) {
+        // 无论是哪一方，重置为等待连接的初始状态
+        window.removeEventListener('beforeunload', preventCloseTabHandler);
+        setStatus('waiting');
+      }
+    };
+    // 更新到mediaConnections集合里
+    setMediaConns((prev) => {
+      prev[mediaConn.peer] = mediaConn;
+      return { ...prev };
+    });
+    // 发送自己这边的用户名
+    getUsername(true).then((un = null) => {
+      dataConns[mediaConn.peer]?.send({
+        type: 'USERNAME',
+        data: un
       });
-      mediaConn.on('error', (err) => {
-        console.log('peer media connection error', err);
-        clearUpConnect();
+    });
+    // 新增vera历史记录
+    appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
+    // console.log({ mediaConns });
+    mediaConn.on('close', () => {
+      console.log('peer media connection close');
+      clearUpConnect();
+    });
+    mediaConn.on('error', (err) => {
+      console.log('peer media connection error', err);
+      clearUpConnect();
+    });
+    mediaConn.on('stream', (st) => {
+      setStatus('streaming');
+      console.log('peer media connection stream', st);
+      setStreams((prev) => {
+        prev[mediaConn.peer] = st;
+        return { ...prev };
       });
-      mediaConn.on('stream', (st) => {
-        setStatus('streaming');
-        console.log('peer media connection stream', st);
-        setStreams((prev) => {
-          prev[mediaConn.peer] = st;
-          return { ...prev };
-        });
-      });
-    },
-    [invitePeerId, usernames]
-  );
+    });
+  };
 
   useEffect(() => {
     if (myPeer) {
@@ -203,9 +200,6 @@ const usePeer = ({ invitePeerId = null }) => {
         setError(err.type);
       });
     }
-    // return () => {
-    //   cleanUp();
-    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myPeer, invitePeerId]);
   const shutdownPeer = useCallback(() => {
