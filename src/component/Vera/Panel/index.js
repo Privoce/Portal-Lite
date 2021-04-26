@@ -80,13 +80,14 @@ export default function Panel({ invitePeerId = null }) {
     <StyledWrapper ref={panelRef} className={layout} data-status={status}>
       <div className="cameras">
         <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
-        {Object.entries(mediaConnections).map(([pid]) => {
+        {Object.entries(mediaConnections).map(([pid, conn]) => {
           let st = streams[pid];
           return (
             <Camera
               username={usernames[pid]}
               peerId={pid}
               key={pid}
+              mediaConnection={conn}
               dataConnection={dataConnections[pid]}
               mediaStream={st}
             />

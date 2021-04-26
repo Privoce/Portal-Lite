@@ -6,22 +6,22 @@ const StyledWrapper = styled.div`
   line-height: 1;
   max-width: 100px;
   user-select: text;
-  width: 100%;
-  width: -webkit-fill-available;
+  /* width: 100%;
+  width: -webkit-fill-available; */
   border: none;
   text-align: center;
-  padding: 10px 12px;
+  padding: 10px 6px;
   font-size: 18px;
   color: var(--font-color);
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
   &.fixed {
     position: absolute;
-    top: 5px;
+    top: 8px;
     left: 50%;
     transform: translateX(-50%);
     > input {
-      padding: 6px 8px;
+      padding: 4px 6px;
     }
   }
 `;

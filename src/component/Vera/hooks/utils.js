@@ -19,7 +19,7 @@ function getUsername(withFake = false) {
   return new Promise((resolve) => {
     let arr = withFake ? ['user', 'fakename'] : ['user'];
     chrome.storage.sync.get(arr, (result) => {
-      let name = withFake ? result.user?.username || result.fakename : result.user?.username;
+      let name = withFake ? result.user?.username || result.fakename : result.user?.username || '';
       resolve(name);
     });
   });

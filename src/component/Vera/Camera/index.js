@@ -22,6 +22,7 @@ function Camera({
   peerId,
   remote = true,
   mediaStream = null,
+  mediaConnection = null,
   dataConnections = null
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -61,7 +62,6 @@ function Camera({
         case 'CC_VIDEO_OFF':
           setMedia({ type: 'video', enable: false, cmd: true });
           break;
-
         case 'CC_AUDIO_ON':
           setMedia({ type: 'audio', enable: true, cmd: true });
           break;
@@ -73,6 +73,9 @@ function Camera({
           break;
         case 'CC_BG_OFF':
           setBackground({ keep: false });
+          break;
+        case 'CC_DISCONNECT':
+          mediaConnection.close();
           break;
 
         default:
