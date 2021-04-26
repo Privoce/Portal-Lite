@@ -18,7 +18,8 @@ const StyledWrapper = styled.div`
   &.fixed {
     position: absolute;
     top: 5px;
-    right: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     > input {
       padding: 6px 8px;
     }

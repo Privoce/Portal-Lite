@@ -195,7 +195,7 @@ const usePeer = ({ invitePeerId = null }) => {
         setStatus('close');
       });
       myPeer.on('error', (err) => {
-        console.log('peer connection error', err);
+        console.log('peer connection error', { err });
         setStatus('error');
         setError(err.type);
       });

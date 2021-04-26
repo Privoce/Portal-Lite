@@ -9,7 +9,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: var(--border-radius);
+  border-radius: var(--box-border-radius);
   border: none;
   background: transparent;
   .video .username,
@@ -51,9 +51,10 @@ const StyledWrapper = styled.div`
       z-index: 7;
       position: absolute;
       bottom: 5px;
-      left: 5px;
+      left: 50%;
       padding: 5px;
       display: flex;
+      transform: translateX(-50%);
       /* visibility: hidden; */
       .opt {
         padding: 0;

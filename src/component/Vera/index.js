@@ -45,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
       --button-bg-color: #000;
       --font-color: #fff;
       --border-radius: 5px;
+      --box-border-radius: 50%;
     }
 `;
 export default function Vera() {
