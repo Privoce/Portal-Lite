@@ -51,6 +51,9 @@ export default function Panel({ invitePeerId = null }) {
       used = true;
     }
   }, [streams]);
+  useEffect(() => {
+    console.log('current usernames', usernames);
+  }, [usernames]);
   // 拖拽
   useEffect(() => {
     if (panelRef) {

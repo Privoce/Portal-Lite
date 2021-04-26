@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import emitter, { EVENTS } from './useEmitter';
 import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
 import { getUsername, appendVeraHistory, preventCloseTabHandler } from './utils';
@@ -23,10 +23,30 @@ const usePeer = ({ invitePeerId = null }) => {
   const [status, setStatus] = useState('waiting');
   const [error, setError] = useState(null);
   const [dataConns, setDataConns] = useState({});
+  const dataConnsRef = useRef({});
   const [mediaConns, setMediaConns] = useState({});
+  const mediaConnsRef = useRef({});
   const [streams, setStreams] = useState({});
-  const [usernames, setUsernames] = useState({});
-
+  const usernamesRef = useRef({});
+  const updateConns = ({ conn, remove = false, type = 'media' }) => {
+    let current = type == 'media' ? mediaConnsRef.current : dataConnsRef.current;
+    let _setState = type == 'media' ? setMediaConns : setDataConns;
+    if (remove) {
+      // remove
+      delete current[conn];
+      _setState((prev) => {
+        delete prev[conn];
+        return { ...prev };
+      });
+    } else {
+      // add
+      current = { ...current, [conn.peer]: conn };
+      _setState((prev) => {
+        prev[conn.peer] = conn;
+        return { ...prev };
+      });
+    }
+  };
   // 初始化Peer
   useEffect(() => {
     if (!myPeer) {
@@ -34,25 +54,28 @@ const usePeer = ({ invitePeerId = null }) => {
       setMyPeer(tmp);
     }
   }, [myPeer]);
+  const clearUpConnect = (pid) => {
+    // 更新到dataConnections集合里
+    updateConns({ conn: pid, type: 'data', remove: true });
+    updateConns({ conn: pid, type: 'media', remove: true });
+    if (Object.keys(dataConnsRef.current).length == 0) {
+      // 无论是哪一方，重置为等待连接的初始状态
+      window.removeEventListener('beforeunload', preventCloseTabHandler);
+      setStatus('waiting');
+    }
+    // mediaConns[conn.peer]?.close();
+    // 销毁鼠标
+    destoryCursor({ id: pid });
+  };
   const initDataChannel = useCallback(
     (conn) => {
-      const clearUpConnect = () => {
-        // 更新到dataConnections集合里
-        setDataConns((prev) => {
-          delete prev[conn.peer];
-          return { ...prev };
-        });
-        mediaConns[conn.peer]?.close();
-        // 销毁鼠标
-        destoryCursor({ id: conn.peer });
-      };
       conn.on('close', () => {
         console.log('peer data connection close');
-        clearUpConnect();
+        clearUpConnect(conn.peer);
       });
       conn.on('error', (err) => {
         console.log('peer data connection error', err);
-        clearUpConnect();
+        clearUpConnect(conn.peer);
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
@@ -61,9 +84,8 @@ const usePeer = ({ invitePeerId = null }) => {
         if (connections && invitePeerId) {
           console.log('connections from host:', connections);
           // 更新到usernames集合里
-          setUsernames((prev) => {
-            return { ...prev, ...connections };
-          });
+          usernamesRef.current = { ...usernamesRef.current, ...connections };
+
           let un = await getUsername();
           Object.entries(connections).forEach(([id]) => {
             // 遍历房主发过来的连接
@@ -74,10 +96,7 @@ const usePeer = ({ invitePeerId = null }) => {
         // 只要不是undefined，就更新上去
         if (typeof username !== 'undefined') {
           // 更新到usernames集合里
-          setUsernames((prev) => {
-            prev[conn.peer] = username;
-            return { ...prev };
-          });
+          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
           // 同时初始化鼠标
           let inited = initCursor({ id: conn.peer, username });
           if (inited) {
@@ -97,46 +116,28 @@ const usePeer = ({ invitePeerId = null }) => {
           }
         });
         // 更新到dataConnections集合里
-        setDataConns((prev) => {
-          prev[conn.peer] = conn;
-          return { ...prev };
-        });
+        updateConns({ conn, type: 'data' });
       });
     },
-    [invitePeerId, myPeer, dataConns, mediaConns]
+    [invitePeerId, myPeer]
   );
   const addMediaConnection = (mediaConn) => {
-    const clearUpConnect = () => {
-      // remove stream
-      setStreams((prev) => {
-        delete prev[mediaConn.peer];
-        return { ...prev };
-      });
-      setMediaConns((prev) => {
-        delete prev[mediaConn.peer];
-        return { ...prev };
-      });
-      if (Object.keys(mediaConns).length == 0) {
-        // 无论是哪一方，重置为等待连接的初始状态
-        window.removeEventListener('beforeunload', preventCloseTabHandler);
-        setStatus('waiting');
-      }
-    };
     // 更新到mediaConnections集合里
-    setMediaConns((prev) => {
-      prev[mediaConn.peer] = mediaConn;
-      return { ...prev };
-    });
+    updateConns({ conn: mediaConn, type: 'media' });
     // 新增vera历史记录
-    appendVeraHistory({ peerId: mediaConn.peer, isHost: !invitePeerId, usernames });
+    appendVeraHistory({
+      peerId: mediaConn.peer,
+      isHost: !invitePeerId,
+      usernames: usernamesRef.current
+    });
     // console.log({ mediaConns });
     mediaConn.on('close', () => {
       console.log('peer media connection close');
-      clearUpConnect();
+      clearUpConnect(mediaConn.peer);
     });
     mediaConn.on('error', (err) => {
       console.log('peer media connection error', err);
-      clearUpConnect();
+      clearUpConnect(mediaConn.peer);
     });
     mediaConn.on('stream', (st) => {
       setStatus('streaming');
@@ -147,7 +148,6 @@ const usePeer = ({ invitePeerId = null }) => {
       });
     });
   };
-
   useEffect(() => {
     if (myPeer) {
       myPeer.on('open', async () => {
@@ -161,9 +161,9 @@ const usePeer = ({ invitePeerId = null }) => {
           initDataChannel(invitedDataConn);
         }
         // 有连接请求过来
-        myPeer.on('connection', async (dataConn) => {
+        myPeer.on('connection', async (conn) => {
           window.addEventListener('beforeunload', preventCloseTabHandler);
-          console.log('peer data connection incoming', dataConn);
+          console.log('peer data connection incoming', conn);
           setStatus('connected');
 
           // 房主主动连接对方？存疑
@@ -171,18 +171,18 @@ const usePeer = ({ invitePeerId = null }) => {
             console.log('peer connection host connect remote');
             // 连接的同时，通过metadata把已连接的用户发过去（带连接id）
             let username = await getUsername();
-            console.log('send to remote with metadata', { username, usernames });
+            console.log('send to remote with metadata', username, usernamesRef.current);
 
             initDataChannel(
-              myPeer.connect(dataConn.peer, {
+              myPeer.connect(conn.peer, {
                 metadata: {
                   username,
-                  connections: usernames
+                  connections: usernamesRef.current
                 }
               })
             );
           }
-          initDataChannel(dataConn);
+          initDataChannel(conn);
         });
       });
       myPeer.on('call', (call) => {
@@ -208,13 +208,12 @@ const usePeer = ({ invitePeerId = null }) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myPeer, usernames, invitePeerId]);
+  }, [myPeer, invitePeerId]);
   //关闭peer连接
   const shutdownPeer = useCallback(() => {
     window.removeEventListener('beforeunload', preventCloseTabHandler);
-    console.log({ dataConns, mediaConns });
     // 关闭每个mediaConn
-    Object.entries(mediaConns).forEach(([, conn]) => {
+    Object.entries(mediaConnsRef.current).forEach(([, conn]) => {
       conn.close();
     });
     window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
@@ -222,7 +221,7 @@ const usePeer = ({ invitePeerId = null }) => {
     });
     window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
-  }, [myPeer, dataConns, mediaConns]);
+  }, [myPeer]);
   return {
     shutdownPeer,
     peer: myPeer,
@@ -230,7 +229,7 @@ const usePeer = ({ invitePeerId = null }) => {
     mediaConnections: mediaConns,
     addMediaConnection,
     streams,
-    usernames,
+    usernames: usernamesRef.current,
     status,
     error
   };

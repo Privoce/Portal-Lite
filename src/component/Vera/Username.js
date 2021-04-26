@@ -32,6 +32,7 @@ export default function Username({ local = false, name = 'Guest', readonly = tru
   useEffect(() => {
     if (local && username) {
       setFinalName(username);
+      console.log('set final name', local);
     }
   }, [username, local]);
   const handleChange = ({ target }) => {
@@ -41,6 +42,7 @@ export default function Username({ local = false, name = 'Guest', readonly = tru
   const handleClick = ({ target }) => {
     selectText(target);
   };
+  console.log({ local, name, fixed, readonly, finalName });
   return (
     <StyledWrapper
       className={`username ${fixed ? 'fixed' : ''}`}
