@@ -92,13 +92,17 @@ const bindCursorSync = ({ conn }) => {
   document.addEventListener(
     'mouseup',
     () => {
-      let selection = rangy.getSelection();
-      if (selection) {
-        selection = rangy.serializeSelection(selection, true);
-        sendData(conn, {
-          type: EVENTS.CURSOR_SELECT,
-          data: { selection }
-        });
+      try {
+        let selection = rangy.getSelection();
+        if (selection) {
+          selection = rangy.serializeSelection(selection, true);
+          sendData(conn, {
+            type: EVENTS.CURSOR_SELECT,
+            data: { selection }
+          });
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     false
