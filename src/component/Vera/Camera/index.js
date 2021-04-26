@@ -22,7 +22,6 @@ function Camera({
   peerId,
   remote = true,
   mediaStream = null,
-  mediaConnection = null,
   dataConnections = null
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -73,9 +72,6 @@ function Camera({
           break;
         case 'CC_BG_OFF':
           setBackground({ keep: false });
-          break;
-        case 'CC_DISCONNECT':
-          mediaConnection.close();
           break;
 
         default:

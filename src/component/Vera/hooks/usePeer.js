@@ -57,7 +57,7 @@ const usePeer = ({ invitePeerId = null }) => {
       conn.on('open', async () => {
         console.log('peer data connection open');
         // connections 是host发过来的已经建立的连接id集合
-        let { connections = null, username = null } = conn.metadata || {};
+        let { connections = null, username } = conn.metadata || {};
         if (connections) {
           console.log('connections from host:', connections);
           // 更新到usernames集合里
@@ -71,7 +71,8 @@ const usePeer = ({ invitePeerId = null }) => {
             initDataChannel(newConn);
           });
         }
-        if (username) {
+        // 只要不是undefined，就更新上去
+        if (typeof username !== 'undefined') {
           // 更新到usernames集合里
           setUsernames((prev) => {
             prev[conn.peer] = username;
@@ -203,16 +204,14 @@ const usePeer = ({ invitePeerId = null }) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myPeer, invitePeerId]);
+  }, [myPeer, usernames, invitePeerId]);
   //关闭peer连接
   const shutdownPeer = useCallback(() => {
     window.removeEventListener('beforeunload', preventCloseTabHandler);
     console.log({ dataConns, mediaConns });
-    // 给每个连接发送关闭视频连接的消息
-    let cmd = { type: `CC_DISCONNECT` };
-    Object.entries(dataConns).forEach(([, conn]) => {
-      console.log('send msg to connection', conn.peer);
-      conn.send(cmd);
+    // 关闭每个mediaConn
+    Object.entries(mediaConns).forEach(([, conn]) => {
+      conn.close();
     });
     window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
       t.stop();
