@@ -56,9 +56,9 @@ const usePeer = ({ invitePeerId = null }) => {
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
-        // connections 是host发过来的已经建立的连接id集合
         let { connections = null, username } = conn.metadata || {};
-        if (connections) {
+        // connections 是host发过来的已经建立的连接id集合，所以只有guest才做操作
+        if (connections && !invitePeerId) {
           console.log('connections from host:', connections);
           // 更新到usernames集合里
           setUsernames((prev) => {
@@ -161,7 +161,7 @@ const usePeer = ({ invitePeerId = null }) => {
           initDataChannel(invitedDataConn);
         }
         // 有连接请求过来
-        myPeer.on('connection', (dataConn) => {
+        myPeer.on('connection', async (dataConn) => {
           window.addEventListener('beforeunload', preventCloseTabHandler);
           console.log('peer data connection incoming', dataConn);
           setStatus('connected');
@@ -170,9 +170,11 @@ const usePeer = ({ invitePeerId = null }) => {
           if (!invitePeerId) {
             console.log('peer connection host connect remote');
             // 连接的同时，通过metadata把已连接的用户发过去（带连接id）
+            let username = await getUsername();
             initDataChannel(
               myPeer.connect(dataConn.peer, {
                 metadata: {
+                  username,
                   connections: usernames
                 }
               })
