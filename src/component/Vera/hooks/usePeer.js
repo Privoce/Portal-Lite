@@ -55,15 +55,15 @@ const usePeer = ({ invitePeerId = null }) => {
     }
   }, [myPeer]);
   const clearUpConnect = (pid) => {
-    // 更新到dataConnections集合里
+    // 删掉data&media连接，去掉名字
     updateConns({ conn: pid, type: 'data', remove: true });
     updateConns({ conn: pid, type: 'media', remove: true });
-    if (Object.keys(dataConnsRef.current).length == 0) {
-      // 无论是哪一方，重置为等待连接的初始状态
+    delete usernamesRef.current[pid];
+    if (Object.keys(usernamesRef.current).length == 0) {
+      // 重置为等待连接的初始状态
       window.removeEventListener('beforeunload', preventCloseTabHandler);
       setStatus('waiting');
     }
-    // mediaConns[conn.peer]?.close();
     // 销毁鼠标
     destoryCursor({ id: pid });
   };
@@ -95,12 +95,16 @@ const usePeer = ({ invitePeerId = null }) => {
         }
         // 只要不是undefined，就更新上去
         if (typeof username !== 'undefined') {
-          // 更新到usernames集合里
-          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
-          // 同时初始化鼠标
-          let inited = initCursor({ id: conn.peer, username });
-          if (inited) {
-            bindCursorSync({ conn });
+          let tmp = usernamesRef.current[conn.peer];
+          // 首次赋值
+          if (typeof tmp == 'undefined') {
+            // 更新到usernames集合里
+            usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
+            // 同时初始化鼠标
+            let inited = initCursor({ id: conn.peer, username });
+            if (inited) {
+              bindCursorSync({ conn });
+            }
           }
         }
         console.log('new dataChannel added:', conn.peer);
