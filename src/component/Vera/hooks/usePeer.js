@@ -95,15 +95,24 @@ const usePeer = ({ invitePeerId = null }) => {
         }
         // 只要不是自己发给自己的情况，就更新上去
         if (typeof username !== 'undefined') {
-          // if (typeof usernamesRef.current[conn.peer] !== 'undefined') {
-          console.log('set username', conn.peer, myPeer.id, username, fromHost);
-          // }
-          // 更新到usernames集合里
-          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
-          // 同时初始化鼠标
-          let inited = initCursor({ id: conn.peer, username });
-          if (inited) {
-            bindCursorSync({ conn });
+          console.log('set username', conn.peer, myPeer.id, username, fromHost, !!invitePeerId);
+          let allowOverride = !!invitePeerId && fromHost;
+          if (typeof usernamesRef.current[conn.peer] == 'undefined' || allowOverride) {
+            console.log(
+              'set username auctual',
+              conn.peer,
+              myPeer.id,
+              username,
+              fromHost,
+              !!invitePeerId
+            );
+            // 更新到usernames集合里
+            usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
+            // 同时初始化鼠标
+            let inited = initCursor({ id: conn.peer, username });
+            if (inited) {
+              bindCursorSync({ conn });
+            }
           }
         }
         console.log('new dataChannel added:', conn.peer);
