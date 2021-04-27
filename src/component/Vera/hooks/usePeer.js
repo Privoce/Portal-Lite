@@ -79,9 +79,9 @@ const usePeer = ({ invitePeerId = null }) => {
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
-        let { connections = null, username } = conn.metadata || {};
+        let { connections = null, username, host = false } = conn.metadata || {};
         // connections 是host发过来的已经建立的连接id集合，所以只有guest才做操作
-        if (connections && invitePeerId) {
+        if (connections && !host) {
           console.log('connections from host:', connections);
           // 更新到usernames集合里
           usernamesRef.current = { ...usernamesRef.current, ...connections };
@@ -89,22 +89,19 @@ const usePeer = ({ invitePeerId = null }) => {
           let un = await getUsername();
           Object.entries(connections).forEach(([id]) => {
             // 遍历房主发过来的连接
-            let newConn = myPeer.connect(id, { metadata: { username: un } });
+            let newConn = myPeer.connect(id, { metadata: { host: false, username: un } });
             initDataChannel(newConn);
           });
         }
-        // 只要不是undefined，就更新上去
-        if (typeof username !== 'undefined') {
-          let tmp = usernamesRef.current[conn.peer];
-          // 首次赋值
-          if (typeof tmp == 'undefined') {
-            // 更新到usernames集合里
-            usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
-            // 同时初始化鼠标
-            let inited = initCursor({ id: conn.peer, username });
-            if (inited) {
-              bindCursorSync({ conn });
-            }
+        // 只要不是自己发给自己的情况，就更新上去
+        let sendBySelf = (host && !invitePeerId) || (!host && invitePeerId);
+        if (!sendBySelf && typeof username !== 'undefined') {
+          // 更新到usernames集合里
+          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
+          // 同时初始化鼠标
+          let inited = initCursor({ id: conn.peer, username });
+          if (inited) {
+            bindCursorSync({ conn });
           }
         }
         console.log('new dataChannel added:', conn.peer);
@@ -160,7 +157,9 @@ const usePeer = ({ invitePeerId = null }) => {
         // 受邀者则主动连接房主，并报上自己的名字
         if (invitePeerId) {
           let username = await getUsername();
-          let invitedDataConn = myPeer.connect(invitePeerId, { metadata: { username } });
+          let invitedDataConn = myPeer.connect(invitePeerId, {
+            metadata: { host: false, username }
+          });
           // 初始化通用的监听事件
           initDataChannel(invitedDataConn);
         }
@@ -180,6 +179,7 @@ const usePeer = ({ invitePeerId = null }) => {
             initDataChannel(
               myPeer.connect(conn.peer, {
                 metadata: {
+                  host: true,
                   username,
                   connections: usernamesRef.current
                 }
