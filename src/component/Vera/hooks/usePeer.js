@@ -79,9 +79,9 @@ const usePeer = ({ invitePeerId = null }) => {
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
-        let { connections = null, username, host = false } = conn.metadata || {};
+        let { connections = null, username, fromHost = false } = conn.metadata || {};
         // connections 是host发过来的已经建立的连接id集合，所以只有guest才做操作
-        if (connections && !host) {
+        if (connections && fromHost) {
           console.log('connections from host:', connections);
           // 更新到usernames集合里
           usernamesRef.current = { ...usernamesRef.current, ...connections };
@@ -89,13 +89,15 @@ const usePeer = ({ invitePeerId = null }) => {
           let un = await getUsername();
           Object.entries(connections).forEach(([id]) => {
             // 遍历房主发过来的连接
-            let newConn = myPeer.connect(id, { metadata: { host: false, username: un } });
+            let newConn = myPeer.connect(id, { metadata: { fromHost: false, username: un } });
             initDataChannel(newConn);
           });
         }
         // 只要不是自己发给自己的情况，就更新上去
-        let sendBySelf = (host && !invitePeerId) || (!host && invitePeerId);
-        if (!sendBySelf && typeof username !== 'undefined') {
+        if (typeof username !== 'undefined') {
+          // if (typeof usernamesRef.current[conn.peer] !== 'undefined') {
+          console.log('set username', conn.peer, myPeer.id, username, fromHost);
+          // }
           // 更新到usernames集合里
           usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
           // 同时初始化鼠标
@@ -158,7 +160,7 @@ const usePeer = ({ invitePeerId = null }) => {
         if (invitePeerId) {
           let username = await getUsername();
           let invitedDataConn = myPeer.connect(invitePeerId, {
-            metadata: { host: false, username }
+            metadata: { fromHost: false, username }
           });
           // 初始化通用的监听事件
           initDataChannel(invitedDataConn);
@@ -179,7 +181,7 @@ const usePeer = ({ invitePeerId = null }) => {
             initDataChannel(
               myPeer.connect(conn.peer, {
                 metadata: {
-                  host: true,
+                  fromHost: true,
                   username,
                   connections: usernamesRef.current
                 }
