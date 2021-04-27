@@ -24,6 +24,13 @@ function getUsername(withFake = false) {
     });
   });
 }
+function getInviteUrl(pid = null) {
+  let obj = new URL(location.href);
+  obj.searchParams.append('portal-vera-id', pid);
+  return `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}?extid=${
+    chrome.runtime.id
+  }`;
+}
 async function appendVeraHistory({ peerId, isHost, usernames }) {
   let un = await getUsername();
   if (!un) return;
@@ -84,4 +91,11 @@ function throttle(fn, interval = 200) {
   };
 }
 
-export { throttle, selectText, getUsername, appendVeraHistory, preventCloseTabHandler };
+export {
+  getInviteUrl,
+  throttle,
+  selectText,
+  getUsername,
+  appendVeraHistory,
+  preventCloseTabHandler
+};

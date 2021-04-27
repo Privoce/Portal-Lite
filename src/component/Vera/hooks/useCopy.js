@@ -10,7 +10,7 @@ const copyToClipboard = (str) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
-export default function useCopy() {
+export default function useCopy(duration = 2000) {
   const [copied, setCopied] = useState(false);
   const copy = (content = '') => {
     if (copied || !content) return;
@@ -18,7 +18,7 @@ export default function useCopy() {
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
-    }, 2000);
+    }, duration);
   };
 
   return { copied, copy };

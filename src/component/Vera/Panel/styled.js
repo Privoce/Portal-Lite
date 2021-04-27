@@ -78,95 +78,18 @@ const StyledWrapper = styled.aside`
   }
   &.min {
     min-height: fit-content;
-    min-width: 240px;
+    min-width: 250px;
     padding-bottom: 2px;
     .cameras {
       display: none;
     }
   }
   .topbar {
-    display: flex;
     position: absolute;
     top: 10px;
     left: 0;
     justify-content: space-between;
     width: -webkit-fill-available;
-    padding: 0 12px;
-    .close {
-      cursor: pointer;
-      width: 40px;
-      height: 22px;
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/tel.svg`});
-      background-size: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: #eb2027;
-      border-radius: var(--border-radius);
-    }
-    .right {
-      display: flex;
-      align-items: center;
-      .feedback {
-        padding: 0;
-        margin: 0;
-        margin-right: 5px;
-        border: none;
-        width: 22px;
-        height: 22px;
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/feedback.svg`});
-        background-size: 80%;
-        background-position: center;
-        background-repeat: no-repeat;
-        border-radius: var(--border-radius);
-        background-color: var(--button-bg-color);
-      }
-
-      .layout {
-        display: flex;
-        align-items: center;
-        border-radius: var(--border-radius);
-        background-color: var(--button-bg-color);
-        padding: 4px;
-        gap: 10px;
-        .item {
-          position: relative;
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 1px;
-          width: 15px;
-          height: 15px;
-          margin: 0;
-          &:after {
-            position: absolute;
-            content: '';
-            display: block;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-          }
-          &:hover,
-          &.curr {
-            background-color: var(--camera-bg-color);
-          }
-          &.vt {
-            flex-direction: column;
-          }
-          .mock {
-            border-radius: 1px;
-            width: 4px;
-            background: var(--font-color);
-            &.box {
-              height: 4px;
-            }
-            &.line {
-              height: 2px;
-            }
-          }
-        }
-      }
-    }
   }
   .cameras {
     overflow: hidden;

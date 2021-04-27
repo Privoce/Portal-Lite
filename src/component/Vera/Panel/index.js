@@ -5,24 +5,9 @@ import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
 import StyledWrapper from './styled';
-const tipFeedback = chrome.i18n.getMessage('feedback');
+import Topbar from './Topbar';
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
-const layouts = {
-  min: <div className="mock line"></div>,
-  one: <div className="mock box"></div>,
-  vt: (
-    <>
-      <div className="mock box"></div>
-      <div className="mock box"></div>
-    </>
-  ),
-  hz: (
-    <>
-      <div className="mock box"></div>
-      <div className="mock box"></div>
-    </>
-  )
-};
+
 let used = false;
 export default function Panel({ invitePeerId = null }) {
   const {
@@ -112,31 +97,12 @@ export default function Panel({ invitePeerId = null }) {
           <Invite peerId={peer?.id} />
         )
       ) : null}
-      <div className="topbar">
-        <div className="close" onClick={handleClose}></div>
-        <div className="right">
-          <a
-            className="feedback"
-            title={`${tipFeedback}`}
-            href="https://www.surveymonkey.com/r/RMGZDW8"
-            target="_blank"
-          ></a>
-          <ul className="layout">
-            {Object.entries(layouts).map(([key, mocks]) => {
-              return (
-                <li
-                  onClick={handleLayout}
-                  key={key}
-                  className={`item ${key} ${key == layout ? 'curr' : ''}`}
-                  layout={key}
-                >
-                  {mocks}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
+      <Topbar
+        pid={!noConnection ? invitePeerId || peer?.id : null}
+        layout={layout}
+        handleLayout={handleLayout}
+        handleClose={handleClose}
+      />
     </StyledWrapper>
   );
 }
