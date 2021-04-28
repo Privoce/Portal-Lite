@@ -37,10 +37,15 @@ export default function WidgetWrapper({
   const [settingVisible, setSettingVisible] = useState(false);
   const [shareVisibile, setShareVisibile] = useState(false);
   const [widgetSettingVisible, setWidgetSettingVisible] = useState(false);
+  // const wrapperRef = useRef(null);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const updateCurrSize = (key, { size }) => {
-    console.log({ key, size });
+    console.log({ key, size, ref });
     setCurrSize(size);
+    // if (size == 'fullscreen') {
+    //   wrapperRef.current.requestFullscreen();
+    //   return;
+    // }
     updateWidgetSetting({ name: key, key: 'size', data: size });
   };
   const handleRemove = (name) => {

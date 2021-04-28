@@ -60,6 +60,7 @@ const zh = {
         share: '分享',
         open: { newTab: '新页面打开', standalone: '独立页面打开' },
         sizes: {
+          fullscreen: '全',
           middle: '中',
           large: '大'
         }

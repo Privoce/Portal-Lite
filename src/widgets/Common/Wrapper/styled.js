@@ -133,6 +133,14 @@ const StyledWrapper = styled.div`
   &.large .container {
     height: 6.74rem;
   }
+  &.fullscreen {
+    width: 100vw;
+    height: 100vh;
+    .container {
+      width: 100vw;
+      height: 100vh;
+    }
+  }
   &.noscroll .container {
     overflow: hidden;
   }

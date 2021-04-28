@@ -281,7 +281,7 @@ let Widgets = {
     description: '一个科学计算器',
     comp: <Calc />,
     defaultSize: 'large',
-    sizes: ['middle', 'large'],
+    sizes: ['fullscreen', 'middle', 'large'],
     disableScroll: true,
     compact: true,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.calc.png'

@@ -60,6 +60,7 @@ const en = {
         share: 'Share',
         open: { newTab: 'Open in new tab', standalone: 'Open in new window' },
         sizes: {
+          fullscreen: 'F',
           mini: 'm',
           middle: 'M',
           large: 'L'
