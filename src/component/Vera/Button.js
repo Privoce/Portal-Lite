@@ -19,6 +19,9 @@ const StyledButton = styled.button`
     padding-right: 20px;
     padding-left: 20px;
   }
+  &:disabled {
+    background-color: #ccc;
+  }
   &:active {
     transform: scale(0.9);
   }
