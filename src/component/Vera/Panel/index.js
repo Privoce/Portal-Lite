@@ -6,6 +6,7 @@ import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
 import StyledWrapper from './styled';
 import Topbar from './Topbar';
+import { STATUS } from '../hooks/useEmitter';
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
@@ -88,8 +89,9 @@ export default function Panel({ invitePeerId = null }) {
             <Invite peerId={peer?.id} />
           ) : (
             <Join
+              ready={status == STATUS.READY}
               peerClient={peer}
-              peerIds={Object.keys(dataConnections)}
+              peerIds={Object.keys(usernames)}
               addMediaConnection={addMediaConnection}
             />
           )

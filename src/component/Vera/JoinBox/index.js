@@ -26,7 +26,7 @@ const StyledBox = styled.div`
     width: 100%;
   }
 `;
-export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }) {
+export default function JoinBox({ ready = false, peerClient, peerIds = [], addMediaConnection }) {
   const { username } = useUsername();
   const handleJoin = () => {
     console.log({ peerIds });
@@ -41,7 +41,7 @@ export default function JoinBox({ peerClient, peerIds = [], addMediaConnection }
       <Username local={true} readonly={false} fixed={false} />
       <div className="btns">
         {username ? null : <Login />}
-        <Button className="blue" onClick={handleJoin}>
+        <Button disabled={!ready} className="blue" onClick={handleJoin}>
           {username ? joinTxt : joinAsGuestTxt}
         </Button>
       </div>

@@ -31,7 +31,7 @@ export default function Cursor({ id, username = 'Guest' }) {
         console.error(error);
       }
     });
-  }, []);
+  }, [id]);
   const handleAniEnd = () => {
     wrapper.current.classList.remove('clicked');
   };

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import emitter, { EVENTS } from './useEmitter';
+import emitter, { EVENTS, STATUS } from './useEmitter';
 import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
 import { getUsername, appendVeraHistory, preventCloseTabHandler } from './utils';
 const peerConfig = {
@@ -28,6 +28,7 @@ const usePeer = ({ invitePeerId = null }) => {
   const mediaConnsRef = useRef({});
   const [streams, setStreams] = useState({});
   const usernamesRef = useRef({});
+  const usernameRef = useRef('');
   const updateConns = ({ conn, remove = false, type = 'media' }) => {
     let current = type == 'media' ? mediaConnsRef.current : dataConnsRef.current;
     let _setState = type == 'media' ? setMediaConns : setDataConns;
@@ -49,9 +50,13 @@ const usePeer = ({ invitePeerId = null }) => {
   };
   // 初始化Peer
   useEffect(() => {
+    const initUsername = async () => {
+      usernameRef.current = await getUsername();
+    };
     if (!myPeer) {
       let tmp = new Peer(peerConfig);
       setMyPeer(tmp);
+      initUsername();
     }
   }, [myPeer]);
   const clearUpConnect = (pid) => {
@@ -62,7 +67,7 @@ const usePeer = ({ invitePeerId = null }) => {
     if (Object.keys(usernamesRef.current).length == 0) {
       // 重置为等待连接的初始状态
       window.removeEventListener('beforeunload', preventCloseTabHandler);
-      setStatus('waiting');
+      setStatus(STATUS.WAITING);
     }
     // 销毁鼠标
     destoryCursor({ id: pid });
@@ -86,12 +91,14 @@ const usePeer = ({ invitePeerId = null }) => {
           // 更新到usernames集合里
           usernamesRef.current = { ...usernamesRef.current, ...connections };
 
-          let un = await getUsername();
           Object.entries(connections).forEach(([id]) => {
             // 遍历房主发过来的连接
-            let newConn = myPeer.connect(id, { metadata: { fromHost: false, username: un } });
+            let newConn = myPeer.connect(id, {
+              metadata: { fromHost: false, username: usernameRef.current }
+            });
             initDataChannel(newConn);
           });
+          setStatus(STATUS.READY);
         }
         // 只要不是自己发给自己的情况，就更新上去
         if (typeof username !== 'undefined') {
@@ -152,7 +159,7 @@ const usePeer = ({ invitePeerId = null }) => {
       clearUpConnect(mediaConn.peer);
     });
     mediaConn.on('stream', (st) => {
-      setStatus('streaming');
+      setStatus(STATUS.STREAMING);
       console.log('peer media connection stream', st);
       setStreams((prev) => {
         prev[mediaConn.peer] = st;
@@ -162,12 +169,12 @@ const usePeer = ({ invitePeerId = null }) => {
   };
   useEffect(() => {
     if (myPeer) {
-      myPeer.on('open', async () => {
+      myPeer.on('open', () => {
         console.log('peer connection open');
-        setStatus('open');
+        setStatus(STATUS.OPEN);
         // 受邀者则主动连接房主，并报上自己的名字
         if (invitePeerId) {
-          let username = await getUsername();
+          let username = usernameRef.current;
           let invitedDataConn = myPeer.connect(invitePeerId, {
             metadata: { fromHost: false, username }
           });
@@ -175,16 +182,16 @@ const usePeer = ({ invitePeerId = null }) => {
           initDataChannel(invitedDataConn);
         }
         // 有连接请求过来
-        myPeer.on('connection', async (conn) => {
+        myPeer.on('connection', (conn) => {
           window.addEventListener('beforeunload', preventCloseTabHandler);
           console.log('peer data connection incoming', conn);
-          setStatus('connected');
+          setStatus(STATUS.CONNECTED);
 
           // 房主主动连接对方？存疑
           if (!invitePeerId) {
             console.log('peer connection host connect remote');
             // 连接的同时，通过metadata把已连接的用户发过去（带连接id）
-            let username = await getUsername();
+            let username = usernameRef.current;
             console.log('send to remote with metadata', username, usernamesRef.current);
 
             initDataChannel(
@@ -203,22 +210,22 @@ const usePeer = ({ invitePeerId = null }) => {
       myPeer.on('call', (call) => {
         // 有人呼叫
         console.log('peer connection call from the other');
-        setStatus('call');
+        setStatus(STATUS.CALLING);
         // 回应
         call.answer(window.LOCAL_MEDIA_STREAM);
         addMediaConnection(call);
       });
       myPeer.on('disconnected', () => {
         console.log('peer connection disconnected');
-        setStatus('disconnected');
+        setStatus(STATUS.DISCONNECTED);
       });
       myPeer.on('close', () => {
         console.log('peer connection close');
-        setStatus('close');
+        setStatus(STATUS.CLOSE);
       });
       myPeer.on('error', (err) => {
         console.log('peer connection error', { err });
-        setStatus('error');
+        setStatus(STATUS.ERROR);
         setError(err.type);
       });
     }
