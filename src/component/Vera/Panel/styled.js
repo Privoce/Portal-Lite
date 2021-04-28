@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { STATUS } from '../hooks/useEmitter';
 const StyledWrapper = styled.aside`
   font-family: sans-serif;
   position: absolute;
@@ -29,18 +30,18 @@ const StyledWrapper = styled.aside`
     background-color: #999;
     border-radius: 50%;
   }
-  &[data-status='waiting'] {
+  &[data-status='${STATUS.WAITING}'] {
     /* width: 440px;
     height: 224px; */
   }
-  &[data-status='open']:after {
+  &[data-status='${STATUS.OPEN}']:after {
     background-color: #ee7f3d;
   }
-  &[data-status='close']:after {
+  &[data-status='${STATUS.CLOSE}']:after {
     background-color: #fff;
   }
-  &[data-status='call']:not(.min),
-  &[data-status='streaming']:not(.min) {
+  &[data-status='${STATUS.CALLING}']:not(.min),
+  &[data-status='${STATUS.STREAMING}']:not(.min) {
     &:after {
       background-color: #85e89e;
     }
@@ -58,10 +59,10 @@ const StyledWrapper = styled.aside`
       }
     }
   }
-  &[data-status='connected']:after {
+  &[data-status='${STATUS.CONNECTED}']:after,&[data-status='${STATUS.READY}']:after {
     background-color: #48baff;
   }
-  &[data-status='disconnected']:after {
+  &[data-status='${STATUS.DISCONNECTED}']:after {
     background-color: #ccc;
   }
   &.vt {
