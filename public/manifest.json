@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "Portal",
   "description": "__MSG_extDescription__",
-  "version": "2.1.8",
+  "version": "2.4.1",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "storage"],
@@ -45,11 +45,9 @@
         "crx/vera/assets/rangy-core.js",
         "crx/vera/assets/rangy-serializer.js",
         "crx/vera/assets/allow.copy.js",
-        "crx/vera/content_script.js",
         "crx/static/js/runtime-indexExt.bundle.js",
         "crx/static/js/indexExt.chunk.js"
       ],
-      "css": ["crx/vera/style.css"],
       "run_at": "document_idle"
     },
     {
