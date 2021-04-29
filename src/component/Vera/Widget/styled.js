@@ -1,18 +1,23 @@
-// widget
-#PORTAL_VERA_WIDGET {
-  z-index: 999;
-  position: fixed;
+import styled, { keyframes } from 'styled-components';
+const AniSlideOut = keyframes`
+    from {
+        transform: translateX(-30px);
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+`;
+const StyledWidget = styled.aside`
+  position: absolute;
   left: 0;
   top: 0;
   width: auto;
   height: 100vh;
-  display: none;
   pointer-events: none;
-  &.show {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
+  display: flex;
+  align-items: flex-end;
   .widget {
     pointer-events: all;
     cursor: pointer;
@@ -20,6 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     .drag {
       margin-left: -25px;
       width: 50px;
@@ -37,7 +43,7 @@
         width: 25px;
         height: 25px;
         background-color: transparent;
-        background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/logo.png');
+        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/logo.png`});
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -46,7 +52,7 @@
         border-radius: 4px;
         width: 12px;
         height: 30px;
-        background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/drag-vertical.svg');
+        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/drag-vertical.svg`});
         background-size: cover;
         background-color: #333;
         background-repeat: no-repeat;
@@ -62,38 +68,29 @@
       content: '';
       width: 50px;
       height: 50px;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/crx/vera/assets/icon/video.svg');
+      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.svg`});
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
     }
+    &:hover {
+      .drag {
+        margin-left: 0;
+      }
+      .camera {
+        visibility: visible;
+        animation: ${AniSlideOut} 0.3s ease-in forwards;
+      }
+    }
+    &.plain-draggable-moving {
+      .camera {
+        visibility: visible;
+      }
+      &:hover .camera {
+        animation: none;
+      }
+    }
   }
-  .widget:hover {
-    .drag {
-      margin-left: 0;
-    }
-    .camera {
-      visibility: visible;
-      animation: AniSlideOut 0.3s ease-in forwards;
-    }
-  }
-  .widget.plain-draggable-moving {
-    .camera {
-      visibility: visible;
-    }
-    &:hover .camera {
-      animation: none;
-    }
-  }
-}
+`;
 
-@keyframes AniSlideOut {
-  from {
-    transform: translateX(-30px);
-    opacity: 0.1;
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+export default StyledWidget;

@@ -1,6 +1,7 @@
 // import React from 'react';
 import styled from 'styled-components';
 const StyledButton = styled.button`
+  min-width: initial;
   border: none;
   white-space: nowrap;
   background-color: var(--camera-bg-color);

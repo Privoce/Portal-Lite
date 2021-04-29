@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Panel from './Panel';
-// import { reset } from 'styled-reset';
+import Widget from './Widget';
 
 const StyledWrapper = styled.section`
   position: fixed;
@@ -53,28 +53,15 @@ export default function Vera() {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    window.TOGGLE_VERA_PANEL = () => {
-      console.log('toggle visible', { visible });
-      if (visible) {
-        // 去除标记
-        document.documentElement.removeAttribute('invite-expand');
-      } else {
-        // 添加标记
-        document.documentElement.setAttribute('invite-expand', 1);
-      }
-      if (visible) {
-        setInvitePeerId(null);
-      }
-      setVisible((prev) => !prev);
-    };
-    if (invitePeerId && !visible) {
-      window.TOGGLE_VERA_PANEL();
-    }
-  }, [invitePeerId, visible]);
+  const openPanel = () => {
+    setVisible(true);
+  };
+  const closePanel = () => {
+    setVisible(false);
+  };
   useEffect(() => {
     const getPvid = () => {
-      chrome.storage.sync.get(['pvid'], function (res) {
+      chrome.storage.sync.get(['pvid'], (res) => {
         // Notify that we saved.
         const { pvid = null } = res;
         console.log('pvid from storage', pvid);
@@ -84,6 +71,7 @@ export default function Vera() {
             console.log('pvid removed');
           });
           setInvitePeerId(pvid);
+          setVisible(true);
         }
         setLoading(false);
       });
@@ -91,11 +79,12 @@ export default function Vera() {
     // 显示的时候 再执行
     getPvid();
   }, []);
-  if (!visible) return null;
+  // if (!visible) return null;
   return (
     <StyledWrapper>
       <GlobalStyle />
-      {!loading && <Panel invitePeerId={invitePeerId} />}
+      {!loading && <Widget openPanel={openPanel} />}
+      {!loading && visible && <Panel closePanel={closePanel} invitePeerId={invitePeerId} />}
     </StyledWrapper>
   );
 }

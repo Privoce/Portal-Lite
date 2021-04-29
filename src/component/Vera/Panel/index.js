@@ -10,7 +10,7 @@ import { STATUS } from '../hooks/useEmitter';
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
-export default function Panel({ invitePeerId = null }) {
+export default function Panel({ closePanel, invitePeerId = null }) {
   const {
     peer,
     shutdownPeer,
@@ -58,7 +58,7 @@ export default function Panel({ invitePeerId = null }) {
         c.srcObject = null;
       });
       shutdownPeer();
-      window.TOGGLE_VERA_PANEL();
+      closePanel();
     }
   };
   let noConnection = Object.keys(mediaConnections).length == 0;
