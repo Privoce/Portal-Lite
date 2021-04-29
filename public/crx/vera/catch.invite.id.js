@@ -9,5 +9,6 @@ if (id) {
   chrome.storage.sync.set({ pvid: id }, function () {
     // Notify that we saved.
     console.log('pvid saved', id);
+    window.VERA_INVITE_ID = true;
   });
 }

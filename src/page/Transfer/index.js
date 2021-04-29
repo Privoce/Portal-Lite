@@ -71,7 +71,15 @@ export default function Transfer() {
       let { origin, hash = '', pathname = '' } = currUrl;
       console.log({ currUrl });
       let paramsString = sps.toString() ? `?${sps.toString()}` : '';
-      location.href = `${origin}${pathname}${paramsString}${hash}`;
+      if (window.VERA_INVITE_ID) {
+        // 注入成功
+        location.href = `${origin}${pathname}${paramsString}${hash}`;
+      } else {
+        // 等个1.5s
+        setTimeout(() => {
+          location.href = `${origin}${pathname}${paramsString}${hash}`;
+        }, 1500);
+      }
     } else if (checkResult === false || !id) {
       setTip(`Transfer error: \n\r ${decodedUrl}`);
     }

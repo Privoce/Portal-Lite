@@ -44,16 +44,20 @@
         "crx/vera/assets/plain.draggable.min.js",
         "crx/vera/assets/rangy-core.js",
         "crx/vera/assets/rangy-serializer.js",
-        "crx/vera/assets/allow.copy.js",
         "crx/static/js/runtime-indexExt.bundle.js",
         "crx/static/js/indexExt.chunk.js"
       ],
       "run_at": "document_idle"
     },
     {
+      "matches": ["https://www.figma.com/*"],
+      "js": [ "crx/vera/assets/allow.copy.js"],
+      "run_at": "document_idle"
+    },
+    {
       "matches": ["https://nicegoodthings.com/transfer/*"],
       "js": ["crx/vera/catch.invite.id.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": ["crx/*"],
