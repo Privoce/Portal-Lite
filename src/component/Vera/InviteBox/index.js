@@ -24,9 +24,7 @@ export default function InviteBox({ peerId = '' }) {
     selectText(target);
   };
   const handleCopyClick = () => {
-    unlocker.enable();
     copy(inviteUrl);
-    unlocker.disable();
   };
   if (!inviteUrl) return <Loading />;
 

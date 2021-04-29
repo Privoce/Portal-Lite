@@ -14,11 +14,17 @@ export default function useCopy(duration = 2000) {
   const [copied, setCopied] = useState(false);
   const copy = (content = '') => {
     if (copied || !content) return;
+    if (location.hostname.indexOf('figma') > -1) {
+      unlocker.enable();
+    }
     copyToClipboard(content);
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
     }, duration);
+    if (location.hostname.indexOf('figma') > -1) {
+      unlocker.disable();
+    }
   };
 
   return { copied, copy };
