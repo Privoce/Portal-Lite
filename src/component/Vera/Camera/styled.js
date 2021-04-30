@@ -53,28 +53,25 @@ const StyledWrapper = styled.div`
     .opts {
       z-index: 7;
       position: absolute;
-      bottom: 0.5em;
+      bottom: 1em;
       left: 50%;
       padding: 0.5em;
       display: flex;
       transform: translateX(-50%);
+      gap: 0.4em;
       /* visibility: hidden; */
       .opt {
         padding: 0;
-        // opacity: 0.6;
         border: none;
         border-radius: var(--border-radius);
         background-color: var(--button-bg-color);
-        height: 2.2em !important;
-        width: 2.2em !important;
+        height: 2em !important;
+        width: 2em !important;
         min-width: unset;
-        background-size: 70%;
+        background-size: 65%;
         background-repeat: no-repeat;
         background-position: center;
         cursor: pointer;
-        &:not(:last-child) {
-          margin-right: 0.6em;
-        }
         &.bg {
           background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
           &[data-status='false'] {
