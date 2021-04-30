@@ -26,6 +26,7 @@ export default function Panel({ closePanel, invitePeerId = null }) {
   } = usePeer({
     invitePeerId
   });
+  const [resizing, setResizing] = useState(false);
   const [panelSize, setPanelSize] = useState({ width: 440, height: 250 });
   const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
@@ -44,6 +45,10 @@ export default function Panel({ closePanel, invitePeerId = null }) {
   const handleResizeStop = () => {
     draggable.remove();
     initDraggable();
+    setResizing(false);
+  };
+  const handleResizeStart = () => {
+    setResizing(true);
   };
   const initDraggable = () => {
     let dragEle = panelRef.current;
@@ -85,7 +90,7 @@ export default function Panel({ closePanel, invitePeerId = null }) {
   let boxVisible = noConnection && !miniLayout;
   let { width, height } = panelSize;
   return (
-    <StyledWrapper>
+    <StyledWrapper className={resizing ? 'resizing' : ''}>
       <div
         className={`panel ${layout}`}
         data-status={status}
@@ -135,6 +140,7 @@ export default function Panel({ closePanel, invitePeerId = null }) {
         {...panelSize}
         {...movePosition}
         updateSize={setPanelSize}
+        onResizeStart={handleResizeStart}
         onResizeStop={handleResizeStop}
       />
     </StyledWrapper>

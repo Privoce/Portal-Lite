@@ -4,8 +4,8 @@ const StyledWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,10 +21,10 @@ const StyledWrapper = styled.div`
   }
   .tip {
     text-transform: capitalize;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 1em;
+    border-radius: 0.5em;
     background-color: var(--camera-bg-color);
-    font-size: 22px;
+    font-size: 2.2em;
     color: var(--font-color);
   }
 `;

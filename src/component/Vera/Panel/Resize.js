@@ -7,6 +7,7 @@ export default function Resize({
   height = 250,
   left = 0,
   top = 0,
+  onResizeStart,
   onResizeStop,
   updateSize
 }) {
@@ -16,6 +17,7 @@ export default function Resize({
   // lockAspectRatio={true}
   return (
     <ResizableBox
+      onResizeStart={onResizeStart}
       onResizeStop={onResizeStop}
       style={{ left: `${left}px`, top: `${top}px` }}
       width={width}

@@ -31,10 +31,10 @@ const StyledWrapper = styled.div`
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -70%, 0);
-    padding: 10px;
-    border-radius: 5px;
+    padding: 1em;
+    border-radius: 0.5em;
     background-color: var(--camera-bg-color);
-    font-size: 22px;
+    font-size: 2.2em;
     color: var(--font-color);
   }
   .video {
@@ -53,9 +53,9 @@ const StyledWrapper = styled.div`
     .opts {
       z-index: 7;
       position: absolute;
-      bottom: 5px;
+      bottom: 0.5em;
       left: 50%;
-      padding: 5px;
+      padding: 0.5em;
       display: flex;
       transform: translateX(-50%);
       /* visibility: hidden; */
@@ -65,15 +65,15 @@ const StyledWrapper = styled.div`
         border: none;
         border-radius: var(--border-radius);
         background-color: var(--button-bg-color);
-        height: 22px !important;
-        width: 22px !important;
+        height: 2.2em !important;
+        width: 2.2em !important;
         min-width: unset;
         background-size: 70%;
         background-repeat: no-repeat;
         background-position: center;
         cursor: pointer;
         &:not(:last-child) {
-          margin-right: 6px;
+          margin-right: 0.6em;
         }
         &.bg {
           background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
