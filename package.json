@@ -54,6 +54,7 @@
     "react-intersection-observer": "^8.31.1",
     "react-loading-skeleton": "^2.2.0",
     "react-refresh": "^0.10.0",
+    "react-resizable": "^1.11.1",
     "react-router-dom": "^5.2.0",
     "relationship.js": "^1.0.0",
     "resolve": "1.20.0",

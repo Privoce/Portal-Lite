@@ -1,25 +1,92 @@
 import styled from 'styled-components';
 import { STATUS } from '../hooks/useEmitter';
 const StyledWrapper = styled.aside`
-  font-family: sans-serif;
+position: relative;
+pointer-events: all;
+font-family: sans-serif;
+.react-resizable {
+  visibility:hidden;
+  pointer-events:none;
   position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: all;
+  left:0;
+  top:0;
+  width:100% !important;
+  height:100% !important;
+    .react-resizable-handle {
+      pointer-events:all;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-origin: content-box;
+      box-sizing: border-box;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2IDYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iNnB4Ij48ZyBvcGFjaXR5PSIwLjMwMiI+PHBhdGggZD0iTSA2IDYgTCAwIDYgTCAwIDQuMiBMIDQgNC4yIEwgNC4yIDQuMiBMIDQuMiAwIEwgNiAwIEwgNiA2IEwgNiA2IFoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+');
+      background-position: bottom right;
+      padding: 0 3px 3px 0;
+      &.react-resizable-handle-sw {
+        bottom: 0;
+        left: 0;
+        cursor: sw-resize;
+        transform: rotate(90deg);
+      }
+      &.react-resizable-handle-se {
+        bottom: 0;
+        right: 0;
+        cursor: se-resize;
+      }
+      &.react-resizable-handle-nw {
+        top: 0;
+        left: 0;
+        cursor: nw-resize;
+        transform: rotate(180deg);
+      }
+      &.react-resizable-handle-ne {
+        top: 0;
+        right: 0;
+        cursor: ne-resize;
+        transform: rotate(270deg);
+      }
+      &.react-resizable-handle-w,
+      &.react-resizable-handle-e {
+        top: 50%;
+        margin-top: -10px;
+        cursor: ew-resize;
+      }
+      &.react-resizable-handle-w {
+        left: 0;
+        transform: rotate(135deg);
+      }
+      &.react-resizable-handle-e {
+        right: 0;
+        transform: rotate(315deg);
+      }
+      &.react-resizable-handle-n,
+      &.react-resizable-handle-s {
+        left: 50%;
+        margin-left: -10px;
+        cursor: ns-resize;
+      }
+      &.react-resizable-handle-n {
+        top: 0;
+        transform: rotate(225deg);
+      }
+      &.react-resizable-handle-s {
+        bottom: 0;
+        transform: rotate(45deg);
+      }
+    }
+  }
+.panel{
   display: flex !important;
   align-items: center;
   gap: 15px;
-  min-width: 200px;
-  min-height: 200px;
-  max-height: 100vh;
-  overflow: visible;
   padding: 12px;
   padding-top: 40px;
   border-radius: var(--border-radius);
   transition: all 0.5s ease-in-out;
-  transition-property: background, width, height;
-  background: var(--panel-bg-color);
+  transition-property: background-color;
+  background-color: var(--panel-bg-color);
+  font-size:10px;
   &:after {
     content: '';
     position: absolute;
@@ -29,10 +96,6 @@ const StyledWrapper = styled.aside`
     height: 10px;
     background-color: #999;
     border-radius: 50%;
-  }
-  &[data-status='${STATUS.WAITING}'] {
-    /* width: 440px;
-    height: 224px; */
   }
   &[data-status='${STATUS.OPEN}']:after {
     background-color: #ee7f3d;
@@ -67,12 +130,14 @@ const StyledWrapper = styled.aside`
   }
   &.vt {
     flex-direction: column;
+    height: fit-content !important;
     .cameras {
       flex-direction: column;
     }
   }
   &.one {
     gap: 0;
+    width:fit-content !important;
     .cameras .local {
       display: none;
     }
@@ -80,6 +145,7 @@ const StyledWrapper = styled.aside`
   &.min {
     min-height: fit-content;
     min-width: 250px;
+    height: fit-content !important;
     padding-bottom: 2px;
     .cameras {
       display: none;
@@ -97,6 +163,13 @@ const StyledWrapper = styled.aside`
     display: flex;
     gap: 15px;
   }
+}
+&:hover{
+  .react-resizable{
+
+    visibility:visible;
+  }
+}
 `;
 
 export default StyledWrapper;

@@ -8,21 +8,21 @@ const joinAsGuestTxt = chrome.i18n.getMessage('joinAsGuest');
 
 const StyledBox = styled.div`
   box-sizing: border-box;
-  height: 200px;
-  width: 200px;
+  height: 20em;
+  width: 20em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 1em;
   justify-content: space-around;
   padding: 5px;
-  padding-top: 30px;
+  padding-top: 3em;
   background: transparent;
   border-radius: var(--border-radius);
   .btns {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 5em;
     width: 100%;
   }
 `;

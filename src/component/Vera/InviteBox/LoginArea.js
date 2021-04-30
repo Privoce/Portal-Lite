@@ -9,19 +9,19 @@ const StyledBox = styled.div`
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
   background-color: #000;
-  padding: 20px;
+  padding: 2em;
   border-radius: var(--border-radius);
   color: var(--font-color);
   .tip {
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 1.4em;
   }
   .btns {
     display: flex;
     justify-content: space-between;
-    margin: 15px 5px;
+    margin: 1.5em 0.5em;
   }
 `;
 export default function LoginBox() {

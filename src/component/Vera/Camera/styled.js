@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 const StyledWrapper = styled.div`
+  width: 20em;
+  height: 20em;
   overflow: hidden;
   position: relative;
-  min-width: 200px;
-  min-height: 200px;
-  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,12 +40,16 @@ const StyledWrapper = styled.div`
   .video {
     position: relative;
     display: flex;
-    width: 200px;
-    height: 200px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    width: -webkit-fill-available;
     &.hidden video {
       visibility: hidden;
     }
-
+    video {
+      width: -webkit-fill-available;
+    }
     .opts {
       z-index: 7;
       position: absolute;

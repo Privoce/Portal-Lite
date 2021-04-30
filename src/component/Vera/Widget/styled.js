@@ -18,6 +18,9 @@ const StyledWidget = styled.aside`
   pointer-events: none;
   display: flex;
   align-items: flex-end;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   .widget {
     pointer-events: all;
     cursor: pointer;

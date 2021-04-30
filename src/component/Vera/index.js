@@ -81,7 +81,7 @@ export default function Vera() {
   }, []);
   // if (!visible) return null;
   return (
-    <StyledWrapper>
+    <StyledWrapper id="VERA_FULLSCREEN_CONTAINER">
       <GlobalStyle />
       {!loading && <Widget openPanel={openPanel} />}
       {!loading && visible && <Panel closePanel={closePanel} invitePeerId={invitePeerId} />}

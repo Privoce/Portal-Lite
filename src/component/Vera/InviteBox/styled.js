@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 const StyledBox = styled.div`
   box-sizing: border-box;
-  height: 200px;
-  width: 200px;
+  height: 20em;
+  width: 20em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 5px;
   padding: 5px;
   background-color: var(--camera-bg-color);
@@ -18,10 +18,10 @@ const StyledBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    padding: 0.4em;
     background: var(--button-bg-color);
     border-radius: var(--border-radius);
-    font-size: 10px;
+    font-size: 1em;
     .url {
       user-select: text;
       color: var(--font-color);
@@ -32,7 +32,7 @@ const StyledBox = styled.div`
       word-break: break-word;
       text-align: left;
       line-height: 1.2;
-      max-height: 90px;
+      max-height: 9em;
       overflow: hidden;
     }
   }
@@ -42,9 +42,9 @@ const StyledBox = styled.div`
     width: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0.6em;
     background-color: #1f1f1f;
-    padding: 6px 4px;
+    padding: 0.6em 0.4em;
     border-radius: var(--border-radius);
     color: var(--font-color);
     &::-webkit-scrollbar {
@@ -62,23 +62,23 @@ const StyledBox = styled.div`
       justify-content: space-between;
       align-items: center;
       &:not(:last-child) {
-        padding-bottom: 4px;
+        padding-bottom: 0.4em;
         border-bottom: 1px dashed #333;
       }
       .avator {
-        width: 25px;
-        height: 25px;
+        width: 2.5em;
+        height: 2.5em;
         border-radius: 50%;
       }
       .name {
         color: inherit;
-        font-size: 10px;
+        font-size: 1em;
       }
     }
   }
   .login {
-    margin-top: 15px;
-    padding: 10px 20px;
+    margin-top: 1.5em;
+    padding: 1em 2em;
     background-color: #c4c4c4;
   }
 `;

@@ -4,12 +4,15 @@ import Camera from '../Camera';
 import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
+import { getTranslateValues } from '../hooks/utils';
 import StyledWrapper from './styled';
 import Topbar from './Topbar';
+import Resize from './Resize';
 import { STATUS } from '../hooks/useEmitter';
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
+let draggable = null;
 export default function Panel({ closePanel, invitePeerId = null }) {
   const {
     peer,
@@ -23,7 +26,8 @@ export default function Panel({ closePanel, invitePeerId = null }) {
   } = usePeer({
     invitePeerId
   });
-
+  const [panelSize, setPanelSize] = useState({ width: 440, height: 250 });
+  const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
   const handleLayout = ({ target }) => {
@@ -37,15 +41,28 @@ export default function Panel({ closePanel, invitePeerId = null }) {
       used = true;
     }
   }, [streams]);
-  useEffect(() => {
-    console.log('current usernames', usernames);
-  }, [usernames]);
+  const handleResizeStop = () => {
+    draggable.remove();
+    initDraggable();
+  };
+  const initDraggable = () => {
+    let dragEle = panelRef.current;
+    let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
+    draggable = new PlainDraggable(dragEle, {
+      containment,
+      autoScroll: true,
+      onMove: (pos) => {
+        console.log({ pos, draggable });
+        let { x, y } = getTranslateValues(dragEle);
+        // let { left, top } = pos;
+        setMovePosition({ left: x, top: y });
+      }
+    });
+  };
   // 拖拽
   useEffect(() => {
     if (panelRef) {
-      new PlainDraggable(panelRef.current, {
-        autoScroll: true
-      });
+      initDraggable();
     }
   }, []);
   const handleClose = () => {
@@ -61,49 +78,64 @@ export default function Panel({ closePanel, invitePeerId = null }) {
       closePanel();
     }
   };
+
   let noConnection = Object.keys(mediaConnections).length == 0;
   // let reset='reset'==status;
   let miniLayout = layout == 'min';
   let boxVisible = noConnection && !miniLayout;
+  let { width, height } = panelSize;
   return (
-    <StyledWrapper ref={panelRef} className={layout} data-status={status}>
-      <div className="cameras">
-        <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
-        {Object.entries(mediaConnections).map(([pid, conn]) => {
-          let st = streams[pid];
-          return (
-            <Camera
-              username={usernames[pid]}
-              peerId={pid}
-              key={pid}
-              mediaConnection={conn}
-              dataConnection={dataConnections[pid]}
-              mediaStream={st}
-            />
-          );
-        })}
-      </div>
-      {boxVisible ? (
-        invitePeerId ? (
-          used ? (
-            <Invite peerId={peer?.id} />
+    <StyledWrapper>
+      <div
+        className={`panel ${layout}`}
+        data-status={status}
+        ref={panelRef}
+        style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
+      >
+        <div className="cameras">
+          <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
+          {Object.entries(mediaConnections).map(([pid, conn]) => {
+            let st = streams[pid];
+            return (
+              <Camera
+                username={usernames[pid]}
+                peerId={pid}
+                key={pid}
+                mediaConnection={conn}
+                dataConnection={dataConnections[pid]}
+                mediaStream={st}
+              />
+            );
+          })}
+        </div>
+        {boxVisible ? (
+          invitePeerId ? (
+            used ? (
+              <Invite peerId={peer?.id} />
+            ) : (
+              <Join
+                ready={status == STATUS.READY}
+                peerClient={peer}
+                peerIds={Object.keys(usernames)}
+                addMediaConnection={addMediaConnection}
+              />
+            )
           ) : (
-            <Join
-              ready={status == STATUS.READY}
-              peerClient={peer}
-              peerIds={Object.keys(usernames)}
-              addMediaConnection={addMediaConnection}
-            />
+            <Invite peerId={peer?.id} />
           )
-        ) : (
-          <Invite peerId={peer?.id} />
-        )
-      ) : null}
-      <Topbar
-        pid={!noConnection ? invitePeerId || peer?.id : null}
-        layout={layout}
-        handleLayout={handleLayout}
-        handleClose={handleClose}
+        ) : null}
+        <Topbar
+          pid={!noConnection ? invitePeerId || peer?.id : null}
+          layout={layout}
+          handleLayout={handleLayout}
+          handleClose={handleClose}
+        />
+      </div>
+      <Resize
+        {...panelSize}
+        {...movePosition}
+        updateSize={setPanelSize}
+        onResizeStop={handleResizeStop}
       />
     </StyledWrapper>
   );
