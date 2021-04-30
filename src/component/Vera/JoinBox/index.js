@@ -26,15 +26,18 @@ const StyledBox = styled.div`
     width: 100%;
   }
 `;
+let clicked = false;
 export default function JoinBox({ ready = false, peerClient, peerIds = [], addMediaConnection }) {
   const { username } = useUsername();
   const handleJoin = () => {
+    if (clicked) return;
     console.log({ peerIds });
     peerIds.forEach((id) => {
       let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM);
       console.log({ newMediaConn });
       addMediaConnection(newMediaConn);
     });
+    clicked = true;
   };
   return (
     <StyledBox>
