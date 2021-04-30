@@ -39,6 +39,13 @@ const usePeer = ({ invitePeerId = null }) => {
         delete prev[conn];
         return { ...prev };
       });
+      // 如果移除的是视频连接 则把stream也去掉
+      if (type == 'media') {
+        setStreams((prev) => {
+          delete prev[conn];
+          return { ...prev };
+        });
+      }
     } else {
       // add
       current = { ...current, [conn.peer]: conn };
