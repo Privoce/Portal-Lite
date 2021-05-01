@@ -48,6 +48,7 @@ const StyledWrapper = styled.div`
       visibility: hidden;
     }
     video {
+      border-radius: 50%;
       width: -webkit-fill-available;
     }
     .opts {
