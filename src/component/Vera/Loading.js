@@ -46,7 +46,7 @@ const StyledLoading = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    color: var(--font-color);
+    color: var(--vera-font-color);
   }
 `;
 const loadingTxt = chrome.i18n.getMessage('tipLoading');

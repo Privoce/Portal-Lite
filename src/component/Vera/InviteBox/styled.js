@@ -10,8 +10,8 @@ const StyledBox = styled.div`
   justify-content: space-evenly;
   gap: 5px;
   padding: 5px;
-  background-color: var(--camera-bg-color);
-  border-radius: var(--border-radius);
+  background-color: var(--vera-camera-bg-color);
+  border-radius: var(--vera-border-radius);
   .link {
     width: 100%;
     width: -webkit-fill-available;
@@ -19,12 +19,12 @@ const StyledBox = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0.4em;
-    background: var(--button-bg-color);
-    border-radius: var(--border-radius);
+    background: var(--vera-button-bg-color);
+    border-radius: var(--vera-border-radius);
     font-size: 1em;
     .url {
       user-select: text;
-      color: var(--font-color);
+      color: var(--vera-font-color);
       width: 100%;
       height: fit-content;
       white-space: nowrap;
@@ -45,8 +45,8 @@ const StyledBox = styled.div`
     gap: 0.6em;
     background-color: #1f1f1f;
     padding: 0.6em 0.4em;
-    border-radius: var(--border-radius);
-    color: var(--font-color);
+    border-radius: var(--vera-border-radius);
+    color: var(--vera-font-color);
     &::-webkit-scrollbar {
       /* visibility: hidden; */
       display: none;

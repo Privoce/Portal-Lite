@@ -18,7 +18,7 @@ const StyledBar = styled.div`
       background-size: 50%;
       background-position: center;
       background-repeat: no-repeat;
-      border-radius: var(--border-radius);
+      border-radius: var(--vera-border-radius);
       /* margin-right: 5px; */
       &.close {
         background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/tel.svg`});
@@ -53,15 +53,15 @@ const StyledBar = styled.div`
       background-size: 80%;
       background-position: center;
       background-repeat: no-repeat;
-      border-radius: var(--border-radius);
-      background-color: var(--button-bg-color);
+      border-radius: var(--vera-border-radius);
+      background-color: var(--vera-button-bg-color);
     }
 
     .layout {
       display: flex;
       align-items: center;
-      border-radius: var(--border-radius);
-      background-color: var(--button-bg-color);
+      border-radius: var(--vera-border-radius);
+      background-color: var(--vera-button-bg-color);
       padding: 4px;
       gap: 10px;
       .item {
@@ -84,7 +84,7 @@ const StyledBar = styled.div`
         }
         &:hover,
         &.curr {
-          background-color: var(--camera-bg-color);
+          background-color: var(--vera-camera-bg-color);
         }
         &.vt {
           flex-direction: column;
@@ -92,7 +92,7 @@ const StyledBar = styled.div`
         .mock {
           border-radius: 1px;
           width: 4px;
-          background: var(--font-color);
+          background: var(--vera-font-color);
           &.box {
             height: 4px;
           }

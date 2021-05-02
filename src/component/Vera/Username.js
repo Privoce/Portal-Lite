@@ -12,9 +12,9 @@ const StyledWrapper = styled.div`
   text-align: center;
   padding: 10px 6px;
   font-size: 18px;
-  color: var(--font-color);
-  border-radius: var(--border-radius);
-  background-color: var(--button-bg-color);
+  color: var(--vera-font-color);
+  border-radius: var(--vera-border-radius);
+  background-color: var(--vera-button-bg-color);
   &.fixed {
     position: absolute;
     top: 8px;

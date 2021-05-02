@@ -15,8 +15,8 @@ const StyledList = styled.ul`
   gap: 6px;
   background-color: #1f1f1f;
   padding: 6px 4px;
-  border-radius: var(--border-radius);
-  color: var(--font-color);
+  border-radius: var(--vera-border-radius);
+  color: var(--vera-font-color);
   &::-webkit-scrollbar {
     display: none;
   }

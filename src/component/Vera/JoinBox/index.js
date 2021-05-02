@@ -18,7 +18,7 @@ const StyledBox = styled.div`
   padding: 5px;
   padding-top: 3em;
   background: transparent;
-  border-radius: var(--border-radius);
+  border-radius: var(--vera-border-radius);
   .btns {
     display: flex;
     justify-content: center;

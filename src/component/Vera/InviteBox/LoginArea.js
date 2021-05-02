@@ -12,8 +12,8 @@ const StyledBox = styled.div`
   gap: 1em;
   background-color: #000;
   padding: 2em;
-  border-radius: var(--border-radius);
-  color: var(--font-color);
+  border-radius: var(--vera-border-radius);
+  color: var(--vera-font-color);
   .tip {
     white-space: nowrap;
     font-size: 1.4em;

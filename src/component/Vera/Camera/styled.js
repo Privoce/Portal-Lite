@@ -8,7 +8,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: var(--box-border-radius);
+  border-radius: var(--vera-box-border-radius);
   border: none;
   background: transparent;
   .video .username,
@@ -33,9 +33,9 @@ const StyledWrapper = styled.div`
     transform: translate3d(-50%, -70%, 0);
     padding: 1em;
     border-radius: 0.5em;
-    background-color: var(--camera-bg-color);
+    background-color: var(--vera-camera-bg-color);
     font-size: 2.2em;
-    color: var(--font-color);
+    color: var(--vera-font-color);
   }
   .video {
     position: relative;
@@ -64,8 +64,8 @@ const StyledWrapper = styled.div`
       .opt {
         padding: 0;
         border: none;
-        border-radius: var(--border-radius);
-        background-color: var(--button-bg-color);
+        border-radius: var(--vera-border-radius);
+        background-color: var(--vera-button-bg-color);
         height: 2em !important;
         width: 2em !important;
         min-width: unset;
@@ -86,7 +86,7 @@ const StyledWrapper = styled.div`
           }
         }
         &.audio {
-          background-color: var(--button-bg-color);
+          background-color: var(--vera-button-bg-color);
           background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
           &[data-status='false'] {
             background-color: #863733;

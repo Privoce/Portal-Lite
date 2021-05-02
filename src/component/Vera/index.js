@@ -40,12 +40,12 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
       --vera-widget-bg-color: #000;
-      --panel-bg-color: rgba(50, 54, 57,90%);
-      --camera-bg-color: #5f6368;
-      --button-bg-color: #000;
-      --font-color: #fff;
-      --border-radius: 5px;
-      --box-border-radius: 50%;
+      --vera-panel-bg-color: rgba(50, 54, 57,90%);
+      --vera-camera-bg-color: #5f6368;
+      --vera-button-bg-color: #000;
+      --vera-font-color: #fff;
+      --vera-border-radius: 5px;
+      --vera-box-border-radius: 50%;
     }
 `;
 export default function Vera() {

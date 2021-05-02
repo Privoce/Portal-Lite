@@ -83,10 +83,10 @@ const StyledWrapper = styled.aside`
     gap: 15px;
     padding: 12px;
     padding-top: 40px;
-    border-radius: var(--border-radius);
+    border-radius: var(--vera-border-radius);
     transition: all 0.5s ease-in-out;
     transition-property: background-color;
-    background-color: var(--panel-bg-color);
+    background-color: var(--vera-panel-bg-color);
     font-size:10px;
     &:after {
       content: '';
@@ -115,7 +115,7 @@ const StyledWrapper = styled.aside`
         visibility: hidden;
       }
       &:hover {
-        background: var(--panel-bg-color);
+        background: var(--vera-panel-bg-color);
         .topbar,
         &:after {
           visibility: visible;
@@ -171,7 +171,7 @@ const StyledWrapper = styled.aside`
     }
   }
   &.resizing .panel{
-      background: var(--panel-bg-color) !important;
+      background: var(--vera-panel-bg-color) !important;
     }
 `;
 

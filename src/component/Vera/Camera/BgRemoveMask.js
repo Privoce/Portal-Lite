@@ -23,9 +23,9 @@ const StyledWrapper = styled.div`
     text-transform: capitalize;
     padding: 1em;
     border-radius: 0.5em;
-    background-color: var(--camera-bg-color);
+    background-color: var(--vera-camera-bg-color);
     font-size: 2.2em;
-    color: var(--font-color);
+    color: var(--vera-font-color);
   }
 `;
 let STOP = false;
