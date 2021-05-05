@@ -88,6 +88,7 @@ const StyledWrapper = styled.aside`
     transition-property: background-color;
     background-color: var(--vera-panel-bg-color);
     font-size:10px;
+    width:fit-content !important;
     &:after {
       content: '';
       position: absolute;
