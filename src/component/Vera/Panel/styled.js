@@ -169,6 +169,9 @@ const StyledWrapper = styled.aside`
     .react-resizable{
       visibility:visible;
     }
+    .panel{
+      background-color:var(--vera-panel-bg-color) !important;
+    }
   }
   &.resizing .panel{
       background: var(--vera-panel-bg-color) !important;

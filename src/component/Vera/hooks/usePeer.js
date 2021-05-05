@@ -182,28 +182,34 @@ const usePeer = ({ invitePeerId = null }) => {
         // 受邀者则主动连接房主，并报上自己的名字
         if (invitePeerId) {
           let username = usernameRef.current;
-          myPeer.connect(invitePeerId, {
+          let invitedDataConn = myPeer.connect(invitePeerId, {
             metadata: { fromHost: false, username }
           });
+          // 初始化通用的监听事件
+          initDataChannel(invitedDataConn);
         }
         // 有连接请求过来
         myPeer.on('connection', (conn) => {
           window.addEventListener('beforeunload', preventCloseTabHandler);
           console.log('peer data connection incoming', conn);
           setStatus(STATUS.CONNECTED);
+
           // 房主主动连接对方？存疑
           if (!invitePeerId) {
             console.log('peer connection host connect remote');
             // 连接的同时，通过metadata把已连接的用户发过去（带连接id）
             let username = usernameRef.current;
             console.log('send to remote with metadata', username, usernamesRef.current);
-            myPeer.connect(conn.peer, {
-              metadata: {
-                fromHost: true,
-                username,
-                connections: usernamesRef.current
-              }
-            });
+
+            initDataChannel(
+              myPeer.connect(conn.peer, {
+                metadata: {
+                  fromHost: true,
+                  username,
+                  connections: usernamesRef.current
+                }
+              })
+            );
           }
           initDataChannel(conn);
         });
