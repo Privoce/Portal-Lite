@@ -24,6 +24,14 @@ function getUsername(withFake = false) {
     });
   });
 }
+function getUser() {
+  return new Promise((resolve) => {
+    let arr = ['user'];
+    chrome.storage.sync.get(arr, (result) => {
+      resolve(result.user || null);
+    });
+  });
+}
 function getInviteUrl(pid = null) {
   let obj = new URL(location.href);
   obj.searchParams.append('portal-vera-id', pid);
@@ -132,6 +140,7 @@ export {
   getInviteUrl,
   throttle,
   selectText,
+  getUser,
   getUsername,
   appendVeraHistory,
   preventCloseTabHandler,

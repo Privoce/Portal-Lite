@@ -13,7 +13,7 @@ const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
 let draggable = null;
-export default function Panel({ closePanel, invitePeerId = null }) {
+export default function Panel({ closePanel, invitePeerId = null, updateChannelId }) {
   const {
     peer,
     shutdownPeer,
@@ -55,7 +55,7 @@ export default function Panel({ closePanel, invitePeerId = null }) {
     let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
     draggable = new PlainDraggable(dragEle, {
       containment,
-      autoScroll: true,
+      // autoScroll: true,
       onMove: (pos) => {
         console.log({ pos, draggable });
         let { x, y } = getTranslateValues(dragEle);
@@ -70,6 +70,13 @@ export default function Panel({ closePanel, invitePeerId = null }) {
       initDraggable();
     }
   }, []);
+  useEffect(() => {
+    if (status == STATUS.OPEN) {
+      let channelId = invitePeerId || peer?.id;
+
+      updateChannelId(channelId);
+    }
+  }, [status, invitePeerId, peer]);
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {

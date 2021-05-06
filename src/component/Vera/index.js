@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Panel from './Panel';
 import Widget from './Widget';
+import ChatBox from './Chat';
 
 const StyledWrapper = styled.section`
   position: fixed;
@@ -49,15 +50,18 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 export default function Vera() {
+  const [channelId, setChannelId] = useState(undefined);
   const [invitePeerId, setInvitePeerId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
-
   const openPanel = () => {
     setVisible(true);
   };
   const closePanel = () => {
     setVisible(false);
+  };
+  const specifyChannelId = (id) => {
+    setChannelId(id);
   };
   useEffect(() => {
     const getPvid = () => {
@@ -84,7 +88,14 @@ export default function Vera() {
     <StyledWrapper id="VERA_FULLSCREEN_CONTAINER">
       <GlobalStyle />
       {!loading && <Widget openPanel={openPanel} />}
-      {!loading && visible && <Panel closePanel={closePanel} invitePeerId={invitePeerId} />}
+      {!loading && visible && (
+        <Panel
+          closePanel={closePanel}
+          invitePeerId={invitePeerId}
+          updateChannelId={specifyChannelId}
+        />
+      )}
+      {!loading && visible && <ChatBox channelId={channelId} />}
     </StyledWrapper>
   );
 }

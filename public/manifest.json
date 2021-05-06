@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "Portal",
   "description": "__MSG_extDescription__",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "storage"],
@@ -51,7 +51,7 @@
     },
     {
       "matches": ["https://www.figma.com/*"],
-      "js": [ "crx/vera/assets/allow.copy.js"],
+      "js": ["crx/vera/assets/allow.copy.js"],
       "run_at": "document_idle"
     },
     {
