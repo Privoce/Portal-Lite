@@ -12,9 +12,9 @@ const StyledList = styled.ul`
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.6em;
   background-color: #1f1f1f;
-  padding: 6px 4px;
+  padding: 0.6em 0.4em;
   border-radius: var(--vera-border-radius);
   color: var(--vera-font-color);
   &::-webkit-scrollbar {
@@ -30,17 +30,17 @@ const StyledList = styled.ul`
     justify-content: space-between;
     align-items: center;
     &:not(:last-child) {
-      padding-bottom: 4px;
+      padding-bottom: 0.4em;
       border-bottom: 1px dashed #333;
     }
     .avator {
-      width: 25px;
-      height: 25px;
+      width: 2.5em;
+      height: 2.5em;
       border-radius: 50%;
     }
     .name {
       color: inherit;
-      font-size: 10px;
+      font-size: 1em;
     }
   }
 `;
