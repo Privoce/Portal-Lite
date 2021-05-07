@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { StreamChat } from 'stream-chat';
 import {
   Chat,
@@ -14,8 +14,9 @@ import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
 const chatClient = StreamChat.getInstance('fwcuynkafsqt');
 
-export default function ChatBox({ channelId = null }) {
+export default function ChatBox({ channelId = null, visible = false, toggleVisible }) {
   const [channel, setChannel] = useState(null);
+  const chatBoxRef = useRef(null);
   console.log({ channelId });
   useEffect(() => {
     const initialChat = async () => {
@@ -51,15 +52,25 @@ export default function ChatBox({ channelId = null }) {
       });
       setChannel(cn);
       console.log('end init chat');
+      setTimeout(() => {
+        let chatBox = chatBoxRef.current;
+        let dragEle = chatBox.querySelector('[class^=str-chat__header]');
+        let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
+        new PlainDraggable(chatBox, {
+          handle: dragEle,
+          containment
+        });
+      }, 3000);
     };
     if (channelId) {
       initialChat();
     }
   }, [channelId]);
   return (
-    <StyledWrapper className={channelId ? 'visible' : ''}>
+    <StyledWrapper ref={chatBoxRef} className={visible ? 'visible' : ''}>
+      <button className="close" onClick={toggleVisible}></button>
       {channel && (
-        <Chat client={chatClient} theme="livestream">
+        <Chat client={chatClient} theme="livestream dark">
           <Channel channel={channel}>
             <Window>
               <ChannelHeader live />
