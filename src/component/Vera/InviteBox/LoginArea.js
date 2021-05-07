@@ -5,7 +5,6 @@ import Login from '../Login';
 const tipLogin = chrome.i18n.getMessage('tipLogin');
 const StyledBox = styled.div`
   height: fit-content;
-  overflow: scroll;
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
