@@ -28,6 +28,16 @@ function Camera({
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
   const { enableStream, error } = useUserMedia();
   const videoRef = useRef(null);
+  const updateControls = (st) => {
+    let tmp = { audio: false, video: false };
+    let hasAudio = !!st.getAudioTracks().length;
+    let hasVideo = !!st.getVideoTracks().length;
+    tmp.audio = hasAudio;
+    tmp.video = hasVideo;
+    setControls((prev) => {
+      return { ...prev, ...tmp };
+    });
+  };
   useEffect(() => {
     const attachLocalStream = async () => {
       let localStream = await enableStream();
@@ -35,6 +45,7 @@ function Camera({
       if (localStream) {
         let cloned = localStream.clone();
         cloned.getAudioTracks().forEach((t) => (t.enabled = false));
+        updateControls(cloned);
         videoRef.current.srcObject = cloned;
       }
     };
@@ -47,6 +58,7 @@ function Camera({
   useEffect(() => {
     if (mediaStream) {
       videoRef.current.srcObject = mediaStream;
+      updateControls(mediaStream);
     }
   }, [mediaStream]);
   useEffect(() => {

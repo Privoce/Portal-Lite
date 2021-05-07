@@ -31,6 +31,10 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
   const { username } = useUsername();
   const handleJoin = () => {
     if (clicked) return;
+    if (!window.LOCAL_MEDIA_STREAM) {
+      alert('Local MediaStream Null');
+      return;
+    }
     console.log({ peerIds });
     peerIds.forEach((id) => {
       let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM);
