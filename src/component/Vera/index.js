@@ -50,6 +50,7 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 export default function Vera() {
+  const [chatVisible, setChatVisible] = useState(false);
   const [channelId, setChannelId] = useState(undefined);
   const [invitePeerId, setInvitePeerId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,6 +60,9 @@ export default function Vera() {
   };
   const closePanel = () => {
     setVisible(false);
+  };
+  const toggleChatVisible = () => {
+    setChatVisible((prev) => !prev);
   };
   const specifyChannelId = (id) => {
     setChannelId(id);
@@ -92,10 +96,13 @@ export default function Vera() {
         <Panel
           closePanel={closePanel}
           invitePeerId={invitePeerId}
+          toggleChatVisible={toggleChatVisible}
           updateChannelId={specifyChannelId}
         />
       )}
-      {!loading && visible && <ChatBox channelId={channelId} />}
+      {!loading && visible && (
+        <ChatBox channelId={channelId} visible={chatVisible} toggleVisible={toggleChatVisible} />
+      )}
     </StyledWrapper>
   );
 }

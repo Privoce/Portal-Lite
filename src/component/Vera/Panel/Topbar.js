@@ -19,10 +19,13 @@ const StyledBar = styled.div`
       background-position: center;
       background-repeat: no-repeat;
       border-radius: var(--vera-border-radius);
-      /* margin-right: 5px; */
       &.close {
         background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/tel.svg`});
         background-color: #eb2027;
+      }
+      &.chat {
+        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/chat.svg`});
+        background-color: #85e89e;
       }
       &.invite:not(.copied) {
         background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/invite.svg`});
@@ -120,7 +123,13 @@ const layouts = {
     </>
   )
 };
-export default function Topbar({ pid = null, layout, handleClose, handleLayout }) {
+export default function Topbar({
+  pid = null,
+  layout,
+  handleClose,
+  handleLayout,
+  toggleChatBoxVisible
+}) {
   const { copied, copy } = useCopy();
   const handleInvite = () => {
     let link = getInviteUrl(pid);
@@ -135,6 +144,7 @@ export default function Topbar({ pid = null, layout, handleClose, handleLayout }
             {copied && copiedTxt}
           </div>
         )}
+        {pid && <div className={`rect chat`} onClick={toggleChatBoxVisible} />}
       </div>
       <div className="right">
         <a

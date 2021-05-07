@@ -13,7 +13,12 @@ const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
 let draggable = null;
-export default function Panel({ closePanel, invitePeerId = null, updateChannelId }) {
+export default function Panel({
+  closePanel,
+  invitePeerId = null,
+  updateChannelId,
+  toggleChatVisible
+}) {
   const {
     peer,
     shutdownPeer,
@@ -141,6 +146,7 @@ export default function Panel({ closePanel, invitePeerId = null, updateChannelId
           layout={layout}
           handleLayout={handleLayout}
           handleClose={handleClose}
+          toggleChatBoxVisible={toggleChatVisible}
         />
       </div>
       <Resize
