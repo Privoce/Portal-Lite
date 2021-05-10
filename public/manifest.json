@@ -2,11 +2,11 @@
   "name": "__MSG_extName__",
   "short_name": "Portal",
   "description": "__MSG_extDescription__",
-  "version": "2.6.0",
+  "version": "2.6.4",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "storage"],
-  "content_security_policy": "script-src 'self'; object-src 'self'; img-src https: data: http: chrome:;",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; img-src https: data: http: chrome:;",
   "browser_action": {
     "default_icon": {
       "16": "/favicon-16x16.png",
