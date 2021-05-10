@@ -3,6 +3,7 @@ import Button from '../Button';
 import Username from '../Username';
 import Login from '../Login';
 import useUsername from '../hooks/useUsername';
+const prepareTxt = chrome.i18n.getMessage('prepare');
 const joinTxt = chrome.i18n.getMessage('join');
 const joinAsGuestTxt = chrome.i18n.getMessage('joinAsGuest');
 
@@ -49,7 +50,7 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
       <div className="btns">
         {username ? null : <Login />}
         <Button disabled={!ready} className="blue" onClick={handleJoin}>
-          {username ? joinTxt : joinAsGuestTxt}
+          {ready ? (username ? joinTxt : joinAsGuestTxt) : `${prepareTxt}...`}
         </Button>
       </div>
     </StyledBox>

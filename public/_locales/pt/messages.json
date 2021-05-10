@@ -46,6 +46,9 @@
   "join": {
     "message": "Entrar"
   },
+  "prepare": {
+    "message": "prepare"
+  },
   "quitConfirm": {
     "message": "Tem certeza que deseja sair?"
   }

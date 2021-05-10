@@ -55,6 +55,9 @@
   "join": {
     "message": "加入"
   },
+  "prepare": {
+    "message": "准备中"
+  },
   "quitConfirm": {
     "message": "确定退出？"
   }

@@ -55,6 +55,9 @@
   "join": {
     "message": "Join"
   },
+  "prepare": {
+    "message": "prepare"
+  },
   "quitConfirm": {
     "message": "are you sure to quit?"
   }
