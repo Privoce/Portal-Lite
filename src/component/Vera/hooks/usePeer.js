@@ -105,7 +105,6 @@ const usePeer = ({ invitePeerId = null }) => {
             });
             initDataChannel(newConn);
           });
-          setStatus(STATUS.READY);
         }
         // 只要不是自己发给自己的情况，就更新上去
         if (typeof username !== 'undefined') {
@@ -134,6 +133,8 @@ const usePeer = ({ invitePeerId = null }) => {
         });
         // 更新到dataConnections集合里
         updateConns({ conn, type: 'data' });
+        // dataChannel ready
+        setStatus(STATUS.READY);
       });
     },
     [invitePeerId, myPeer]
