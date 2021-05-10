@@ -112,14 +112,6 @@ const usePeer = ({ invitePeerId = null }) => {
           console.log('set username', conn.peer, myPeer.id, username, fromHost, !!invitePeerId);
           let allowOverride = !!invitePeerId && fromHost;
           if (typeof usernamesRef.current[conn.peer] == 'undefined' || allowOverride) {
-            console.log(
-              'set username auctual',
-              conn.peer,
-              myPeer.id,
-              username,
-              fromHost,
-              !!invitePeerId
-            );
             // 更新到usernames集合里
             usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
             // 同时初始化鼠标
@@ -132,7 +124,6 @@ const usePeer = ({ invitePeerId = null }) => {
         console.log('new dataChannel added:', conn.peer);
         // 开始监听消息
         conn.on('data', (obj) => {
-          console.log('invited peer data connection data', obj);
           const { type = '', data } = obj;
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
@@ -182,6 +173,7 @@ const usePeer = ({ invitePeerId = null }) => {
         // 受邀者则主动连接房主，并报上自己的名字
         if (invitePeerId) {
           let username = usernameRef.current;
+          // myPeer.connect(invitePeerId, {
           let invitedDataConn = myPeer.connect(invitePeerId, {
             metadata: { fromHost: false, username }
           });
@@ -201,15 +193,15 @@ const usePeer = ({ invitePeerId = null }) => {
             let username = usernameRef.current;
             console.log('send to remote with metadata', username, usernamesRef.current);
 
-            initDataChannel(
-              myPeer.connect(conn.peer, {
-                metadata: {
-                  fromHost: true,
-                  username,
-                  connections: usernamesRef.current
-                }
-              })
-            );
+            // initDataChannel(
+            myPeer.connect(conn.peer, {
+              metadata: {
+                fromHost: true,
+                username,
+                connections: usernamesRef.current
+              }
+            });
+            // );
           }
           initDataChannel(conn);
         });
