@@ -2,19 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { getInviteUrl } from '../hooks/utils';
 import useCopy from '../hooks/useCopy';
-const tipFeedback = chrome.i18n.getMessage('feedback');
 const copiedTxt = chrome.i18n.getMessage('copied');
 const StyledBar = styled.div`
   display: flex;
-  padding: 0 12px;
+  padding: 0 1.2em;
   .left {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.4em;
     .rect {
       cursor: pointer;
-      width: 40px;
-      height: 22px;
+      width: 3em;
+      height: 2em;
       background-size: 50%;
       background-position: center;
       background-repeat: no-repeat;
@@ -34,39 +33,24 @@ const StyledBar = styled.div`
       &.copied.invite {
         background: #0d1117;
         color: #fff;
-        font-size: 10px;
+        font-size: 1em;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 5px 10px;
+        padding: 0.5em 1em;
       }
     }
   }
   .right {
     display: flex;
     align-items: center;
-    .feedback {
-      padding: 0;
-      margin: 0;
-      margin-right: 5px;
-      border: none;
-      width: 22px;
-      height: 22px;
-      background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/feedback.svg`});
-      background-size: 80%;
-      background-position: center;
-      background-repeat: no-repeat;
-      border-radius: var(--vera-border-radius);
-      background-color: var(--vera-button-bg-color);
-    }
-
     .layout {
       display: flex;
       align-items: center;
       border-radius: var(--vera-border-radius);
       background-color: var(--vera-button-bg-color);
-      padding: 4px;
-      gap: 10px;
+      padding: 0.4em;
+      gap: 1em;
       .item {
         position: relative;
         cursor: pointer;
@@ -74,8 +58,8 @@ const StyledBar = styled.div`
         justify-content: center;
         align-items: center;
         gap: 1px;
-        width: 15px;
-        height: 15px;
+        width: 1.5em;
+        height: 1.5em;
         margin: 0;
         &:after {
           position: absolute;
@@ -97,10 +81,10 @@ const StyledBar = styled.div`
           width: 4px;
           background: var(--vera-font-color);
           &.box {
-            height: 4px;
+            height: 0.4em;
           }
           &.line {
-            height: 2px;
+            height: 0.2em;
           }
         }
       }
@@ -147,12 +131,6 @@ export default function Topbar({
         {pid && <div className={`rect chat`} onClick={toggleChatBoxVisible} />}
       </div>
       <div className="right">
-        <a
-          className="feedback"
-          title={`${tipFeedback}`}
-          href="https://www.surveymonkey.com/r/RMGZDW8"
-          target="_blank"
-        ></a>
         <ul className="layout">
           {Object.entries(layouts).map(([key, mocks]) => {
             return (
