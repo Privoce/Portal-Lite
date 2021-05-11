@@ -62,8 +62,8 @@ export default function Panel({
     draggable = new PlainDraggable(dragEle, {
       containment,
       // autoScroll: true,
-      onMove: (pos) => {
-        console.log({ pos, draggable });
+      onMove: () => {
+        // console.log({ pos, draggable });
         let { x, y } = getTranslateValues(dragEle);
         // let { left, top } = pos;
         setMovePosition({ left: x, top: y });

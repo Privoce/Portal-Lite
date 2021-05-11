@@ -168,11 +168,12 @@ const usePeer = ({ invitePeerId = null }) => {
     const { username } = mediaConn.metadata || {};
     let pid = mediaConn.peer;
     // 更新到usernames集合里
-    if (typeof username !== 'undefined') {
+    console.log('cursor username', usernamesRef.current, pid, username);
+    if (typeof username !== 'undefined' && typeof usernamesRef.current[pid] == 'undefined') {
       usernamesRef.current = { ...usernamesRef.current, [pid]: username };
     }
     // 同时初始化鼠标
-    let inited = initCursor({ id: pid, username: username ? username : usernamesRef.current[pid] });
+    let inited = initCursor({ id: pid, username: usernamesRef.current[pid] });
     if (inited) {
       bindCursorSync({ conn: dataConnsRef.current[pid] });
     }
