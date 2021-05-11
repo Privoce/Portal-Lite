@@ -50,10 +50,11 @@ const fetcher = (...args) =>
     .then((resp) => resp.data);
 
 const PUSH_API = 'https://api.pushy.me/push?api_key=f827c5a08c5cc9dc01d697ba652d02ae30e090242f396561e3ed059642ec6d58';
-const pushNotify = (host, id, url) => {
+const pushNotify = async (host, id, url) => {
+  if (!id) return {success: false};
   // TODO[eric]: put apikey here fornow, should move to a private place when in production
   // add custom icon
-  fetch(PUSH_API, {
+  const resp = await fetch(PUSH_API, {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
@@ -66,7 +67,9 @@ const pushNotify = (host, id, url) => {
       },
       time_to_live: 2000
     })
-  })
+  });
+
+  return resp.json();
 }
   
 export default function InviteList({ link = '', username = '' }) {
@@ -90,7 +93,6 @@ export default function InviteList({ link = '', username = '' }) {
   // };
 
   const handleInvite = async (id, url) => {
-    if (!id) id = 'd301e1d1721d76ed821d70';
     setBtnText('Notifying...');
     const result = await pushNotify('fixed', id, url);
     if (result.success) {
