@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { LanguageProvider } from 'uselanguage';
 
+import { ToastProvider } from 'react-toast-notifications'
+
 import languages from './lang';
 import useGithubToken from './widgets/GithubDashboard/useToken';
 import Loading from './component/Loading';
@@ -34,36 +36,38 @@ function App() {
   return (
     <LanguageProvider defaultValue={languages[0]} persisted languages={languages}>
       <ApolloProvider client={client}>
-        <Suspense fallback={<Loading />}>
-          <Router basename={basePath}>
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route exact path="/widgets/:widget">
-                <Widget />
-              </Route>
-              <Route exact path="/authing">
-                <Authing />
-              </Route>
-              <Route exact path={'/p/:username'}>
-                <UserPortal />
-              </Route>
-              <Route exact path={'/p/:username/:widget'}>
-                <UserPortalWidget />
-              </Route>
-              <Route exact path="/transfer/:dest">
-                <Transfer />
-              </Route>
-              <Route exact path="/oauth/:app">
-                <OAuth />
-              </Route>
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-          </Router>
-        </Suspense>
+        <ToastProvider>
+          <Suspense fallback={<Loading />}>
+            <Router basename={basePath}>
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+                <Route exact path="/widgets/:widget">
+                  <Widget />
+                </Route>
+                <Route exact path="/authing">
+                  <Authing />
+                </Route>
+                <Route exact path={'/p/:username'}>
+                  <UserPortal />
+                </Route>
+                <Route exact path={'/p/:username/:widget'}>
+                  <UserPortalWidget />
+                </Route>
+                <Route exact path="/transfer/:dest">
+                  <Transfer />
+                </Route>
+                <Route exact path="/oauth/:app">
+                  <OAuth />
+                </Route>
+                <Route>
+                  <NotFound />
+                </Route>
+              </Switch>
+            </Router>
+          </Suspense>
+        </ToastProvider>
       </ApolloProvider>
     </LanguageProvider>
   );

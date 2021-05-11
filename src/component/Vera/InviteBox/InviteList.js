@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import useCopy from '../hooks/useCopy';
+// import useCopy from '../hooks/useCopy';
 
 import Button from '../Button';
 const inviteTxt = chrome.i18n.getMessage('invite');
-const invitedTxt = chrome.i18n.getMessage('invited');
+// const invitedTxt = chrome.i18n.getMessage('invited');
 const StyledList = styled.ul`
   height: fit-content;
   overflow: scroll;
@@ -48,8 +48,30 @@ const fetcher = (...args) =>
   fetch(...args)
     .then((res) => res.json())
     .then((resp) => resp.data);
+
+const PUSH_API = 'https://api.pushy.me/push?api_key=f827c5a08c5cc9dc01d697ba652d02ae30e090242f396561e3ed059642ec6d58';
+const pushNotify = (host, id, url) => {
+  // TODO[eric]: put apikey here fornow, should move to a private place when in production
+  // add custom icon
+  fetch(PUSH_API, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      to: [id],
+      data: {
+        message: `${host} invites you to vera!`,
+        url
+      },
+      time_to_live: 2000
+    })
+  })
+}
+  
 export default function InviteList({ link = '', username = '' }) {
-  const { copied, copy } = useCopy();
+  // const { copied, copy } = useCopy();
+  const [btnText, setBtnText] = useState(inviteTxt);
   const { data, error } = useSWR(
     username
       ? `https://api.yangerxiao.com/service/authing/vera/${encodeURIComponent(username)}/userlist`
@@ -57,16 +79,28 @@ export default function InviteList({ link = '', username = '' }) {
     fetcher
   );
   useEffect(() => {}, [username]);
-  const handleCopy = ({ target }) => {
-    console.log('copy invite link');
-    if (copied) return;
-    target.innerText = invitedTxt;
-    copy(link);
-    console.log('copied invite link');
-    setTimeout(() => {
-      target.innerText = inviteTxt;
-    }, 1500);
-  };
+  
+  // const handleCopy = ({ target }) => {
+  //   if (copied) return;
+  //   target.innerText = invitedTxt;
+  //   copy(link);
+  //   setTimeout(() => {
+  //     target.innerText = inviteTxt;
+  //   }, 1500);
+  // };
+
+  const handleInvite = async (id, url) => {
+    if (!id) id = 'd301e1d1721d76ed821d70';
+    setBtnText('Notifying...');
+    const result = await pushNotify('fixed', id, url);
+    if (result.success) {
+      setBtnText('success');
+    } else {
+      setBtnText('fail');
+    }
+    setTimeout(() => setBtnText(inviteTxt), 1500);
+  }
+
   // loading
   if (!data) return null;
   if (error) return 'error';
@@ -74,14 +108,14 @@ export default function InviteList({ link = '', username = '' }) {
     return (
       <StyledList>
         {data.map((user) => {
-          const { username, name, nickname, photo } = user;
+          const { username, name, nickname, photo, tracerId } = user;
           const finalName = username || name || nickname;
           return (
             <li key={user.finalName} className="user">
               <img src={photo} alt="avator" className="avator" />
               <span className="name">{finalName}</span>
 
-              <Button onClick={handleCopy}>{inviteTxt}</Button>
+              <Button onClick={() => handleInvite(tracerId, link)}>{btnText}</Button>
             </li>
           );
         })}

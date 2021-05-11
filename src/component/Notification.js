@@ -2,30 +2,10 @@ import { useState, useEffect } from 'react';
 import { useAuthing } from '@authing/react-ui-components';
 import styled from 'styled-components';
 import { MdNotificationsActive, MdNotificationsOff } from 'react-icons/md';
-import { appId, appHost } from '../InitialConfig';
-// 注册 service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', {
-    scope: '/'
-  });
-}
+import { appId, appHost, PushyAppId } from '../InitialConfig';
+import { useToasts } from 'react-toast-notifications'
+import Pushy from 'pushy-sdk-web'; 
 
-const publicVapidKey =
-  'BLlQ54pZmqwU6k9p8IHOfSHAIslTf-kVZulE2TEI9ycrV5I_bjXFP9rrH94APAEKD_Rw31n3mwYw_1jhU-DsobQ';
-
-const urlBase64ToUint8Array = (base64String) => {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  // eslint-disable-next-line no-useless-escape
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-};
 const StyledWrapper = styled.aside`
   display: flex;
   flex-direction: column;
@@ -40,87 +20,36 @@ export default function Notification() {
     appId,
     appHost
   });
-  const [isSub, setIsSub] = useState(false);
+  const [isSub, setIsSub] = useState(true);
   const [username, setUsername] = useState('');
-  const handleSub = async () => {
-    if (!username) {
-      alert('Login First');
-      return;
-    }
-    if (!('serviceWorker' in navigator)) return;
-    const registration = await navigator.serviceWorker.ready;
-    // Subscribe to push notifications
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      // applicationServerKey: publicVapidKey
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+  const { addToast } = useToasts();
+
+  const registerNotify = () => {
+    Pushy.register({appId: PushyAppId}).then(async (traceId) => {
+      const status = await authClient.checkLoginStatus();
+      if (status && status.status) {
+        // TODO[eric]: should check original value before updating
+        authClient.setUdv('notification', traceId);
+        setIsSub(true);
+      }
     });
-    console.log({ subscription });
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVICE_DOMAIN}/service/notification/${username}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(subscription),
-        headers: {
-          'content-type': 'application/json'
-        }
-      }
-    );
-    const resp = await response.json();
+  }
 
-    console.log({ resp });
-    if (resp.code == 0) {
-      setIsSub(true);
-    } else {
-      alert('subscribe failed...');
-    }
-  };
-
-  const handleUnSub = async (name = null) => {
-    if (!username) {
-      alert('Login First');
-      return;
-    }
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-    if (!subscription) return;
-    // const { endpoint } = subscription;
-    if (name) {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVICE_DOMAIN}/service/notification/${name}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'content-type': 'application/json'
-          }
-        }
-      );
-      const resp = await response.json();
-
-      console.log({ resp });
-      if (resp.code == 0) {
-        await subscription.unsubscribe();
+  // remove traceId in authing
+  const unregisterNotify = async () => {
+      const status = await authClient.checkLoginStatus();
+      if (status && status.status) {
+        authClient.setUdv('notification', '');
         setIsSub(false);
-      } else {
-        alert('unsubscribe failed...');
+        addToast(
+          <p>Notification Disabled</p>, {
+            appearance: 'success',
+            autoDismiss: true
+          }
+        );
       }
-    } else {
-      await subscription.unsubscribe();
-      setIsSub(false);
-    }
-    // if (response.ok) {
-    //   await subscription.unsubscribe();
-    //   setSubscribeMessage();
-    // }
-  };
-  useEffect(() => {
-    const initSub = async () => {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
-      setIsSub(!!subscription);
-    };
-    initSub();
-  }, []);
+  }
+  
   useEffect(() => {
     const initUsername = async () => {
       let currUser = await authClient.getCurrentUser();
@@ -130,14 +59,27 @@ export default function Notification() {
     };
     initUsername();
   }, []);
+
+  // setup / update notification trace id
+  //TODO[eric]: check if log in first
+  useEffect(registerNotify, []);
+
   return (
     <StyledWrapper>
       {isSub ? (
-        <button className="btn unsub" onClick={handleUnSub.bind(null, username)}>
+        <button className="btn unsub" onClick={unregisterNotify}>
           <MdNotificationsOff />
         </button>
       ) : (
-        <button className="btn sub" onClick={handleSub}>
+        <button className="btn sub" onClick={() => {
+          registerNotify();
+          addToast(
+            <p>Notification Enabled</p>, {
+              appearance: 'success',
+              autoDismiss: true
+            }
+          );
+        }}>
           <MdNotificationsActive />
         </button>
       )}
