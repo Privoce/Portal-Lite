@@ -7,6 +7,7 @@ import usePeer from '../hooks/usePeer';
 import { getTranslateValues } from '../hooks/utils';
 import StyledWrapper from './styled';
 import Topbar from './Topbar';
+import Info from './Info';
 import Resize from './Resize';
 import { STATUS } from '../hooks/useEmitter';
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
@@ -148,6 +149,7 @@ export default function Panel({
           handleClose={handleClose}
           toggleChatBoxVisible={toggleChatVisible}
         />
+        <Info />
       </div>
       <Resize
         {...panelSize}

@@ -112,12 +112,14 @@ const StyledWrapper = styled.aside`
       }
       background: transparent;
       .topbar,
+      .info,
       &:after {
         visibility: hidden;
       }
       &:hover {
         background: var(--vera-panel-bg-color);
         .topbar,
+        .info,
         &:after {
           visibility: visible;
         }
