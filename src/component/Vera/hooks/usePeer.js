@@ -34,15 +34,15 @@ const usePeer = ({ invitePeerId = null }) => {
     let _setState = type == 'media' ? setMediaConns : setDataConns;
     if (remove) {
       // remove
-      delete current[conn];
+      delete current[conn.peer];
       _setState((prev) => {
-        delete prev[conn];
+        delete prev[conn.peer];
         return { ...prev };
       });
       // 如果移除的是视频连接 则把stream也去掉
       if (type == 'media') {
         setStreams((prev) => {
-          delete prev[conn];
+          delete prev[conn.peer];
           return { ...prev };
         });
       }
@@ -66,10 +66,11 @@ const usePeer = ({ invitePeerId = null }) => {
       initUsername();
     }
   }, [myPeer]);
-  const clearUpConnect = (pid) => {
+  const clearUpConnect = (conn) => {
+    let pid = conn.peer;
     // 删掉data&media连接，去掉名字
-    updateConns({ conn: pid, type: 'data', remove: true });
-    updateConns({ conn: pid, type: 'media', remove: true });
+    updateConns({ conn, type: 'data', remove: true });
+    updateConns({ conn, type: 'media', remove: true });
     delete usernamesRef.current[pid];
     if (Object.keys(usernamesRef.current).length == 0) {
       // 重置为等待连接的初始状态
@@ -83,11 +84,11 @@ const usePeer = ({ invitePeerId = null }) => {
     (conn) => {
       conn.on('close', () => {
         console.log('peer data connection close');
-        clearUpConnect(conn.peer);
+        clearUpConnect(conn);
       });
       conn.on('error', (err) => {
         console.log('peer data connection error', err);
-        clearUpConnect(conn.peer);
+        clearUpConnect(conn);
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
@@ -151,11 +152,11 @@ const usePeer = ({ invitePeerId = null }) => {
     // console.log({ mediaConns });
     mediaConn.on('close', () => {
       console.log('peer media connection close');
-      clearUpConnect(mediaConn.peer);
+      clearUpConnect(mediaConn);
     });
     mediaConn.on('error', (err) => {
       console.log('peer media connection error', err);
-      clearUpConnect(mediaConn.peer);
+      clearUpConnect(mediaConn);
     });
     mediaConn.on('stream', (st) => {
       setStatus(STATUS.STREAMING);
