@@ -92,39 +92,53 @@ const usePeer = ({ invitePeerId = null }) => {
       });
       conn.on('open', async () => {
         console.log('peer data connection open');
-        let { connections = null, username, fromHost = false } = conn.metadata || {};
-        // connections 是host发过来的已经建立的连接id集合，所以只有guest才做操作
-        if (connections && fromHost) {
-          console.log('connections from host:', connections);
-          // 更新到usernames集合里
-          usernamesRef.current = { ...usernamesRef.current, ...connections };
-
-          Object.entries(connections).forEach(([id]) => {
-            // 遍历房主发过来的连接
-            let newConn = myPeer.connect(id, {
-              metadata: { fromHost: false, username: usernameRef.current }
-            });
-            initDataChannel(newConn);
+        if (!invitePeerId) {
+          // host给guest发初始化命令，把host 名字和当前已连接的数据带过去
+          conn.send({
+            type: 'INIT',
+            data: {
+              username: usernameRef.current,
+              connections: usernamesRef.current
+            }
           });
         }
-        // 只要不是自己发给自己的情况，就更新上去
-        if (typeof username !== 'undefined') {
-          console.log('set username', conn.peer, myPeer.id, username, fromHost, !!invitePeerId);
-          let allowOverride = !!invitePeerId && fromHost;
-          if (typeof usernamesRef.current[conn.peer] == 'undefined' || allowOverride) {
-            // 更新到usernames集合里
-            usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
-            // 同时初始化鼠标
-            let inited = initCursor({ id: conn.peer, username });
-            if (inited) {
-              bindCursorSync({ conn });
-            }
+        let { username } = conn.metadata || {};
+        // update username 集合
+        if (
+          typeof username !== 'undefined' &&
+          typeof usernamesRef.current[conn.peer] == 'undefined'
+        ) {
+          console.log('set username', conn.peer, myPeer.id, username, !!invitePeerId);
+          // 更新到usernames集合里
+          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
+          // 同时初始化鼠标
+          let inited = initCursor({ id: conn.peer, username });
+          if (inited) {
+            bindCursorSync({ conn });
           }
         }
         console.log('new dataChannel added:', conn.peer);
         // 开始监听消息
         conn.on('data', (obj) => {
           const { type = '', data } = obj;
+          if (type == 'INIT') {
+            let { connections, username } = data;
+            console.log('connections from host:', connections);
+            // 更新到usernames集合里
+            usernamesRef.current = {
+              ...usernamesRef.current,
+              ...connections,
+              [invitePeerId]: username
+            };
+
+            Object.keys(connections).forEach((id) => {
+              // 遍历房主发过来的连接
+              let newConn = myPeer.connect(id, {
+                metadata: { username: usernameRef.current }
+              });
+              initDataChannel(newConn);
+            });
+          }
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
           }
@@ -177,7 +191,7 @@ const usePeer = ({ invitePeerId = null }) => {
           let username = usernameRef.current;
           // myPeer.connect(invitePeerId, {
           let invitedDataConn = myPeer.connect(invitePeerId, {
-            metadata: { fromHost: false, username }
+            metadata: { username }
           });
           // 初始化通用的监听事件
           initDataChannel(invitedDataConn);
@@ -188,23 +202,6 @@ const usePeer = ({ invitePeerId = null }) => {
           console.log('peer data connection incoming', conn);
           setStatus(STATUS.CONNECTED);
 
-          // 房主主动连接对方？存疑
-          if (!invitePeerId) {
-            console.log('peer connection host connect remote');
-            // 连接的同时，通过metadata把已连接的用户发过去（带连接id）
-            let username = usernameRef.current;
-            console.log('send to remote with metadata', username, usernamesRef.current);
-
-            // initDataChannel(
-            myPeer.connect(conn.peer, {
-              metadata: {
-                fromHost: true,
-                username,
-                connections: usernamesRef.current
-              }
-            });
-            // );
-          }
           initDataChannel(conn);
         });
       });
