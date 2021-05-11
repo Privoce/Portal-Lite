@@ -50,6 +50,7 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         image: 'https://static.nicegoodthings.com/privoce/works.portal.logo.png',
         name: 'Vera Chat'
       });
+      await cn.create();
       setChannel(cn);
       console.log('end init chat');
       setTimeout(() => {
