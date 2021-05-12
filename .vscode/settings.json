@@ -6,5 +6,8 @@
   "less.compile": {
     "outExt":".css"
   },
-  "emmet.includeLanguages": {"javascript":"javascriptreact"}
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "svg.preview.background": "transparent"
 }
