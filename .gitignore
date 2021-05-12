@@ -14,6 +14,7 @@
 /crx*.zip
 /ext*.zip
 
+public/crx/static/js/*
 # misc
 /.idea
 .DS_Store

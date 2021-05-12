@@ -54,6 +54,12 @@ const usePeer = ({ invitePeerId = null }) => {
         return { ...prev };
       });
     }
+    // update to ref
+    if (type == 'media') {
+      mediaConnsRef.current = current;
+    } else {
+      dataConnsRef.current = current;
+    }
   };
   // 初始化Peer
   useEffect(() => {
@@ -111,11 +117,6 @@ const usePeer = ({ invitePeerId = null }) => {
           console.log('set username', conn.peer, myPeer.id, username, !!invitePeerId);
           // 更新到usernames集合里
           usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
-          // 同时初始化鼠标
-          let inited = initCursor({ id: conn.peer, username });
-          if (inited) {
-            bindCursorSync({ conn });
-          }
         }
         console.log('new dataChannel added:', conn.peer);
         // 开始监听消息
@@ -163,6 +164,19 @@ const usePeer = ({ invitePeerId = null }) => {
       isHost: !invitePeerId,
       usernames: usernamesRef.current
     });
+    // update username
+    const { username } = mediaConn.metadata || {};
+    let pid = mediaConn.peer;
+    // 更新到usernames集合里
+    console.log('cursor username', usernamesRef.current, pid, username);
+    if (typeof username !== 'undefined' && typeof usernamesRef.current[pid] == 'undefined') {
+      usernamesRef.current = { ...usernamesRef.current, [pid]: username };
+    }
+    // 同时初始化鼠标
+    let inited = initCursor({ id: pid, username: usernamesRef.current[pid] });
+    if (inited) {
+      bindCursorSync({ conn: dataConnsRef.current[pid] });
+    }
     // console.log({ mediaConns });
     mediaConn.on('close', () => {
       console.log('peer media connection close');
@@ -205,13 +219,14 @@ const usePeer = ({ invitePeerId = null }) => {
           initDataChannel(conn);
         });
       });
-      myPeer.on('call', (call) => {
+      myPeer.on('call', (mediaCon) => {
         // 有人呼叫
         console.log('peer connection call from the other');
         setStatus(STATUS.CALLING);
+
         // 回应
-        call.answer(window.LOCAL_MEDIA_STREAM);
-        addMediaConnection(call);
+        mediaCon.answer(window.LOCAL_MEDIA_STREAM);
+        addMediaConnection(mediaCon);
       });
       myPeer.on('disconnected', () => {
         console.log('peer connection disconnected');

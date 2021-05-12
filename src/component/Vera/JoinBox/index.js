@@ -38,7 +38,11 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
     }
     console.log({ peerIds });
     peerIds.forEach((id) => {
-      let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM);
+      let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM, {
+        metadata: {
+          username
+        }
+      });
       console.log({ newMediaConn });
       addMediaConnection(newMediaConn);
     });
