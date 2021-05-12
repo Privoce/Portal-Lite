@@ -49,6 +49,15 @@
   "invite": {
     "message": "Invite"
   },
+  "inviting": {
+    "message": "Inviting"
+  },
+  "fail": {
+    "message": "Fail"
+  },
+  "success": {
+    "message": "Success"
+  },
   "invited": {
     "message": "Invited"
   },

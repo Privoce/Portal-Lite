@@ -49,6 +49,15 @@
   "invite": {
     "message": "邀请"
   },
+  "inviting": {
+    "message": "邀请中"
+  },
+  "fail": {
+    "message": "失败"
+  },
+  "success": {
+    "message": "成功"
+  },
   "invited": {
     "message": "已邀请"
   },

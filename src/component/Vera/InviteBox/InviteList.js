@@ -5,6 +5,9 @@ import useSWR from 'swr';
 
 import Button from '../Button';
 const inviteTxt = chrome.i18n.getMessage('invite');
+const invitingTxt = chrome.i18n.getMessage('inviting');
+const failTxt = chrome.i18n.getMessage('fail');
+const successTxt = chrome.i18n.getMessage('success');
 // const invitedTxt = chrome.i18n.getMessage('invited');
 const StyledList = styled.ul`
   height: fit-content;
@@ -74,14 +77,18 @@ const pushNotify = async (host, id, url) => {
   
 export default function InviteList({ link = '', username = '' }) {
   // const { copied, copy } = useCopy();
-  const [btnText, setBtnText] = useState(inviteTxt);
   const { data, error } = useSWR(
     username
       ? `https://api.yangerxiao.com/service/authing/vera/${encodeURIComponent(username)}/userlist`
       : null,
     fetcher
   );
+  const [userStatus, setUserStatus] = useState([]);
+
   useEffect(() => {}, [username]);
+  useEffect(() => {
+    data && setUserStatus(data.map(() => inviteTxt));
+  }, [data]);
   
   // const handleCopy = ({ target }) => {
   //   if (copied) return;
@@ -92,15 +99,28 @@ export default function InviteList({ link = '', username = '' }) {
   //   }, 1500);
   // };
 
-  const handleInvite = async (id, url) => {
-    setBtnText('Notifying...');
+  // using a temp array is not the best solution ...
+  const handleInvite = async (idx, id, url) => {
+    const temp = [...userStatus];
+    temp[idx] = invitingTxt;
+    setUserStatus(temp);
+
     const result = await pushNotify('fixed', id, url);
     if (result.success) {
-      setBtnText('success');
+      const temp = [...userStatus];
+      temp[idx] = successTxt;
+      setUserStatus(temp);
     } else {
-      setBtnText('fail');
+      // if invite fail, we should also use copy later
+      const temp = [...userStatus];
+      temp[idx] = failTxt;
+      setUserStatus(userStatus);
     }
-    setTimeout(() => setBtnText(inviteTxt), 1500);
+    setTimeout(() => {
+      const temp = [...userStatus];
+      temp[idx] = inviteTxt;
+      setUserStatus(temp);
+    }, 1500);
   }
 
   // loading
@@ -109,15 +129,14 @@ export default function InviteList({ link = '', username = '' }) {
   if (data)
     return (
       <StyledList>
-        {data.map((user) => {
+        {data.map((user, idx) => {
           const { username, name, nickname, photo, tracerId } = user;
           const finalName = username || name || nickname;
           return (
-            <li key={user.finalName} className="user">
+            <li key={`${finalName}-${idx}-${userStatus[idx]}`} className="user">
               <img src={photo} alt="avator" className="avator" />
               <span className="name">{finalName}</span>
-
-              <Button onClick={() => handleInvite(tracerId, link)}>{btnText}</Button>
+              <Button onClick={() => handleInvite(idx, tracerId, link)}>{userStatus[idx]}</Button>
             </li>
           );
         })}
