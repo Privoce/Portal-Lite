@@ -151,13 +151,15 @@ export default function Panel({
         />
         <Info />
       </div>
-      <Resize
-        {...panelSize}
-        {...movePosition}
-        updateSize={setPanelSize}
-        onResizeStart={handleResizeStart}
-        onResizeStop={handleResizeStop}
-      />
+      {layout !== 'min' && (
+        <Resize
+          {...panelSize}
+          {...movePosition}
+          updateSize={setPanelSize}
+          onResizeStart={handleResizeStart}
+          onResizeStop={handleResizeStop}
+        />
+      )}
     </StyledWrapper>
   );
 }
