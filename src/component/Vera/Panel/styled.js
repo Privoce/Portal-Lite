@@ -163,9 +163,12 @@ const StyledWrapper = styled.aside`
       width: -webkit-fill-available;
     }
     .cameras {
-      overflow: hidden;
       display: flex;
       gap: 15px;
+      max-width:75vw;
+      max-height:75vh;
+      overflow: scroll;
+
     }
   }
   &:hover{

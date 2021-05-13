@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 const StyledWrapper = styled.div`
-  width: 20em;
-  height: 20em;
-  overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -38,16 +35,19 @@ const StyledWrapper = styled.div`
     color: var(--vera-font-color);
   }
   .video {
+    width: 20em;
+    height: 20em;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    width: -webkit-fill-available;
+    /* width: 100%;
+    width: -webkit-fill-available; */
     &.hidden video {
       visibility: hidden;
     }
     video {
+      border: 1px solid ${({ color }) => color};
       border-radius: 50%;
       width: -webkit-fill-available;
     }
