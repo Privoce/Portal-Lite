@@ -42,7 +42,7 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         console.log('init chat guest user');
         await chatClient.setGuestUser({
           id: Math.random().toString(20).substr(2, 6),
-          username: 'Guest'
+          name: 'Guest'
         });
       }
       // 初始化channel
