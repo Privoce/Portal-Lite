@@ -78,7 +78,7 @@ const StyledBar = styled.div`
         }
         .mock {
           border-radius: 1px;
-          width: 4px;
+          width: 0.4em;
           background: var(--vera-font-color);
           &.box {
             height: 0.4em;
