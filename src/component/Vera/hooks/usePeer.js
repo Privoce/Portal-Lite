@@ -165,7 +165,9 @@ const usePeer = ({ invitePeerId = null }) => {
     appendVeraHistory({
       peerId: mediaConn.peer,
       isHost: !invitePeerId,
-      usernames: window.USERNAMES
+      usernames: Object.values(window.USERNAMES)
+        .filter((obj) => !obj.fake)
+        .map((obj) => obj.value)
     });
     // update username
     const { peerId, username } = mediaConn.metadata || {};

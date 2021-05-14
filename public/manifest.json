@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "Portal",
   "description": "__MSG_extDescription__",
-  "version": "2.7.0",
+  "version": "2.8.1",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "storage"],
@@ -31,7 +31,12 @@
     "newtab": "/index.html"
   },
   "background": {
-    "scripts": ["./lib/socket.io.min.js", "./crx/bg.js", "./crx/ws-notification.js", "./crx/hot-reload.js"]
+    "scripts": [
+      "./lib/socket.io.min.js",
+      "./crx/bg.js",
+      "./crx/ws-notification.js",
+      "./crx/hot-reload.js"
+    ]
   },
   "content_scripts": [
     {
