@@ -168,7 +168,7 @@ const StyledWrapper = styled.aside`
       max-width:70vw;
       max-height:60vh;
       overflow: scroll;
-
+      overflow-y:hidden;
     }
   }
   &:hover{
