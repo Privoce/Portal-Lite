@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useUsername from './hooks/useUsername';
 import { selectText } from './hooks/utils';
+import ContentEditable from 'react-contenteditable';
 const StyledWrapper = styled.div`
   line-height: 1;
   max-width: 100px;
@@ -29,29 +30,33 @@ const StyledWrapper = styled.div`
 export default function Username({ local = false, name = 'Guest', readonly = true, fixed = true }) {
   const { username, updateUsername } = useUsername();
   const [finalName, setFinalName] = useState((local ? username || 'Guest' : name) || 'Guest');
+  const text = useRef(finalName);
   useEffect(() => {
     if (local && username) {
       setFinalName(username);
-      console.log('set final name', local);
+      console.log('set final name', local, username);
     }
   }, [username, local]);
   const handleChange = ({ target }) => {
-    let newVal = target.innerText;
-    updateUsername(newVal);
+    console.log({ target });
+    text.current = target.value;
+    updateUsername(text.current);
   };
   const handleClick = ({ target }) => {
     selectText(target);
   };
-  console.log({ local, name, fixed, readonly, finalName });
+  // const handleBlur = () => {
+  //   updateUsername(text.current);
+  // };
   return (
-    <StyledWrapper
-      className={`username ${fixed ? 'fixed' : ''}`}
-      contentEditable={!readonly}
-      onClick={handleClick}
-      type="text"
-      onInput={username ? null : handleChange}
-    >
-      {finalName}
+    <StyledWrapper className={`username ${fixed ? 'fixed' : ''}`}>
+      <ContentEditable
+        onClick={handleClick}
+        disabled={readonly}
+        html={finalName}
+        onChange={handleChange}
+        // onBlur={handleBlur}
+      ></ContentEditable>
     </StyledWrapper>
   );
 }

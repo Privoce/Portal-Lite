@@ -20,7 +20,7 @@ let triggerByCmd = {
 };
 // status: loading ready error
 function Camera({
-  username = 'Guest',
+  username = { value: 'Guest', fake: true },
   peerId,
   remote = true,
   mediaStream = null,
@@ -69,7 +69,11 @@ function Camera({
   useEffect(() => {
     const createCursor = () => {
       // 同时初始化鼠标
-      let inited = initCursor({ id: peerId, username, color: stringToHexColor(peerId) });
+      let inited = initCursor({
+        id: peerId,
+        username: username.value,
+        color: stringToHexColor(peerId)
+      });
       if (inited) {
         bindCursorSync({ conn: dataConnection });
       }
@@ -199,7 +203,7 @@ function Camera({
   return (
     <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'} color={color}>
       <div className={`video ${!bg ? 'hide_video' : ''}`}>
-        <Username local={!remote} name={username} />
+        <Username local={!remote} name={username.value} />
         <div className="opts">
           <button
             className="opt bg"

@@ -15,12 +15,13 @@ const selectText = (node) => {
     console.warn('Could not select text in node: Unsupported browser.');
   }
 };
-function getUsername(withFake = false) {
+function getUsername() {
   return new Promise((resolve) => {
-    let arr = withFake ? ['user', 'fakename'] : ['user'];
+    let arr = ['user', 'fakename'];
     chrome.storage.sync.get(arr, (result) => {
-      let name = withFake ? result.user?.username || result.fakename : result.user?.username || '';
-      resolve(name || '');
+      let fake = typeof result.fakename !== 'undefined';
+      let name = fake ? result.fakename : result.user?.username || '';
+      resolve({ value: name, fake } || { value: null, fake: false });
     });
   });
 }
@@ -40,8 +41,8 @@ function getInviteUrl(pid = null) {
   }`;
 }
 async function appendVeraHistory({ peerId, isHost, usernames }) {
-  let un = await getUsername();
-  if (!un) return;
+  let { value, fake } = await getUsername();
+  if (!value || fake) return;
   const putMethod = {
     method: 'PUT', // Method itself
     headers: {
@@ -52,8 +53,8 @@ async function appendVeraHistory({ peerId, isHost, usernames }) {
       url: location.href,
       timestamp: new Date().getTime(),
       peerId,
-      host: isHost ? un : '',
-      username: un,
+      host: isHost ? value : '',
+      username: value,
       participants: Object.values(usernames)
     }) // We send data in JSON format
   };
@@ -63,7 +64,7 @@ async function appendVeraHistory({ peerId, isHost, usernames }) {
   try {
     // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
     let resp = await fetch(
-      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(un)}/udf/vera`,
+      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(value)}/udf/vera`,
       putMethod
     );
     data = await resp.json();

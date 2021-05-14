@@ -13,7 +13,7 @@ const copiedTxt = chrome.i18n.getMessage('copied');
 
 export default function InviteBox({ peerId = '' }) {
   const [inviteUrl, setInviteUrl] = useState('');
-  const { username } = useUsername();
+  const { username, fake } = useUsername();
   const { copied, copy } = useCopy();
   useEffect(() => {
     if (peerId) {
@@ -38,7 +38,7 @@ export default function InviteBox({ peerId = '' }) {
           {copied ? copiedTxt : copyTxt}
         </Button>
       </div>
-      {username ? <InviteList username={username} link={inviteUrl} /> : <LoginArea />}
+      {!fake && username ? <InviteList username={username} link={inviteUrl} /> : <LoginArea />}
     </StyledBox>
   );
 }
