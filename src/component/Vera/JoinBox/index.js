@@ -29,7 +29,7 @@ const StyledBox = styled.div`
 `;
 let clicked = false;
 export default function JoinBox({ ready = false, peerClient, peerIds = [], addMediaConnection }) {
-  const { username } = useUsername();
+  const { username, fake } = useUsername();
   const handleJoin = () => {
     if (clicked) return;
     if (!window.LOCAL_MEDIA_STREAM) {
@@ -38,9 +38,11 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
     }
     console.log({ peerIds });
     peerIds.forEach((id) => {
+      console.log('send username with media conn', username);
       let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM, {
         metadata: {
-          username
+          peerId: peerClient.id,
+          username: { value: username, fake }
         }
       });
       console.log({ newMediaConn });

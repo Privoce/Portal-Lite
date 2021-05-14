@@ -27,7 +27,6 @@ export default function Panel({
     mediaConnections,
     addMediaConnection,
     streams,
-    usernames,
     status
   } = usePeer({
     invitePeerId
@@ -114,9 +113,11 @@ export default function Panel({
           <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
           {Object.entries(mediaConnections).map(([pid, conn]) => {
             let st = streams[pid];
+            let username = window.USERNAMES[pid];
+            console.log('current camera username', username);
             return (
               <Camera
-                username={usernames[pid]}
+                username={username}
                 peerId={pid}
                 key={pid}
                 mediaConnection={conn}
@@ -134,7 +135,7 @@ export default function Panel({
               <Join
                 ready={status == STATUS.READY}
                 peerClient={peer}
-                peerIds={Object.keys(usernames)}
+                peerIds={Object.keys(window.USERNAMES)}
                 addMediaConnection={addMediaConnection}
               />
             )

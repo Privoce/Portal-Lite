@@ -18,6 +18,14 @@ const peerConfig = {
   }
   // debug: 3
 };
+window.USERNAMES = {};
+const updateUsernames = ({ key, username, remove = false }) => {
+  if (remove) {
+    delete window.USERNAMES[key];
+  } else {
+    window.USERNAMES[key] = username;
+  }
+};
 const usePeer = ({ invitePeerId = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
@@ -27,7 +35,7 @@ const usePeer = ({ invitePeerId = null }) => {
   const [mediaConns, setMediaConns] = useState({});
   const mediaConnsRef = useRef({});
   const [streams, setStreams] = useState({});
-  const usernamesRef = useRef({});
+  // const usernamesRef = useRef({});
   const usernameRef = useRef('');
   const updateConns = ({ conn, remove = false, type = 'media' }) => {
     let current = type == 'media' ? mediaConnsRef.current : dataConnsRef.current;
@@ -77,8 +85,8 @@ const usePeer = ({ invitePeerId = null }) => {
     // 删掉data&media连接，去掉名字
     updateConns({ conn, type: 'data', remove: true });
     updateConns({ conn, type: 'media', remove: true });
-    delete usernamesRef.current[pid];
-    if (Object.keys(usernamesRef.current).length == 0) {
+    updateUsernames({ key: pid, remove: true });
+    if (Object.keys(window.USERNAMES).length == 0) {
       // 重置为等待连接的初始状态
       window.removeEventListener('beforeunload', preventCloseTabHandler);
       setStatus(STATUS.WAITING);
@@ -104,19 +112,16 @@ const usePeer = ({ invitePeerId = null }) => {
             type: 'INIT',
             data: {
               username: usernameRef.current,
-              connections: usernamesRef.current
+              connections: window.USERNAMES
             }
           });
         }
         let { username } = conn.metadata || {};
         // update username 集合
-        if (
-          typeof username !== 'undefined' &&
-          typeof usernamesRef.current[conn.peer] == 'undefined'
-        ) {
+        if (typeof username !== 'undefined' && typeof window.USERNAMES[conn.peer] == 'undefined') {
           console.log('set username', conn.peer, myPeer.id, username, !!invitePeerId);
           // 更新到usernames集合里
-          usernamesRef.current = { ...usernamesRef.current, [conn.peer]: username };
+          updateUsernames({ key: conn.peer, username });
         }
         console.log('new dataChannel added:', conn.peer);
         // 开始监听消息
@@ -126,8 +131,8 @@ const usePeer = ({ invitePeerId = null }) => {
             let { connections, username } = data;
             console.log('connections from host:', connections);
             // 更新到usernames集合里
-            usernamesRef.current = {
-              ...usernamesRef.current,
+            window.USERNAMES = {
+              ...window.USERNAMES,
               ...connections,
               [invitePeerId]: username
             };
@@ -156,21 +161,19 @@ const usePeer = ({ invitePeerId = null }) => {
     [invitePeerId, myPeer]
   );
   const addMediaConnection = (mediaConn) => {
-    // 更新到mediaConnections集合里
-    updateConns({ conn: mediaConn, type: 'media' });
     // 新增vera历史记录
     appendVeraHistory({
       peerId: mediaConn.peer,
       isHost: !invitePeerId,
-      usernames: usernamesRef.current
+      usernames: window.USERNAMES
     });
     // update username
-    const { username } = mediaConn.metadata || {};
+    const { peerId, username } = mediaConn.metadata || {};
     let pid = mediaConn.peer;
     // 更新到usernames集合里
-    console.log('cursor username', usernamesRef.current, pid, username);
-    if (typeof username !== 'undefined' && typeof usernamesRef.current[pid] == 'undefined') {
-      usernamesRef.current = { ...usernamesRef.current, [pid]: username };
+    console.log('cursor username', window.USERNAMES, pid, username);
+    if (typeof username !== 'undefined' && peerId != myPeer.id) {
+      updateUsernames({ key: pid, username });
     }
     // console.log({ mediaConns });
     mediaConn.on('close', () => {
@@ -189,6 +192,8 @@ const usePeer = ({ invitePeerId = null }) => {
         return { ...prev };
       });
     });
+    // 更新到mediaConnections集合里
+    updateConns({ conn: mediaConn, type: 'media' });
   };
   useEffect(() => {
     if (myPeer) {
@@ -259,7 +264,7 @@ const usePeer = ({ invitePeerId = null }) => {
     mediaConnections: mediaConns,
     addMediaConnection,
     streams,
-    usernames: usernamesRef.current,
+    // usernames: usernamesRef.current,
     status,
     error
   };
