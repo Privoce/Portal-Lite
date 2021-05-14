@@ -86,19 +86,12 @@ export default function Panel({
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {
-      window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
-        console.log('stop local stream');
-        t.stop();
-      });
-      // window.LOCAL_MEDIA_STREAM = null;
+      console.log('clean up stream');
       let cameras = [...panelRef.current.querySelectorAll('video')];
       cameras.forEach((c) => {
-        let tracks = c.srcObject?.getTracks();
-        console.log('reset srcobj', tracks);
-        tracks.forEach((t) => t.stop());
-        // c.srcObject = null;
+        c.srcObject?.getTracks().forEach((t) => t.stop());
+        c.srcObject = null;
       });
-      // console.log('clean up stream', cameras);
       shutdownPeer();
       closePanel();
     }

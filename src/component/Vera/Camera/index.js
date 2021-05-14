@@ -27,7 +27,6 @@ function Camera({
   dataConnection = null,
   dataConnections = null
 }) {
-  const color = stringToHexColor(peerId);
   const [loaded, setLoaded] = useState(false);
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
   const { enableStream, error } = useUserMedia();
@@ -43,6 +42,7 @@ function Camera({
     });
   };
   useEffect(() => {
+    let videoEle = videoRef.current;
     const attachLocalStream = async () => {
       let localStream = await enableStream();
       console.log({ localStream });
@@ -50,25 +50,15 @@ function Camera({
         let cloned = localStream.clone();
         cloned.getAudioTracks().forEach((t) => (t.enabled = false));
         updateControls(cloned);
-        videoRef.current.srcObject = cloned;
+        videoEle.srcObject = cloned;
       }
     };
-    const createCursor = () => {
-      // 同时初始化鼠标
-      let inited = initCursor({ id: peerId, username, color });
-      if (inited) {
-        bindCursorSync({ conn: dataConnection });
-      }
-    };
+
     if (!remote) {
       attachLocalStream();
-    } else {
-      if (dataConnection) {
-        createCursor();
-      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [remote, peerId, username, dataConnection]);
+  }, [remote]);
 
   useEffect(() => {
     if (mediaStream) {
@@ -76,6 +66,19 @@ function Camera({
       updateControls(mediaStream);
     }
   }, [mediaStream]);
+  useEffect(() => {
+    const createCursor = () => {
+      // 同时初始化鼠标
+      let inited = initCursor({ id: peerId, username, color: stringToHexColor(peerId) });
+      if (inited) {
+        bindCursorSync({ conn: dataConnection });
+      }
+    };
+    if (dataConnection) {
+      // 已经建立datachannel连接
+      createCursor();
+    }
+  }, [peerId, username, dataConnection]);
   useEffect(() => {
     // 来自远程对方的消息
     emitter.on(EVENTS.CAMERA_CONTROL, ({ pid, type }) => {
@@ -192,6 +195,7 @@ function Camera({
   };
   if (error) return <ErrorMask tip={error.tip} />;
   const { pin, video, audio, bg } = controls;
+  const color = stringToHexColor(peerId);
   return (
     <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'} color={color}>
       <div className={`video ${!bg ? 'hide_video' : ''}`}>

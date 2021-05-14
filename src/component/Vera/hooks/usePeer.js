@@ -246,7 +246,10 @@ const usePeer = ({ invitePeerId = null }) => {
     Object.entries(mediaConnsRef.current).forEach(([, conn]) => {
       conn.close();
     });
-
+    window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
+      t.stop();
+    });
+    window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
   }, [myPeer]);
   return {
