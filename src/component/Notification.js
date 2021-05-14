@@ -23,7 +23,7 @@ export default function Notification() {
   const [isSub, setIsSub] = useState(true);
   const [username, setUsername] = useState('');
   const { addToast } = useToasts();
-
+  
   const registerNotify = () => {
     Pushy.register({appId: PushyAppId}).then(async (traceId) => {
       const status = await authClient.checkLoginStatus();
@@ -62,7 +62,18 @@ export default function Notification() {
 
   // setup / update notification trace id
   //TODO[eric]: check if log in first
-  useEffect(registerNotify, []);
+  useEffect(() => {
+    const retryRegister = () => {
+      const timerId = setTimeout(() => {
+        registerNotify();
+        if (Pushy.isRegistered()) clearTimeout(timerId);
+        else retryRegister();
+      }, 1000);
+    }
+    retryRegister();
+  }, []);
+
+
 
   return (
     <StyledWrapper>
