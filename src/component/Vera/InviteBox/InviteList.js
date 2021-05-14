@@ -100,12 +100,21 @@ export default function InviteList({ link = '', username = '' }) {
   // };
 
   // using a temp array is not the best solution ...
-  const handleInvite = async (idx, id, url) => {
+  const handleInvite = async (idx, finalName, id, url) => {
     const temp = [...userStatus];
     temp[idx] = invitingTxt;
     setUserStatus(temp);
 
+    // should only use one...
+    // pushy notification
     const result = await pushNotify('fixed', id, url);
+    // ws notification
+    chrome.runtime.sendMessage({ 
+      action: 'SEND_NOTIFY',
+      finalName,
+      url
+    });
+
     if (result.success) {
       const temp = [...userStatus];
       temp[idx] = successTxt;
@@ -136,7 +145,7 @@ export default function InviteList({ link = '', username = '' }) {
             <li key={`${finalName}-${idx}-${userStatus[idx]}`} className="user">
               <img src={photo} alt="avator" className="avator" />
               <span className="name">{finalName}</span>
-              <Button onClick={() => handleInvite(idx, tracerId, link)}>{userStatus[idx]}</Button>
+              <Button onClick={() => handleInvite(idx, finalName, tracerId, link)}>{userStatus[idx]}</Button>
             </li>
           );
         })}

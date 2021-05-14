@@ -25,14 +25,19 @@ export default function Notification() {
   const { addToast } = useToasts();
   
   const registerNotify = () => {
-    Pushy.register({appId: PushyAppId}).then(async (traceId) => {
-      const status = await authClient.checkLoginStatus();
-      if (status && status.status) {
-        // TODO[eric]: should check original value before updating
-        authClient.setUdv('notification', traceId);
-        setIsSub(true);
-      }
+    return new Promise((resolve) => {
+      Pushy.register({appId: PushyAppId}).then(async (traceId) => {
+        const status = await authClient.checkLoginStatus();
+        if (status && status.status) {
+          // TODO[eric]: should check original value before updating
+          authClient.setUdv('notification', traceId);
+          setIsSub(true);
+          return resolve(true);
+        }
+        return resolve(false);
+      });
     });
+
   }
 
   // remove traceId in authing
@@ -41,12 +46,7 @@ export default function Notification() {
       if (status && status.status) {
         authClient.setUdv('notification', '');
         setIsSub(false);
-        addToast(
-          <p>Notification Disabled</p>, {
-            appearance: 'success',
-            autoDismiss: true
-          }
-        );
+        disableToast();
       }
   }
   
@@ -62,17 +62,36 @@ export default function Notification() {
 
   // setup / update notification trace id
   //TODO[eric]: check if log in first
-  useEffect(() => {
+  useEffect(async () => {
+    let count = 0;
     const retryRegister = () => {
-      const timerId = setTimeout(() => {
-        registerNotify();
+      const timerId = setTimeout(async () => {
+        await registerNotify();
+        count ++;
         if (Pushy.isRegistered()) clearTimeout(timerId);
-        else retryRegister();
+        else (count < 5) && retryRegister();
       }, 1000);
     }
     retryRegister();
   }, []);
 
+  const enableToast = () => {
+    addToast(
+      <p>Notification Enabled</p>, {
+        appearance: 'success',
+        autoDismiss: true
+      }
+    );
+  };
+
+  const disableToast = () => {
+    addToast(
+      <p>Notification Disabled</p>, {
+        appearance: 'success',
+        autoDismiss: true
+      }
+    );
+  };
 
 
   return (
@@ -82,14 +101,8 @@ export default function Notification() {
           <MdNotificationsOff />
         </button>
       ) : (
-        <button className="btn sub" onClick={() => {
-          registerNotify();
-          addToast(
-            <p>Notification Enabled</p>, {
-              appearance: 'success',
-              autoDismiss: true
-            }
-          );
+        <button className="btn sub" onClick={async () => {
+          (await registerNotify()) ? enableToast() : disableToast();
         }}>
           <MdNotificationsActive />
         </button>

@@ -31,7 +31,7 @@
     "newtab": "/index.html"
   },
   "background": {
-    "scripts": ["./crx/bg.js", "./crx/hot-reload.js"]
+    "scripts": ["./lib/socket.io.min.js", "./crx/bg.js", "./crx/ws-notification.js", "./crx/hot-reload.js"]
   },
   "content_scripts": [
     {
