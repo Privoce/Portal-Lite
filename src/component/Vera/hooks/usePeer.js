@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import emitter, { EVENTS, STATUS } from './useEmitter';
-import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
+import { destoryCursor } from '../Cursor';
 import { getUsername, appendVeraHistory, preventCloseTabHandler } from './utils';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
@@ -172,11 +172,6 @@ const usePeer = ({ invitePeerId = null }) => {
     if (typeof username !== 'undefined' && typeof usernamesRef.current[pid] == 'undefined') {
       usernamesRef.current = { ...usernamesRef.current, [pid]: username };
     }
-    // 同时初始化鼠标
-    let inited = initCursor({ id: pid, username: usernamesRef.current[pid] });
-    if (inited) {
-      bindCursorSync({ conn: dataConnsRef.current[pid] });
-    }
     // console.log({ mediaConns });
     mediaConn.on('close', () => {
       console.log('peer media connection close');
@@ -251,10 +246,7 @@ const usePeer = ({ invitePeerId = null }) => {
     Object.entries(mediaConnsRef.current).forEach(([, conn]) => {
       conn.close();
     });
-    window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
-      t.stop();
-    });
-    window.LOCAL_MEDIA_STREAM = null;
+
     myPeer.destroy();
   }, [myPeer]);
   return {

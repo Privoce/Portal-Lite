@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import emitter, { EVENTS } from '../hooks/useEmitter';
 import { throttle } from '../hooks/utils';
+import Pointer from './Pointer';
 import StyledCursor from './styled';
-export default function Cursor({ id, username = 'Guest' }) {
+export default function Cursor({ id, username = 'Guest', color = '#f4ea2a' }) {
   const wrapper = useRef(null);
   useEffect(() => {
     console.log(wrapper.current);
@@ -36,14 +37,14 @@ export default function Cursor({ id, username = 'Guest' }) {
     wrapper.current.classList.remove('clicked');
   };
   return (
-    <StyledCursor id={id} ref={wrapper} onAnimationEnd={handleAniEnd}>
+    <StyledCursor id={id} ref={wrapper} color={color} onAnimationEnd={handleAniEnd}>
       <div className="circle"></div>
-      <div className="pointer"></div>
+      <Pointer color={color}></Pointer>
       {username ? <span className="name">{username}</span> : null}
     </StyledCursor>
   );
 }
-const initCursor = ({ id, username }) => {
+const initCursor = ({ id, username, color }) => {
   if (typeof username == 'undefined') return false;
   let wrapper = document.getElementById(id);
   // 存在了
@@ -53,7 +54,7 @@ const initCursor = ({ id, username }) => {
     wrapper.id = id;
     document.body.appendChild(wrapper);
   }
-  ReactDOM.render(<Cursor id={id} username={username} />, wrapper);
+  ReactDOM.render(<Cursor id={id} username={username} color={color} />, wrapper);
   return true;
 };
 const destoryCursor = ({ id }) => {

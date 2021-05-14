@@ -41,15 +41,15 @@ const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* width: 100%;
-    width: -webkit-fill-available; */
-    &.hidden video {
+    &.hide_video video {
       visibility: hidden;
     }
     video {
-      border: 1px solid ${({ color }) => color};
+      border: 4px solid ${({ color }) => color};
       border-radius: 50%;
+      box-sizing: border-box;
       width: -webkit-fill-available;
+      height: 100%;
     }
     .opts {
       z-index: 7;
@@ -60,7 +60,6 @@ const StyledWrapper = styled.div`
       display: flex;
       transform: translateX(-50%);
       gap: 0.4em;
-      /* visibility: hidden; */
       .opt {
         padding: 0;
         border: none;

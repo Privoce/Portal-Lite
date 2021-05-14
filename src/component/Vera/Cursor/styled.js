@@ -43,7 +43,7 @@ const StyledCursor = styled.div`
     font-size: 10px;
     color: #333;
     padding: 4px 6px;
-    background-color: #f4ea2a;
+    background-color: ${({ color }) => color};
   }
 `;
 

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, memo } from 'react';
 import Username from '../Username';
 import emitter, { EVENTS } from '../hooks/useEmitter';
+import { stringToHexColor } from '../hooks/utils';
+import { initCursor, bindCursorSync } from '../Cursor';
 
 import ErrorMask from './ErrorMask';
 import OffMask from './CameraOffMask';
@@ -22,8 +24,10 @@ function Camera({
   peerId,
   remote = true,
   mediaStream = null,
+  dataConnection = null,
   dataConnections = null
 }) {
+  const color = stringToHexColor(peerId);
   const [loaded, setLoaded] = useState(false);
   const [controls, setControls] = useState({ pin: false, video: true, audio: true, bg: true });
   const { enableStream, error } = useUserMedia();
@@ -49,11 +53,22 @@ function Camera({
         videoRef.current.srcObject = cloned;
       }
     };
+    const createCursor = () => {
+      // 同时初始化鼠标
+      let inited = initCursor({ id: peerId, username, color });
+      if (inited) {
+        bindCursorSync({ conn: dataConnection });
+      }
+    };
     if (!remote) {
       attachLocalStream();
+    } else {
+      if (dataConnection) {
+        createCursor();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [remote]);
+  }, [remote, peerId, username, dataConnection]);
 
   useEffect(() => {
     if (mediaStream) {
@@ -178,8 +193,8 @@ function Camera({
   if (error) return <ErrorMask tip={error.tip} />;
   const { pin, video, audio, bg } = controls;
   return (
-    <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'}>
-      <div className={`video ${!bg ? 'hidden' : ''}`}>
+    <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'} color={color}>
+      <div className={`video ${!bg ? 'hide_video' : ''}`}>
         <Username local={!remote} name={username} />
         <div className="opts">
           <button
@@ -219,3 +234,6 @@ function Camera({
   );
 }
 export default memo(Camera);
+// export default memo(Camera, (prev, next) => {
+//   return prev.peerId == next.peerId;
+// });

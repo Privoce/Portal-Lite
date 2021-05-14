@@ -165,8 +165,8 @@ const StyledWrapper = styled.aside`
     .cameras {
       display: flex;
       gap: 15px;
-      max-width:75vw;
-      max-height:75vh;
+      max-width:70vw;
+      max-height:60vh;
       overflow: scroll;
 
     }
