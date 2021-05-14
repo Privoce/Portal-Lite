@@ -32,6 +32,11 @@ const useUsername = (defaultName = '') => {
       // chrome.storage.onChanged = null;
     };
   }, []);
+  useEffect(() => {
+    if (!fake) {
+      chrome.storage.sync.remove(['fakename']);
+    }
+  }, [fake]);
   const updateUsername = (name) => {
     chrome.storage.sync.set({ fakename: name }, () => {
       // Notify that we saved.
