@@ -13,7 +13,7 @@ import 'stream-chat-react/dist/css/index.css';
 import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
 const chatClient = StreamChat.getInstance('fwcuynkafsqt');
-
+let timer = null;
 export default function ChatBox({ channelId = null, visible = false, toggleVisible }) {
   const [channel, setChannel] = useState(null);
   const chatBoxRef = useRef(null);
@@ -53,19 +53,24 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
       await cn.create();
       setChannel(cn);
       console.log('end init chat');
-      setTimeout(() => {
+      timer = setTimeout(() => {
         let chatBox = chatBoxRef.current;
-        let dragEle = chatBox.querySelector('[class^=str-chat__header]');
-        let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
-        new PlainDraggable(chatBox, {
-          handle: dragEle,
-          containment
-        });
+        if (chatBox) {
+          let dragEle = chatBox.querySelector('[class^=str-chat__header]');
+          let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
+          new PlainDraggable(chatBox, {
+            handle: dragEle,
+            containment
+          });
+        }
       }, 3000);
     };
     if (channelId) {
       initialChat();
     }
+    return () => {
+      clearTimeout(timer);
+    };
   }, [channelId]);
   return (
     <StyledWrapper ref={chatBoxRef} className={visible ? 'visible' : ''}>
