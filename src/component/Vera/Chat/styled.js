@@ -15,6 +15,17 @@ const StyledWrapper = styled.div`
   .str-chat-channel {
     max-height: 80vh;
   }
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    padding: 5px;
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+  }
   .close {
     position: absolute;
     top: -15px;

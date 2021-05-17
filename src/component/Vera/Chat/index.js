@@ -12,7 +12,9 @@ import {
 import 'stream-chat-react/dist/css/index.css';
 import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
-const chatClient = StreamChat.getInstance('fwcuynkafsqt');
+const chatClient = StreamChat.getInstance('fwcuynkafsqt', {
+  timeout: 15000
+});
 let timer = null;
 export default function ChatBox({ channelId = null, visible = false, toggleVisible }) {
   const [channel, setChannel] = useState(null);
@@ -50,7 +52,7 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         image: 'https://static.nicegoodthings.com/privoce/works.portal.logo.png',
         name: 'Vera Chat'
       });
-      await cn.create();
+      await cn.watch();
       setChannel(cn);
       console.log('end init chat');
       timer = setTimeout(() => {
@@ -65,17 +67,17 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         }
       }, 3000);
     };
-    if (channelId) {
+    if (channelId && visible) {
       initialChat();
     }
     return () => {
       clearTimeout(timer);
     };
-  }, [channelId]);
+  }, [channelId, visible]);
   return (
     <StyledWrapper ref={chatBoxRef} className={visible ? 'visible' : ''}>
-      <button className="close" onClick={toggleVisible}></button>
-      {channel && (
+      {channel && <button className="close" onClick={toggleVisible}></button>}
+      {channel ? (
         <Chat client={chatClient} theme="livestream dark">
           <Channel channel={channel}>
             <Window>
@@ -85,6 +87,8 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
             </Window>
           </Channel>
         </Chat>
+      ) : (
+        <div className="loading">Loading Chat Box</div>
       )}
     </StyledWrapper>
   );
