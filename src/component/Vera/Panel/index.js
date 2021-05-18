@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import Camera from '../Camera';
-// import Loading from '../Loading';
+import SwiperCore, { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.min.css';
+import IconArrowLeft from '../icons/ArrowLeft';
+import IconArrowRight from '../icons/ArrowRight';
 import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
@@ -12,6 +16,8 @@ import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
 import { STATUS } from '../hooks/useEmitter';
+
+SwiperCore.use([Navigation]);
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
@@ -36,10 +42,11 @@ export default function Panel({
   const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
   const [floatVisible, setFloatVisible] = useState(false);
-  const [panelSize, setPanelSize] = useState({ width: 440, height: 220 });
+  const [panelSize, setPanelSize] = useState({ width: 440, height: 250 });
   const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
+
   const handleLayout = ({ target }) => {
     if (target.classList.contains('curr')) return;
     let tmp = target.getAttribute('layout');
@@ -117,11 +124,79 @@ export default function Panel({
       setEnableCursor((prev) => !prev);
     }
   };
-  let noConnection = Object.keys(mediaConnections).length == 0;
+  const renderRemotes = () => {
+    if (!panelRef.current) return null;
+    let count = Object.keys(mediaConnections).length;
+    const remotes = Object.entries(mediaConnections).map(([pid, conn]) => {
+      let st = streams[pid];
+      let username = window.USERNAMES[pid];
+      console.log('current camera username', username);
+      return count > 2 ? (
+        <SwiperSlide>
+          <Camera
+            username={username}
+            peerId={pid}
+            key={pid}
+            mediaConnection={conn}
+            dataConnection={dataConnections[pid]}
+            mediaStream={st}
+          />
+        </SwiperSlide>
+      ) : (
+        <Camera
+          username={username}
+          peerId={pid}
+          key={pid}
+          mediaConnection={conn}
+          dataConnection={dataConnections[pid]}
+          mediaStream={st}
+        />
+      );
+    });
+    return count > 2 ? (
+      <Swiper
+        // direction={'vertical'}
+        direction={layout == 'vt' ? 'vertical' : 'horizontal'}
+        observer={true}
+        resizeObserver={true}
+        slidesPerView={layout == 'one' ? 1 : 3}
+        spaceBetween={layout == 'one' ? 0 : 15}
+        navigation={{
+          prevEl: panelRef.current.querySelector('.cameras .nav.prev'),
+          nextEl: panelRef.current.querySelector('.cameras .nav.next')
+        }}
+      >
+        <SwiperSlide>
+          <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
+        </SwiperSlide>
+        {remotes}
+      </Swiper>
+    ) : (
+      [
+        <Camera
+          key={peer?.id}
+          dataConnections={dataConnections}
+          peerId={peer?.id}
+          remote={false}
+        />,
+        ...remotes
+      ]
+    );
+  };
+  let remoteCount = Object.keys(mediaConnections).length;
+  let noConnection = remoteCount == 0;
+  let cameraSlides = remoteCount > 2;
   // let reset='reset'==status;
   let miniLayout = layout == 'min';
   let boxVisible = noConnection && !miniLayout;
   let { width, height } = panelSize;
+  let camerasStyle = cameraSlides
+    ? layout == 'vt'
+      ? { height: 'calc(60em + 30px)' }
+      : layout == 'one'
+      ? { width: '20em' }
+      : { width: 'calc(60em + 30px)' }
+    : {};
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
       <div
@@ -130,29 +205,24 @@ export default function Panel({
         ref={panelRef}
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
-        {floatVisible && <Invite float={true} peerId={peer?.id} />}
-        <div className="cameras">
-          <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
-          {Object.entries(mediaConnections).map(([pid, conn]) => {
-            let st = streams[pid];
-            let username = window.USERNAMES[pid];
-            console.log('current camera username', username);
-            return (
-              <Camera
-                username={username}
-                peerId={pid}
-                key={pid}
-                mediaConnection={conn}
-                dataConnection={dataConnections[pid]}
-                mediaStream={st}
-              />
-            );
-          })}
+        {floatVisible && <Invite float={true} peerId={invitePeerId || peer?.id} />}
+        <div className={`cameras ${cameraSlides ? 'slides' : ''}`} style={camerasStyle}>
+          {cameraSlides && (
+            <div className="nav prev">
+              <IconArrowLeft />
+            </div>
+          )}
+          {renderRemotes()}
+          {cameraSlides && (
+            <div className="nav next">
+              <IconArrowRight />
+            </div>
+          )}
         </div>
         {boxVisible ? (
           invitePeerId ? (
             used ? (
-              <Invite peerId={peer?.id} />
+              <Invite peerId={invitePeerId || peer?.id} />
             ) : (
               <Join
                 ready={status == STATUS.READY}
@@ -162,7 +232,7 @@ export default function Panel({
               />
             )
           ) : (
-            <Invite peerId={peer?.id} />
+            <Invite peerId={invitePeerId || peer?.id} />
           )
         ) : null}
         <Topbar

@@ -10,12 +10,15 @@ const StyledBox = styled.div`
   justify-content: space-between;
   padding: 5px;
   &.float {
-    background-color: #333;
+    background-color: var(--vera-panel-bg-color);
     position: absolute;
     left: -220px;
     top: 20px;
     padding: 15px;
     border-radius: 5px;
+    .title {
+      margin-bottom: -10px;
+    }
   }
   .title {
     color: var(--vera-font-color);
@@ -47,6 +50,10 @@ const StyledBox = styled.div`
       overflow: hidden;
       overflow-x: scroll;
       margin-right: 1em;
+      &::-webkit-scrollbar-track {
+        width: 5px;
+        background: transparent;
+      }
     }
     .copy {
       cursor: pointer;

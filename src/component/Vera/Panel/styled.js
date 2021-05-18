@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { STATUS } from '../hooks/useEmitter';
 const StyledWrapper = styled.aside`
   position: relative;
-  pointer-events: all;
+  pointer-events: none;
   font-family: sans-serif;
   .react-resizable {
-    visibility:hidden;
     pointer-events:none;
     position: absolute;
     left:0;
@@ -79,6 +78,7 @@ const StyledWrapper = styled.aside`
       }
     }
   .panel{
+    pointer-events: all;
     display: flex !important;
     align-items: center;
     justify-content: space-evenly;
@@ -115,6 +115,8 @@ const StyledWrapper = styled.aside`
       background: transparent;
       .topbar,
       .info,
+      .hangup,
+      .setting .icon,
       &:after {
         visibility: hidden;
       }
@@ -122,6 +124,8 @@ const StyledWrapper = styled.aside`
         background: var(--vera-panel-bg-color);
         .topbar,
         .info,
+        .hangup,
+        .setting .icon,
         &:after {
           visibility: visible;
         }
@@ -165,18 +169,37 @@ const StyledWrapper = styled.aside`
       width: -webkit-fill-available;
     }
     .cameras {
+      position: relative;
+      /* width: 20em; */
       display: flex;
       gap: 15px;
-      max-width:70vw;
-      max-height:60vh;
-      overflow: scroll;
-      overflow-y:hidden;
+      .nav{
+        cursor: pointer;
+        visibility:hidden;
+        position: absolute;
+        top:50%;
+        transform:translateY(-50%);
+        &.prev{
+          left:-20px;
+          
+        }
+        &.next{
+          right:-20px;
+        }
+      }
+      &.slides{
+        .nav{
+          visibility:visible;
+        }
+        gap:0;
+        .swiper-container {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
     }
   }
   &:hover{
-    .react-resizable{
-      visibility:visible;
-    }
     .panel{
       background-color:var(--vera-panel-bg-color) !important;
     }

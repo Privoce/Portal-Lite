@@ -41,37 +41,8 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: baseline;
   }
   :root {
-      --vera-widget-bg-color: #000;
-      --vera-panel-bg-color: rgba(51,51,51,.7);
-      --vera-panel-border-radius: 20px;
-      --vera-button-bg-color: #FFBD2E;
-      --vera-button-font-color: #000;
-      --vera-layout-bg-color: #fff;
-      --vera-hr-bg-color:#DEE1E6;
-
-      --vera-camera-bg-color: #5D6063;
-      --vera-font-color: #fff;
-      --vera-border-radius: 5px;
-      --vera-box-border-radius: 50%;
-    }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --vera-widget-bg-color: #000;
-      --vera-panel-bg-color: rgba(51,51,51,.7);
-      --vera-panel-border-radius: 20px;
-      --vera-button-bg-color: #FFBD2E;
-      --vera-button-font-color: #000;
-      --vera-layout-bg-color: #fff;
-      --vera-hr-bg-color:#DEE1E6;
-      --vera-camera-bg-color: #5D6063;
-      --vera-font-color: #fff;
-      --vera-border-radius: 5px;
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --vera-widget-bg-color: #000;
-      --vera-panel-bg-color: rgba(250,250,250,.7);
+    --vera-widget-bg-color: #000;
+      --vera-panel-bg-color: rgba(250,250,250,.8);
       --vera-panel-border-radius: 20px;
       --vera-button-bg-color: #7B5EA8;
       --vera-button-font-color: #fff;
@@ -81,7 +52,18 @@ const GlobalStyle = createGlobalStyle`
       --vera-camera-bg-color: #fff;
       --vera-border-radius: 5px;
     }
-  }
+    .vera-dark-theme{
+      --vera-widget-bg-color: #000;
+      --vera-panel-bg-color: rgba(51,51,51,.8);
+      --vera-panel-border-radius: 20px;
+      --vera-button-bg-color: #FFBD2E;
+      --vera-button-font-color: #000;
+      --vera-layout-bg-color: #fff;
+      --vera-hr-bg-color:#DEE1E6;
+      --vera-camera-bg-color: #5D6063;
+      --vera-font-color: #fff;
+      --vera-border-radius: 5px;
+    }
 `;
 export default function Vera() {
   const [chatVisible, setChatVisible] = useState(false);

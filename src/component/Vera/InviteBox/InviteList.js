@@ -11,12 +11,13 @@ const successTxt = chrome.i18n.getMessage('success');
 // const invitedTxt = chrome.i18n.getMessage('invited');
 const StyledList = styled.ul`
   height: fit-content;
+  max-height: 9.5em;
   overflow: scroll;
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   gap: 0.6em;
-  background-color: #1f1f1f;
+  background-color: var(--vera-panel-bg-color);
   padding: 0.6em 0.4em;
   border-radius: var(--vera-border-radius);
   color: var(--vera-font-color);

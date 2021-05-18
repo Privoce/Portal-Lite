@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import IconClose from '../icons/Close';
 const StyledWrapper = styled.div`
+  z-index: 999;
   width: 3em;
   height: 3em;
   cursor: pointer;
@@ -17,14 +19,19 @@ const StyledWrapper = styled.div`
   &.close {
     left: 30px;
     top: 26px;
-    background-size: 80%;
-    background-color: transparent;
-    background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/close.svg`});
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       background-color: #eb2027;
     }
   }
 `;
 export default function HangUp({ type = 'close', handleHangUp }) {
-  return <StyledWrapper className={type} onClick={handleHangUp}></StyledWrapper>;
+  return (
+    <StyledWrapper className={type} onClick={handleHangUp}>
+      {type == 'close' && <IconClose />}
+    </StyledWrapper>
+  );
 }

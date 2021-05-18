@@ -10,6 +10,7 @@ import {
   Window
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
+import IconClose from '../icons/Close';
 import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
 const chatClient = StreamChat.getInstance('fwcuynkafsqt', {
@@ -76,7 +77,11 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
   }, [channelId, visible]);
   return (
     <StyledWrapper ref={chatBoxRef} className={visible ? 'visible' : ''}>
-      {channel && <button className="close" onClick={toggleVisible}></button>}
+      {channel && (
+        <button className="close" onClick={toggleVisible}>
+          <IconClose color="#fff" />
+        </button>
+      )}
       {channel ? (
         <Chat client={chatClient} theme="livestream dark">
           <Channel channel={channel}>

@@ -35,10 +35,6 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     background-color: #333;
     border: none;
-    background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/close.svg`});
-    background-size: 60%;
-    background-repeat: no-repeat;
-    background-position: center;
     cursor: pointer;
   }
 `;

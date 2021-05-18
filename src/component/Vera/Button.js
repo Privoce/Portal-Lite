@@ -7,7 +7,7 @@ const StyledButton = styled.button`
   background-color: var(--vera-button-bg-color);
   color: var(--vera-button-font-color);
   border-radius: var(--vera-border-radius);
-  padding: 6px 14px;
+  padding: 6px 8px;
   cursor: pointer;
   transition: transform 0.3s ease-in;
   font-size: 14px;

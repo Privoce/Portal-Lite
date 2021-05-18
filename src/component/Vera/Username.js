@@ -4,6 +4,7 @@ import useUsername from './hooks/useUsername';
 import { selectText } from './hooks/utils';
 import ContentEditable from 'react-contenteditable';
 const StyledWrapper = styled.div`
+  cursor: pointer;
   line-height: 1;
   min-width: 30px;
   max-width: 100px;
