@@ -17,6 +17,16 @@ export default function Cursor({ id, username = 'Guest', color = '#f4ea2a' }) {
       wrapper.current.style.transform = `translate3d(${x}px,${y}px,0)`;
       // console.log('data connection msg in cursor', pid, id, data);
     });
+    emitter.on(EVENTS.TOGGLE_CURSOR, ({ pid, data }) => {
+      //  不是当前鼠标的更新数据
+      if (pid !== id) return;
+      let { enable } = data;
+      if (enable) {
+        wrapper.current.classList.remove('disable');
+      } else {
+        wrapper.current.classList.add('disable');
+      }
+    });
     emitter.on(EVENTS.CURSOR_CLICK, ({ pid }) => {
       //  不是当前鼠标的更新数据
       if (pid !== id) return;

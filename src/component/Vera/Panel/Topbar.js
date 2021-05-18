@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { getInviteUrl } from '../hooks/utils';
-import useCopy from '../hooks/useCopy';
-const copiedTxt = chrome.i18n.getMessage('copied');
+import IconCursor from '../icons/Cursor';
+import IconChat from '../icons/Chat';
+import IconInvite from '../icons/Invite';
 const StyledBar = styled.div`
   display: flex;
   padding: 0 1.2em;
@@ -12,32 +12,14 @@ const StyledBar = styled.div`
     gap: 0.4em;
     .rect {
       cursor: pointer;
-      width: 3em;
+      width: 2em;
       height: 2em;
-      background-size: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      border-radius: var(--vera-border-radius);
-      &.close {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/tel.svg`});
-        background-color: #eb2027;
-      }
-      &.chat {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/chat.svg`});
-        background-color: #85e89e;
-      }
-      &.invite:not(.copied) {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/invite.svg`});
-        background-color: #5e7fec;
-      }
-      &.copied.invite {
-        background: #0d1117;
-        color: #fff;
-        font-size: 1em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5em 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+        width: 70%;
+        height: 70%;
       }
     }
   }
@@ -47,8 +29,6 @@ const StyledBar = styled.div`
     .layout {
       display: flex;
       align-items: center;
-      border-radius: var(--vera-border-radius);
-      background-color: var(--vera-button-bg-color);
       padding: 0.4em;
       gap: 1em;
       .item {
@@ -77,9 +57,8 @@ const StyledBar = styled.div`
           flex-direction: column;
         }
         .mock {
-          border-radius: 1px;
           width: 0.4em;
-          background: var(--vera-font-color);
+          background: var(--vera-layout-bg-color);
           &.box {
             height: 0.4em;
           }
@@ -110,25 +89,29 @@ const layouts = {
 export default function Topbar({
   pid = null,
   layout,
-  handleClose,
+  toggleInviteVisible,
+  cursor = true,
+  toggleCursor,
   handleLayout,
   toggleChatBoxVisible
 }) {
-  const { copied, copy } = useCopy();
-  const handleInvite = () => {
-    let link = getInviteUrl(pid);
-    copy(link);
-  };
   return (
     <StyledBar className="topbar">
       <div className="left">
-        <div className="rect close" onClick={handleClose}></div>
         {pid && (
-          <div className={`rect invite ${copied ? 'copied' : ''}`} onClick={handleInvite}>
-            {copied && copiedTxt}
-          </div>
+          <>
+            <div className="rect cursor" onClick={toggleCursor}>
+              <IconCursor enable={cursor} />
+            </div>
+
+            <div className={`rect chat`} onClick={toggleChatBoxVisible}>
+              <IconChat />
+            </div>
+            <div className={`rect invite`} onClick={toggleInviteVisible}>
+              <IconInvite />
+            </div>
+          </>
         )}
-        {pid && <div className={`rect chat`} onClick={toggleChatBoxVisible} />}
       </div>
       <div className="right">
         <ul className="layout">

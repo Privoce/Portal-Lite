@@ -4,7 +4,7 @@ import { ResizableBox } from 'react-resizable';
 
 export default function Resize({
   width = 440,
-  height = 250,
+  height = 220,
   left = 0,
   top = 0,
   onResizeStart,

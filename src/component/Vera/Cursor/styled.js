@@ -17,6 +17,10 @@ const StyledCursor = styled.div`
   display: flex;
   flex-direction: column;
   will-change: transform;
+  &.disable {
+    pointer-events: none;
+    display: none;
+  }
   .circle {
     border-radius: 50%;
     background-color: deepskyblue;

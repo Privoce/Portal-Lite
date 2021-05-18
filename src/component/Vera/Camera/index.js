@@ -203,7 +203,7 @@ function Camera({
   return (
     <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'} color={color}>
       <div className={`video ${!bg ? 'hide_video' : ''}`}>
-        <Username local={!remote} name={username.value} />
+        <Username local={!remote} readonly={remote} />
         <div className="opts">
           <button
             className="opt bg"
@@ -228,7 +228,7 @@ function Camera({
           <button className="opt pin" onClick={handlePin} data-status={pin} title={tipPin}></button>
         </div>
 
-        {(!video || !loaded) && <OffMask />}
+        {(!video || !loaded) && <OffMask style={{ backgroundColor: color }} />}
         {!bg && <BgOffMask video={videoRef.current} />}
         <video
           ref={videoRef}

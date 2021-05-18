@@ -22,8 +22,7 @@ const StyledBox = styled.div`
   border-radius: var(--vera-border-radius);
   .btns {
     display: flex;
-    justify-content: center;
-    gap: 5em;
+    justify-content: space-between;
     width: 100%;
   }
 `;
@@ -55,7 +54,7 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
       <Username local={true} readonly={false} fixed={false} />
       <div className="btns">
         {username ? null : <Login />}
-        <Button disabled={!ready} className="blue" onClick={handleJoin}>
+        <Button disabled={!ready} onClick={handleJoin}>
           {ready ? (username ? joinTxt : joinAsGuestTxt) : `${prepareTxt}...`}
         </Button>
       </div>

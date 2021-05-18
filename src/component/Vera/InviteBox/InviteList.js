@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
-// import useCopy from '../hooks/useCopy';
+import Loading from '../Loading';
 
 import Button from '../Button';
 const inviteTxt = chrome.i18n.getMessage('invite');
@@ -52,9 +52,10 @@ const fetcher = (...args) =>
     .then((res) => res.json())
     .then((resp) => resp.data);
 
-const PUSH_API = 'https://api.pushy.me/push?api_key=f827c5a08c5cc9dc01d697ba652d02ae30e090242f396561e3ed059642ec6d58';
+const PUSH_API =
+  'https://api.pushy.me/push?api_key=f827c5a08c5cc9dc01d697ba652d02ae30e090242f396561e3ed059642ec6d58';
 const pushNotify = async (host, id, url) => {
-  if (!id) return {success: false};
+  if (!id) return { success: false };
   // TODO[eric]: put apikey here fornow, should move to a private place when in production
   // add custom icon
   const resp = await fetch(PUSH_API, {
@@ -73,8 +74,8 @@ const pushNotify = async (host, id, url) => {
   });
 
   return resp.json();
-}
-  
+};
+
 export default function InviteList({ link = '', username = '' }) {
   // const { copied, copy } = useCopy();
   const { data, error } = useSWR(
@@ -89,7 +90,7 @@ export default function InviteList({ link = '', username = '' }) {
   useEffect(() => {
     data && setUserStatus(data.map(() => inviteTxt));
   }, [data]);
-  
+
   // const handleCopy = ({ target }) => {
   //   if (copied) return;
   //   target.innerText = invitedTxt;
@@ -109,7 +110,7 @@ export default function InviteList({ link = '', username = '' }) {
     // pushy notification
     const result = await pushNotify('fixed', id, url);
     // ws notification
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       action: 'SEND_NOTIFY',
       finalName,
       url
@@ -130,10 +131,10 @@ export default function InviteList({ link = '', username = '' }) {
       temp[idx] = inviteTxt;
       setUserStatus(temp);
     }, 1500);
-  }
+  };
 
   // loading
-  if (!data) return null;
+  if (!data) return <Loading size={90} />;
   if (error) return 'error';
   if (data)
     return (
@@ -145,7 +146,9 @@ export default function InviteList({ link = '', username = '' }) {
             <li key={`${finalName}-${idx}-${userStatus[idx]}`} className="user">
               <img src={photo} alt="avator" className="avator" />
               <span className="name">{finalName}</span>
-              <Button onClick={() => handleInvite(idx, finalName, tracerId, link)}>{userStatus[idx]}</Button>
+              <Button onClick={() => handleInvite(idx, finalName, tracerId, link)}>
+                {userStatus[idx]}
+              </Button>
             </li>
           );
         })}

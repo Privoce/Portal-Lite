@@ -23,6 +23,8 @@ const StyledWrapper = styled.aside`
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2IDYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iNnB4Ij48ZyBvcGFjaXR5PSIwLjMwMiI+PHBhdGggZD0iTSA2IDYgTCAwIDYgTCAwIDQuMiBMIDQgNC4yIEwgNC4yIDQuMiBMIDQuMiAwIEwgNiAwIEwgNiA2IEwgNiA2IFoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+');
         background-position: bottom right;
         padding: 0 3px 3px 0;
+        /* 暂时隐藏掉 */
+        opacity:0;
         &.react-resizable-handle-sw {
           bottom: 0;
           left: 0;
@@ -81,9 +83,9 @@ const StyledWrapper = styled.aside`
     align-items: center;
     justify-content: space-evenly;
     gap: 15px;
-    padding: 12px;
+    padding: 13px 26px;
     padding-top: 40px;
-    border-radius: var(--vera-border-radius);
+    border-radius: var(--vera-panel-border-radius);
     transition: all 0.5s ease-in-out;
     transition-property: background-color;
     background-color: var(--vera-panel-bg-color);

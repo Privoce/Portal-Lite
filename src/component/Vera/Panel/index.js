@@ -7,6 +7,8 @@ import usePeer from '../hooks/usePeer';
 import { getTranslateValues } from '../hooks/utils';
 import StyledWrapper from './styled';
 import Topbar from './Topbar';
+import HangUp from './HangUp';
+import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
 import { STATUS } from '../hooks/useEmitter';
@@ -31,8 +33,10 @@ export default function Panel({
   } = usePeer({
     invitePeerId
   });
+  const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
-  const [panelSize, setPanelSize] = useState({ width: 440, height: 250 });
+  const [floatVisible, setFloatVisible] = useState(false);
+  const [panelSize, setPanelSize] = useState({ width: 440, height: 220 });
   const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
@@ -82,6 +86,9 @@ export default function Panel({
       updateChannelId(channelId);
     }
   }, [status, invitePeerId, peer]);
+  const toggleInviteVisible = () => {
+    setFloatVisible((prev) => !prev);
+  };
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {
@@ -95,7 +102,21 @@ export default function Panel({
       closePanel();
     }
   };
-
+  const toggleCursor = () => {
+    if (dataConnections) {
+      let cmd = {
+        type: `CURSOR`,
+        data: {
+          peer: peer.id,
+          enable: !enableCursor
+        }
+      };
+      Object.entries(dataConnections).forEach(([, conn]) => {
+        conn.send(cmd);
+      });
+      setEnableCursor((prev) => !prev);
+    }
+  };
   let noConnection = Object.keys(mediaConnections).length == 0;
   // let reset='reset'==status;
   let miniLayout = layout == 'min';
@@ -109,6 +130,7 @@ export default function Panel({
         ref={panelRef}
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
+        {floatVisible && <Invite float={true} peerId={peer?.id} />}
         <div className="cameras">
           <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
           {Object.entries(mediaConnections).map(([pid, conn]) => {
@@ -145,12 +167,16 @@ export default function Panel({
         ) : null}
         <Topbar
           pid={!noConnection ? invitePeerId || peer?.id : null}
+          cursor={enableCursor}
+          toggleCursor={toggleCursor}
+          toggleInviteVisible={toggleInviteVisible}
           layout={layout}
           handleLayout={handleLayout}
-          handleClose={handleClose}
           toggleChatBoxVisible={toggleChatVisible}
         />
         <Info />
+        {layout !== 'min' && <Setting />}
+        <HangUp type={noConnection ? 'close' : 'hangup'} handleHangUp={handleClose} />
       </div>
       {layout !== 'min' && (
         <Resize

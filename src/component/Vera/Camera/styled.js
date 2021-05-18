@@ -5,7 +5,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: var(--vera-box-border-radius);
+  border-radius: 50%;
   border: none;
   background: transparent;
   .video .username,
@@ -20,6 +20,14 @@ const StyledWrapper = styled.div`
       }
     }
   }
+  &.remote .video .opts {
+    .bg,
+    .video,
+    .audio {
+      display: none;
+    }
+  }
+
   .processing {
     z-index: 10;
     display: none;
@@ -54,7 +62,7 @@ const StyledWrapper = styled.div`
     .opts {
       z-index: 7;
       position: absolute;
-      bottom: 1em;
+      bottom: 3em;
       left: 50%;
       padding: 0.5em;
       display: flex;
@@ -63,8 +71,7 @@ const StyledWrapper = styled.div`
       .opt {
         padding: 0;
         border: none;
-        border-radius: var(--vera-border-radius);
-        background-color: var(--vera-button-bg-color);
+        border-radius: 50%;
         height: 2em !important;
         width: 2em !important;
         min-width: unset;
@@ -72,6 +79,10 @@ const StyledWrapper = styled.div`
         background-repeat: no-repeat;
         background-position: center;
         cursor: pointer;
+        background-color: transparent;
+        &:hover {
+          background-color: var(--vera-panel-bg-color);
+        }
         &.bg {
           background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
           &[data-status='false'] {
@@ -85,7 +96,6 @@ const StyledWrapper = styled.div`
           }
         }
         &.audio {
-          background-color: var(--vera-button-bg-color);
           background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
           &[data-status='false'] {
             background-color: #863733;
