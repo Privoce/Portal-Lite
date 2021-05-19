@@ -117,6 +117,7 @@ const StyledWrapper = styled.aside`
       .info,
       .hangup,
       .setting .icon,
+      .cameras.slides .nav,
       &:after {
         visibility: hidden;
       }
@@ -126,9 +127,16 @@ const StyledWrapper = styled.aside`
         .info,
         .hangup,
         .setting .icon,
+        .cameras.slides .nav,
         &:after {
           visibility: visible;
         }
+        .cameras.slides:after{
+        visibility: hidden;
+      }
+      }
+      .cameras.slides:after{
+        visibility: visible;
       }
     }
     &[data-status='${STATUS.CONNECTED}']:after,&[data-status='${STATUS.READY}']:after {
@@ -195,6 +203,19 @@ const StyledWrapper = styled.aside`
         .swiper-container {
           max-width: 100%;
           max-height: 100%;
+        }
+        &:after{
+          visibility:hidden;
+          content:attr(data-count);
+          position: absolute;
+          right:-40px;
+          top:50%;
+          transform:translateY(-50%);
+          padding:4px 6px;
+          border-radius:5px;
+          color:var(--vera-font-color);
+          font-size:14px;
+          background:var(--vera-panel-bg-color);
         }
       }
     }

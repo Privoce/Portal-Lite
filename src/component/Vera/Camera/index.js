@@ -57,14 +57,32 @@ function Camera({
     if (!remote) {
       attachLocalStream();
     }
+    return () => {
+      if (videoEle.srcObject) {
+        videoEle.srcObject.getTracks().forEach((t) => {
+          console.log('video stop');
+          t.stop();
+        });
+        videoEle.srcObject = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remote]);
 
   useEffect(() => {
+    let videoEle = videoRef.current;
     if (mediaStream) {
-      videoRef.current.srcObject = mediaStream;
+      videoEle.srcObject = mediaStream;
       updateControls(mediaStream);
     }
+    return () => {
+      if (videoEle.srcObject) {
+        videoEle.srcObject.getTracks().forEach((t) => {
+          t.stop();
+        });
+        videoEle.srcObject = null;
+      }
+    };
   }, [mediaStream]);
   useEffect(() => {
     const createCursor = () => {
@@ -203,7 +221,7 @@ function Camera({
   return (
     <StyledWrapper data-peer={peerId} className={remote ? 'remote' : 'local'} color={color}>
       <div className={`video ${!bg ? 'hide_video' : ''}`}>
-        <Username local={!remote} readonly={remote} />
+        <Username local={!remote} readonly={remote} name={username.value} />
         <div className="opts">
           <button
             className="opt bg"

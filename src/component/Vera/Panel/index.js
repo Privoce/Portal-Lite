@@ -102,7 +102,9 @@ export default function Panel({
       console.log('clean up stream');
       let cameras = [...panelRef.current.querySelectorAll('video')];
       cameras.forEach((c) => {
-        c.srcObject?.getTracks().forEach((t) => t.stop());
+        c.srcObject?.getTracks().forEach((t) => {
+          t.stop();
+        });
         c.srcObject = null;
       });
       shutdownPeer();
@@ -124,35 +126,37 @@ export default function Panel({
       setEnableCursor((prev) => !prev);
     }
   };
-  const renderRemotes = () => {
+  const renderCameras = () => {
     if (!panelRef.current) return null;
     let count = Object.keys(mediaConnections).length;
-    const remotes = Object.entries(mediaConnections).map(([pid, conn]) => {
-      let st = streams[pid];
-      let username = window.USERNAMES[pid];
-      console.log('current camera username', username);
-      return count > 2 ? (
-        <SwiperSlide>
-          <Camera
-            username={username}
-            peerId={pid}
-            key={pid}
-            mediaConnection={conn}
-            dataConnection={dataConnections[pid]}
-            mediaStream={st}
-          />
-        </SwiperSlide>
-      ) : (
-        <Camera
-          username={username}
-          peerId={pid}
-          key={pid}
-          mediaConnection={conn}
-          dataConnection={dataConnections[pid]}
-          mediaStream={st}
-        />
-      );
-    });
+    const remotes = count
+      ? Object.entries(mediaConnections).map(([pid, conn]) => {
+          let st = streams[pid];
+          let username = window.USERNAMES[pid];
+          console.log('current camera username', username);
+          return count > 2 ? (
+            <SwiperSlide>
+              <Camera
+                username={username}
+                peerId={pid}
+                key={pid}
+                mediaConnection={conn}
+                dataConnection={dataConnections[pid]}
+                mediaStream={st}
+              />
+            </SwiperSlide>
+          ) : (
+            <Camera
+              username={username}
+              peerId={pid}
+              key={pid}
+              mediaConnection={conn}
+              dataConnection={dataConnections[pid]}
+              mediaStream={st}
+            />
+          );
+        })
+      : [];
     return count > 2 ? (
       <Swiper
         // direction={'vertical'}
@@ -164,6 +168,12 @@ export default function Panel({
         navigation={{
           prevEl: panelRef.current.querySelector('.cameras .nav.prev'),
           nextEl: panelRef.current.querySelector('.cameras .nav.next')
+        }}
+        onUpdate={() => {
+          console.log('swiper update');
+        }}
+        onDestroy={() => {
+          console.log('swiper destory');
         }}
       >
         <SwiperSlide>
@@ -206,13 +216,17 @@ export default function Panel({
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
         {floatVisible && <Invite float={true} peerId={invitePeerId || peer?.id} />}
-        <div className={`cameras ${cameraSlides ? 'slides' : ''}`} style={camerasStyle}>
+        <div
+          className={`cameras ${cameraSlides ? 'slides' : ''}`}
+          data-count={`+ ${remoteCount - 2}`}
+          style={camerasStyle}
+        >
           {cameraSlides && (
             <div className="nav prev">
               <IconArrowLeft />
             </div>
           )}
-          {renderRemotes()}
+          {renderCameras()}
           {cameraSlides && (
             <div className="nav next">
               <IconArrowRight />
