@@ -23,6 +23,7 @@ const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 let used = false;
 let draggable = null;
 export default function Panel({
+  chatVisible = false,
   closePanel,
   invitePeerId = null,
   updateChannelId,
@@ -253,13 +254,15 @@ export default function Panel({
           pid={!noConnection ? invitePeerId || peer?.id : null}
           cursor={enableCursor}
           toggleCursor={toggleCursor}
+          inviteVisible={floatVisible}
           toggleInviteVisible={toggleInviteVisible}
           layout={layout}
           handleLayout={handleLayout}
+          chatVisible={chatVisible}
           toggleChatBoxVisible={toggleChatVisible}
         />
         <Info />
-        {layout !== 'min' && <Setting />}
+        {layout !== 'min' && <Setting logoutVisible={status !== STATUS.STREAMING} />}
         <HangUp type={noConnection ? 'close' : 'hangup'} handleHangUp={handleClose} />
       </div>
       {layout !== 'min' && (

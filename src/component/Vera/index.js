@@ -112,6 +112,7 @@ export default function Vera() {
         <Panel
           closePanel={closePanel}
           invitePeerId={invitePeerId}
+          chatVisible={chatVisible}
           toggleChatVisible={toggleChatVisible}
           updateChannelId={specifyChannelId}
         />
