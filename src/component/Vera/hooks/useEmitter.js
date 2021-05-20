@@ -11,6 +11,7 @@ window.VERA_EMITTER = window.VERA_EMITTER || {
 const emitter = window.VERA_EMITTER;
 export default emitter;
 const EVENTS = {
+  SYNC_PLAYER_TIME: 'SYNC.PLAYER.TIME',
   TOGGLE_CURSOR: 'CURSOR',
   CURSOR_SELECT: 'CURSOR.SELECT',
   CURSOR_MOVE: 'CURSOR.MOVE',

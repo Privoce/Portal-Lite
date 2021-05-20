@@ -1,8 +1,12 @@
-import React from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+
 import IconCursor from '../icons/Cursor';
 import IconChat from '../icons/Chat';
 import IconInvite from '../icons/Invite';
+import IconSync from '../icons/Sync';
+import usePagePlayer from '../hooks/usePagePlayer';
+import emitter, { EVENTS } from '../hooks/useEmitter';
 const StyledBar = styled.div`
   display: flex;
   padding: 0 1.2em;
@@ -89,12 +93,45 @@ const layouts = {
 export default function Topbar({
   pid = null,
   layout,
+  inviteVisible = false,
   toggleInviteVisible,
   cursor = true,
+  syncPlayerTimeToPeers,
   toggleCursor,
   handleLayout,
+  chatVisible = false,
   toggleChatBoxVisible
 }) {
+  const { player, syncPlayTime } = usePagePlayer();
+  const handleVideoSync = () => {
+    let time = player.currentTime;
+    syncPlayerTimeToPeers(time);
+  };
+  useEffect(() => {
+    if (player) {
+      const hanleSeek = ({ target }) => {
+        // console.log('seek time', { target });
+        let time = target.currentTime;
+        if (time > 1) {
+          syncPlayerTimeToPeers(time);
+        }
+      };
+      emitter.on(EVENTS.SYNC_PLAYER_TIME, ({ data }) => {
+        let { time } = data;
+        player.onseeked = null;
+        syncPlayTime(time);
+        setTimeout(() => {
+          player.onseeked = hanleSeek;
+        }, 500);
+      });
+      player.onseeked = hanleSeek;
+    }
+    return () => {
+      if (player) {
+        player.onseeked = null;
+      }
+    };
+  }, [player]);
   return (
     <StyledBar className="topbar">
       <div className="left">
@@ -105,11 +142,16 @@ export default function Topbar({
             </div>
 
             <div className={`rect chat`} onClick={toggleChatBoxVisible}>
-              <IconChat />
+              <IconChat visible={chatVisible} />
             </div>
             <div className={`rect invite`} onClick={toggleInviteVisible}>
-              <IconInvite />
+              <IconInvite visible={inviteVisible} />
             </div>
+            {player && (
+              <div className={`rect sync`} onClick={handleVideoSync}>
+                <IconSync />
+              </div>
+            )}
           </>
         )}
       </div>

@@ -15,7 +15,7 @@ import HangUp from './HangUp';
 import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
-import { STATUS } from '../hooks/useEmitter';
+import { EVENTS, STATUS } from '../hooks/useEmitter';
 
 SwiperCore.use([Navigation]);
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
@@ -112,20 +112,31 @@ export default function Panel({
       closePanel();
     }
   };
+  const sendDataToPeers = (cmd) => {
+    Object.entries(dataConnections).forEach(([, conn]) => {
+      conn.send(cmd);
+    });
+  };
   const toggleCursor = () => {
-    if (dataConnections) {
-      let cmd = {
-        type: `CURSOR`,
-        data: {
-          peer: peer.id,
-          enable: !enableCursor
-        }
-      };
-      Object.entries(dataConnections).forEach(([, conn]) => {
-        conn.send(cmd);
-      });
-      setEnableCursor((prev) => !prev);
-    }
+    let cmd = {
+      type: EVENTS.TOGGLE_CURSOR,
+      data: {
+        peer: peer.id,
+        enable: !enableCursor
+      }
+    };
+    sendDataToPeers(cmd);
+    setEnableCursor((prev) => !prev);
+  };
+  const syncPlayerTimeToPeers = (time) => {
+    let cmd = {
+      type: EVENTS.SYNC_PLAYER_TIME,
+      data: {
+        peer: peer?.id,
+        time
+      }
+    };
+    sendDataToPeers(cmd);
   };
   const renderCameras = () => {
     if (!panelRef.current) return null;
@@ -253,6 +264,7 @@ export default function Panel({
         <Topbar
           pid={!noConnection ? invitePeerId || peer?.id : null}
           cursor={enableCursor}
+          syncPlayerTimeToPeers={syncPlayerTimeToPeers}
           toggleCursor={toggleCursor}
           inviteVisible={floatVisible}
           toggleInviteVisible={toggleInviteVisible}
