@@ -145,8 +145,8 @@ const usePeer = ({ invitePeerId = null }) => {
               initDataChannel(newConn);
             });
           }
-          if (type == EVENTS.SYNC_PLAYER_TIME) {
-            emitter.emit(EVENTS.SYNC_PLAYER_TIME, { data });
+          if (type == EVENTS.SYNC_PLAYER) {
+            emitter.emit(EVENTS.SYNC_PLAYER, { data });
           }
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });

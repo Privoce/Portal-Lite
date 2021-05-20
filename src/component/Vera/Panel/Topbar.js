@@ -96,42 +96,84 @@ export default function Topbar({
   inviteVisible = false,
   toggleInviteVisible,
   cursor = true,
-  syncPlayerTimeToPeers,
+  videoSync = true,
+  toggleVideoSync,
+  syncPlayerToPeers,
   toggleCursor,
   handleLayout,
   chatVisible = false,
   toggleChatBoxVisible
 }) {
-  const { player, syncPlayTime } = usePagePlayer();
-  const handleVideoSync = () => {
-    let time = player.currentTime;
-    syncPlayerTimeToPeers(time);
-  };
+  const { player, setPlayTime, setPlay, setPause } = usePagePlayer();
   useEffect(() => {
+    const handlePlayerEvent = ({ target, type }) => {
+      console.log('seek time', type);
+      let time = target.currentTime;
+      switch (type) {
+        case 'seeked':
+          if (time > 1) {
+            syncPlayerToPeers({ type: 'time', content: { time } });
+          }
+          break;
+        case 'play':
+          syncPlayerToPeers({ type: 'play', content: { time } });
+          break;
+        case 'pause':
+          syncPlayerToPeers({ type: 'pause' });
+          break;
+        default:
+          break;
+      }
+    };
+    const clearEvents = () => {
+      player.onseeked = null;
+      player.onplay = null;
+      player.onpause = null;
+    };
+    const attachEvents = () => {
+      player.onseeked = handlePlayerEvent;
+      player.onplay = handlePlayerEvent;
+      player.onpause = handlePlayerEvent;
+    };
+    const listener = ({ data }) => {
+      clearEvents();
+      let {
+        payload: { type, content }
+      } = data;
+      switch (type) {
+        case 'time':
+          setPlayTime(content.time);
+          break;
+        case 'play':
+          setPlay(content.time);
+          break;
+        case 'pause':
+          setPause();
+          break;
+        default:
+          break;
+      }
+
+      setTimeout(() => {
+        attachEvents();
+      }, 500);
+    };
     if (player) {
-      const hanleSeek = ({ target }) => {
-        // console.log('seek time', { target });
-        let time = target.currentTime;
-        if (time > 1) {
-          syncPlayerTimeToPeers(time);
-        }
-      };
-      emitter.on(EVENTS.SYNC_PLAYER_TIME, ({ data }) => {
-        let { time } = data;
-        player.onseeked = null;
-        syncPlayTime(time);
-        setTimeout(() => {
-          player.onseeked = hanleSeek;
-        }, 500);
-      });
-      player.onseeked = hanleSeek;
+      if (videoSync) {
+        emitter.on(EVENTS.SYNC_PLAYER, listener);
+        attachEvents();
+      } else {
+        emitter.off(EVENTS.SYNC_PLAYER, listener);
+        clearEvents();
+      }
     }
     return () => {
       if (player) {
-        player.onseeked = null;
+        emitter.off(EVENTS.SYNC_PLAYER, listener);
+        clearEvents();
       }
     };
-  }, [player]);
+  }, [player, videoSync]);
   return (
     <StyledBar className="topbar">
       <div className="left">
@@ -148,8 +190,8 @@ export default function Topbar({
               <IconInvite visible={inviteVisible} />
             </div>
             {player && (
-              <div className={`rect sync`} onClick={handleVideoSync}>
-                <IconSync />
+              <div className={`rect sync`} onClick={toggleVideoSync}>
+                <IconSync enable={videoSync} />
               </div>
             )}
           </>

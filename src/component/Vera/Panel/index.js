@@ -40,6 +40,7 @@ export default function Panel({
   } = usePeer({
     invitePeerId
   });
+  const [videoSync, setVideoSync] = useState(true);
   const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
   const [floatVisible, setFloatVisible] = useState(false);
@@ -128,12 +129,15 @@ export default function Panel({
     sendDataToPeers(cmd);
     setEnableCursor((prev) => !prev);
   };
-  const syncPlayerTimeToPeers = (time) => {
+  const toggleVideoSync = () => {
+    setVideoSync((prev) => !prev);
+  };
+  const syncPlayerToPeers = (payload) => {
     let cmd = {
-      type: EVENTS.SYNC_PLAYER_TIME,
+      type: EVENTS.SYNC_PLAYER,
       data: {
         peer: peer?.id,
-        time
+        payload
       }
     };
     sendDataToPeers(cmd);
@@ -264,7 +268,9 @@ export default function Panel({
         <Topbar
           pid={!noConnection ? invitePeerId || peer?.id : null}
           cursor={enableCursor}
-          syncPlayerTimeToPeers={syncPlayerTimeToPeers}
+          videoSync={videoSync}
+          toggleVideoSync={toggleVideoSync}
+          syncPlayerToPeers={syncPlayerToPeers}
           toggleCursor={toggleCursor}
           inviteVisible={floatVisible}
           toggleInviteVisible={toggleInviteVisible}

@@ -1,5 +1,5 @@
-export default function Sync({ visible }) {
-  let color = visible ? `var(--vera-button-bg-color)` : `var(--vera-font-color)`;
+export default function Sync({ enable = true }) {
+  let color = enable ? `var(--vera-button-bg-color)` : `var(--vera-font-color)`;
 
   return (
     <svg
