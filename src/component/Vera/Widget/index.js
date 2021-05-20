@@ -1,9 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import StyledWidget from './styled';
+import { getTranslateValues } from '../hooks/utils';
 let dragMoving = false;
+const posKey = 'WIDGET_POSITION';
 export default function Widget({ openPanel }) {
+  const [pos, setPos] = useState(null);
   const widgetRef = useRef(null);
   useEffect(() => {
+    const initPosition = () => {
+      chrome.storage.sync.get([posKey], (res) => {
+        // Notify that we saved.
+        const y = res[posKey] || 30;
+        setPos(y);
+      });
+    };
     if (widgetRef) {
       let dragEle = widgetRef.current;
       let handle = dragEle.querySelector('.handle');
@@ -13,12 +23,17 @@ export default function Widget({ openPanel }) {
           dragMoving = true;
         },
         onDragEnd: () => {
-          console.log('drag end');
+          let { y } = getTranslateValues(dragEle);
+          let mb = parseInt(getComputedStyle(dragEle).marginBottom);
+          console.log('drag end', { y });
+          // 存到本地
+          chrome.storage.sync.set({ [posKey]: y - mb });
           dragMoving = false;
         },
         handle
         // autoScroll: true
       });
+      initPosition();
     }
   }, []);
   const handleLogoMouseUp = () => {
@@ -33,7 +48,7 @@ export default function Widget({ openPanel }) {
     openPanel();
   };
   return (
-    <StyledWidget>
+    <StyledWidget position={pos} className={pos ? 'visible' : ''}>
       <div className="widget" ref={widgetRef}>
         <div className="drag">
           <div className="handle"></div>
