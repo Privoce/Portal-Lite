@@ -1,8 +1,12 @@
-import React from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { getInviteUrl } from '../hooks/utils';
-import useCopy from '../hooks/useCopy';
-const copiedTxt = chrome.i18n.getMessage('copied');
+
+import IconCursor from '../icons/Cursor';
+import IconChat from '../icons/Chat';
+import IconInvite from '../icons/Invite';
+import IconSync from '../icons/Sync';
+import usePagePlayer from '../hooks/usePagePlayer';
+import emitter, { EVENTS } from '../hooks/useEmitter';
 const StyledBar = styled.div`
   display: flex;
   padding: 0 1.2em;
@@ -12,32 +16,14 @@ const StyledBar = styled.div`
     gap: 0.4em;
     .rect {
       cursor: pointer;
-      width: 3em;
+      width: 2em;
       height: 2em;
-      background-size: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      border-radius: var(--vera-border-radius);
-      &.close {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/tel.svg`});
-        background-color: #eb2027;
-      }
-      &.chat {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/chat.svg`});
-        background-color: #85e89e;
-      }
-      &.invite:not(.copied) {
-        background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/invite.svg`});
-        background-color: #5e7fec;
-      }
-      &.copied.invite {
-        background: #0d1117;
-        color: #fff;
-        font-size: 1em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5em 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+        width: 70%;
+        height: 70%;
       }
     }
   }
@@ -47,8 +33,6 @@ const StyledBar = styled.div`
     .layout {
       display: flex;
       align-items: center;
-      border-radius: var(--vera-border-radius);
-      background-color: var(--vera-button-bg-color);
       padding: 0.4em;
       gap: 1em;
       .item {
@@ -77,9 +61,8 @@ const StyledBar = styled.div`
           flex-direction: column;
         }
         .mock {
-          border-radius: 1px;
           width: 0.4em;
-          background: var(--vera-font-color);
+          background: var(--vera-layout-bg-color);
           &.box {
             height: 0.4em;
           }
@@ -110,25 +93,109 @@ const layouts = {
 export default function Topbar({
   pid = null,
   layout,
-  handleClose,
+  inviteVisible = false,
+  toggleInviteVisible,
+  cursor = true,
+  videoSync = true,
+  toggleVideoSync,
+  syncPlayerToPeers,
+  toggleCursor,
   handleLayout,
+  chatVisible = false,
   toggleChatBoxVisible
 }) {
-  const { copied, copy } = useCopy();
-  const handleInvite = () => {
-    let link = getInviteUrl(pid);
-    copy(link);
-  };
+  const { player, setPlayTime, setPlay, setPause } = usePagePlayer();
+  useEffect(() => {
+    const handlePlayerEvent = ({ target, type }) => {
+      console.log('seek time', type);
+      let time = target.currentTime;
+      switch (type) {
+        case 'seeked':
+          if (time > 1) {
+            syncPlayerToPeers({ type: 'time', content: { time } });
+          }
+          break;
+        case 'play':
+          syncPlayerToPeers({ type: 'play', content: { time } });
+          break;
+        case 'pause':
+          syncPlayerToPeers({ type: 'pause' });
+          break;
+        default:
+          break;
+      }
+    };
+    const clearEvents = () => {
+      player.onseeked = null;
+      player.onplay = null;
+      player.onpause = null;
+    };
+    const attachEvents = () => {
+      player.onseeked = handlePlayerEvent;
+      player.onplay = handlePlayerEvent;
+      player.onpause = handlePlayerEvent;
+    };
+    const listener = ({ data }) => {
+      clearEvents();
+      let {
+        payload: { type, content }
+      } = data;
+      switch (type) {
+        case 'time':
+          setPlayTime(content.time);
+          break;
+        case 'play':
+          setPlay(content.time);
+          break;
+        case 'pause':
+          setPause();
+          break;
+        default:
+          break;
+      }
+
+      setTimeout(() => {
+        attachEvents();
+      }, 500);
+    };
+    if (player) {
+      if (videoSync) {
+        emitter.on(EVENTS.SYNC_PLAYER, listener);
+        attachEvents();
+      } else {
+        emitter.off(EVENTS.SYNC_PLAYER, listener);
+        clearEvents();
+      }
+    }
+    return () => {
+      if (player) {
+        emitter.off(EVENTS.SYNC_PLAYER, listener);
+        clearEvents();
+      }
+    };
+  }, [player, videoSync]);
   return (
     <StyledBar className="topbar">
       <div className="left">
-        <div className="rect close" onClick={handleClose}></div>
         {pid && (
-          <div className={`rect invite ${copied ? 'copied' : ''}`} onClick={handleInvite}>
-            {copied && copiedTxt}
-          </div>
+          <>
+            <div className="rect cursor" onClick={toggleCursor}>
+              <IconCursor enable={cursor} />
+            </div>
+
+            <div className={`rect chat`} onClick={toggleChatBoxVisible}>
+              <IconChat visible={chatVisible} />
+            </div>
+            <div className={`rect invite`} onClick={toggleInviteVisible}>
+              <IconInvite visible={inviteVisible} />
+            </div>
+            {player && (
+              <div className={`rect sync`} onClick={toggleVideoSync}>
+                <IconSync enable={videoSync} />
+              </div>
+            )}
+          </>
         )}
-        {pid && <div className={`rect chat`} onClick={toggleChatBoxVisible} />}
       </div>
       <div className="right">
         <ul className="layout">

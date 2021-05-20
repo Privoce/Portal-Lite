@@ -1,13 +1,13 @@
 // import React from 'react';
 import styled from 'styled-components';
 const StyledButton = styled.button`
-  min-width: initial;
+  min-width: 70px;
   border: none;
   white-space: nowrap;
-  background-color: var(--vera-camera-bg-color);
-  color: var(--vera-font-color);
+  background-color: var(--vera-button-bg-color);
+  color: var(--vera-button-font-color);
   border-radius: var(--vera-border-radius);
-  padding: 4px 10px;
+  padding: 6px 8px;
   cursor: pointer;
   transition: transform 0.3s ease-in;
   font-size: 14px;

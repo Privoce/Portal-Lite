@@ -22,13 +22,13 @@ const StyledWidget = styled.aside`
   border: none;
   box-shadow: none;
   .widget {
+    visibility: hidden;
     pointer-events: all;
     cursor: pointer;
-    margin-bottom: 30px;
+    margin-bottom: ${({ position }) => `${Math.abs(position) + 30}px`};
     display: flex;
     align-items: center;
     justify-content: center;
-
     .drag {
       margin-left: -25px;
       width: 50px;
@@ -93,6 +93,9 @@ const StyledWidget = styled.aside`
         animation: none;
       }
     }
+  }
+  &.visible .widget {
+    visibility: visible;
   }
 `;
 

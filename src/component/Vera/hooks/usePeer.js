@@ -145,6 +145,9 @@ const usePeer = ({ invitePeerId = null }) => {
               initDataChannel(newConn);
             });
           }
+          if (type == EVENTS.SYNC_PLAYER) {
+            emitter.emit(EVENTS.SYNC_PLAYER, { data });
+          }
           if (type.startsWith('CC_')) {
             emitter.emit(EVENTS.CAMERA_CONTROL, { pid: conn.peer, type });
           }
@@ -165,7 +168,9 @@ const usePeer = ({ invitePeerId = null }) => {
     appendVeraHistory({
       peerId: mediaConn.peer,
       isHost: !invitePeerId,
-      usernames: window.USERNAMES
+      usernames: Object.values(window.USERNAMES)
+        .filter((obj) => !obj.fake)
+        .map((obj) => obj.value)
     });
     // update username
     const { peerId, username } = mediaConn.metadata || {};

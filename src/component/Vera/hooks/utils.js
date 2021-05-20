@@ -150,7 +150,23 @@ const stringToHexColor = (str = '') => {
   }
   return color;
 };
+function getVideoPlayer() {
+  let videos = Array.from(document.querySelectorAll('video')).filter((v) => !!v.src);
+  let largestVideoSize = 0;
+  let video = videos[0] || null;
+
+  for (let i = 0; i < videos.length; ++i) {
+    let rect = video.getBoundingClientRect();
+    let size = rect.height * rect.width;
+    if (size > largestVideoSize) {
+      largestVideoSize = size;
+      video = videos[i];
+    }
+  }
+  return video;
+}
 export {
+  getVideoPlayer,
   stringToHexColor,
   getInviteUrl,
   throttle,

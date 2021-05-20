@@ -10,9 +10,12 @@ import {
   Window
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
+import IconClose from '../icons/Close';
 import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
-const chatClient = StreamChat.getInstance('fwcuynkafsqt');
+const chatClient = StreamChat.getInstance('fwcuynkafsqt', {
+  timeout: 15000
+});
 let timer = null;
 export default function ChatBox({ channelId = null, visible = false, toggleVisible }) {
   const [channel, setChannel] = useState(null);
@@ -24,9 +27,7 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
       const user = await getUser();
       if (user) {
         const { username, id, photo } = user;
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVICE_DOMAIN}/service/chat/token/${id}`
-        );
+        const response = await fetch(`https://api.yangerxiao.com/service/chat/token/${id}`);
         const { code, data: userToken } = await response.json();
         if (code == 0) {
           await chatClient.connectUser(
@@ -50,7 +51,7 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         image: 'https://static.nicegoodthings.com/privoce/works.portal.logo.png',
         name: 'Vera Chat'
       });
-      await cn.create();
+      await cn.watch();
       setChannel(cn);
       console.log('end init chat');
       timer = setTimeout(() => {
@@ -65,17 +66,21 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
         }
       }, 3000);
     };
-    if (channelId) {
+    if (channelId && visible) {
       initialChat();
     }
     return () => {
       clearTimeout(timer);
     };
-  }, [channelId]);
+  }, [channelId, visible]);
   return (
     <StyledWrapper ref={chatBoxRef} className={visible ? 'visible' : ''}>
-      <button className="close" onClick={toggleVisible}></button>
       {channel && (
+        <button className="close" onClick={toggleVisible}>
+          <IconClose color="#fff" />
+        </button>
+      )}
+      {channel ? (
         <Chat client={chatClient} theme="livestream dark">
           <Channel channel={channel}>
             <Window>
@@ -85,6 +90,8 @@ export default function ChatBox({ channelId = null, visible = false, toggleVisib
             </Window>
           </Channel>
         </Chat>
+      ) : (
+        <div className="loading">Loading Chat Box</div>
       )}
     </StyledWrapper>
   );

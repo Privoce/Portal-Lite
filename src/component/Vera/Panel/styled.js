@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { STATUS } from '../hooks/useEmitter';
 const StyledWrapper = styled.aside`
   position: relative;
-  pointer-events: all;
+  pointer-events: none;
   font-family: sans-serif;
   .react-resizable {
-    visibility:hidden;
     pointer-events:none;
     position: absolute;
     left:0;
@@ -23,6 +22,8 @@ const StyledWrapper = styled.aside`
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2IDYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iNnB4Ij48ZyBvcGFjaXR5PSIwLjMwMiI+PHBhdGggZD0iTSA2IDYgTCAwIDYgTCAwIDQuMiBMIDQgNC4yIEwgNC4yIDQuMiBMIDQuMiAwIEwgNiAwIEwgNiA2IEwgNiA2IFoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+');
         background-position: bottom right;
         padding: 0 3px 3px 0;
+        /* 暂时隐藏掉 */
+        opacity:0;
         &.react-resizable-handle-sw {
           bottom: 0;
           left: 0;
@@ -77,13 +78,14 @@ const StyledWrapper = styled.aside`
       }
     }
   .panel{
+    pointer-events: all;
     display: flex !important;
     align-items: center;
     justify-content: space-evenly;
     gap: 15px;
-    padding: 12px;
+    padding: 13px 26px;
     padding-top: 40px;
-    border-radius: var(--vera-border-radius);
+    border-radius: var(--vera-panel-border-radius);
     transition: all 0.5s ease-in-out;
     transition-property: background-color;
     background-color: var(--vera-panel-bg-color);
@@ -113,6 +115,9 @@ const StyledWrapper = styled.aside`
       background: transparent;
       .topbar,
       .info,
+      .hangup,
+      .setting .icon,
+      .cameras.slides .nav,
       &:after {
         visibility: hidden;
       }
@@ -120,9 +125,18 @@ const StyledWrapper = styled.aside`
         background: var(--vera-panel-bg-color);
         .topbar,
         .info,
+        .hangup,
+        .setting .icon,
+        .cameras.slides .nav,
         &:after {
           visibility: visible;
         }
+        .cameras.slides:after{
+        visibility: hidden;
+      }
+      }
+      .cameras.slides:after{
+        visibility: visible;
       }
     }
     &[data-status='${STATUS.CONNECTED}']:after,&[data-status='${STATUS.READY}']:after {
@@ -163,18 +177,50 @@ const StyledWrapper = styled.aside`
       width: -webkit-fill-available;
     }
     .cameras {
+      position: relative;
+      /* width: 20em; */
       display: flex;
       gap: 15px;
-      max-width:70vw;
-      max-height:60vh;
-      overflow: scroll;
-      overflow-y:hidden;
+      .nav{
+        cursor: pointer;
+        visibility:hidden;
+        position: absolute;
+        top:50%;
+        transform:translateY(-50%);
+        &.prev{
+          left:-20px;
+          
+        }
+        &.next{
+          right:-20px;
+        }
+      }
+      &.slides{
+        .nav{
+          visibility:visible;
+        }
+        gap:0;
+        .swiper-container {
+          max-width: 100%;
+          max-height: 100%;
+        }
+        &:after{
+          visibility:hidden;
+          content:attr(data-count);
+          position: absolute;
+          right:-40px;
+          top:50%;
+          transform:translateY(-50%);
+          padding:4px 6px;
+          border-radius:5px;
+          color:var(--vera-font-color);
+          font-size:14px;
+          background:var(--vera-panel-bg-color);
+        }
+      }
     }
   }
   &:hover{
-    .react-resizable{
-      visibility:visible;
-    }
     .panel{
       background-color:var(--vera-panel-bg-color) !important;
     }

@@ -4,26 +4,23 @@ import useUsername from './hooks/useUsername';
 import { selectText } from './hooks/utils';
 import ContentEditable from 'react-contenteditable';
 const StyledWrapper = styled.div`
+  cursor: pointer;
   line-height: 1;
+  min-width: 30px;
   max-width: 100px;
   user-select: text;
-  /* width: 100%;
-  width: -webkit-fill-available; */
   border: none;
   text-align: center;
-  padding: 10px 6px;
-  font-size: 18px;
-  color: var(--vera-font-color);
+  padding: 8px 6px;
+  font-size: 1.8em;
+  color: #fff;
   border-radius: var(--vera-border-radius);
-  background-color: var(--vera-button-bg-color);
+  background-color: rgba(2, 2, 2, 0.3);
   &.fixed {
     position: absolute;
-    top: 8px;
+    top: 1.2em;
     left: 50%;
     transform: translateX(-50%);
-    > input {
-      padding: 4px 6px;
-    }
   }
 `;
 
