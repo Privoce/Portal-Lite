@@ -48,23 +48,23 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Setting() {
+export default function Setting({ logoutVisible }) {
   const [logined, setLogined] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [dark, setDark] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
-  const toggleList = () => {
-    setExpanded((prev) => !prev);
-  };
-  const toggleThemeMode = () => {
-    setDark((prev) => !prev);
-    setExpanded(false);
-  };
-  const handleLogout = () => {
-    chrome.storage.sync.remove('user', () => {
-      console.log('user removed');
-    });
-    setExpanded(false);
-  };
+  const [dark, setDark] = useState(true);
+  useEffect(() => {
+    const initDarkMode = () => {
+      let initIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      chrome.storage.local.get(['DARK_MODE'], (result) => {
+        if (typeof result.DARK_MODE !== undefined) {
+          console.log('dark mode', result.DARK_MODE);
+          initIsDark = result.DARK_MODE;
+        }
+        setDark(initIsDark);
+      });
+    };
+    initDarkMode();
+  }, []);
   useEffect(() => {
     let PANEL = document.querySelector('#PORTAL_VERA_PANEL');
     if (dark) {
@@ -73,6 +73,36 @@ export default function Setting() {
       PANEL.classList.remove('vera-dark-theme');
     }
   }, [dark]);
+  useEffect(() => {
+    const handleMouseUp = (evt) => {
+      let { target } = evt;
+      let { settingClickable = false } = target.dataset;
+      let tags = ['svg', 'path'];
+      if (!tags.includes(target.tagName) && !settingClickable) {
+        setExpanded(false);
+      }
+      console.log({ target, settingClickable });
+    };
+
+    if (expanded) {
+      document.addEventListener('mouseup', handleMouseUp, false);
+    } else {
+      document.removeEventListener('mouseup', handleMouseUp, false);
+    }
+  }, [expanded]);
+  const toggleList = () => {
+    setExpanded((prev) => !prev);
+  };
+  const toggleThemeMode = () => {
+    chrome.storage.local.set({ DARK_MODE: !dark });
+    setDark((prev) => !prev);
+  };
+  const handleLogout = () => {
+    chrome.storage.sync.remove('user', () => {
+      console.log('user removed');
+    });
+    setExpanded(false);
+  };
   useEffect(() => {
     const checkLogin = async () => {
       let user = await getUser();
@@ -84,12 +114,12 @@ export default function Setting() {
   }, [expanded]);
   return (
     <StyledWrapper className="setting">
-      <div className="icon" onClick={toggleList}>
+      <div data-setting-clickable={true} className="icon" onClick={toggleList}>
         <IconSetting />
       </div>
       {expanded && (
-        <ul className="list">
-          <li className="item fb">
+        <ul data-setting-clickable={true} className="list">
+          <li data-setting-clickable={true} className="item fb">
             <IconFeedback />
             <a
               href="https://www.surveymonkey.com/r/RMGZDW8"
@@ -99,13 +129,13 @@ export default function Setting() {
               Send us your feedback
             </a>
           </li>
-          {logined && (
-            <li className="item logout" onClick={handleLogout}>
+          {logoutVisible && logined && (
+            <li data-setting-clickable={true} className="item logout" onClick={handleLogout}>
               <IconLogout />
               Log out
             </li>
           )}
-          <li className="item mode" onClick={toggleThemeMode}>
+          <li data-setting-clickable={true} className="item mode" onClick={toggleThemeMode}>
             {dark ? <IconSun /> : <IconMoon />}
             {dark ? 'Light' : 'Dark'} Mode
           </li>
