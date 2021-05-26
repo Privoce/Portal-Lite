@@ -4,6 +4,8 @@ const StyledWrapper = styled.aside`
   position: relative;
   pointer-events: none;
   font-family: sans-serif;
+  margin-right: 35%;
+  margin-top:-20%;
   .react-resizable {
     pointer-events:none;
     position: absolute;
@@ -155,7 +157,7 @@ const StyledWrapper = styled.aside`
     &.one {
       gap: 0;
       width:fit-content !important;
-      .cameras .local {
+      .cameras:not(.slides) .local {
         display: none;
       }
     }

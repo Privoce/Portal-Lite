@@ -33,10 +33,13 @@ function getUser() {
     });
   });
 }
-function getInviteUrl(pid = null) {
+function getInviteUrl(rid = null) {
   let obj = new URL(location.href);
-  obj.searchParams.append('portal-vera-id', pid);
-  return `https://nicegoodthings.com/transfer/${encodeURIComponent(obj.href)}?extid=${
+  // obj.searchParams.append('portal-vera-id', pid);
+  // return `http://localhost:3666/transfer/r/${rid}/${encodeURIComponent(obj.href)}?extid=${
+  //   chrome.runtime.id
+  // }`;
+  return `https://nicegoodthings.com/transfer/r/${rid}/${encodeURIComponent(obj.href)}?extid=${
     chrome.runtime.id
   }`;
 }

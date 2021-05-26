@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { LanguageProvider } from 'uselanguage';
 
-import { ToastProvider } from 'react-toast-notifications'
+import { ToastProvider } from 'react-toast-notifications';
 
 import languages from './lang';
 import useGithubToken from './widgets/GithubDashboard/useToken';
@@ -20,6 +20,9 @@ const UserPortalWidget = lazy(() =>
 );
 const OAuth = lazy(() => import(/* webpackChunkName: "page.oauth" */ './page/OAuth'));
 const Transfer = lazy(() => import(/* webpackChunkName: "page.transfer" */ './page/Transfer'));
+const RoomTransfer = lazy(() =>
+  import(/* webpackChunkName: "page.room.transfer" */ './page/RoomTransfer')
+);
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
 
@@ -54,6 +57,9 @@ function App() {
                 </Route>
                 <Route exact path={'/p/:username/:widget'}>
                   <UserPortalWidget />
+                </Route>
+                <Route exact path="/transfer/r/:id/:dest">
+                  <RoomTransfer />
                 </Route>
                 <Route exact path="/transfer/:dest">
                   <Transfer />

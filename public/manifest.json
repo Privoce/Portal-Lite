@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "Portal",
   "description": "__MSG_extDescription__",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "manifest_version": 2,
   "homepage_url": "https://nicegoodthings.com/",
   "permissions": ["tabs", "identity", "storage"],
@@ -41,7 +41,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "exclude_matches": ["https://nicegoodthings.com/transfer/*"],
+      "exclude_matches": ["https://nicegoodthings.com/*", "http://localhost:3666/*"],
       "js": [
         "crx/vera/assets/tf.min.js",
         "crx/vera/assets/body-pix@2.1.js",
@@ -60,7 +60,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://nicegoodthings.com/transfer/*"],
+      "matches": ["<all_urls>"],
       "js": ["crx/vera/catch.invite.id.js"],
       "run_at": "document_start"
     }

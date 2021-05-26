@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-// import { RiRefreshLine } from 'react-icons/ri';
-import { useWidgetSettings } from '../../hooks';
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 // import { formatDistanceToNowStrict } from 'date-fns';
-import styled from 'styled-components';
 import { useAuthing } from '@authing/react-ui-components';
 import Login from '../Common/Login';
 import InstallExtension from '../Common/InstallExtension';
@@ -10,27 +8,30 @@ import { appId, appHost } from '../../InitialConfig';
 import { checkExtensionInstalled } from '../../util';
 
 import StyledWrapper from './styled';
-import HistoryItem from './HistoryItem';
-import useHistory from './useHistory';
-const StyledTip = styled.div`
-  width: 100%;
-  height: 100%;
-  font-size: 0.18rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-export default function VeraHistory({ data, name, lang, readonly }) {
+import StyledTip from './StyledTip';
+import RoomList from './RoomList';
+import AddRoomPopUp from './AddRoom';
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'https://g.nicegoodthings.com/v1/graphql',
+    headers: {
+      'x-hasura-admin-secret': 'tristan@privoce'
+    }
+  }),
+  cache: new InMemoryCache()
+});
+export default function VeraHistory({ lang }) {
   const { authClient } = useAuthing({
     appId,
     appHost
   });
   const [extInstalled, setExtInstalled] = useState(undefined);
-  const [checkingLogin, setCheckingLogin] = useState(true);
-  const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
-  let localItems = getWidgetSetting({ name });
-  const { data: list, error, loading, username, setUsername } = useHistory(localItems);
-  console.log({ list });
+  const [username, setUsername] = useState(null);
+  const [addVisible, setAddVisible] = useState(false);
+  const toggleAddPopup = () => {
+    setAddVisible((prev) => !prev);
+  };
   useEffect(() => {
     const check = async () => {
       let installed = await checkExtensionInstalled();
@@ -39,42 +40,32 @@ export default function VeraHistory({ data, name, lang, readonly }) {
     check();
   }, []);
   useEffect(() => {
-    const initLoginStatus = async () => {
+    const initUsername = async () => {
       let user = await authClient.getCurrentUser();
-      setCheckingLogin(false);
       if (user) {
+        // 把用户信息同步到vera扩展
+        document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { user } }));
         setUsername(user.username);
       }
     };
-    if (!readonly) {
-      initLoginStatus();
+    if (authClient) {
+      initUsername();
     }
-  }, [authClient, readonly]);
-  useEffect(() => {
-    if (!readonly) {
-      updateWidgetSetting({ name, data: list });
-    }
-  }, [list, readonly]);
+  }, [authClient]);
   if (typeof extInstalled == 'undefined') return <StyledTip>Checking Extension</StyledTip>;
   if (!extInstalled) return <InstallExtension></InstallExtension>;
-  if (!username && !checkingLogin && !readonly) return <Login></Login>;
-  if (loading && !readonly) return <StyledTip>{lang.fetching}</StyledTip>;
-  if (error) return <StyledTip>error</StyledTip>;
-  const items = readonly ? data.local : list;
-  console.log({ items, localItems });
+  if (!username) return <Login></Login>;
+
   return (
-    <>
+    <ApolloProvider client={client}>
       <StyledWrapper>
-        {items ? (
-          <ul className="list">
-            {items.map((item) => {
-              return <HistoryItem key={item.timestamp} data={item} />;
-            })}
-          </ul>
+        {username ? (
+          <RoomList username={username} lang={lang} toggleAddPopup={toggleAddPopup} />
         ) : (
           <StyledTip>Empty</StyledTip>
         )}
+        {addVisible && <AddRoomPopUp username={username} togglePopupVisible={toggleAddPopup} />}
       </StyledWrapper>
-    </>
+    </ApolloProvider>
   );
 }

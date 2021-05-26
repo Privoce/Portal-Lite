@@ -26,7 +26,7 @@ const updateUsernames = ({ key, username, remove = false }) => {
     window.USERNAMES[key] = username;
   }
 };
-const usePeer = ({ invitePeerId = null }) => {
+const usePeer = ({ updateRoomActive, appendMember, invitePeerId = null, id = null }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [status, setStatus] = useState('waiting');
   const [error, setError] = useState(null);
@@ -75,11 +75,11 @@ const usePeer = ({ invitePeerId = null }) => {
       usernameRef.current = await getUsername();
     };
     if (!myPeer) {
-      let tmp = new Peer(peerConfig);
+      let tmp = id ? new Peer(id, peerConfig) : new Peer(peerConfig);
       setMyPeer(tmp);
       initUsername();
     }
-  }, [myPeer]);
+  }, [myPeer, id]);
   const clearUpConnect = (conn) => {
     let pid = conn.peer;
     // 删掉data&media连接，去掉名字
@@ -87,6 +87,8 @@ const usePeer = ({ invitePeerId = null }) => {
     updateConns({ conn, type: 'media', remove: true });
     updateUsernames({ key: pid, remove: true });
     if (Object.keys(window.USERNAMES).length == 0) {
+      // 将room状态设置为off
+      updateRoomActive(false);
       // 重置为等待连接的初始状态
       window.removeEventListener('beforeunload', preventCloseTabHandler);
       setStatus(STATUS.WAITING);
@@ -206,14 +208,19 @@ const usePeer = ({ invitePeerId = null }) => {
         console.log('peer connection open');
         setStatus(STATUS.OPEN);
         // 受邀者则主动连接房主，并报上自己的名字
+        let username = usernameRef.current;
         if (invitePeerId) {
-          let username = usernameRef.current;
           // myPeer.connect(invitePeerId, {
           let invitedDataConn = myPeer.connect(invitePeerId, {
             metadata: { username }
           });
           // 初始化通用的监听事件
           initDataChannel(invitedDataConn);
+        } else {
+          // 首次进入房间的人，append member
+          appendMember({ username });
+          // 将room状态设置为on
+          updateRoomActive(true);
         }
         // 有连接请求过来
         myPeer.on('connection', (conn) => {

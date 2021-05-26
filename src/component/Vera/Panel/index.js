@@ -25,10 +25,14 @@ let draggable = null;
 export default function Panel({
   chatVisible = false,
   closePanel,
+  updateRoomActive,
+  appendMember,
+  roomId = null,
+  peerId = null,
   invitePeerId = null,
-  updateChannelId,
   toggleChatVisible
 }) {
+  console.log('fffffff', peerId, invitePeerId);
   const {
     peer,
     shutdownPeer,
@@ -38,8 +42,12 @@ export default function Panel({
     streams,
     status
   } = usePeer({
+    updateRoomActive,
+    appendMember,
+    id: peerId,
     invitePeerId
   });
+
   const [videoSync, setVideoSync] = useState(true);
   const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
@@ -88,13 +96,6 @@ export default function Panel({
       initDraggable();
     }
   }, []);
-  useEffect(() => {
-    if (status == STATUS.OPEN) {
-      let channelId = invitePeerId || peer?.id;
-
-      updateChannelId(channelId);
-    }
-  }, [status, invitePeerId, peer]);
   const toggleInviteVisible = () => {
     setFloatVisible((prev) => !prev);
   };
@@ -231,7 +232,7 @@ export default function Panel({
         ref={panelRef}
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
-        {floatVisible && <Invite float={true} peerId={invitePeerId || peer?.id} />}
+        {floatVisible && <Invite float={true} roomId={roomId} />}
         <div
           className={`cameras ${cameraSlides ? 'slides' : ''}`}
           data-count={`+ ${remoteCount - 2}`}
@@ -252,7 +253,7 @@ export default function Panel({
         {boxVisible ? (
           invitePeerId ? (
             used ? (
-              <Invite peerId={invitePeerId || peer?.id} />
+              <Invite roomId={roomId} />
             ) : (
               <Join
                 ready={status == STATUS.READY}
@@ -262,7 +263,7 @@ export default function Panel({
               />
             )
           ) : (
-            <Invite peerId={invitePeerId || peer?.id} />
+            <Invite roomId={roomId} />
           )
         ) : null}
         <Topbar
