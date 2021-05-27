@@ -3,64 +3,64 @@ const pt = {
   value: 'pt',
   words: {
     msg: {
-      loading: 'loading...'
+      loading: 'Carregando...'
     },
     profile: {
       avatar: 'Foto',
       name: 'Nome',
-      mobile: 'Numero Celular',
+      mobile: 'Número',
       email: 'Email',
       edit: 'Editar',
       logout: 'Sair'
     },
     setting: {
       clear: 'Fundo claro',
-      export: 'Exportar Datos',
-      import: 'Importar Datos',
-      reset: 'Reiniciar Tudo',
-      feedback: 'Comentários',
-      tip: 'Sem dados locais!'
+      export: 'Exportar dados',
+      import: 'Importar dados',
+      reset: 'Resetar',
+      feedback: 'Feedback',
+      tip: 'Sem dados!'
     },
     modal: {
       share: {
-        title: 'Share Portal',
-        tip: 'Share my portal with the link below',
-        copy: 'Copy Link',
-        copied: 'Copied',
-        done: 'Done'
+        title: 'Compartilhar Portal',
+        tip: 'Compartilhar meu portal com o link abaixo',
+        copy: 'Copiar link',
+        copied: 'Copiado',
+        done: 'Pronto'
       },
       widgets: {
-        added: 'Adicional',
-        notAdded: 'Não Adicionado'
+        added: 'Adicionados',
+        notAdded: 'Não adicionado'
       }
     },
     widget: {
-      reload: 'Reload',
-      error: 'Something got errors',
+      reload: 'Recarregar',
+      error: 'Algo deu errado',
       loading: 'Carregando...',
-      removing: 'Are you sure to remove',
+      removing: 'Deseja remover?',
       goAuth: {
         initializing: 'Inicializando...',
-        tip: 'Não Autorizado',
+        tip: 'Não autorizado',
         btnTxt: 'Autorizar'
       },
       opts: {
         shareModal: {
-          title: 'Share',
-          tip: 'Share the widget with everyone',
-          loginTip: 'Please login first.',
-          copy: 'Copy Link',
-          copied: 'Copied',
-          done: 'Done'
+          title: 'Compartilhar',
+          tip: 'Compartilhar widget',
+          loginTip: 'Por favor, acesse sua conta.',
+          copy: 'Copiar link',
+          copied: 'Copiado',
+          done: 'Pronto'
         },
-        setting: 'Sefinições',
-        remove: 'Retirar',
-        fullscreen: 'Tela Cheia',
-        share: 'Share',
+        setting: 'Configurações',
+        remove: 'Remover',
+        fullscreen: 'Tela cheia',
+        share: 'Compartilhar',
         open: { newTab: 'Abrir em uma nova aba', standalone: 'Abrir em uma nova janela' },
         sizes: {
           middle: 'Médio',
-          large: 'Ampla'
+          large: 'Grande'
         }
       }
     },
@@ -99,14 +99,14 @@ const pt = {
         }
       },
       ['timezone-clock']: {
-        title: 'World Time',
-        addTip: 'Add Clock',
+        title: 'Hora mundial',
+        addTip: 'Adicionar relógio',
         city: {
-          beijing: 'Beijing',
-          tokyo: 'Tokyo',
-          london: 'London',
+          beijing: 'Pequim',
+          tokyo: 'Tóquio',
+          london: 'Londres',
           losAngeles: 'Los Angeles',
-          moscow: 'Moscow',
+          moscow: 'Moscou',
           paris: 'Paris',
           newYork: 'New York',
           detroit: 'Detroit',
@@ -115,17 +115,17 @@ const pt = {
         }
       },
       ['us-covid-info']: {
-        title: '🇺🇸 Informação Covid',
+        title: 'Informação Covid',
         closingDate: 'Última atualização',
         comparePrev: 'Ontem',
         populationPercent: 'Em comparação com a população',
         sevenDayChange: 'Mudança de sete dias',
-        noData: 'No Data from remote server',
+        noData: 'Sem dados',
         blockTitle: {
           confirmed: 'Confirmado',
           verifying: 'Verificando',
           death: 'Morte cumulativa',
-          hospital: 'No Hospital',
+          hospital: 'No hospital',
           icu: 'ICU',
           ventilator: 'No ventilador'
         }
@@ -133,16 +133,16 @@ const pt = {
       ['my-agenda']: {
         title: 'Minha agenda',
         locale: 'pt',
-        empty: 'No Events',
+        empty: 'Sem eventos',
         fetching: 'Carregando...',
-        today: 'Hoje dia',
+        today: 'Hoje',
         addEvent: {
           addTo: 'Adicionar',
-          submit: 'Mandar'
+          submit: 'Enviar'
         }
       },
       ['vera-history']: {
-        title: 'My Vera History'
+        title: 'Meu histórico Vera'
       }
     }
   }
