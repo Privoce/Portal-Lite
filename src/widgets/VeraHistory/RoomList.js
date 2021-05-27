@@ -28,12 +28,12 @@ const StyledList = styled.ul`
     display: flex;
     &.active:after {
       position: absolute;
-      right: -5px;
-      top: 0;
+      right: 8px;
+      top: 8px;
       content: '';
       display: block;
-      width: 4px;
-      height: 4px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background-color: green;
     }
@@ -73,7 +73,7 @@ const StyledList = styled.ul`
         align-items: flex-start;
         font-size: 0.14rem;
         color: #999;
-        height: 1rem;
+        height: 0.8rem;
         overflow-y: scroll;
         .user {
           display: flex;
@@ -103,7 +103,7 @@ const StyledList = styled.ul`
 export default function RoomList({ username, lang, toggleAddPopup }) {
   const { data, error, loading } = useRoomList(username);
 
-  console.log('rooms', { data });
+  // console.log('rooms', { data });
   const handleLinkClick = (rid) => {
     console.log('link clicked', rid);
     document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { rid } }));
@@ -114,18 +114,27 @@ export default function RoomList({ username, lang, toggleAddPopup }) {
   return (
     <StyledList>
       {data.map((r) => {
-        const { name, id, link, active } = r;
+        const { name, members, id, link, active } = r;
         return (
           <div className={`room ${active ? 'active' : ''}`} key={id}>
             <div className="content">
               <div className="name">{name}</div>
+              <div className="participants">
+                {members?.map((m) => {
+                  return (
+                    <span className="user" key={m.username}>
+                      {m.username}
+                    </span>
+                  );
+                })}
+              </div>
               <a
                 href={link}
                 className="link"
                 target="_blank"
                 onClick={handleLinkClick.bind(null, id)}
               >
-                {id}
+                /{id}
               </a>
             </div>
           </div>
