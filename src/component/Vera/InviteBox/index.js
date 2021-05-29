@@ -10,15 +10,15 @@ import { selectText, getInviteUrl } from '../hooks/utils';
 
 import useUsername from '../hooks/useUsername';
 
-export default function InviteBox({ peerId = '', float = false }) {
+export default function InviteBox({ roomId = '', float = false }) {
   const [inviteUrl, setInviteUrl] = useState('');
   const { username, fake } = useUsername();
   const { copied, copy } = useCopy();
   useEffect(() => {
-    if (peerId) {
-      setInviteUrl(getInviteUrl(peerId));
+    if (roomId) {
+      setInviteUrl(getInviteUrl(roomId));
     }
-  }, [peerId]);
+  }, [roomId]);
   const handleLinkClick = ({ target }) => {
     selectText(target);
   };

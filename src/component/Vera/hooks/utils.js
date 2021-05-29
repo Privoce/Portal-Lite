@@ -43,39 +43,6 @@ function getInviteUrl(rid = null) {
     chrome.runtime.id
   }`;
 }
-async function appendVeraHistory({ peerId, isHost, usernames }) {
-  let { value, fake } = await getUsername();
-  if (!value || fake) return;
-  const putMethod = {
-    method: 'PUT', // Method itself
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8' // Indicates the content
-    },
-    body: JSON.stringify({
-      title: document.title,
-      url: location.href,
-      timestamp: new Date().getTime(),
-      peerId,
-      host: isHost ? value : '',
-      username: value,
-      participants: Object.values(usernames)
-    }) // We send data in JSON format
-  };
-  let data = {
-    code: -1
-  };
-  try {
-    // let resp = await fetch(`http://localhost:3008/service/authing/Tristan/udf/vera`, putMethod);
-    let resp = await fetch(
-      `https://api.yangerxiao.com/service/authing/${encodeURIComponent(value)}/udf/vera`,
-      putMethod
-    );
-    data = await resp.json();
-  } catch (error) {
-    console.log(error);
-  }
-  return data;
-}
 const preventCloseTabHandler = (evt) => {
   evt.preventDefault();
   evt.returnValue = 'Vera is still in connectiong, ary you sure to quit?';
@@ -192,7 +159,6 @@ export {
   selectText,
   getUser,
   getUsername,
-  appendVeraHistory,
   preventCloseTabHandler,
   getTranslateValues,
   shallowEqual

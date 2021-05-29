@@ -91,7 +91,6 @@ const layouts = {
   )
 };
 export default function Topbar({
-  pid = null,
   layout,
   inviteVisible = false,
   toggleInviteVisible,
@@ -177,24 +176,20 @@ export default function Topbar({
   return (
     <StyledBar className="topbar">
       <div className="left">
-        {pid && (
-          <>
-            <div className="rect cursor" onClick={toggleCursor}>
-              <IconCursor enable={cursor} />
-            </div>
+        <div className="rect cursor" onClick={toggleCursor}>
+          <IconCursor enable={cursor} />
+        </div>
 
-            <div className={`rect chat`} onClick={toggleChatBoxVisible}>
-              <IconChat visible={chatVisible} />
-            </div>
-            <div className={`rect invite`} onClick={toggleInviteVisible}>
-              <IconInvite visible={inviteVisible} />
-            </div>
-            {player && (
-              <div className={`rect sync`} onClick={toggleVideoSync}>
-                <IconSync enable={videoSync} />
-              </div>
-            )}
-          </>
+        <div className={`rect chat`} onClick={toggleChatBoxVisible}>
+          <IconChat visible={chatVisible} />
+        </div>
+        <div className={`rect invite`} onClick={toggleInviteVisible}>
+          <IconInvite visible={inviteVisible} />
+        </div>
+        {player && (
+          <div className={`rect sync`} onClick={toggleVideoSync}>
+            <IconSync enable={videoSync} />
+          </div>
         )}
       </div>
       <div className="right">

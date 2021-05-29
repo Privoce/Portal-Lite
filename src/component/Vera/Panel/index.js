@@ -16,6 +16,7 @@ import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
 import { EVENTS, STATUS } from '../hooks/useEmitter';
+import useSocketRoom from '../hooks/useSocketRoom';
 
 SwiperCore.use([Navigation]);
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
@@ -23,23 +24,22 @@ const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 let used = false;
 let draggable = null;
 export default function Panel({
+  roomId = null,
   chatVisible = false,
   closePanel,
-  invitePeerId = null,
-  updateChannelId,
   toggleChatVisible
 }) {
+  const { initializing, updatePeerId, users, user, isHost } = useSocketRoom(roomId);
   const {
     peer,
     shutdownPeer,
     dataConnections,
     mediaConnections,
+    addDatachannelConnection,
     addMediaConnection,
     streams,
     status
-  } = usePeer({
-    invitePeerId
-  });
+  } = usePeer(updatePeerId);
   const [videoSync, setVideoSync] = useState(true);
   const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
@@ -60,14 +60,6 @@ export default function Panel({
       used = true;
     }
   }, [streams]);
-  const handleResizeStop = () => {
-    draggable.remove();
-    initDraggable();
-    setResizing(false);
-  };
-  const handleResizeStart = () => {
-    setResizing(true);
-  };
   const initDraggable = () => {
     let dragEle = panelRef.current;
     let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
@@ -82,19 +74,20 @@ export default function Panel({
       }
     });
   };
+  const handleResizeStop = () => {
+    draggable.remove();
+    initDraggable();
+    setResizing(false);
+  };
+  const handleResizeStart = () => {
+    setResizing(true);
+  };
   // 拖拽
   useEffect(() => {
-    if (panelRef) {
+    if (!initializing) {
       initDraggable();
     }
-  }, []);
-  useEffect(() => {
-    if (status == STATUS.OPEN) {
-      let channelId = invitePeerId || peer?.id;
-
-      updateChannelId(channelId);
-    }
-  }, [status, invitePeerId, peer]);
+  }, [initializing]);
   const toggleInviteVisible = () => {
     setFloatVisible((prev) => !prev);
   };
@@ -143,12 +136,12 @@ export default function Panel({
     sendDataToPeers(cmd);
   };
   const renderCameras = () => {
-    if (!panelRef.current) return null;
+    // if (!panelRef.current) return null;
     let count = Object.keys(mediaConnections).length;
     const remotes = count
       ? Object.entries(mediaConnections).map(([pid, conn]) => {
           let st = streams[pid];
-          let username = window.USERNAMES[pid];
+          let username = { value: users.filter((u) => u.peerId == pid)[0]?.name };
           console.log('current camera username', username);
           return count > 2 ? (
             <SwiperSlide>
@@ -223,6 +216,9 @@ export default function Panel({
       ? { width: '20em' }
       : { width: 'calc(60em + 30px)' }
     : {};
+  // 还在初始化房间
+  if (initializing) return null;
+  console.log('current user', user);
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
       <div
@@ -231,7 +227,7 @@ export default function Panel({
         ref={panelRef}
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
-        {floatVisible && <Invite float={true} peerId={invitePeerId || peer?.id} />}
+        {floatVisible && <Invite float={true} roomId={roomId} />}
         <div
           className={`cameras ${cameraSlides ? 'slides' : ''}`}
           data-count={`+ ${remoteCount - 2}`}
@@ -250,23 +246,23 @@ export default function Panel({
           )}
         </div>
         {boxVisible ? (
-          invitePeerId ? (
+          !isHost ? (
             used ? (
-              <Invite peerId={invitePeerId || peer?.id} />
+              <Invite roomId={roomId} />
             ) : (
               <Join
                 ready={status == STATUS.READY}
                 peerClient={peer}
-                peerIds={Object.keys(window.USERNAMES)}
+                peerIds={users.map((u) => u.peerId)}
+                addDatachannelConnection={addDatachannelConnection}
                 addMediaConnection={addMediaConnection}
               />
             )
           ) : (
-            <Invite peerId={invitePeerId || peer?.id} />
+            <Invite roomId={roomId} />
           )
         ) : null}
         <Topbar
-          pid={!noConnection ? invitePeerId || peer?.id : null}
           cursor={enableCursor}
           videoSync={videoSync}
           toggleVideoSync={toggleVideoSync}

@@ -3,7 +3,7 @@ import Button from '../Button';
 import Username from '../Username';
 import Login from '../Login';
 import useUsername from '../hooks/useUsername';
-const prepareTxt = chrome.i18n.getMessage('prepare');
+// const prepareTxt = chrome.i18n.getMessage('prepare');
 const joinTxt = chrome.i18n.getMessage('join');
 const joinAsGuestTxt = chrome.i18n.getMessage('joinAsGuest');
 
@@ -30,8 +30,13 @@ const StyledBox = styled.div`
   }
 `;
 let clicked = false;
-export default function JoinBox({ ready = false, peerClient, peerIds = [], addMediaConnection }) {
-  const { username, fake } = useUsername();
+export default function JoinBox({
+  peerClient,
+  peerIds = [],
+  addMediaConnection,
+  addDatachannelConnection
+}) {
+  const { username } = useUsername();
   const handleJoin = () => {
     if (clicked) return;
     if (!window.LOCAL_MEDIA_STREAM) {
@@ -41,25 +46,23 @@ export default function JoinBox({ ready = false, peerClient, peerIds = [], addMe
     console.log({ peerIds });
     peerIds.forEach((id) => {
       console.log('send username with media conn', username);
-      let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM, {
-        metadata: {
-          peerId: peerClient.id,
-          username: { value: username, fake }
-        }
-      });
+      // 建立datachannel连接
+      let dataConn = peerClient.connect(id);
+      addDatachannelConnection(dataConn);
+      // 建立音视频连接
+      let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM);
       console.log({ newMediaConn });
       addMediaConnection(newMediaConn);
     });
     clicked = true;
   };
+  // {ready ? (username ? joinTxt : joinAsGuestTxt) : `${prepareTxt}...`}
   return (
     <StyledBox>
       <Username local={true} readonly={false} fixed={false} />
       <div className={`btns ${username ? 'logined' : ''}`}>
         {username ? null : <Login />}
-        <Button disabled={!ready} onClick={handleJoin}>
-          {ready ? (username ? joinTxt : joinAsGuestTxt) : `${prepareTxt}...`}
-        </Button>
+        <Button onClick={handleJoin}>{username ? joinTxt : joinAsGuestTxt}</Button>
       </div>
     </StyledBox>
   );

@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Panel from './Panel';
 import Widget from './Widget';
 import ChatBox from './Chat';
+import { getUser } from './hooks/utils';
 
 const StyledWrapper = styled.section`
   position: fixed;
@@ -67,58 +68,65 @@ const GlobalStyle = createGlobalStyle`
 `;
 export default function Vera() {
   const [chatVisible, setChatVisible] = useState(false);
-  const [channelId, setChannelId] = useState(undefined);
-  const [invitePeerId, setInvitePeerId] = useState(null);
+  const [panelVisible, setPanelVisible] = useState(false);
+  const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(false);
-  const openPanel = () => {
-    setVisible(true);
-  };
-  const closePanel = () => {
-    setVisible(false);
+  const togglePanelVisible = async () => {
+    if (!panelVisible) {
+      //  拉取personal room
+      let currUser = await getUser();
+      if (!currUser) {
+        alert('Login First');
+        return;
+      }
+      let resp = await fetch(`//vera.nicegoodthings.com/room/${currUser.username}`);
+      let { room } = await resp.json();
+      if (!room) {
+        alert('No Personal Room');
+        return;
+      }
+      setRoomId(room.id);
+    }
+    setPanelVisible((prev) => !prev);
   };
   const toggleChatVisible = () => {
     setChatVisible((prev) => !prev);
   };
-  const specifyChannelId = (id) => {
-    setChannelId(id);
-  };
   useEffect(() => {
-    const getPvid = () => {
-      chrome.storage.sync.get(['pvid'], (res) => {
+    const getRoomId = () => {
+      chrome.storage.sync.get(['room_id'], (res) => {
         // Notify that we saved.
-        const { pvid = null } = res;
-        console.log('pvid from storage', pvid);
-        if (pvid) {
-          // 立即删掉，防止下次访问依然存在
-          chrome.storage.sync.remove('pvid', () => {
-            console.log('pvid removed');
+        const { room_id = null } = res;
+        console.log('room_id from storage', room_id);
+        if (room_id) {
+          // 删掉，防止下次访问依然存在
+          chrome.storage.sync.remove('room_id', () => {
+            console.log('room_id removed');
           });
-          setInvitePeerId(pvid);
-          setVisible(true);
+          setRoomId(room_id);
+          setPanelVisible(true);
         }
         setLoading(false);
       });
     };
     // 显示的时候 再执行
-    getPvid();
+    getRoomId();
   }, []);
-  // if (!visible) return null;
+  if (loading) return null;
   return (
     <StyledWrapper id="VERA_FULLSCREEN_CONTAINER">
       <GlobalStyle />
-      {!loading && <Widget openPanel={openPanel} />}
-      {!loading && visible && (
+      {<Widget openPanel={togglePanelVisible} />}
+      {panelVisible && (
         <Panel
-          closePanel={closePanel}
-          invitePeerId={invitePeerId}
+          closePanel={togglePanelVisible}
+          roomId={roomId}
           chatVisible={chatVisible}
           toggleChatVisible={toggleChatVisible}
-          updateChannelId={specifyChannelId}
         />
       )}
-      {!loading && visible && (
-        <ChatBox channelId={channelId} visible={chatVisible} toggleVisible={toggleChatVisible} />
+      {panelVisible && (
+        <ChatBox channelId={roomId} visible={chatVisible} toggleVisible={toggleChatVisible} />
       )}
     </StyledWrapper>
   );
