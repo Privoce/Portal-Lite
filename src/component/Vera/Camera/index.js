@@ -14,10 +14,6 @@ const tipAudio = chrome.i18n.getMessage('tipDisableAudio');
 const tipRemoveBg = chrome.i18n.getMessage('tipRemoveBg');
 // const tipProcessing = chrome.i18n.getMessage('tipProcessing');
 const tipPin = chrome.i18n.getMessage('tipPin');
-let triggerByCmd = {
-  video: false,
-  audio: false
-};
 // status: loading ready error
 function Camera({
   username = { value: 'Guest', fake: true },
@@ -108,16 +104,16 @@ function Camera({
       console.log('data connection msg in camra', pid, peerId, type);
       switch (type) {
         case 'CC_VIDEO_ON':
-          setMedia({ type: 'video', enable: true, cmd: true });
+          setMedia({ type: 'video', enable: true });
           break;
         case 'CC_VIDEO_OFF':
-          setMedia({ type: 'video', enable: false, cmd: true });
+          setMedia({ type: 'video', enable: false });
           break;
         case 'CC_AUDIO_ON':
-          setMedia({ type: 'audio', enable: true, cmd: true });
+          setMedia({ type: 'audio', enable: true });
           break;
         case 'CC_AUDIO_OFF':
-          setMedia({ type: 'audio', enable: false, cmd: true });
+          setMedia({ type: 'audio', enable: false });
           break;
         case 'CC_BG_ON':
           setBackground({ keep: true });
@@ -159,14 +155,10 @@ function Camera({
     }
   };
   // 音视频
-  const setMedia = ({ type = 'video', enable = true, cmd = false }) => {
+  const setMedia = ({ type = 'video', enable = true }) => {
     console.log('start toggle media');
     let stream = videoRef.current.srcObject;
     const tracks = type == 'video' ? stream.getVideoTracks() : stream.getAudioTracks();
-    // 巨复杂的一个判断：当前状态是button置的，而且cmd想开启
-    if (cmd && !triggerByCmd[type] && enable && tracks.filter((t) => t.enabled == false).length) {
-      return;
-    }
     tracks.forEach((t) => {
       t.enabled = enable;
     });
@@ -181,8 +173,6 @@ function Camera({
         conn.send(cmd);
       });
     }
-    // 更新全局标识
-    triggerByCmd[type] = cmd;
   };
   // 背景
   const setBackground = ({ keep = true }) => {
@@ -202,9 +192,7 @@ function Camera({
     // if (remote) return;
     const { type, status } = target.dataset;
     let isOn = status == 'true';
-    if (isOn || (!isOn && !triggerByCmd[type])) {
-      setMedia({ type, enable: status !== 'true' });
-    }
+    setMedia({ type, enable: !isOn });
   };
   const handleBgControl = ({ target }) => {
     const { video } = controls;
@@ -260,6 +248,3 @@ function Camera({
   );
 }
 export default memo(Camera);
-// export default memo(Camera, (prev, next) => {
-//   return prev.peerId == next.peerId;
-// });
