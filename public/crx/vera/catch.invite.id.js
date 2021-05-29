@@ -1,14 +1,20 @@
-console.log('catch invite id');
-let url = new URL(location.href);
-let paths = url.pathname.split('/');
-let decodedUrl = decodeURIComponent(paths[paths.length - 1]);
-console.log('decodedUrl', decodedUrl);
-let id = new URLSearchParams(new URL(decodedUrl).search).get('portal-vera-id');
-console.log('catch the id', id);
-if (id) {
-  chrome.storage.sync.set({ pvid: id }, function () {
-    // Notify that we saved.
-    console.log('pvid saved', id);
-    window.VERA_INVITE_ID = true;
-  });
-}
+// room id
+console.log('room listener');
+document.addEventListener('VERA_ROOM_EVENT', function (e) {
+  let {
+    detail: { rid, user }
+  } = e;
+  console.log('received', rid, user);
+  if (user) {
+    chrome.storage.sync.set({ user }, () => {
+      // Notify that we saved.
+      console.log('user saved', user);
+    });
+  }
+  if (rid) {
+    chrome.storage.sync.set({ room_id: rid }, () => {
+      // Notify that we saved.
+      console.log('room id saved', rid);
+    });
+  }
+});
