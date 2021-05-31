@@ -79,13 +79,7 @@ export default function Vera() {
         alert('Login First');
         return;
       }
-      let resp = await fetch(`//vera.nicegoodthings.com/room/${currUser.username}`);
-      let { room } = await resp.json();
-      if (!room) {
-        alert('No Personal Room');
-        return;
-      }
-      setRoomId(room.id);
+      setRoomId(Math.random().toString(36).substring(7));
     } else {
       //由可见转为不可见：充值room id
       setRoomId(null);
