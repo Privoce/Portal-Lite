@@ -110,6 +110,8 @@ const StyledWrapper = styled.aside`
       background-color: #fff;
     }
     &[data-status='${STATUS.CALLING}']:not(.min),
+    &[data-status='${STATUS.CONNECTED}']:not(.min),
+    &[data-status='${STATUS.READY}']:not(.min),
     &[data-status='${STATUS.STREAMING}']:not(.min) {
       &:after {
         background-color: #85e89e;
