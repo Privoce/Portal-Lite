@@ -17,6 +17,7 @@ import Info from './Info';
 import Resize from './Resize';
 import { EVENTS, STATUS } from '../hooks/useEmitter';
 import useSocketRoom from '../hooks/useSocketRoom';
+import Loading from '../Loading';
 
 SwiperCore.use([Navigation]);
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
@@ -135,11 +136,14 @@ export default function Panel({
     };
     sendDataToPeers(cmd);
   };
+  const filteredMedias = Object.entries(mediaConnections).filter(([pid]) => {
+    return users.some((u) => u.peerId == pid);
+  });
   const renderCameras = () => {
     // if (!panelRef.current) return null;
-    let count = Object.keys(mediaConnections).length;
+    let count = filteredMedias.length;
     const remotes = count
-      ? Object.entries(mediaConnections).map(([pid, conn]) => {
+      ? filteredMedias.map(([pid, conn]) => {
           let st = streams[pid];
           let username = { value: users.filter((u) => u.peerId == pid)[0]?.name };
           console.log('current camera username', username);
@@ -202,7 +206,7 @@ export default function Panel({
       ]
     );
   };
-  let remoteCount = Object.keys(mediaConnections).length;
+  let remoteCount = Object.keys(filteredMedias).length;
   let noConnection = remoteCount == 0;
   let cameraSlides = remoteCount > 2;
   // let reset='reset'==status;
@@ -217,7 +221,12 @@ export default function Panel({
       : { width: 'calc(60em + 30px)' }
     : {};
   // 还在初始化房间
-  if (initializing) return null;
+  if (initializing)
+    return (
+      <StyledWrapper>
+        <Loading />
+      </StyledWrapper>
+    );
   console.log('current user', user);
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
