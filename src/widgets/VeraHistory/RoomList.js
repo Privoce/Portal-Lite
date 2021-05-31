@@ -108,12 +108,6 @@ const StyledList = styled.ul`
 export default function RoomList({ username, lang, toggleAddPopup }) {
   const { data, error, loading } = useRoomList(username);
 
-  // console.log('rooms', { data });
-  const handleLinkClick = (rid) => {
-    console.log('link clicked', rid);
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { rid } }));
-  };
-
   if (loading || !data) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
   return (
@@ -134,10 +128,11 @@ export default function RoomList({ username, lang, toggleAddPopup }) {
                 })}
               </div>
               <a
-                href={link}
+                href={`/transfer/r/${id}/${encodeURIComponent(
+                  link
+                )}?extid=ccegbnlnelhgaefimiaklaindffpfcmh`}
                 className="link"
                 target="_blank"
-                onClick={handleLinkClick.bind(null, id)}
               >
                 /{id}
               </a>
