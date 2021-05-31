@@ -128,7 +128,7 @@ export default function RoomList({ username, lang, toggleAddPopup }) {
                 })}
               </div>
               <a
-                href={`/transfer/r/${id}/${encodeURIComponent(
+                href={`//nicegoodthings.com/transfer/r/${id}/${encodeURIComponent(
                   link
                 )}?extid=ccegbnlnelhgaefimiaklaindffpfcmh`}
                 className="link"
