@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import emitter, { EVENTS, STATUS } from './useEmitter';
-import { destoryCursor } from '../Cursor';
 import { preventCloseTabHandler } from './utils';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
@@ -66,13 +65,11 @@ const usePeer = (updatePeerId) => {
       setMyPeer(tmp);
     }
   }, [myPeer]);
-  const clearUpConnect = (conn) => {
-    let pid = conn.peer;
+  const clearUpConnect = (conn = null) => {
+    if (!conn) return;
     // 删掉data&media连接，去掉名字
     updateConns({ conn, type: 'data', remove: true });
     updateConns({ conn, type: 'media', remove: true });
-    // 销毁鼠标
-    destoryCursor({ id: pid });
   };
   const initDataChannel = useCallback(
     (conn) => {

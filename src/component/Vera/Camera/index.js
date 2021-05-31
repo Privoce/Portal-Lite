@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, memo } from 'react';
 import Username from '../Username';
 import emitter, { EVENTS } from '../hooks/useEmitter';
 import { stringToHexColor } from '../hooks/utils';
-import { initCursor, bindCursorSync } from '../Cursor';
+import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
 
 import ErrorMask from './ErrorMask';
 import OffMask from './CameraOffMask';
@@ -54,16 +54,11 @@ function Camera({
       attachLocalStream();
     }
     return () => {
-      if (videoEle.srcObject) {
-        videoEle.srcObject.getTracks().forEach((t) => {
-          console.log('video stop');
-          t.stop();
-        });
-        videoEle.srcObject = null;
-      }
+      // 销毁鼠标
+      destoryCursor({ id: peerId });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [remote]);
+  }, [remote, peerId]);
 
   useEffect(() => {
     let videoEle = videoRef.current;
@@ -71,14 +66,6 @@ function Camera({
       videoEle.srcObject = mediaStream;
       updateControls(mediaStream);
     }
-    return () => {
-      if (videoEle.srcObject) {
-        videoEle.srcObject.getTracks().forEach((t) => {
-          t.stop();
-        });
-        videoEle.srcObject = null;
-      }
-    };
   }, [mediaStream]);
   useEffect(() => {
     const createCursor = () => {
