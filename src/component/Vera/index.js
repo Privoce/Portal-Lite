@@ -73,7 +73,7 @@ export default function Vera() {
   const [loading, setLoading] = useState(true);
   const togglePanelVisible = async () => {
     if (!panelVisible) {
-      //  拉取personal room
+      //  //由不可见转为可见：拉取personal room
       let currUser = await getUser();
       if (!currUser) {
         alert('Login First');
@@ -86,6 +86,9 @@ export default function Vera() {
         return;
       }
       setRoomId(room.id);
+    } else {
+      //由可见转为不可见：充值room id
+      setRoomId(null);
     }
     setPanelVisible((prev) => !prev);
   };
