@@ -22,6 +22,8 @@ const useSocketRoom = (roomId) => {
       if (curr) {
         let { id, username, photo } = curr;
         setUser({ uid: id, username, avator: photo });
+      } else {
+        setUser({ username: 'Guest' });
       }
     };
 

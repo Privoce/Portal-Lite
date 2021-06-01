@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Panel from './Panel';
 import Widget from './Widget';
 import ChatBox from './Chat';
-import { getUser } from './hooks/utils';
+// import { getUser } from './hooks/utils';
 
 const StyledWrapper = styled.section`
   position: fixed;
@@ -74,11 +74,6 @@ export default function Vera() {
   const togglePanelVisible = async () => {
     if (!panelVisible) {
       //  //由不可见转为可见：拉取personal room
-      let currUser = await getUser();
-      if (!currUser) {
-        alert('Login First');
-        return;
-      }
       setRoomId(Math.random().toString(36).substring(7));
     } else {
       //由可见转为不可见：充值room id
