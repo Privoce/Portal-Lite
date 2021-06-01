@@ -5,7 +5,6 @@ const GET_ROOM_LIST = gql`
     portal_room {
       personal
       active
-      connect_id
       created_at
       host
       id
@@ -24,9 +23,6 @@ function useRoomList(username) {
   useEffect(() => {
     if (username) {
       loadRoomList();
-      // variables: {
-      //   host: username
-      // }
     }
   }, [username]);
   useEffect(() => {
