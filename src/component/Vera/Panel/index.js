@@ -95,14 +95,6 @@ export default function Panel({
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {
-      console.log('clean up stream');
-      let cameras = [...panelRef.current.querySelectorAll('video')];
-      cameras.forEach((c) => {
-        c.srcObject?.getTracks().forEach((t) => {
-          t.stop();
-        });
-        c.srcObject = null;
-      });
       shutdownPeer();
       closePanel();
     }
@@ -145,7 +137,7 @@ export default function Panel({
     const remotes = count
       ? filteredMedias.map(([pid, conn]) => {
           let st = streams[pid];
-          let username = { value: users.filter((u) => u.peerId == pid)[0]?.name };
+          let username = { value: users.filter((u) => u.peerId == pid)[0]?.username };
           console.log('current camera username', username);
           return count > 2 ? (
             <SwiperSlide>

@@ -151,6 +151,12 @@ function shallowEqual(object1, object2) {
 
   return true;
 }
+const stopVideoStreams = () => {
+  document
+    .querySelector('#VERA_FULLSCREEN_CONTAINER')
+    .querySelectorAll('video')
+    .forEach((v) => v.srcObject.getTracks().forEach((t) => t.stop()));
+};
 export {
   getVideoPlayer,
   stringToHexColor,
@@ -161,5 +167,6 @@ export {
   getUsername,
   preventCloseTabHandler,
   getTranslateValues,
-  shallowEqual
+  shallowEqual,
+  stopVideoStreams
 };

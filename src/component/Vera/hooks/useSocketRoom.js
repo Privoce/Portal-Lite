@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 import { getUser } from './utils';
-// import axios from 'axios';
+import { destoryCursor } from '../Cursor';
 
 const PEER_JOIN_EVENT = 'PEER_JOIN_EVENT';
 const PEER_LEAVE_EVENT = 'PEER_LEAVE_EVENT';
 const CURRENT_PEERS = 'CURRENT_PEERS_EVENT';
 const SOCKET_SERVER_URL = '//vera.nicegoodthings.com';
+// const SOCKET_SERVER_URL = '//localhost:4000';
 
 const useSocketRoom = (roomId) => {
   const [users, setUsers] = useState([]);
@@ -20,7 +21,7 @@ const useSocketRoom = (roomId) => {
       let curr = await getUser();
       if (curr) {
         let { id, username, photo } = curr;
-        setUser({ uid: id, name: username, avator: photo });
+        setUser({ uid: id, username, avator: photo });
       }
     };
 
@@ -57,6 +58,7 @@ const useSocketRoom = (roomId) => {
     });
     // 离开房间事件
     socket.on(PEER_LEAVE_EVENT, (user) => {
+      destoryCursor({ id: user.peerId });
       setUsers((users) => users.filter((u) => u.id !== user.id));
     });
 

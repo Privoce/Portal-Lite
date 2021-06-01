@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, memo } from 'react';
 import Username from '../Username';
 import emitter, { EVENTS } from '../hooks/useEmitter';
 import { stringToHexColor } from '../hooks/utils';
-import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
+import { initCursor, bindCursorSync } from '../Cursor';
 
 import ErrorMask from './ErrorMask';
 import OffMask from './CameraOffMask';
@@ -40,6 +40,7 @@ function Camera({
   useEffect(() => {
     let videoEle = videoRef.current;
     const attachLocalStream = async () => {
+      if (videoEle.srcObject) return;
       let localStream = await enableStream();
       console.log({ localStream });
       if (localStream) {
@@ -54,8 +55,11 @@ function Camera({
       attachLocalStream();
     }
     return () => {
-      // 销毁鼠标
-      destoryCursor({ id: peerId });
+      if (videoEle && !remote) {
+        // 及时清理掉cloned之后的stream
+        videoEle.srcObject.getTracks().forEach((t) => t.stop());
+        videoEle.srcObject = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remote, peerId]);

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import emitter, { EVENTS, STATUS } from './useEmitter';
-import { preventCloseTabHandler } from './utils';
+import { destoryCursor } from '../Cursor';
+import { preventCloseTabHandler, stopVideoStreams } from './utils';
 const peerConfig = {
   host: 'r.nicegoodthings.com',
   // port: '80',
@@ -171,7 +172,8 @@ const usePeer = (updatePeerId) => {
   const shutdownPeer = useCallback(() => {
     window.removeEventListener('beforeunload', preventCloseTabHandler);
     // 关闭每个mediaConn
-    Object.entries(mediaConnsRef.current).forEach(([, conn]) => {
+    Object.entries(mediaConnsRef.current).forEach(([pid, conn]) => {
+      destoryCursor({ id: pid });
       conn.close();
     });
     window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
@@ -179,7 +181,8 @@ const usePeer = (updatePeerId) => {
     });
     window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
-  }, [myPeer]);
+    stopVideoStreams();
+  }, [myPeer, streams]);
   return {
     shutdownPeer,
     peer: myPeer,
