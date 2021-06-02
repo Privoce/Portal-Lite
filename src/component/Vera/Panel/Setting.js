@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getUser } from '../hooks/utils';
+
 import IconSetting from '../icons/Setting';
 import IconFeedback from '../icons/Feedback';
 import IconSun from '../icons/Sun';
@@ -48,31 +49,10 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-export default function Setting({ logoutVisible }) {
+export default function Setting({ logoutVisible, dark, updateDarkTheme }) {
   const [logined, setLogined] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [dark, setDark] = useState(true);
-  useEffect(() => {
-    const initDarkMode = () => {
-      let initIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      chrome.storage.local.get(['DARK_MODE'], (result) => {
-        if (typeof result.DARK_MODE !== undefined) {
-          console.log('dark mode', result.DARK_MODE);
-          initIsDark = result.DARK_MODE;
-        }
-        setDark(initIsDark);
-      });
-    };
-    initDarkMode();
-  }, []);
-  useEffect(() => {
-    let PANEL = document.querySelector('#PORTAL_VERA_PANEL');
-    if (dark) {
-      PANEL.classList.add('vera-dark-theme');
-    } else {
-      PANEL.classList.remove('vera-dark-theme');
-    }
-  }, [dark]);
+
   useEffect(() => {
     const handleMouseUp = (evt) => {
       let { target } = evt;
@@ -94,8 +74,7 @@ export default function Setting({ logoutVisible }) {
     setExpanded((prev) => !prev);
   };
   const toggleThemeMode = () => {
-    chrome.storage.local.set({ DARK_MODE: !dark });
-    setDark((prev) => !prev);
+    updateDarkTheme(!dark);
   };
   const handleLogout = () => {
     chrome.storage.sync.remove('user', () => {

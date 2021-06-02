@@ -20,18 +20,16 @@ const fullStreamConfig = {
   audio: true
 };
 const Tips = {
-  ['NotAllowedError']: 'Permission denied'
+  ['NotAllowedError']: 'Allow Vera to use your camera & microphone'
 };
 window.LOCAL_MEDIA_STREAM = window.LOCAL_MEDIA_STREAM || null;
 export default function useUserMedia() {
   const [mediaStream, setMediaStream] = useState(window.LOCAL_MEDIA_STREAM);
   const [error, setError] = useState(null);
-  // 更新到全局变量
-  useEffect(() => {
-    window.LOCAL_MEDIA_STREAM = mediaStream;
-  }, [mediaStream]);
+  const [cameraPermissionStatus, setCameraPermissionStatus] = useState(null);
+  const [micPermissionStatus, setMicPermissionStatus] = useState(null);
   const enableStream = async () => {
-    if (mediaStream) return mediaStream;
+    // if (mediaStream) return mediaStream;
     try {
       // 一次性获取两个授权
       let devices = await navigator.mediaDevices.enumerateDevices();
@@ -66,6 +64,39 @@ export default function useUserMedia() {
       return null;
     }
   };
+  useEffect(() => {
+    const getAllPermissions = async () => {
+      // We use Promise.all to wait until all the permission queries are resolved
+      let ps = await Promise.all(
+        ['camera', 'microphone'].map(async (permissionName) => {
+          let p = navigator.permissions.query({ name: permissionName });
+          return p;
+          // allPermissions.push({ permissionName, state: permission.state });
+        })
+      );
+      ps.forEach((p, idx) => {
+        const __setStatus = idx == 0 ? setCameraPermissionStatus : setMicPermissionStatus;
+        __setStatus(p.state);
+        if (p.status !== 'granted') {
+          p.onchange = ({ target: { state } }) => {
+            __setStatus(state);
+          };
+        }
+      });
+      console.log({ ps });
+    };
+    getAllPermissions();
+    enableStream().then((st) => {
+      if (st) {
+        st.getTracks().forEach((t) => t.stop());
+      }
+    });
+  }, []);
+  // 更新到全局变量
+  useEffect(() => {
+    window.LOCAL_MEDIA_STREAM = mediaStream;
+  }, [mediaStream]);
+
   const stopStream = () => {
     if (mediaStream) {
       mediaStream.getTracks().forEach((track) => {
@@ -73,6 +104,20 @@ export default function useUserMedia() {
       });
     }
   };
+  let ps = [cameraPermissionStatus, micPermissionStatus];
+  let permissions = ps.includes('prompt')
+    ? 'prompt'
+    : ps.includes('denied')
+    ? 'denied'
+    : ps.filter((p) => p == 'granted').length == 2
+    ? 'granted'
+    : 'error';
+  return {
+    mediaStream,
+    permissions,
 
-  return { mediaStream, enableStream, stopStream, error };
+    enableStream,
+    stopStream,
+    error
+  };
 }

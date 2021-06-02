@@ -8,6 +8,8 @@ import IconArrowRight from '../icons/ArrowRight';
 import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
+import useDarkTheme from '../hooks/useDarkTheme';
+import useUserMedia from '../hooks/useUserMedia';
 import { getTranslateValues } from '../hooks/utils';
 import StyledWrapper from './styled';
 import Topbar from './Topbar';
@@ -15,6 +17,7 @@ import HangUp from './HangUp';
 import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
+import PermissionTip from './PermissionTip';
 import { EVENTS, STATUS } from '../hooks/useEmitter';
 import useSocketRoom from '../hooks/useSocketRoom';
 import Loading from '../Loading';
@@ -30,6 +33,8 @@ export default function Panel({
   closePanel,
   toggleChatVisible
 }) {
+  const { dark, updateDarkTheme } = useDarkTheme();
+  const { permissions } = useUserMedia();
   const { initializing, updatePeerId, users, user, isHost } = useSocketRoom(roomId);
   const {
     peer,
@@ -85,10 +90,10 @@ export default function Panel({
   };
   // 拖拽
   useEffect(() => {
-    if (!initializing) {
+    if (!initializing && permissions == 'granted') {
       initDraggable();
     }
-  }, [initializing]);
+  }, [initializing, permissions]);
   const toggleInviteVisible = () => {
     setFloatVisible((prev) => !prev);
   };
@@ -212,6 +217,14 @@ export default function Panel({
       ? { width: '20em' }
       : { width: 'calc(60em + 30px)' }
     : {};
+  // tip for permission
+  if (['prompt', 'denied'].includes(permissions)) {
+    return (
+      <StyledWrapper>
+        <PermissionTip type={permissions} />
+      </StyledWrapper>
+    );
+  }
   // 还在初始化房间
   if (initializing)
     return (
@@ -220,6 +233,7 @@ export default function Panel({
       </StyledWrapper>
     );
   console.log('current user', user);
+
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
       <div
@@ -277,7 +291,13 @@ export default function Panel({
           toggleChatBoxVisible={toggleChatVisible}
         />
         <Info />
-        {layout !== 'min' && <Setting logoutVisible={status !== STATUS.STREAMING} />}
+        {layout !== 'min' && (
+          <Setting
+            logoutVisible={status !== STATUS.STREAMING}
+            dark={dark}
+            updateDarkTheme={updateDarkTheme}
+          />
+        )}
         <HangUp type={noConnection ? 'close' : 'hangup'} handleHangUp={handleClose} />
       </div>
       {layout !== 'min' && (
