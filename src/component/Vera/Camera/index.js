@@ -44,7 +44,7 @@ function Camera({
       let localStream = await enableStream();
       console.log({ localStream });
       if (localStream) {
-        let cloned = localStream.clone();
+        let cloned = localStream;
         cloned.getAudioTracks().forEach((t) => (t.enabled = false));
         updateControls(cloned);
         videoEle.srcObject = cloned;
@@ -55,7 +55,7 @@ function Camera({
       attachLocalStream();
     }
     return () => {
-      if (videoEle && !remote) {
+      if (videoEle && videoEle.srcObject && !remote) {
         // 及时清理掉cloned之后的stream
         videoEle.srcObject.getTracks().forEach((t) => t.stop());
         videoEle.srcObject = null;
@@ -146,13 +146,24 @@ function Camera({
     }
   };
   // 音视频
-  const setMedia = ({ type = 'video', enable = true }) => {
+  const setMedia = async ({ type = 'video', enable = true }) => {
     console.log('start toggle media');
     let stream = videoRef.current.srcObject;
     const tracks = type == 'video' ? stream.getVideoTracks() : stream.getAudioTracks();
-    tracks.forEach((t) => {
-      t.enabled = enable;
-    });
+    // if (tracks.length) {
+    if (enable) {
+      // add track
+      const st = await enableStream();
+      const newTracks = type == 'video' ? st.getVideoTracks() : st.getAudioTracks();
+      stream.addTrack(newTracks[0]);
+    } else {
+      // 暂存
+      tracks.forEach((t) => {
+        t.stop();
+      });
+      stream.removeTrack(tracks[0]);
+    }
+    // }
     setControls((prev) => {
       return { ...prev, [type]: enable };
     });
