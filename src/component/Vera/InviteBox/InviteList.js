@@ -80,14 +80,11 @@ const pushNotify = async (host, id, url) => {
 export default function InviteList({ link = '', username = '' }) {
   // const { copied, copy } = useCopy();
   const { data, error, loading } = useSWR(
-    username
-      ? `https://api.yangerxiao.com/service/authing/vera/${encodeURIComponent(username)}/userlist`
-      : null,
+    username ? `//vera.nicegoodthings.com/members/authing/${username}` : null,
     fetcher
   );
   const [userStatus, setUserStatus] = useState([]);
 
-  useEffect(() => {}, [username]);
   useEffect(() => {
     data && setUserStatus(data.map(() => inviteTxt));
   }, [data]);
@@ -132,13 +129,12 @@ export default function InviteList({ link = '', username = '' }) {
   return (
     <StyledList>
       {data.map((user, idx) => {
-        const { username, name, nickname, photo, tracerId } = user;
-        const finalName = username || name || nickname;
+        const { username, photo, tracerId } = user;
         return (
-          <li key={`${finalName}-${idx}-${userStatus[idx]}`} className="user">
+          <li key={`${username}-${idx}-${userStatus[idx]}`} className="user">
             <img src={photo} alt="avator" className="avator" />
-            <span className="name">{finalName}</span>
-            <Button onClick={() => handleInvite(idx, finalName, tracerId, link)}>
+            <span className="name">{username}</span>
+            <Button onClick={() => handleInvite(idx, username, tracerId, link)}>
               {userStatus[idx]}
             </Button>
           </li>
