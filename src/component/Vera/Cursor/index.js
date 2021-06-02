@@ -36,6 +36,7 @@ export default function Cursor({ id, username = 'Guest', color = '#f4ea2a' }) {
       //  不是当前鼠标的更新数据
       if (pid !== id) return;
       const { selection } = data;
+      console.log({ selection });
       try {
         rangy.deserializeSelection(selection);
       } catch (error) {
@@ -105,7 +106,9 @@ const bindCursorSync = ({ conn }) => {
     () => {
       try {
         let selection = rangy.getSelection();
-        if (selection) {
+        console.log('wtf', { selection });
+
+        if (selection && !selection.isCollapsed) {
           selection = rangy.serializeSelection(selection, true);
           sendData(conn, {
             type: EVENTS.CURSOR_SELECT,
