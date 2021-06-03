@@ -152,10 +152,20 @@ function shallowEqual(object1, object2) {
   return true;
 }
 const stopVideoStreams = () => {
+  window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
+    // t.enabled = false;
+    t.stop();
+  });
+  window.LOCAL_MEDIA_STREAM = null;
   document
     .querySelector('#VERA_FULLSCREEN_CONTAINER')
     .querySelectorAll('video')
-    .forEach((v) => v.srcObject.getTracks().forEach((t) => t.stop()));
+    .forEach((v) => {
+      let st = v.srcObject;
+      if (st) {
+        st.getTracks().forEach((t) => t.stop());
+      }
+    });
 };
 export {
   getVideoPlayer,

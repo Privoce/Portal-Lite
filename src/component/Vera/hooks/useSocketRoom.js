@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 import { getUser } from './utils';
+import emitter, { EVENTS } from './useEmitter';
 import { destoryCursor } from '../Cursor';
 
 const PEER_JOIN_EVENT = 'PEER_JOIN_EVENT';
 const PEER_LEAVE_EVENT = 'PEER_LEAVE_EVENT';
 const CURRENT_PEERS = 'CURRENT_PEERS_EVENT';
 const SOCKET_SERVER_URL = '//vera.nicegoodthings.com';
-// const SOCKET_SERVER_URL = '//localhost:4000';
+// const SOCKET_SERVER_URL = 'http://localhost:4000';
 
 const useSocketRoom = (roomId) => {
   const [users, setUsers] = useState([]);
@@ -16,6 +17,7 @@ const useSocketRoom = (roomId) => {
   const [isHost, setIsHost] = useState(true);
   const [peerId, setPeerId] = useState(null);
   const socketRef = useRef(null);
+
   useEffect(() => {
     const initUser = async () => {
       let curr = await getUser();
@@ -47,17 +49,23 @@ const useSocketRoom = (roomId) => {
     // 房间当前有哪些人 只触发一次
     socket.on(CURRENT_PEERS, (users) => {
       console.log('io current users', users);
-      setIsHost(users.length == 0);
+      let host = users.length == 0;
+      setIsHost(host);
       setUsers(users);
+      // host则立即开始监听房间新加入人员事件
+      socket.on(PEER_JOIN_EVENT, (user) => {
+        console.log('io join event', user);
+        if (user.id === socket.id) return;
+        setUsers((users) => [...users, user]);
+        if (host) {
+          // 只有host才触发去主动连接对方
+          emitter.emit(EVENTS.NEW_PEER, user.peerId);
+        }
+      });
       // 拿到了房间当前人员列表，才算初始化完
       setInitializing(false);
     });
-    // 房间新加入人员事件
-    socket.on(PEER_JOIN_EVENT, (user) => {
-      console.log('io join event', user);
-      if (user.id === socket.id) return;
-      setUsers((users) => [...users, user]);
-    });
+
     // 离开房间事件
     socket.on(PEER_LEAVE_EVENT, (user) => {
       destoryCursor({ id: user.peerId });
@@ -68,10 +76,23 @@ const useSocketRoom = (roomId) => {
       socket.disconnect();
     };
   }, [roomId, user, peerId]);
+  const sendSocketMessage = (data) => {
+    const { cmd = 'NEW_PEER' } = data;
+    // 开始监听房间新加入人员事件
+    let currSocket = socketRef.current;
+
+    if (cmd == 'NEW_PEER') {
+      currSocket.on(PEER_JOIN_EVENT, (user) => {
+        emitter.emit(EVENTS.NEW_PEER, user.peerId);
+      });
+    }
+    currSocket.send(data);
+  };
   const updatePeerId = (id) => {
     setPeerId(id);
   };
   return {
+    sendSocketMessage,
     initializing,
     updatePeerId,
     users,

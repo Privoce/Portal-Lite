@@ -30,30 +30,11 @@ const StyledBox = styled.div`
   }
 `;
 let clicked = false;
-export default function JoinBox({
-  peerClient,
-  peerIds = [],
-  addMediaConnection,
-  addDatachannelConnection
-}) {
+export default function JoinBox({ sendSocketMessage }) {
   const { username } = useUsername();
   const handleJoin = () => {
     if (clicked) return;
-    if (!window.LOCAL_MEDIA_STREAM) {
-      alert('Local MediaStream Null');
-      return;
-    }
-    console.log({ peerIds });
-    peerIds.forEach((id) => {
-      console.log('send username with media conn', username);
-      // 建立datachannel连接
-      let dataConn = peerClient.connect(id);
-      addDatachannelConnection(dataConn);
-      // 建立音视频连接
-      let newMediaConn = peerClient.call(id, window.LOCAL_MEDIA_STREAM);
-      console.log({ newMediaConn });
-      addMediaConnection(newMediaConn);
-    });
+    sendSocketMessage({ cmd: 'NEW_PEER' });
     clicked = true;
   };
   // {ready ? (username ? joinTxt : joinAsGuestTxt) : `${prepareTxt}...`}

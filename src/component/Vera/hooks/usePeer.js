@@ -62,8 +62,19 @@ const usePeer = (updatePeerId) => {
   // 初始化Peer
   useEffect(() => {
     if (!myPeer) {
-      let tmp = new Peer(peerConfig);
-      setMyPeer(tmp);
+      let newPeerClient = new Peer(peerConfig);
+      setMyPeer(newPeerClient);
+      // 有新加入者
+      emitter.on(EVENTS.NEW_PEER, (pid) => {
+        console.log('new peer added', pid);
+        // 建立datachannel连接
+        let dataConn = newPeerClient.connect(pid);
+        initDataChannel(dataConn);
+        // 建立音视频连接
+        let newMediaConn = newPeerClient.call(pid, window.LOCAL_MEDIA_STREAM);
+        console.log({ newMediaConn });
+        addMediaConnection(newMediaConn);
+      });
     }
   }, [myPeer]);
   const clearUpConnect = (conn = null) => {
@@ -176,10 +187,6 @@ const usePeer = (updatePeerId) => {
       destoryCursor({ id: pid });
       conn.close();
     });
-    window.LOCAL_MEDIA_STREAM?.getTracks().forEach((t) => {
-      t.stop();
-    });
-    window.LOCAL_MEDIA_STREAM = null;
     myPeer.destroy();
     stopVideoStreams();
   }, [myPeer, streams]);

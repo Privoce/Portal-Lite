@@ -21,6 +21,7 @@ window.VERA_EMITTER = window.VERA_EMITTER || {
 const emitter = window.VERA_EMITTER;
 export default emitter;
 const EVENTS = {
+  NEW_PEER: 'NEW.PEER.ADDED',
   SYNC_PLAYER: 'SYNC.PLAYER',
   TOGGLE_CURSOR: 'CURSOR',
   CURSOR_SELECT: 'CURSOR.SELECT',

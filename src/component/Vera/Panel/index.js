@@ -35,17 +35,13 @@ export default function Panel({
 }) {
   const { dark, updateDarkTheme } = useDarkTheme();
   const { permissions } = useUserMedia();
-  const { initializing, updatePeerId, users, user, isHost } = useSocketRoom(roomId);
-  const {
-    peer,
-    shutdownPeer,
-    dataConnections,
-    mediaConnections,
-    addDatachannelConnection,
-    addMediaConnection,
-    streams,
-    status
-  } = usePeer(updatePeerId);
+
+  const { initializing, updatePeerId, users, user, isHost, sendSocketMessage } = useSocketRoom(
+    roomId
+  );
+  const { peer, shutdownPeer, dataConnections, mediaConnections, streams, status } = usePeer(
+    updatePeerId
+  );
   const [videoSync, setVideoSync] = useState(true);
   const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
@@ -54,6 +50,7 @@ export default function Panel({
   const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
+  const [filteredMediaConns, setFilteredMediaConns] = useState([]);
 
   const handleLayout = ({ target }) => {
     if (target.classList.contains('curr')) return;
@@ -66,6 +63,15 @@ export default function Panel({
       used = true;
     }
   }, [streams]);
+  //更新过滤后的media connects
+  useEffect(() => {
+    console.log('useeffect', users, mediaConnections);
+    let filters = Object.entries(mediaConnections).filter(([pid]) => {
+      // return true;
+      return users.some((u) => u.peerId == pid);
+    });
+    setFilteredMediaConns(filters);
+  }, [users, mediaConnections]);
   const initDraggable = () => {
     let dragEle = panelRef.current;
     let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
@@ -133,14 +139,11 @@ export default function Panel({
     };
     sendDataToPeers(cmd);
   };
-  const filteredMedias = Object.entries(mediaConnections).filter(([pid]) => {
-    return users.some((u) => u.peerId == pid);
-  });
   const renderCameras = () => {
     // if (!panelRef.current) return null;
-    let count = filteredMedias.length;
+    let count = filteredMediaConns.length;
     const remotes = count
-      ? filteredMedias.map(([pid, conn]) => {
+      ? filteredMediaConns.map(([pid, conn]) => {
           let st = streams[pid];
           let username = { value: users.filter((u) => u.peerId == pid)[0]?.username };
           console.log('current camera username', username);
@@ -187,7 +190,12 @@ export default function Panel({
         }}
       >
         <SwiperSlide>
-          <Camera dataConnections={dataConnections} peerId={peer?.id} remote={false} />
+          <Camera
+            dataConnections={dataConnections}
+            mediaConnections={mediaConnections}
+            peerId={peer?.id}
+            remote={false}
+          />
         </SwiperSlide>
         {remotes}
       </Swiper>
@@ -195,6 +203,7 @@ export default function Panel({
       [
         <Camera
           key={peer?.id}
+          mediaConnections={mediaConnections}
           dataConnections={dataConnections}
           peerId={peer?.id}
           remote={false}
@@ -203,7 +212,7 @@ export default function Panel({
       ]
     );
   };
-  let remoteCount = Object.keys(filteredMedias).length;
+  let remoteCount = Object.keys(filteredMediaConns).length;
   let noConnection = remoteCount == 0;
   let cameraSlides = remoteCount > 2;
   // let reset='reset'==status;
@@ -265,13 +274,7 @@ export default function Panel({
             used ? (
               <Invite roomId={roomId} />
             ) : (
-              <Join
-                ready={status == STATUS.READY}
-                peerClient={peer}
-                peerIds={users.map((u) => u.peerId)}
-                addDatachannelConnection={addDatachannelConnection}
-                addMediaConnection={addMediaConnection}
-              />
+              <Join sendSocketMessage={sendSocketMessage} />
             )
           ) : (
             <Invite roomId={roomId} />
