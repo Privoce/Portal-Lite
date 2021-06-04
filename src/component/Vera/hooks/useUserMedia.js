@@ -28,32 +28,38 @@ export default function useUserMedia() {
   const [error, setError] = useState(null);
   const [cameraPermissionStatus, setCameraPermissionStatus] = useState(null);
   const [micPermissionStatus, setMicPermissionStatus] = useState(null);
+  const getUserMedia = async () => {
+    // 一次性获取两个授权
+    let devices = await navigator.mediaDevices.enumerateDevices();
+    let hasCamera = devices.some((d) => {
+      return d.kind == 'videoinput';
+    });
+    let hasAudio = devices.some((d) => {
+      return d.kind == 'audioinput';
+    });
+    let mediaConfig =
+      hasCamera && hasAudio
+        ? fullStreamConfig
+        : hasCamera
+        ? videoStreamConfig
+        : hasAudio
+        ? audioStreamConfig
+        : null;
+    if (mediaConfig) {
+      const stream = await navigator.mediaDevices.getUserMedia(mediaConfig);
+      window.LOCAL_MEDIA_STREAM = null;
+      window.LOCAL_MEDIA_STREAM = stream;
+      return stream;
+    }
+    // 既没有摄像头 也没有麦克风
+    return null;
+  };
   const enableStream = async () => {
-    // if (mediaStream) return mediaStream;
+    if (mediaStream) return mediaStream;
     try {
-      // 一次性获取两个授权
-      let devices = await navigator.mediaDevices.enumerateDevices();
-      let hasCamera = devices.some((d) => {
-        return d.kind == 'videoinput';
-      });
-      let hasAudio = devices.some((d) => {
-        return d.kind == 'audioinput';
-      });
-      let mediaConfig =
-        hasCamera && hasAudio
-          ? fullStreamConfig
-          : hasCamera
-          ? videoStreamConfig
-          : hasAudio
-          ? audioStreamConfig
-          : null;
-      if (mediaConfig) {
-        const stream = await navigator.mediaDevices.getUserMedia(mediaConfig);
-        setMediaStream(stream);
-        return stream;
-      }
-      // 既没有摄像头 也没有麦克风
-      return null;
+      const st = await getUserMedia();
+      setMediaStream(st);
+      return st;
     } catch (error) {
       let { name } = error;
       console.log(error, { name });
@@ -86,11 +92,6 @@ export default function useUserMedia() {
       console.log({ ps });
     };
     getAllPermissions();
-    enableStream().then((st) => {
-      if (st) {
-        st.getTracks().forEach((t) => t.stop());
-      }
-    });
   }, []);
   // 更新到全局变量
   useEffect(() => {
@@ -112,10 +113,15 @@ export default function useUserMedia() {
     : ps.filter((p) => p == 'granted').length == 2
     ? 'granted'
     : 'error';
+  useEffect(() => {
+    if (permissions == 'prompt') {
+      getUserMedia();
+    }
+  }, [permissions]);
   return {
+    getUserMedia,
     mediaStream,
     permissions,
-
     enableStream,
     stopStream,
     error
