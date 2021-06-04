@@ -48,7 +48,7 @@ export default function Cursor({ id, username = 'Guest', color = '#f4ea2a' }) {
     wrapper.current.classList.remove('clicked');
   };
   return (
-    <StyledCursor id={id} ref={wrapper} color={color} onAnimationEnd={handleAniEnd}>
+    <StyledCursor ref={wrapper} color={color} onAnimationEnd={handleAniEnd}>
       <div className="circle"></div>
       <Pointer color={color}></Pointer>
       {username ? <span className="name">{username}</span> : null}
@@ -70,6 +70,7 @@ const initCursor = ({ id, username, color }) => {
 };
 const destoryCursor = ({ id }) => {
   let wrapper = document.getElementById(id);
+  console.log('remove cursor', { id, wrapper });
   wrapper?.remove();
 };
 const sendData = (conn, data) => {

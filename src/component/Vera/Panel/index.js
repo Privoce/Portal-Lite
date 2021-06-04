@@ -1,10 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import Camera from '../Camera';
-import SwiperCore, { Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import IconArrowLeft from '../icons/ArrowLeft';
-import IconArrowRight from '../icons/ArrowRight';
+
 import Invite from '../InviteBox';
 import Join from '../JoinBox';
 import usePeer from '../hooks/usePeer';
@@ -21,8 +16,8 @@ import PermissionTip from './PermissionTip';
 import { STATUS } from '../hooks/useEmitter';
 import useSocketRoom from '../hooks/useSocketRoom';
 import Loading from '../Loading';
+import CameraList from './CameraList';
 
-SwiperCore.use([Navigation]);
 const quitConfirmTxt = chrome.i18n.getMessage('quitConfirm');
 
 let used = false;
@@ -36,9 +31,7 @@ export default function Panel({
   const { dark, updateDarkTheme } = useDarkTheme();
   const { permissions } = useUserMedia();
 
-  const { initializing, updatePeerId, users, user, isHost, sendSocketMessage } = useSocketRoom(
-    roomId
-  );
+  const { initializing, updatePeerId, users, isHost, sendSocketMessage } = useSocketRoom(roomId);
   const { peer, shutdownPeer, dataConnections, mediaConnections, streams, status } = usePeer(
     updatePeerId
   );
@@ -48,7 +41,7 @@ export default function Panel({
   const [movePosition, setMovePosition] = useState({ left: 0, top: 0 });
   const [layout, setLayout] = useState('hz');
   const panelRef = useRef(null);
-  const [filteredMediaConns, setFilteredMediaConns] = useState([]);
+  const [remoteUsers, setRemoteUsers] = useState([]);
 
   const handleLayout = ({ target }) => {
     if (target.classList.contains('curr')) return;
@@ -63,13 +56,10 @@ export default function Panel({
   }, [streams]);
   //更新过滤后的media connects
   useEffect(() => {
-    console.log('useeffect', users, mediaConnections);
-    let filters = Object.entries(mediaConnections).filter(([pid]) => {
-      // return true;
-      return users.some((u) => u.peerId == pid);
-    });
-    setFilteredMediaConns(filters);
-  }, [users, mediaConnections]);
+    if (peer) {
+      setRemoteUsers(users.filter((u) => u.peerId !== peer.id));
+    }
+  }, [users, peer]);
   const initDraggable = () => {
     let dragEle = panelRef.current;
     let containment = document.querySelector('#VERA_FULLSCREEN_CONTAINER');
@@ -113,93 +103,13 @@ export default function Panel({
       conn.send(cmd);
     });
   };
-  const renderCameras = () => {
-    // if (!panelRef.current) return null;
-    let count = filteredMediaConns.length;
-    const remotes = count
-      ? filteredMediaConns.map(([pid, conn]) => {
-          let st = streams[pid];
-          let username = { value: users.filter((u) => u.peerId == pid)[0]?.username };
-          console.log('current camera username', username);
-          return count > 2 ? (
-            <SwiperSlide>
-              <Camera
-                username={username}
-                peerId={pid}
-                key={pid}
-                mediaConnection={conn}
-                dataConnection={dataConnections[pid]}
-                mediaStream={st}
-              />
-            </SwiperSlide>
-          ) : (
-            <Camera
-              username={username}
-              peerId={pid}
-              key={pid}
-              mediaConnection={conn}
-              dataConnection={dataConnections[pid]}
-              mediaStream={st}
-            />
-          );
-        })
-      : [];
-    return count > 2 ? (
-      <Swiper
-        // direction={'vertical'}
-        direction={layout == 'vt' ? 'vertical' : 'horizontal'}
-        observer={true}
-        resizeObserver={true}
-        slidesPerView={layout == 'one' ? 1 : 3}
-        spaceBetween={layout == 'one' ? 0 : 15}
-        navigation={{
-          prevEl: panelRef.current.querySelector('.cameras .nav.prev'),
-          nextEl: panelRef.current.querySelector('.cameras .nav.next')
-        }}
-        onUpdate={() => {
-          console.log('swiper update');
-        }}
-        onDestroy={() => {
-          console.log('swiper destory');
-        }}
-      >
-        <SwiperSlide>
-          <Camera
-            dataConnections={dataConnections}
-            mediaConnections={mediaConnections}
-            peerId={peer?.id}
-            remote={false}
-          />
-        </SwiperSlide>
-        {remotes}
-      </Swiper>
-    ) : (
-      [
-        <Camera
-          key={peer?.id}
-          mediaConnections={mediaConnections}
-          dataConnections={dataConnections}
-          peerId={peer?.id}
-          remote={false}
-        />,
-        ...remotes
-      ]
-    );
-  };
-  let remoteCount = Object.keys(filteredMediaConns).length;
-  let noConnection = remoteCount == 0;
-  let cameraSlides = remoteCount > 2;
-  // let reset='reset'==status;
+  let joined = !!users.find((u) => u.peerId == peer?.id);
+  let noConnection = remoteUsers.length == 0 || !joined;
+
   let miniLayout = layout == 'min';
   let boxVisible = noConnection && !miniLayout;
   let { width, height } = panelSize;
-  let camerasStyle = cameraSlides
-    ? layout == 'vt'
-      ? { height: 'calc(60em + 30px)' }
-      : layout == 'one'
-      ? { width: '20em' }
-      : { width: 'calc(60em + 30px)' }
-    : {};
+  console.log({ noConnection, miniLayout });
   // tip for permission
   if (['prompt', 'denied'].includes(permissions)) {
     return (
@@ -215,7 +125,7 @@ export default function Panel({
         <Loading />
       </StyledWrapper>
     );
-  console.log('current user', user);
+  console.log('users', users);
 
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
@@ -226,23 +136,17 @@ export default function Panel({
         style={{ width: `${width}px`, height: `${height}px`, fontSize: `${(width / 440) * 10}px` }}
       >
         {floatVisible && <Invite float={true} roomId={roomId} />}
-        <div
-          className={`cameras ${cameraSlides ? 'slides' : ''}`}
-          data-count={`+ ${remoteCount - 2}`}
-          style={camerasStyle}
-        >
-          {cameraSlides && (
-            <div className="nav prev">
-              <IconArrowLeft />
-            </div>
-          )}
-          {renderCameras()}
-          {cameraSlides && (
-            <div className="nav next">
-              <IconArrowRight />
-            </div>
-          )}
-        </div>
+        {/* camera list */}
+        <CameraList
+          joined={joined}
+          streams={streams}
+          peerId={peer?.id}
+          remoteUsers={remoteUsers}
+          panelRef={panelRef}
+          layout={layout}
+          dataConnections={dataConnections}
+          mediaConnections={mediaConnections}
+        />
         {boxVisible ? (
           !isHost ? (
             used ? (

@@ -1,18 +1,23 @@
 import { useState, useEffect, useRef, memo } from 'react';
 import Username from '../Username';
 import { stringToHexColor } from '../hooks/utils';
-import { initCursor, bindCursorSync } from '../Cursor';
+import { initCursor, bindCursorSync, destoryCursor } from '../Cursor';
 
 import ErrorMask from './ErrorMask';
 import OffMask from './CameraOffMask';
 import BgOffMask from './BgRemoveMask';
 import useUserMedia from '../hooks/useUserMedia';
+import { STATUS } from '../hooks/useEmitter';
 import StyledWrapper from './styled';
 import Controls from './Controls';
-
+const Tips = {
+  [STATUS.WAITING]: 'waiting',
+  [STATUS.JOINING]: 'joining'
+};
 // const tipProcessing = chrome.i18n.getMessage('tipProcessing');
 // status: loading ready error
 function Camera({
+  status,
   username = { value: 'Guest', fake: true },
   peerId,
   remote = true,
@@ -50,7 +55,14 @@ function Camera({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remote, peerId]);
-
+  useEffect(() => {
+    return () => {
+      // 及时销毁鼠标
+      if (peerId) {
+        destoryCursor({ id: peerId });
+      }
+    };
+  }, [peerId]);
   useEffect(() => {
     let videoEle = videoRef.current;
     if (mediaStream) {
@@ -81,6 +93,7 @@ function Camera({
     setLoaded(true);
   };
   if (error) return <ErrorMask tip={error.tip} />;
+
   const { video, bg } = controls;
   const color = stringToHexColor(peerId);
   console.log({ video, loaded });
@@ -90,6 +103,9 @@ function Camera({
         {/* <span>{peerId.substr(-5)}</span> */}
         <Username local={!remote} readonly={remote} name={username.value} />
 
+        {[STATUS.WAITING, STATUS.JOINING].includes(status) && (
+          <OffMask style={{ backgroundColor: color }} tip={Tips[status]} peerId={peerId} />
+        )}
         {(!video || !loaded) && <OffMask style={{ backgroundColor: color }} />}
         {!bg && <BgOffMask video={videoRef.current} />}
         <video

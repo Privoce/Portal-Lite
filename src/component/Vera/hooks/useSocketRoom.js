@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 import { getUser } from './utils';
 import emitter, { EVENTS } from './useEmitter';
-import { destoryCursor } from '../Cursor';
+// import { destoryCursor } from '../Cursor';
 
 const PEER_JOIN_EVENT = 'PEER_JOIN_EVENT';
 const PEER_LEAVE_EVENT = 'PEER_LEAVE_EVENT';
@@ -46,30 +46,34 @@ const useSocketRoom = (roomId) => {
     socket.on('message', (wtf) => {
       console.log('io message', wtf);
     });
-    // 房间当前有哪些人 只触发一次
-    socket.on(CURRENT_PEERS, (users) => {
+    // 房间当前有哪些人 服务器端来判断是否是host
+    socket.on(CURRENT_PEERS, ({ users, host = false, update = false }) => {
       console.log('io current users', users);
-      let host = users.length == 0;
-      setIsHost(host);
       setUsers(users);
-      // host则立即开始监听房间新加入人员事件
-      socket.on(PEER_JOIN_EVENT, (user) => {
-        console.log('io join event', user);
-        if (user.id === socket.id) return;
-        setUsers((users) => [...users, user]);
-        if (host) {
-          // 只有host才触发去主动连接对方
-          emitter.emit(EVENTS.NEW_PEER, user.peerId);
-        }
-      });
-      // 拿到了房间当前人员列表，才算初始化完
-      setInitializing(false);
+      // 首次
+      if (!update) {
+        setIsHost(host);
+
+        // 立即开始监听房间新加入人员事件
+        socket.on(PEER_JOIN_EVENT, (user) => {
+          console.log('io join event', user);
+          if (user.id === socket.id) return;
+          setUsers((users) => [...users, user]);
+          // 过滤下
+          if (user.peerId !== peerId) {
+            emitter.emit(EVENTS.NEW_PEER, user.peerId);
+          }
+        });
+        // 拿到了房间当前人员列表，才算初始化完
+        setInitializing(false);
+      }
     });
 
     // 离开房间事件
     socket.on(PEER_LEAVE_EVENT, (user) => {
-      destoryCursor({ id: user.peerId });
-      setUsers((users) => users.filter((u) => u.id !== user.id));
+      console.log('io leave user', user);
+      // destoryCursor({ id: user.peerId });
+      setUsers((users) => users.filter((u) => u.peerId !== user.peerId));
     });
 
     return () => {
@@ -77,15 +81,16 @@ const useSocketRoom = (roomId) => {
     };
   }, [roomId, user, peerId]);
   const sendSocketMessage = (data) => {
-    const { cmd = 'NEW_PEER' } = data;
+    // const { cmd = 'NEW_PEER' } = data;
     // 开始监听房间新加入人员事件
     let currSocket = socketRef.current;
 
-    if (cmd == 'NEW_PEER') {
-      currSocket.on(PEER_JOIN_EVENT, (user) => {
-        emitter.emit(EVENTS.NEW_PEER, user.peerId);
-      });
-    }
+    // if (cmd == 'NEW_PEER') {
+    //   currSocket.on(PEER_JOIN_EVENT, (user) => {
+    //     console.log('io join event second', user);
+    //     emitter.emit(EVENTS.NEW_PEER, user.peerId);
+    //   });
+    // }
     currSocket.send(data);
   };
   const updatePeerId = (id) => {
