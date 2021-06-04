@@ -17,15 +17,22 @@ const useUsername = (defaultName = '') => {
     });
     chrome.storage.onChanged.addListener((changes, area) => {
       console.log({ changes, area });
-      if (area == 'sync' && changes.user?.newValue) {
-        let { username } = changes.user.newValue;
-        setName(username);
-        setFake(false);
-      }
-      if (area == 'sync' && changes.fakename?.newValue) {
-        let newName = changes.fakename.newValue;
-        setName(newName);
-        setFake(true);
+      if (area == 'sync') {
+        const { user, fakename } = changes;
+        if (user) {
+          let { newValue = null } = user || {};
+          if (newValue) {
+            let { username } = user.newValue;
+            setName(username);
+          } else {
+            setName(null);
+          }
+          setFake(false);
+        } else if (fakename) {
+          let { newValue = null } = fakename || {};
+          setName(newValue);
+          setFake(true);
+        }
       }
     });
     return () => {
