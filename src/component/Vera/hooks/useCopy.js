@@ -10,11 +10,13 @@ const copyToClipboard = (str) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
+const hosts = ['figma.com', 'notion.so'];
+const enableUnLocker = !!hosts.filter((h) => location.hostname.indexOf(h) > -1).length;
 export default function useCopy(duration = 2000) {
   const [copied, setCopied] = useState(false);
   const copy = (content = '') => {
     if (copied || !content) return;
-    if (location.hostname.indexOf('figma') > -1) {
+    if (enableUnLocker) {
       unlocker.enable();
     }
     copyToClipboard(content);
@@ -22,7 +24,7 @@ export default function useCopy(duration = 2000) {
     setTimeout(() => {
       setCopied(false);
     }, duration);
-    if (location.hostname.indexOf('figma') > -1) {
+    if (enableUnLocker) {
       unlocker.disable();
     }
   };
