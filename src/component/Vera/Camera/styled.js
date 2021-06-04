@@ -59,57 +59,6 @@ const StyledWrapper = styled.div`
       width: -webkit-fill-available;
       height: 100%;
     }
-    .opts {
-      z-index: 7;
-      position: absolute;
-      bottom: 3em;
-      left: 50%;
-      padding: 0.5em;
-      display: flex;
-      transform: translateX(-50%);
-      gap: 0.4em;
-      .opt {
-        padding: 0;
-        border: none;
-        border-radius: 50%;
-        height: 2em !important;
-        width: 2em !important;
-        min-width: unset;
-        background-size: 65%;
-        background-repeat: no-repeat;
-        background-position: center;
-        cursor: pointer;
-        background-color: transparent;
-        &:hover {
-          background-color: var(--vera-panel-bg-color);
-        }
-        &.bg {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.svg`});
-          &[data-status='false'] {
-            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/bg.rm.off.svg`});
-          }
-        }
-        &.video {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.on.svg`});
-          &[data-status='false'] {
-            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/video.off.svg`});
-          }
-        }
-        &.audio {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.on.svg`});
-          &[data-status='false'] {
-            background-color: #863733;
-            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/audio.off.svg`});
-          }
-        }
-        &.pin {
-          background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.off.svg`});
-          &[data-status='false'] {
-            background-image: url(${`chrome-extension://${chrome.runtime.id}/crx/vera/assets/icon/pin.svg`});
-          }
-        }
-      }
-    }
   }
 `;
 
