@@ -18,7 +18,7 @@ import Setting from './Setting';
 import Info from './Info';
 import Resize from './Resize';
 import PermissionTip from './PermissionTip';
-import { EVENTS, STATUS } from '../hooks/useEmitter';
+import { STATUS } from '../hooks/useEmitter';
 import useSocketRoom from '../hooks/useSocketRoom';
 import Loading from '../Loading';
 
@@ -42,8 +42,6 @@ export default function Panel({
   const { peer, shutdownPeer, dataConnections, mediaConnections, streams, status } = usePeer(
     updatePeerId
   );
-  const [videoSync, setVideoSync] = useState(true);
-  const [enableCursor, setEnableCursor] = useState(true);
   const [resizing, setResizing] = useState(false);
   const [floatVisible, setFloatVisible] = useState(false);
   const [panelSize, setPanelSize] = useState({ width: 440, height: 250 });
@@ -114,30 +112,6 @@ export default function Panel({
     Object.entries(dataConnections).forEach(([, conn]) => {
       conn.send(cmd);
     });
-  };
-  const toggleCursor = () => {
-    let cmd = {
-      type: EVENTS.TOGGLE_CURSOR,
-      data: {
-        peer: peer.id,
-        enable: !enableCursor
-      }
-    };
-    sendDataToPeers(cmd);
-    setEnableCursor((prev) => !prev);
-  };
-  const toggleVideoSync = () => {
-    setVideoSync((prev) => !prev);
-  };
-  const syncPlayerToPeers = (payload) => {
-    let cmd = {
-      type: EVENTS.SYNC_PLAYER,
-      data: {
-        peer: peer?.id,
-        payload
-      }
-    };
-    sendDataToPeers(cmd);
   };
   const renderCameras = () => {
     // if (!panelRef.current) return null;
@@ -281,11 +255,8 @@ export default function Panel({
           )
         ) : null}
         <Topbar
-          cursor={enableCursor}
-          videoSync={videoSync}
-          toggleVideoSync={toggleVideoSync}
-          syncPlayerToPeers={syncPlayerToPeers}
-          toggleCursor={toggleCursor}
+          sendDataToPeers={sendDataToPeers}
+          peerId={peer?.id}
           inviteVisible={floatVisible}
           toggleInviteVisible={toggleInviteVisible}
           layout={layout}

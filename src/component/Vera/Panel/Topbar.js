@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import IconCursor from '../icons/Cursor';
@@ -91,19 +91,43 @@ const layouts = {
   )
 };
 export default function Topbar({
+  peerId,
+  sendDataToPeers,
   layout,
   inviteVisible = false,
   toggleInviteVisible,
-  cursor = true,
-  videoSync = true,
-  toggleVideoSync,
-  syncPlayerToPeers,
-  toggleCursor,
   handleLayout,
   chatVisible = false,
   toggleChatBoxVisible
 }) {
   const { player, setPlayTime, setPlay, setPause } = usePagePlayer();
+  const [cursor, setCursor] = useState(true);
+  const [videoSync, setVideoSync] = useState(true);
+  const toggleVideoSync = () => {
+    setVideoSync((prev) => !prev);
+  };
+  const toggleCursor = () => {
+    let cmd = {
+      type: EVENTS.TOGGLE_CURSOR,
+      data: {
+        peer: peerId,
+        enable: !cursor
+      }
+    };
+    sendDataToPeers(cmd);
+    setCursor((prev) => !prev);
+  };
+
+  const syncPlayerToPeers = (payload) => {
+    let cmd = {
+      type: EVENTS.SYNC_PLAYER,
+      data: {
+        peer: peerId,
+        payload
+      }
+    };
+    sendDataToPeers(cmd);
+  };
   useEffect(() => {
     const handlePlayerEvent = ({ target, type }) => {
       console.log('seek time', type);
