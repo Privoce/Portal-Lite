@@ -11,6 +11,7 @@ const SOCKET_SERVER_URL = '//vera.nicegoodthings.com';
 // const SOCKET_SERVER_URL = 'http://localhost:4000';
 
 const useSocketRoom = (roomId) => {
+  const [temp, setTemp] = useState(false)
   const [users, setUsers] = useState([]);
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
@@ -36,8 +37,17 @@ const useSocketRoom = (roomId) => {
     if (!user || !roomId || !peerId || socketRef.current) {
       return;
     }
+    let finalRoomId = roomId;
+    let temp = false;
+    let link = '';
+    if (roomId.endsWith('.temp')) {
+      setTemp(true)
+      temp = true;
+      link = location.href;
+      finalRoomId = roomId.split('.temp')[0]
+    }
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
-      query: { roomId, peerId, ...user }
+      query: { roomId: finalRoomId, link, temp, peerId, ...user }
     });
     const socket = socketRef.current;
     socket.on('connect', () => {
@@ -97,6 +107,7 @@ const useSocketRoom = (roomId) => {
     setPeerId(id);
   };
   return {
+    temp,
     sendSocketMessage,
     initializing,
     updatePeerId,

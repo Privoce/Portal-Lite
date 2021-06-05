@@ -31,7 +31,7 @@ export default function Panel({
   const { dark, updateDarkTheme } = useDarkTheme();
   const { permissions } = useUserMedia();
 
-  const { initializing, updatePeerId, users, isHost, sendSocketMessage } = useSocketRoom(roomId);
+  const { temp: tempRoom, initializing, updatePeerId, users, isHost, sendSocketMessage } = useSocketRoom(roomId);
   const { peer, shutdownPeer, dataConnections, mediaConnections, streams, status } = usePeer(
     updatePeerId
   );
@@ -94,6 +94,13 @@ export default function Panel({
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {
+      if (tempRoom) {
+        let yes = confirm('do you want keep the temp room?');
+        if (yes) {
+          sendSocketMessage({ cmd: "KEEP_ROOM" })
+        }
+      }
+
       shutdownPeer();
       closePanel();
     }
