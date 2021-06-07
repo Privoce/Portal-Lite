@@ -45,7 +45,7 @@ function validateUrl(value) {
 
 const checkExtensionInstalled = (extid) => {
   extid = extid || 'ccegbnlnelhgaefimiaklaindffpfcmh';
-  const checkUrl = `chrome-extension://${extid}/crx/vera/assets/icon/logo.png`;
+  const checkUrl = `chrome-extension://${extid}/assets/icon/logo.png`;
   return new Promise((resolve) => {
     let img = document.createElement('img');
     img.src = checkUrl;
