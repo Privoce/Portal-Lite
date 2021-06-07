@@ -9,7 +9,7 @@ const PEER_LEAVE_EVENT = 'PEER_LEAVE_EVENT';
 const CURRENT_PEERS = 'CURRENT_PEERS_EVENT';
 const SOCKET_SERVER_URL = '//vera.nicegoodthings.com';
 // const SOCKET_SERVER_URL = 'http://localhost:4000';
-
+let joined = false;
 const useSocketRoom = (roomId) => {
   const [temp, setTemp] = useState(false)
   const [users, setUsers] = useState([]);
@@ -24,7 +24,7 @@ const useSocketRoom = (roomId) => {
       let curr = await getUser();
       if (curr) {
         let { id, username, photo } = curr;
-        setUser({ uid: id, username, avator: photo });
+        setUser({ uid: id, username, photo });
       } else {
         setUser({ username: 'Guest' });
       }
@@ -63,14 +63,16 @@ const useSocketRoom = (roomId) => {
       // 首次
       if (!update) {
         setIsHost(host);
-
+        if (host) {
+          joined = true
+        }
         // 立即开始监听房间新加入人员事件
         socket.on(PEER_JOIN_EVENT, (user) => {
           console.log('io join event', user);
           if (user.id === socket.id) return;
           setUsers((users) => [...users, user]);
           // 过滤下
-          if (user.peerId !== peerId) {
+          if (user.peerId !== peerId && joined) {
             emitter.emit(EVENTS.NEW_PEER, user.peerId);
           }
         });
@@ -102,6 +104,7 @@ const useSocketRoom = (roomId) => {
     //   });
     // }
     currSocket.send(data);
+    joined = true
   };
   const updatePeerId = (id) => {
     setPeerId(id);

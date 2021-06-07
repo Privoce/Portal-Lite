@@ -31,7 +31,7 @@ export default function Panel({
   const { dark, updateDarkTheme } = useDarkTheme();
   const { permissions } = useUserMedia();
 
-  const { temp: tempRoom, initializing, updatePeerId, users, isHost, sendSocketMessage } = useSocketRoom(roomId);
+  const { temp: tempRoom, initializing, updatePeerId, users, user: currentUser, isHost, sendSocketMessage } = useSocketRoom(roomId);
   const { peer, shutdownPeer, dataConnections, mediaConnections, streams, status } = usePeer(
     updatePeerId
   );
@@ -94,7 +94,9 @@ export default function Panel({
   const handleClose = () => {
     let letGo = Object.keys(dataConnections).length ? confirm(quitConfirmTxt) : true;
     if (letGo) {
-      if (tempRoom) {
+      // 登录了  而且是临时room
+      console.log({ currentUser });
+      if (tempRoom && currentUser.uid) {
         let yes = confirm('do you want keep the temp room?');
         if (yes) {
           sendSocketMessage({ cmd: "KEEP_ROOM" })
@@ -111,7 +113,7 @@ export default function Panel({
     });
   };
   let joined = !!users.find((u) => u.peerId == peer?.id);
-  let noConnection = remoteUsers.length == 0 || !joined;
+  let noConnection = !joined || remoteUsers.length == 0;
 
   let miniLayout = layout == 'min';
   let boxVisible = noConnection && !miniLayout;
@@ -132,7 +134,7 @@ export default function Panel({
         <Loading />
       </StyledWrapper>
     );
-  console.log('users', users);
+  console.log('invite box visible vars', boxVisible, used, isHost);
 
   return (
     <StyledWrapper className={resizing ? 'resizing' : ''}>
