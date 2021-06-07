@@ -13,7 +13,7 @@ import 'stream-chat-react/dist/css/index.css';
 import IconClose from '../icons/Close';
 import { getUser } from '../hooks/utils';
 import StyledWrapper from './styled';
-const chatClient = StreamChat.getInstance('fwcuynkafsqt', {
+const chatClient = StreamChat.getInstance('jev2d4qqmsq9', {
   timeout: 15000
 });
 let timer = null;
