@@ -40,11 +40,11 @@ const useSocketRoom = (roomId) => {
     let finalRoomId = roomId;
     let temp = false;
     let link = '';
-    if (roomId.endsWith('.temp')) {
+    if (roomId.endsWith('_temp')) {
       setTemp(true)
       temp = true;
       link = location.href;
-      finalRoomId = roomId.split('.temp')[0]
+      finalRoomId = roomId.split('_temp')[0]
     }
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
       query: { roomId: finalRoomId, link, temp, peerId, ...user }

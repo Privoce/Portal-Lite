@@ -74,7 +74,7 @@ export default function Vera() {
   const togglePanelVisible = async () => {
     if (!panelVisible) {
       //由不可见转为可见 设置临时room
-      setRoomId(`${Math.random().toString(36).substring(7)}.temp`);
+      setRoomId(`${Math.random().toString(36).substring(7)}_temp`);
     } else {
       //由可见转为不可见：充值room id
       setRoomId(null);
