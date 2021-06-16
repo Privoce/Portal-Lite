@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
-  padding: 0.2rem;
+  padding: 0;
+  height: 100%;
   .loading {
     font-size: 0.2rem;
     height: 100%;

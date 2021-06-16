@@ -7,8 +7,6 @@ const StyledMask = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 0.5em;
   .tip {
     font-size: 1.8em;
     color: red;

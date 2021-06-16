@@ -10,28 +10,28 @@ import { checkExtensionInstalled } from '../../util';
 import StyledWrapper from './styled';
 import StyledTip from './StyledTip';
 import RoomList from './RoomList';
-import AddRoomPopUp from './AddRoom';
+// import AddRoomPopUp from './AddRoom';
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://g.nicegoodthings.com/v1/graphql',
+    uri: 'https://vera.hasura.app/v1/graphql',
     headers: {
-      'x-hasura-admin-secret': 'tristan@privoce'
+      'x-hasura-admin-secret': 'y0JhNpKpRXdzSMc47jYUElHxn6jzVflV7tF7SqkexFGwGPH4qooyuB04MZyDFU3Q'
     }
   }),
   cache: new InMemoryCache()
 });
-export default function VeraHistory({ lang }) {
+export default function Vera() {
   const { authClient } = useAuthing({
     appId,
     appHost
   });
   const [extInstalled, setExtInstalled] = useState(undefined);
   const [username, setUsername] = useState(null);
-  const [addVisible, setAddVisible] = useState(false);
-  const toggleAddPopup = () => {
-    setAddVisible((prev) => !prev);
-  };
+  // const [addVisible, setAddVisible] = useState(false);
+  // const toggleAddPopup = () => {
+  //   setAddVisible((prev) => !prev);
+  // };
   useEffect(() => {
     const check = async () => {
       let installed = await checkExtensionInstalled();
@@ -59,12 +59,7 @@ export default function VeraHistory({ lang }) {
   return (
     <ApolloProvider client={client}>
       <StyledWrapper>
-        {username ? (
-          <RoomList username={username} lang={lang} toggleAddPopup={toggleAddPopup} />
-        ) : (
-          <StyledTip>Empty</StyledTip>
-        )}
-        {addVisible && <AddRoomPopUp username={username} togglePopupVisible={toggleAddPopup} />}
+        <RoomList username={username} />
       </StyledWrapper>
     </ApolloProvider>
   );

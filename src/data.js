@@ -1,6 +1,6 @@
 import { lazy } from 'react';
-const VeraHistory = lazy(() =>
-  import(/* webpackChunkName: "widget.VeraHistory" */ './widgets/VeraHistory')
+const Vera = lazy(() =>
+  import(/* webpackChunkName: "widget.Vera" */ './widgets/Vera')
 );
 const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
 const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
@@ -109,16 +109,15 @@ let Widgets = {
     updated: '2020-12-28',
     locales: ['zh-CN']
   },
-  'vera-history': {
+  'vera': {
     extension: true,
     compact: true,
-    // loadType: 'script',
     preset: true,
-    title: '我的Vera历史',
+    title: 'Vera小组件',
     description: 'Vera链接历史记录',
-    defaultSize: 'middle',
+    defaultSize: 'large',
     sizes: ['middle', 'large'],
-    comp: <VeraHistory />,
+    comp: <Vera />,
     enableSetting: false,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.vera.history.jpg',
     created: '2021-03-22',

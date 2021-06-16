@@ -3,15 +3,21 @@ import { useLazyQuery, gql } from '@apollo/client';
 const GET_ROOM_LIST = gql`
   query RoomList {
     portal_room {
-      personal
-      active
-      created_at
-      host
-      id
-      link
       name
-      members
-      password
+      id
+      windows {
+        id
+        title
+        tabs {
+          id
+          title
+          icon
+          url
+          window
+        }
+      }
+      creator
+      id
     }
   }
 `;
@@ -28,11 +34,11 @@ function useRoomList(username) {
   useEffect(() => {
     if (data && username) {
       let rooms = data?.portal_room;
-      let tmps = rooms.filter((r) => {
-        return r.host == username || (r.members && r.members.some((m) => m.username == username));
-      });
-      console.log({ rooms, tmps });
-      setFiltered(tmps);
+      // let tmps = rooms.filter((r) => {
+      //   return r.host == username || (r.members && r.members.some((m) => m.username == username));
+      // });
+      console.log({ rooms });
+      setFiltered(rooms);
     }
   }, [data, username]);
   return {
