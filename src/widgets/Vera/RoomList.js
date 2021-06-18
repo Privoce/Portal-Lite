@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // import { format } from 'date-fns';
 import styled from 'styled-components';
 // import { IoIosMic } from 'react-icons/io';
-// import { IoIosAdd, IoIosLock } from 'react-icons/io';
+import { RiAddFill } from 'react-icons/ri';
 import useRoomList from './useRoomList';
 import StyledTip from './StyledTip';
 const StyledList = styled.section`
@@ -79,10 +79,15 @@ const StyledList = styled.section`
         }
       }
     }
+    .add{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `;
 
-export default function RoomList({ username, lang = {} }) {
+export default function RoomList({ username, lang = {}, toggleAddPopup }) {
   const [currRoom, setCurrRoom] = useState(null)
   const { data: roomList, error, loading } = useRoomList(username);
 
@@ -113,6 +118,9 @@ export default function RoomList({ username, lang = {} }) {
     console.log({ urls });
     document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls } }));
   }
+  const handleNewWindow = () => {
+    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [] } }));
+  }
   if (loading || !roomList) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
   console.log({ roomList, currRoom });
@@ -125,10 +133,13 @@ export default function RoomList({ username, lang = {} }) {
             {r.name}
           </div>
         })}
+        <button className="box add" onClick={toggleAddPopup}>
+          <RiAddFill size={20} />
+        </button>
       </div>
       {currRoom && <div className="col windows">
         <h2 className="title">Window</h2>
-        {currRoom.windows.length ? currRoom.windows.map((w, idx) => {
+        {currRoom.windows.map((w, idx) => {
           const { tabs } = w;
           return <div key={w.id} className="box window">
             <h3 className="title"><span>{w.title}</span><button data-idx={idx} onClick={handleCoBrowse} className="co">Co-Browse</button></h3>
@@ -143,7 +154,10 @@ export default function RoomList({ username, lang = {} }) {
 
             </ul>
           </div>
-        }) : <StyledTip>Empty</StyledTip>}
+        })}
+        <button onClick={handleNewWindow} className="box add">
+          <RiAddFill size={20} />
+        </button>
       </div>}
     </StyledList>
   );
