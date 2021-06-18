@@ -11,6 +11,10 @@ const StyledBox = styled.div`
   top: 0;
   background: #333;
   padding: 0.2rem;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   form {
     display: flex;
     flex-direction: column;
@@ -34,15 +38,13 @@ const ADD_ROOM = gql`
     $creator: String!
     $host: String!
     $id: String!
-    $link: String!
     $name: String!
   ) {
     insert_portal_room(
-      objects: { creator: $creator, host: $host, id: $id, link: $link, name: $name }
+      objects: { creator: $creator, host: $host, id: $id, name: $name }
     ) {
       returning {
         id
-        link
         name
         host
         active
@@ -79,7 +81,7 @@ export default function AddRoom({ username, togglePopupVisible }) {
       return { ...prev };
     });
   };
-  const { link, name } = values;
+  const { name } = values;
   return (
     <StyledBox>
       <div className="form">
@@ -92,14 +94,14 @@ export default function AddRoom({ username, togglePopupVisible }) {
             value={name}
             onChange={handleChange}
           />
-          <input
+          {/* <input
             type="text"
             className="input link"
             placeholder="Link"
             name="link"
             value={link}
             onChange={handleChange}
-          />
+          /> */}
           {/* <input type="hidden" name="id" value={id} />
           <input type="hidden" name="cid" value={cid} />
           <input type="hidden" name="creator" value={creator} />

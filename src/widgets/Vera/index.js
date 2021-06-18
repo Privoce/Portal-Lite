@@ -10,7 +10,7 @@ import { checkExtensionInstalled } from '../../util';
 import StyledWrapper from './styled';
 import StyledTip from './StyledTip';
 import RoomList from './RoomList';
-// import AddRoomPopUp from './AddRoom';
+import AddRoomPopUp from './AddRoom';
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -28,10 +28,10 @@ export default function Vera() {
   });
   const [extInstalled, setExtInstalled] = useState(undefined);
   const [username, setUsername] = useState(null);
-  // const [addVisible, setAddVisible] = useState(false);
-  // const toggleAddPopup = () => {
-  //   setAddVisible((prev) => !prev);
-  // };
+  const [addVisible, setAddVisible] = useState(false);
+  const toggleAddPopup = () => {
+    setAddVisible((prev) => !prev);
+  };
   useEffect(() => {
     const check = async () => {
       let installed = await checkExtensionInstalled();
@@ -59,7 +59,8 @@ export default function Vera() {
   return (
     <ApolloProvider client={client}>
       <StyledWrapper>
-        <RoomList username={username} />
+        {addVisible && <AddRoomPopUp username={username} togglePopupVisible={toggleAddPopup} />}
+        <RoomList username={username} toggleAddPopup={toggleAddPopup} />
       </StyledWrapper>
     </ApolloProvider>
   );
