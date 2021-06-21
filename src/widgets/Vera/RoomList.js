@@ -117,21 +117,21 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
   const handleCoBrowse = (evt) => {
     const { idx } = evt.target.dataset
     // 把用户信息同步到vera扩展
-    const rid = currRoom.id;
-    const urls = currRoom.windows[idx].tabs.map(({ url }, idx) => {
-      if (idx == 0) {
-        return `https://nicegoodthings.com/transfer/r/${rid}/${encodeURIComponent(url)}?extid=${'ccegbnlnelhgaefimiaklaindffpfcmh'
-          }`
-      }
+    // const rid = currRoom.id;
+    const urls = currRoom.windows[idx].tabs.map(({ url }) => {
+      // if (idx == 0) {
+      //   return `https://nicegoodthings.com/transfer/r/${rid}/${encodeURIComponent(url)}?extid=${'ccegbnlnelhgaefimiaklaindffpfcmh'
+      //     }`
+      // }
 
       return url
 
     });
     console.log({ urls });
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls } }));
+    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls, rid: `${currRoom.id}_bg` } }));
   }
   const handleNewWindow = () => {
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [] } }));
+    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [], rid: `${currRoom.id}_bg` } }));
   }
   if (loading || !roomList) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
