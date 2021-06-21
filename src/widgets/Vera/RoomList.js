@@ -34,11 +34,23 @@ const StyledList = styled.section`
     background-color:  #f3f3f3;
     flex: 1;
     .room{
+      position: relative;
       cursor: pointer;
       font-size: .22rem;
       &.curr{
         background-color: #333;
         color:#f3f3f3;
+      }
+      &.active:after{
+        content: "";
+        display: block;
+        width:8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: green;
+        position: absolute;
+        top:5px;
+        right:5px;
       }
     }
   }
@@ -129,7 +141,7 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
       <div className="col rooms">
         <h2 className="title">Room</h2>
         {roomList.map(r => {
-          return <div onClick={handleRoomSelect.bind(null, r.id)} key={r.id} className={`box room ${currRoom?.id == r.id ? 'curr' : ''}`}>
+          return <div onClick={handleRoomSelect.bind(null, r.id)} key={r.id} className={`box room ${currRoom?.id == r.id ? 'curr' : ''} ${r.active ? 'active' : ''}`}>
             {r.name}
           </div>
         })}
