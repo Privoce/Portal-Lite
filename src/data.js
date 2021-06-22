@@ -79,7 +79,7 @@ let Widgets = {
     title: '🇨🇳 国内新冠疫情概况',
     description: '快速了解国内每日疫情概况',
     compact: true,
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     disableScroll: true,
     comp: <Covid />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.covid.data.png',
@@ -125,7 +125,7 @@ let Widgets = {
   },
   'my-agenda': {
     // loadType: 'script',
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     title: '我的日程',
     description: '快捷查看您的日常日程，目前仅支持谷歌日历',
     defaultSize: 'large',
@@ -139,7 +139,7 @@ let Widgets = {
   },
   weather: {
     loadType: 'script',
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     title: '今日天气',
     description: '全方位，多角度，为您提供天气信息。',
     compact: true,
@@ -307,12 +307,4 @@ let Widgets = {
     locales: ['zh-CN']
   }
 };
-// 过滤掉不适合在浏览器扩展里加载的小组件
-if (process.env.REACT_APP_CHROME_EXT == 'true') {
-  Widgets = Object.fromEntries(
-    Object.entries(Widgets).filter(([, obj]) => {
-      return !['script'].includes(obj.loadType);
-    })
-  );
-}
 export { Widgets };
