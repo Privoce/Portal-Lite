@@ -33,6 +33,7 @@ const StyledList = styled.section`
   .rooms{
     background-color:  #f3f3f3;
     flex: 1;
+    overflow-y: scroll;
     .room{
       position: relative;
       cursor: pointer;
@@ -51,6 +52,29 @@ const StyledList = styled.section`
         position: absolute;
         top:5px;
         right:5px;
+      }
+      .members{
+        margin-top: .15rem;
+        display: flex;
+        .member{
+          transition: transform .5s ease-in-out;
+          width: .2rem;
+          height: .2rem;
+          overflow: hidden;
+          img{
+          border-radius: 50%;
+            border:1px solid #eee;
+            width:100%
+          }
+          &:not(:first-child){
+            transform: translateX(-.1rem);
+            /* margin-left: -.1rem; */
+          }
+        }
+          &:hover .member:not(:first-child){
+            transform: translateX(0);
+            /* margin-left: -.1rem; */
+          }
       }
     }
   }
@@ -141,8 +165,16 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
       <div className="col rooms">
         <h2 className="title">Room</h2>
         {roomList.map(r => {
+          const { name, members } = r;
           return <div onClick={handleRoomSelect.bind(null, r.id)} key={r.id} className={`box room ${currRoom?.id == r.id ? 'curr' : ''} ${r.active ? 'active' : ''}`}>
-            {r.name}
+            <h3 className="name">{name}</h3>
+            {members.length !== 0 && <ul className="members">
+              {members.map(m => {
+                return <li className="member" key={m.id} title={m.username}>
+                  <img src={m.photo || m.avator} alt="member photo" />
+                </li>
+              })}
+            </ul>}
           </div>
         })}
         <button className="box add" onClick={toggleAddPopup}>
@@ -163,7 +195,6 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
                   <span className="title">{title}</span>
                 </li>
               })}
-
             </ul>
           </div>
         })}

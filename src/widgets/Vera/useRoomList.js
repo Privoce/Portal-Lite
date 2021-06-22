@@ -6,6 +6,7 @@ const GET_ROOM_LIST = gql`
       active
       name
       id
+      members
       windows {
         id
         title
