@@ -67,8 +67,7 @@ const StyledList = styled.section`
             width:100%
           }
           &:not(:first-child){
-            transform: translateX(-.1rem);
-            /* margin-left: -.1rem; */
+            margin-left: -.1rem;
           }
         }
           &:hover .member:not(:first-child){
@@ -139,7 +138,7 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
     setCurrRoom(tmp)
   }
   const handleCoBrowse = (evt) => {
-    const { idx } = evt.target.dataset
+    const { idx, id } = evt.target.dataset
     // 把用户信息同步到vera扩展
     // const rid = currRoom.id;
     const urls = currRoom.windows[idx].tabs.map(({ url }) => {
@@ -152,10 +151,10 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
 
     });
     console.log({ urls });
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls, rid: `${currRoom.id}_bg` } }));
+    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { wid: id, urls, rid: currRoom.id } }));
   }
   const handleNewWindow = () => {
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [], rid: `${currRoom.id}_bg` } }));
+    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [], rid: currRoom.id } }));
   }
   if (loading || !roomList) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;
@@ -184,9 +183,9 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
       {currRoom && <div className="col windows">
         <h2 className="title">Window</h2>
         {currRoom.windows.map((w, idx) => {
-          const { tabs } = w;
-          return <div key={w.id} className="box window">
-            <h3 className="title"><span>{w.title}</span><button data-idx={idx} onClick={handleCoBrowse} className="co">Co-Browse</button></h3>
+          const { tabs, id, title } = w;
+          return <div key={id} className="box window">
+            <h3 className="title"><span>{title}</span><button data-idx={idx} data-id={id} onClick={handleCoBrowse} className="co">Co-Browse</button></h3>
             <ul className="tabs">
               {tabs.map(t => {
                 const { id, title, icon } = t;
