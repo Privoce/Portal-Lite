@@ -57,7 +57,7 @@ const StyledList = styled.section`
         margin-top: .15rem;
         display: flex;
         .member{
-          transition: transform .5s ease-in-out;
+          transition: margin .5s ease-in-out;
           width: .2rem;
           height: .2rem;
           overflow: hidden;
@@ -71,8 +71,7 @@ const StyledList = styled.section`
           }
         }
           &:hover .member:not(:first-child){
-            transform: translateX(0);
-            /* margin-left: -.1rem; */
+            margin-left: 0;
           }
       }
     }
