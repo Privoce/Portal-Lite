@@ -36,10 +36,10 @@
     lodash "^4.17.21"
     resize-observer-polyfill "^1.5.0"
 
-"@apollo/client@^3.3.20":
-  version "3.3.20"
-  resolved "https://registry.nlark.com/@apollo/client/download/@apollo/client-3.3.20.tgz#8f0935fa991857e9cf2e73c9bd378ad7ec97caf8"
-  integrity sha1-jwk1+pkYV+nPLnPJvTeK1+yXyvg=
+"@apollo/client@^3.3.21":
+  version "3.3.21"
+  resolved "https://registry.nlark.com/@apollo/client/download/@apollo/client-3.3.21.tgz#2862baa4e1ced8c5e89ebe6fc52877fc64a726aa"
+  integrity sha1-KGK6pOHO2MXonr5vxSh3/GSnJqo=
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@types/zen-observable" "^0.8.0"
@@ -51,18 +51,17 @@
     optimism "^0.16.0"
     prop-types "^15.7.2"
     symbol-observable "^4.0.0"
-    ts-invariant "^0.7.0"
+    ts-invariant "^0.8.0"
     tslib "^1.10.0"
     zen-observable "^0.8.14"
 
-"@authing/react-ui-components@^2.4.25":
-  version "2.4.25"
-  resolved "https://registry.nlark.com/@authing/react-ui-components/download/@authing/react-ui-components-2.4.25.tgz#ac1d31a7a20fda22502cb0ba42a3812303a5d8cc"
-  integrity sha1-rB0xp6IP2iJQLLC6QqOBIwOl2Mw=
+"@authing/react-ui-components@^2.4.31":
+  version "2.4.31"
+  resolved "https://registry.nlark.com/@authing/react-ui-components/download/@authing/react-ui-components-2.4.31.tgz#6a8b76295c53852100d5069c39492a561ae8ac14"
+  integrity sha1-aot2KVxThSEA1QacOUkqVhrorBQ=
   dependencies:
     antd "^4.8.0"
     authing-js-sdk "4.20.23"
-    jsencrypt "^3.0.0-rc.1"
     qs "^6.9.4"
 
 "@babel/code-frame@7.10.4":
@@ -1537,6 +1536,20 @@
   integrity sha1-aNk1+j6uf91asNf5U/MgXYsr/Ck=
   dependencies:
     "@hapi/hoek" "^8.3.0"
+
+"@humanwhocodes/config-array@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.nlark.com/@humanwhocodes/config-array/download/@humanwhocodes/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"
+  integrity sha1-FAeWfUxu7Nc4j4Os8er00Mbljvk=
+  dependencies:
+    "@humanwhocodes/object-schema" "^1.2.0"
+    debug "^4.1.1"
+    minimatch "^3.0.4"
+
+"@humanwhocodes/object-schema@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.nlark.com/@humanwhocodes/object-schema/download/@humanwhocodes/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
+  integrity sha1-h956+cIxgm/daKxyWPd8Qp4OX88=
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3270,7 +3283,12 @@ core-js@^2.6.5:
   resolved "https://registry.nlark.com/core-js/download/core-js-2.6.12.tgz?cache=0&sync_timestamp=1624210470254&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js%2Fdownload%2Fcore-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha1-2TM9+nsGXjR8xWgiGdb2kIWcwuw=
 
-core-js@^3.15.0, core-js@^3.6.5:
+core-js@^3.15.2:
+  version "3.15.2"
+  resolved "https://registry.nlark.com/core-js/download/core-js-3.15.2.tgz?cache=0&sync_timestamp=1624966056491&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js%2Fdownload%2Fcore-js-3.15.2.tgz#740660d2ff55ef34ce664d7e2455119c5bdd3d61"
+  integrity sha1-dAZg0v9V7zTOZk1+JFURnFvdPWE=
+
+core-js@^3.6.5:
   version "3.15.0"
   resolved "https://registry.nlark.com/core-js/download/core-js-3.15.0.tgz?cache=0&sync_timestamp=1624210470254&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js%2Fdownload%2Fcore-js-3.15.0.tgz#db9554ebce0b6fd90dc9b1f2465c841d2d055044"
   integrity sha1-25VU684Lb9kNybHyRlyEHS0FUEQ=
@@ -4055,13 +4073,14 @@ eslint-visitor-keys@^2.0.0, eslint-visitor-keys@^2.1.0:
   resolved "https://registry.nlark.com/eslint-visitor-keys/download/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha1-9lMoJZMFknOSyTjtROsKXJsr0wM=
 
-eslint@^7.29.0:
-  version "7.29.0"
-  resolved "https://registry.nlark.com/eslint/download/eslint-7.29.0.tgz?cache=0&sync_timestamp=1624048306700&other_urls=https%3A%2F%2Fregistry.nlark.com%2Feslint%2Fdownload%2Feslint-7.29.0.tgz#ee2a7648f2e729485e4d0bd6383ec1deabc8b3c0"
-  integrity sha1-7ip2SPLnKUheTQvWOD7B3qvIs8A=
+eslint@^7.30.0:
+  version "7.30.0"
+  resolved "https://registry.nlark.com/eslint/download/eslint-7.30.0.tgz#6d34ab51aaa56112fd97166226c9a97f505474f8"
+  integrity sha1-bTSrUaqlYRL9lxZiJsmpf1BUdPg=
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.2"
+    "@humanwhocodes/config-array" "^0.5.0"
     ajv "^6.10.0"
     chalk "^4.0.0"
     cross-spawn "^7.0.2"
@@ -5017,10 +5036,10 @@ human-signals@^2.1.0:
   resolved "https://registry.nlark.com/human-signals/download/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha1-3JH8ukLk0G5Kuu0zs+ejwC9RTqA=
 
-husky@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.nlark.com/husky/download/husky-6.0.0.tgz#810f11869adf51604c32ea577edbc377d7f9319e"
-  integrity sha1-gQ8RhprfUWBMMupXftvDd9f5MZ4=
+husky@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.nlark.com/husky/download/husky-7.0.1.tgz#579f4180b5da4520263e8713cc832942b48e1f1c"
+  integrity sha1-V59BgLXaRSAmPocTzIMpQrSOHxw=
 
 iconv-lite@0.4.24:
   version "0.4.24"
@@ -5505,7 +5524,7 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsencrypt@^3.0.0-rc.1, jsencrypt@^3.1.0:
+jsencrypt@^3.1.0:
   version "3.2.0"
   resolved "https://registry.nlark.com/jsencrypt/download/jsencrypt-3.2.0.tgz#09242aabf1984165dcd7698fe6ed163be77c05f8"
   integrity sha1-CSQqq/GYQWXc12mP5u0WO+d8Bfg=
@@ -6867,10 +6886,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.nlark.com/prelude-ls/download/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha1-3rxkidem5rDnYRiIzsiAM30xY5Y=
 
-prettier@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.nlark.com/prettier/download/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
-  integrity sha1-dpA8P4xESbyaxZes76JNxa1MvqY=
+prettier@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.nlark.com/prettier/download/prettier-2.3.2.tgz?cache=0&sync_timestamp=1624696193562&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fprettier%2Fdownload%2Fprettier-2.3.2.tgz#ef280a05ec253712e486233db5c6f23441e7342d"
+  integrity sha1-7ygKBewlNxLkhiM9tcbyNEHnNC0=
 
 pretty-bytes@^5.3.0, pretty-bytes@^5.4.1:
   version "5.6.0"
@@ -7566,10 +7585,10 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-toast-notifications@^2.4.4:
-  version "2.4.4"
-  resolved "https://registry.nlark.com/react-toast-notifications/download/react-toast-notifications-2.4.4.tgz#a4b46195b437f312d72f552073957e3a1916f1ab"
-  integrity sha1-pLRhlbQ38xLXL1Ugc5V+OhkW8as=
+react-toast-notifications@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.nlark.com/react-toast-notifications/download/react-toast-notifications-2.5.0.tgz#07a2f9f469fcb3b133f8621c596b55b0aa96b0de"
+  integrity sha1-B6L59Gn8s7Ez+GIcWWtVsKqWsN4=
   dependencies:
     "@emotion/core" "^10.0.14"
     react-transition-group "^4.4.1"
@@ -8277,10 +8296,10 @@ sockjs@^0.3.21:
     uuid "^3.4.0"
     websocket-driver "^0.7.4"
 
-sortablejs@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.nlark.com/sortablejs/download/sortablejs-1.13.0.tgz#3ab2473f8c69ca63569e80b1cd1b5669b51269e9"
-  integrity sha1-OrJHP4xpymNWnoCxzRtWabUSaek=
+sortablejs@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.nlark.com/sortablejs/download/sortablejs-1.14.0.tgz#6d2e17ccbdb25f464734df621d4f35d4ab35b3d8"
+  integrity sha1-bS4XzL2yX0ZHNN9iHU811Ks1s9g=
 
 source-list-map@^2.0.0, source-list-map@^2.0.1:
   version "2.0.1"
@@ -8688,10 +8707,10 @@ svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swiper@^6.7.0:
-  version "6.7.0"
-  resolved "https://registry.nlark.com/swiper/download/swiper-6.7.0.tgz#ec971e703d03ef6196354140fbb22b074642bf5c"
-  integrity sha1-7JcecD0D72GWNUFA+7IrB0ZCv1w=
+swiper@^6.7.5:
+  version "6.7.5"
+  resolved "https://registry.nlark.com/swiper/download/swiper-6.7.5.tgz#8f150c7281919b7d6bea00889e9dc16448e92986"
+  integrity sha1-jxUMcoGRm31r6gCInp3BZEjpKYY=
   dependencies:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"
@@ -8936,10 +8955,10 @@ tryer@^1.0.1:
   resolved "https://registry.nlark.com/tryer/download/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha1-8shUBoALmw90yfdGW4HqrSQSUvg=
 
-ts-invariant@^0.7.0:
-  version "0.7.5"
-  resolved "https://registry.nlark.com/ts-invariant/download/ts-invariant-0.7.5.tgz#f9658719f9a7737b117d09820d952aacf6263f9c"
-  integrity sha1-+WWHGfmnc3sRfQmCDZUqrPYmP5w=
+ts-invariant@^0.8.0:
+  version "0.8.2"
+  resolved "https://registry.nlark.com/ts-invariant/download/ts-invariant-0.8.2.tgz?cache=0&sync_timestamp=1623866262615&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fts-invariant%2Fdownload%2Fts-invariant-0.8.2.tgz#62af654ebfb8b1eeb55bc9adc2f40c6b93b0ff7e"
+  integrity sha1-Yq9lTr+4se61W8mtwvQMa5Ow/34=
   dependencies:
     tslib "^2.1.0"
 
@@ -9281,10 +9300,10 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-web-vitals@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.nlark.com/web-vitals/download/web-vitals-1.1.2.tgz#06535308168986096239aa84716e68b4c6ae6d1c"
-  integrity sha1-BlNTCBaJhgliOaqEcW5otMaubRw=
+web-vitals@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/web-vitals/download/web-vitals-2.1.0.tgz?cache=0&sync_timestamp=1625185436585&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fweb-vitals%2Fdownload%2Fweb-vitals-2.1.0.tgz#ebf5428875ab5bfc1056c2e80cd177001287de7b"
+  integrity sha1-6/VCiHWrW/wQVsLoDNF3ABKH3ns=
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
