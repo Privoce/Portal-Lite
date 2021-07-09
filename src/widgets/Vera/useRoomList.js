@@ -26,7 +26,7 @@ const GET_ROOM_LIST = gql`
 function useRoomList(username) {
   const [filtered, setFiltered] = useState([]);
   const [loadRoomList, { loading, data, error }] = useLazyQuery(GET_ROOM_LIST, {
-    pollInterval: 25000
+    pollInterval: 15000
   });
   useEffect(() => {
     if (username) {
