@@ -14,7 +14,7 @@ import AddRoomPopUp from './AddRoom';
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://g.nicegoodthings.com',
+    uri: 'https://g.nicegoodthings.com/v1/graphql',
     headers: {
       'x-hasura-admin-secret': 'tristan@privoce'
     }
