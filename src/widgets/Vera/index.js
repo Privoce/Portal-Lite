@@ -14,9 +14,9 @@ import AddRoomPopUp from './AddRoom';
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://vera.hasura.app/v1/graphql',
+    uri: 'https://g.nicegoodthings.com',
     headers: {
-      'x-hasura-admin-secret': 'y0JhNpKpRXdzSMc47jYUElHxn6jzVflV7tF7SqkexFGwGPH4qooyuB04MZyDFU3Q'
+      'x-hasura-admin-secret': 'tristan@privoce'
     }
   }),
   cache: new InMemoryCache()
