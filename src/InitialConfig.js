@@ -21,7 +21,7 @@ export const GuardConfig = {
 };
 
 // Pushy config
-export const PushyAppId = '609a1bcc8abb33b02f642b43';
+export const PushyAppId = '60eee1558abb33b02f642e81';
 
 function gtag() {
   window.dataLayer.push(arguments);
