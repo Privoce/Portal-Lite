@@ -36,11 +36,11 @@ function useRoomList(username) {
   useEffect(() => {
     if (data && username) {
       let rooms = data?.portal_room;
-      // let tmps = rooms.filter((r) => {
-      //   return r.host == username || (r.members && r.members.some((m) => m.username == username));
-      // });
-      console.log({ rooms });
-      setFiltered(rooms);
+      let filtered_rooms = rooms.filter((r) => {
+        return r.host == username || (r.members && r.members.some((m) => m.username == username));
+      });
+      console.log({ filtered_rooms });
+      setFiltered(filtered_rooms);
     }
   }, [data, username]);
   return {
