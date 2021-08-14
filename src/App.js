@@ -11,6 +11,7 @@ import Loading from './component/Loading';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 const Home = lazy(() => import(/* webpackChunkName: "page.home" */ './page/Home'));
 const VeraLanding = lazy(() => import(/* webpackChunkName: "page.landing.vera" */ './page/Landing/Vera'));
+const WebrowseLanding = lazy(() => import(/* webpackChunkName: "page.landing.webrowse" */ './page/Landing/Webrowse'));
 const Widget = lazy(() => import(/* webpackChunkName: "page.widget" */ './page/Widget'));
 const Authing = lazy(() => import(/* webpackChunkName: "page.authing" */ './page/Authing'));
 const UserPortal = lazy(() =>
@@ -69,6 +70,9 @@ function App() {
                 </Route>
                 <Route exact path="/landing/vera">
                   <VeraLanding />
+                </Route>
+                <Route exact path="/landing/webrowse">
+                  <WebrowseLanding />
                 </Route>
                 <Route>
                   <NotFound />

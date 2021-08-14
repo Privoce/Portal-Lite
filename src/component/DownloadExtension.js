@@ -50,16 +50,16 @@ export default function DownloadExtension({ page = true }) {
     <StyledWrapper className={page ? '' : 'widget'}>
       <div className="logo">
         <img
-          alt="Portal Logo"
+          alt="Webrowse Logo"
           src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
         />
       </div>
-      <div className="tip">Install Portal Extension First</div>
+      <div className="tip">Install Webrowse Extension First</div>
       <a
-        href="https://chrome.google.com/webstore/detail/portal-home-of-your-web-a/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en"
+        href="https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn/related"
         className="download"
       >
-        Portal - Home of Your Web Apps
+        Webrowse - cobrowse together
       </a>
     </StyledWrapper>
   );
