@@ -48,6 +48,9 @@ const BingDailyPicture = lazy(() =>
 );
 const Calc = lazy(() => import(/* webpackChunkName: "widget.calc" */ './widgets/Calc'));
 const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './widgets/YinNote'));
+const YoutubeSphere=lazy(()=>
+  import(/* webpackChunkName: "widget.youtube.sphere" */"./widgets/YoutubeSphere")
+)
 
 let Widgets = {
   searchs: {
@@ -254,6 +257,14 @@ let Widgets = {
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.douban.topic.png',
     created: '2021-01-19',
     locales: ['zh-CN']
+  },
+  "youtube-sphere":{
+    title: 'Youtube Sphere',
+    sizes: ['middle', 'large'],
+    description: 'Let\'s see what did your friends liked in Youtube',
+    comp: <YoutubeSphere />,
+    screenshot: 'https://static.nicegoodthings.com/works/vera/Ayjv7n.png',
+    created: '2021-08-16',
   },
   'today-in-history': {
     title: '历史上的今天',
