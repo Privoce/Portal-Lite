@@ -34,7 +34,7 @@ export default function Webrowse() {
   };
   useEffect(() => {
     const check = async () => {
-      let installed = await checkExtensionInstalled();
+      let installed = await checkExtensionInstalled('nnbkebemeehfhiimeghnkdocfbeogenn');
       setExtInstalled(installed);
     };
     check();
