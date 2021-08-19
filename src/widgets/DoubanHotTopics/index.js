@@ -57,7 +57,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function MPDaily() {
+export default function DoubanHotTopics() {
   const { data: hots, loading, error } = useData(
     `${process.env.REACT_APP_SERVICE_DOMAIN}/service/douban/topic/hot`
   );
