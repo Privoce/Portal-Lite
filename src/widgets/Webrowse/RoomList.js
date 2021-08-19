@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { format } from 'timeago.js';
-// import { format } from 'date-fns';
 import styled from 'styled-components';
-// import { IoIosMic } from 'react-icons/io';
 import { RiAddFill } from 'react-icons/ri';
 import useRoomList from './useRoomList';
 import StyledTip from './StyledTip';
@@ -86,13 +83,12 @@ const StyledList = styled.section`
         padding-top:0.2rem;
         font-size: .22rem;
         border-bottom: 1px solid #eee;
-    padding-bottom: 0.1rem;
+        padding-bottom: 0.1rem;
         .co{
           padding:.05rem;
           border-radius: .1rem;
           background-color:  rgb(117, 217, 157);
           color:#f3f3f3;
-;
         }
       }
       .tabs{
@@ -139,21 +135,14 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
   const handleCoBrowse = (evt) => {
     const { idx, id } = evt.target.dataset
     // 把用户信息同步到vera扩展
-    // const rid = currRoom.id;
     const urls = currRoom.windows[idx].tabs.map(({ url }) => {
-      // if (idx == 0) {
-      //   return `https://nicegoodthings.com/transfer/r/${rid}/${encodeURIComponent(url)}?extid=${'ccegbnlnelhgaefimiaklaindffpfcmh'
-      //     }`
-      // }
-
       return url
-
     });
     console.log({ urls });
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { wid: id, urls, rid: currRoom.id } }));
+    document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_NEW_WINDOW_EVENT', { detail: { wid: id, urls, rid: currRoom.id } }));
   }
   const handleNewWindow = () => {
-    document.dispatchEvent(new CustomEvent('VERA_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [], rid: currRoom.id } }));
+    document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_NEW_WINDOW_EVENT', { detail: { urls: [], rid: currRoom.id } }));
   }
   if (loading || !roomList) return <StyledTip>{lang.fetching}</StyledTip>;
   if (error) return <StyledTip>error</StyledTip>;

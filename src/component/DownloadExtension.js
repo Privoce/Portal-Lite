@@ -45,21 +45,23 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function DownloadExtension({ page = true }) {
+export default function DownloadExtension({ page = true, logo = "https://static.nicegoodthings.com/privoce/works.portal.logo.png", tip = "Install Webrowse Extension First", installLink = "https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn/related", installTitle = "Webrowse - cobrowse together" }) {
   return (
     <StyledWrapper className={page ? '' : 'widget'}>
       <div className="logo">
         <img
-          alt="Webrowse Logo"
-          src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
+          alt="Extension Logo"
+          src={logo}
         />
       </div>
-      <div className="tip">Install Webrowse Extension First</div>
+      <div className="tip">
+        {tip}
+      </div>
       <a
-        href="https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn/related"
+        href={installLink}
         className="download"
       >
-        Webrowse - cobrowse together
+        {installTitle}
       </a>
     </StyledWrapper>
   );

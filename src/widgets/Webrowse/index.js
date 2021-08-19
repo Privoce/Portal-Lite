@@ -43,8 +43,8 @@ export default function Webrowse() {
     const initUsername = async () => {
       let user = await authClient.getCurrentUser();
       if (user) {
-        // 把用户信息同步到vera扩展
-        document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { user } }));
+        // 把用户信息同步到webrowse扩展
+        document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { user } }));
         setUsername(user.username);
       }
     };

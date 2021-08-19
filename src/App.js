@@ -21,9 +21,11 @@ const UserPortalWidget = lazy(() =>
   import(/* webpackChunkName: "page.userPortal.widget" */ './page/UserPortal/widget')
 );
 const OAuth = lazy(() => import(/* webpackChunkName: "page.oauth" */ './page/OAuth'));
-const Transfer = lazy(() => import(/* webpackChunkName: "page.transfer" */ './page/Transfer'));
-const RoomTransfer = lazy(() =>
-  import(/* webpackChunkName: "page.room.transfer" */ './page/RoomTransfer')
+const VeraTransfer = lazy(() =>
+  import(/* webpackChunkName: "page.vera.transfer" */ './page/Transfer/vera')
+);
+const WebrowseTransfer = lazy(() =>
+  import(/* webpackChunkName: "page.webrowse.transfer" */ './page/Transfer/webrowse')
 );
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
@@ -59,11 +61,11 @@ function App() {
                 <Route exact path={'/p/:username/:widget'}>
                   <UserPortalWidget />
                 </Route>
-                <Route exact path="/transfer/r/:id/:dest">
-                  <RoomTransfer />
+                <Route exact path="/transfer/vera/:id/:dest">
+                  <VeraTransfer />
                 </Route>
-                <Route exact path="/transfer/:dest">
-                  <Transfer />
+                <Route exact path="/transfer/wb/:id/:dest">
+                  <WebrowseTransfer />
                 </Route>
                 <Route exact path="/oauth/:app">
                   <OAuth />

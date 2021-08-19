@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { useAuthing } from '@authing/react-ui-components';
+
 import { checkExtensionInstalled } from '../../util';
 import DownloadExt from '../../component/DownloadExtension';
+import { appId, appHost } from '../../InitialConfig';
 const StyledTip = styled.section`
   width: 100%;
   height: 80vh;
@@ -39,20 +42,24 @@ const Result = ({ children }) => (
   <StyledTip>
     <div className="logo">
       <img
-        alt="Portal Logo"
-        src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
+        alt="Webrowse Logo"
+        src="https://static.nicegoodthings.com/works/vera/webrowse.logo.png"
       />
     </div>
     {children}
   </StyledTip>
 );
-const urlParamKey = 'portal-vera-id';
-export default function Transfer() {
-  const { dest } = useParams();
+export default function WebrowseTransfer() {
+  const { id, dest } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
   const [tip, setTip] = useState('');
+  const { authClient } = useAuthing({
+    appId,
+    appHost
+  });
 
   let extId = new URLSearchParams(location.search).get('extid');
+  let wid = new URLSearchParams(location.search).get('wid');
   useEffect(() => {
     const check = async () => {
       let installed = await checkExtensionInstalled(extId);
@@ -62,28 +69,26 @@ export default function Transfer() {
     check();
   }, []);
   useEffect(() => {
-    let decodedUrl = decodeURIComponent(dest);
-    let currUrl = new URL(decodedUrl);
-    let sps = new URLSearchParams(currUrl.search);
-    let id = sps.get(urlParamKey);
-    if (id && checkResult == true) {
-      sps.delete(urlParamKey);
-      let { origin, hash = '', pathname = '' } = currUrl;
-      console.log({ currUrl });
-      let paramsString = sps.toString() ? `?${sps.toString()}` : '';
-      if (window.VERA_INVITE_ID) {
+    const init = async () => {
+      let decodedUrl = decodeURIComponent(dest);
+      let currUrl = new URL(decodedUrl);
+      if (id) {
+        let user = await authClient.getCurrentUser();
+        if (user) {
+          // 把用户信息同步到webrowse扩展
+          document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { user } }));
+        }
+        document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { rid: id, wid } }));
         // 注入成功
-        location.href = `${origin}${pathname}${paramsString}${hash}`;
+        location.href = currUrl;
       } else {
-        // 等个1.5s
-        setTimeout(() => {
-          location.href = `${origin}${pathname}${paramsString}${hash}`;
-        }, 1500);
+        setTip(`Webrowse Transfer error: \n\r ${id}`);
       }
-    } else if (checkResult === false || !id) {
-      setTip(`Transfer error: \n\r ${decodedUrl}`);
+    };
+    if (checkResult) {
+      init();
     }
-  }, [dest, checkResult]);
+  }, [dest, id, checkResult]);
 
   //  location.href = jumpUrl;
   console.log({ checkResult });
@@ -91,7 +96,7 @@ export default function Transfer() {
   if (typeof checkResult == 'undefined') {
     return (
       <Result>
-        <div className="txt">Checking Portal Vera</div>
+        <div className="txt">Checking Webrowse</div>
       </Result>
     );
   }

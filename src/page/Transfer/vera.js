@@ -42,14 +42,14 @@ const Result = ({ children }) => (
   <StyledTip>
     <div className="logo">
       <img
-        alt="Portal Logo"
-        src="https://static.nicegoodthings.com/privoce/works.portal.logo.png"
+        alt="Vera Logo"
+        src="https://static.nicegoodthings.com/works/vera/vera.logo.png"
       />
     </div>
     {children}
   </StyledTip>
 );
-export default function RoomTransfer() {
+export default function VeraTransfer() {
   const { id, dest } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
   const [tip, setTip] = useState('');
@@ -75,14 +75,14 @@ export default function RoomTransfer() {
       if (id) {
         let user = await authClient.getCurrentUser();
         if (user) {
-          // 把用户信息同步到vera扩展
+          // 把用户信息同步到webrowse扩展
           document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { user } }));
         }
         document.dispatchEvent(new CustomEvent('VERA_ROOM_EVENT', { detail: { rid: id, wid } }));
         // 注入成功
         location.href = currUrl;
       } else {
-        setTip(`RoomTransfer error: \n\r ${id}`);
+        setTip(`Vera Transfer error: \n\r ${id}`);
       }
     };
     if (checkResult) {
@@ -96,13 +96,13 @@ export default function RoomTransfer() {
   if (typeof checkResult == 'undefined') {
     return (
       <Result>
-        <div className="txt">Checking Portal Vera</div>
+        <div className="txt">Checking Vera</div>
       </Result>
     );
   }
 
   // 检测状态为未安装
-  if (checkResult === false) return <DownloadExt />;
+  if (checkResult === false) return <DownloadExt installLink="https://chrome.google.com/webstore/detail/vera-cobrowse-doc-figma-p/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en&authuser=1" installTitle="Vera - watch party" tip="Install Vera Extension First" logo="https://static.nicegoodthings.com/works/vera/vera.logo.png" />;
   if (tip)
     return (
       <Result>
