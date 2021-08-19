@@ -45,7 +45,7 @@ const StyledWrapper = styled.section`
     }
   }
 `;
-export default function DownloadExtension({ page = true, logo = "https://static.nicegoodthings.com/privoce/works.portal.logo.png", tip = "Install Webrowse Extension First", installLink = "https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn/related", installTitle = "Webrowse - cobrowse together" }) {
+export default function DownloadExtension({ page = true, logo = "https://static.nicegoodthings.com/privoce/works.portal.logo.png", tip = "Install Webrowse Extension First", installLink = "https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn", installTitle = "Webrowse - cobrowse together" }) {
   return (
     <StyledWrapper className={page ? '' : 'widget'}>
       <div className="logo">

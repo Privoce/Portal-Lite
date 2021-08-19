@@ -22,13 +22,13 @@ const StyledWrapper = styled.section`
   }
 `;
 
-const InstallExtension = ({ tip = 'Install Vera on Chrome store for free.' }) => {
+const InstallExtension = ({ tip = 'Install Webrowse on Chrome store for free.' }) => {
   return (
     <StyledWrapper>
       <div className="tip">{tip}</div>
       <a
         className="link"
-        href="https://chrome.google.com/webstore/detail/portal-home-of-your-web-a/ccegbnlnelhgaefimiaklaindffpfcmh?hl=en"
+        href="https://chrome.google.com/webstore/detail/webrowse-sync-tabs-with-y/nnbkebemeehfhiimeghnkdocfbeogenn"
         target="_blank"
       >
         Install
