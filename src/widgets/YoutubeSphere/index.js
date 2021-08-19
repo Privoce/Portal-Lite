@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import Loading from '../../../../../Portal-Lite/src/widgets/Common/Loading';
-import useSWR from 'swr';
 import { useEffect, useState } from 'react';
-import { appId, appHost } from '../../../../../Portal-Lite/src/InitialConfig';
+import Loading from '../Common/Loading';
+import { appId, appHost } from '../../InitialConfig';
 import { useAuthing } from '@authing/react-ui-components';
 
 const StyledWrapper = styled.section`
@@ -118,39 +117,39 @@ export default function YoutubeSphere() {
     appId,
     appHost
   });
-  const [userId,serUserId]=useState(null);
+  const [data, setData] = useState(null)
 
   useEffect(() => {
     const initUsername = async () => {
       let user = await authClient.getCurrentUser();
+      console.log("fffff", user);
       if (user) {
-        serUserId(user.id)
+        let resp = await fetch(`https://social.qmcurtis.me/api/user/connect/liked?userId=${user.id}&num=50`);
+        resp = await resp.json();
+        setData(resp)
+        console.log({ resp });
       }
     };
+    // console.log("fffff", authClient);
     if (authClient) {
       initUsername();
     }
   }, [authClient]);
+  // console.log("ffffff");
 
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data: resp, error } = useSWR("https://social.qmcurtis.me/api/user/connect/liked?userId="+userId+"&num=50", fetcher);
-  let loading= !error && !resp
+  if (!data) return <Loading />;
 
-  if (loading) return <Loading />;
-
-  if (error) {
-    throw new Error(error);
-  }
+  // if (error) {
+  //   throw new Error(error);
+  // }
   return (
     <StyledWrapper>
-      {(loading&&userId==null)&& <Loading />}
-      {(!loading&&userId!=null) &&
-      (resp.length == 0 ? (
+      {(data.length == 0 ? (
         <div className="empty">暂无内容，试试添加好友吧~</div>
       ) : (
         <ul className="wrapper">
-          {resp.map((item, idx) => {
-            const { videoTitle, videoUrl, id, videoThumbnail,nickname,videoDescription} = item;
+          {data.map((item, idx) => {
+            const { videoTitle, videoUrl, id, videoThumbnail, nickname, videoDescription } = item;
             return (
               <li className="item" key={id} data-seq={idx + 1}>
                 <a className="block" href={videoUrl} target="_blank" rel="noopener noreferrer">
