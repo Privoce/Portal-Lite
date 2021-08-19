@@ -118,6 +118,8 @@ export default function Modal({ closeModal }) {
   const handleLogout = () => {
     if (confirm('确定退出？')) {
       authClient.logout();
+      // 发送给sphere youtube
+      document.dispatchEvent(new CustomEvent('SPHERE_LOGOUT'));
       closeModal();
       clearWidgetSettings();
       location.reload();

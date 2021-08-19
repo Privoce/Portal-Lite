@@ -49,6 +49,8 @@ export default function AuthIcon({ setSyncing, openModal }) {
   useEffect(() => {
     if (user) {
       updateWidgetSetting({ key: 'user', data: user });
+      // 发送给sphere youtube
+      document.dispatchEvent(new CustomEvent('SPHERE_LOGIN', { detail: { user } }));
     }
   }, [user]);
   useEffect(() => {
