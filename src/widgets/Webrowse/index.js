@@ -21,7 +21,7 @@ const client = new ApolloClient({
   }),
   cache: new InMemoryCache()
 });
-export default function Vera() {
+export default function Webrowse() {
   const { authClient } = useAuthing({
     appId,
     appHost

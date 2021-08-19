@@ -1,6 +1,6 @@
 import { lazy } from 'react';
-const Vera = lazy(() =>
-  import(/* webpackChunkName: "widget.Vera" */ './widgets/Vera')
+const Webrowse = lazy(() =>
+  import(/* webpackChunkName: "widget.Webrowse" */ './widgets/Webrowse')
 );
 const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
 const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
@@ -48,7 +48,7 @@ const BingDailyPicture = lazy(() =>
 );
 const Calc = lazy(() => import(/* webpackChunkName: "widget.calc" */ './widgets/Calc'));
 const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './widgets/YinNote'));
-const YoutubeSphere=lazy(()=>
+const YoutubeSphere = lazy(() =>
   import(/* webpackChunkName: "widget.youtube.sphere" */"./widgets/YoutubeSphere")
 )
 
@@ -112,15 +112,15 @@ let Widgets = {
     updated: '2020-12-28',
     locales: ['zh-CN']
   },
-  'vera': {
+  'webrowse': {
     extension: true,
     compact: true,
     preset: true,
-    title: 'Vera小组件',
-    description: 'Vera链接历史记录',
+    title: 'Webrowse小组件',
+    description: 'Webrowse链接历史记录',
     defaultSize: 'large',
     sizes: ['middle', 'large'],
-    comp: <Vera />,
+    comp: <Webrowse />,
     enableSetting: false,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.vera.history.jpg',
     created: '2021-03-22',
@@ -258,7 +258,7 @@ let Widgets = {
     created: '2021-01-19',
     locales: ['zh-CN']
   },
-  "youtube-sphere":{
+  "youtube-sphere": {
     title: 'Youtube Sphere',
     sizes: ['middle', 'large'],
     description: 'Let\'s see what did your friends liked in Youtube',
