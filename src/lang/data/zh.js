@@ -148,9 +148,9 @@ const zh = {
           submit: '提交'
         }
       },
-      ['vera-history']: {
+      ['webrowse']: {
         title: '来啦',
-        description: 'Vera 插件产生的历史记录'
+        description: 'webrowse 插件产生的历史记录'
       }
     }
   }

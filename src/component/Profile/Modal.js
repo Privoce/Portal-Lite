@@ -118,14 +118,10 @@ export default function Modal({ closeModal }) {
   const handleLogout = () => {
     if (confirm('确定退出？')) {
       authClient.logout();
+      // 发送给sphere youtube
+      document.dispatchEvent(new CustomEvent('SPHERE_LOGOUT'));
       closeModal();
       clearWidgetSettings();
-      if (process.env.REACT_APP_CHROME_EXT == 'true') {
-        // 扩展环境，则清掉用户信息
-        chrome.storage.sync.set({ user: '' }, function () {
-          console.log('clear user');
-        });
-      }
       location.reload();
     }
   };

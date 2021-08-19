@@ -1,6 +1,6 @@
 import { lazy } from 'react';
-const VeraHistory = lazy(() =>
-  import(/* webpackChunkName: "widget.VeraHistory" */ './widgets/VeraHistory')
+const Webrowse = lazy(() =>
+  import(/* webpackChunkName: "widget.Webrowse" */ './widgets/Webrowse')
 );
 const Searchs = lazy(() => import(/* webpackChunkName: "widget.searchs" */ './widgets/Searchs'));
 const NavBlock = lazy(() => import(/* webpackChunkName: "widget.navs" */ './widgets/Navs'));
@@ -48,6 +48,9 @@ const BingDailyPicture = lazy(() =>
 );
 const Calc = lazy(() => import(/* webpackChunkName: "widget.calc" */ './widgets/Calc'));
 const YinNote = lazy(() => import(/* webpackChunkName: "widget.yin.note" */ './widgets/YinNote'));
+const YoutubeSphere = lazy(() =>
+  import(/* webpackChunkName: "widget.youtube.sphere" */"./widgets/YoutubeSphere")
+)
 
 let Widgets = {
   searchs: {
@@ -79,7 +82,7 @@ let Widgets = {
     title: '🇨🇳 国内新冠疫情概况',
     description: '快速了解国内每日疫情概况',
     compact: true,
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     disableScroll: true,
     comp: <Covid />,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.covid.data.png',
@@ -109,16 +112,15 @@ let Widgets = {
     updated: '2020-12-28',
     locales: ['zh-CN']
   },
-  'vera-history': {
+  'webrowse': {
     extension: true,
     compact: true,
-    // loadType: 'script',
     preset: true,
-    title: '我的Vera历史',
-    description: 'Vera链接历史记录',
-    defaultSize: 'middle',
+    title: 'Webrowse小组件',
+    description: 'Webrowse链接历史记录',
+    defaultSize: 'large',
     sizes: ['middle', 'large'],
-    comp: <VeraHistory />,
+    comp: <Webrowse />,
     enableSetting: false,
     screenshot: 'https://static.nicegoodthings.com/privoce/widget.vera.history.jpg',
     created: '2021-03-22',
@@ -126,7 +128,7 @@ let Widgets = {
   },
   'my-agenda': {
     // loadType: 'script',
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     title: '我的日程',
     description: '快捷查看您的日常日程，目前仅支持谷歌日历',
     defaultSize: 'large',
@@ -140,7 +142,7 @@ let Widgets = {
   },
   weather: {
     loadType: 'script',
-    preset: process.env.REACT_APP_CHROME_EXT !== 'true',
+    preset: false,
     title: '今日天气',
     description: '全方位，多角度，为您提供天气信息。',
     compact: true,
@@ -256,6 +258,14 @@ let Widgets = {
     created: '2021-01-19',
     locales: ['zh-CN']
   },
+  "youtube-sphere": {
+    title: 'Youtube Sphere',
+    sizes: ['middle', 'large'],
+    description: 'Let\'s see what did your friends liked in Youtube',
+    comp: <YoutubeSphere />,
+    screenshot: 'https://static.nicegoodthings.com/works/vera/Ayjv7n.png',
+    created: '2021-08-16',
+  },
   'today-in-history': {
     title: '历史上的今天',
     description: '历史上的今天，发生了哪些著名事件呢？',
@@ -308,12 +318,4 @@ let Widgets = {
     locales: ['zh-CN']
   }
 };
-// 过滤掉不适合在浏览器扩展里加载的小组件
-if (process.env.REACT_APP_CHROME_EXT == 'true') {
-  Widgets = Object.fromEntries(
-    Object.entries(Widgets).filter(([, obj]) => {
-      return !['script'].includes(obj.loadType);
-    })
-  );
-}
 export { Widgets };

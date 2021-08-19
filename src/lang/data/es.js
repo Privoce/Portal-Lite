@@ -141,8 +141,8 @@ const es = {
           submit: 'Enviar'
         }
       },
-      ['vera-history']: {
-        title: 'My Vera History'
+      ['webrowse']: {
+        title: 'My webrowse History'
       }
     }
   }
