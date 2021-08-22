@@ -27,6 +27,9 @@ const VeraTransfer = lazy(() =>
 const WebrowseTransfer = lazy(() =>
   import(/* webpackChunkName: "page.webrowse.transfer" */ './page/Transfer/webrowse')
 );
+const ZoomTransfer = lazy(() =>
+  import(/* webpackChunkName: "page.zoom.transfer" */ './page/Transfer/zoom')
+);
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
 
@@ -66,6 +69,9 @@ function App() {
                 </Route>
                 <Route exact path="/transfer/wb/:id/:dest">
                   <WebrowseTransfer />
+                </Route>
+                <Route exact path="/transfer/zoom">
+                  <ZoomTransfer />
                 </Route>
                 <Route exact path="/oauth/:app">
                   <OAuth />
