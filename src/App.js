@@ -30,6 +30,9 @@ const WebrowseTransfer = lazy(() =>
 const ZoomTransfer = lazy(() =>
   import(/* webpackChunkName: "page.zoom.transfer" */ './page/Transfer/zoom')
 );
+const UserInfoTransfer = lazy(() =>
+  import(/* webpackChunkName: "page.user.transfer" */ './page/Transfer/userInfo')
+);
 const NotFound = lazy(() => import(/* webpackChunkName: "page.404" */ './page/NotFound'));
 // import PageTitle from './component/PageTitle';
 
@@ -72,6 +75,9 @@ function App() {
                 </Route>
                 <Route exact path="/transfer/zoom">
                   <ZoomTransfer />
+                </Route>
+                <Route exact path="/transfer/user/:product">
+                  <UserInfoTransfer />
                 </Route>
                 <Route exact path="/oauth/:app">
                   <OAuth />
