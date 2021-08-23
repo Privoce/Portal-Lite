@@ -12,13 +12,14 @@ import Footer from '../../component/Footer'
 const StyledWrapper = styled.section`
   background-color: #fff;
   width: 100%;
-  height: 80vh;
   display: flex;
   flex-direction: column;
   gap:.5rem;
   justify-content: center;
   align-items: center;
   font-size: .24rem;
+  padding-top:.4rem;
+  overflow: scroll;
   >.title{
     font-size: .4rem;
     font-weight: 800;
