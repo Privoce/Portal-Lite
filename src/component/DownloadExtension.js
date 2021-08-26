@@ -2,11 +2,11 @@
 import styled from 'styled-components';
 const StyledWrapper = styled.section`
   height: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding:1rem 0;
   .logo {
     width: 1.2rem;
     height: 1.2rem;
@@ -58,6 +58,7 @@ export default function DownloadExtension({ page = true, logo = "https://static.
         {tip}
       </div>
       <a
+        target="_blank"
         href={installLink}
         className="download"
       >

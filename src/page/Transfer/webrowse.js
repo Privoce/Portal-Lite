@@ -8,7 +8,6 @@ import DownloadExt from '../../component/DownloadExtension';
 import { appId, appHost } from '../../InitialConfig';
 const StyledTip = styled.section`
   width: 100%;
-  /* height: 80vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,13 +60,27 @@ export default function WebrowseTransfer() {
   let extId = new URLSearchParams(location.search).get('extid');
   let wid = new URLSearchParams(location.search).get('wid');
   useEffect(() => {
-    const check = async () => {
+    const startCheck = async () => {
       let installed = await checkExtensionInstalled(extId);
       console.log({ extId, installed });
       setCheckResult(installed);
+      // // 如果没安装，循环检测
+      // if (!installed) {
+      //   setTimeout(startCheck, 1000)
+      // }
     };
-    check();
-  }, []);
+    startCheck();
+    const handleVisibleChange = () => {
+      // 激活一次，执行一次
+      if (!document.hidden) {
+        startCheck()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibleChange, false);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibleChange, false)
+    }
+  }, [extId]);
   useEffect(() => {
     const init = async () => {
       let decodedUrl = decodeURIComponent(dest);
