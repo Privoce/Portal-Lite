@@ -61,13 +61,23 @@ export default function VeraTransfer() {
   let extId = new URLSearchParams(location.search).get('extid');
   let wid = new URLSearchParams(location.search).get('wid');
   useEffect(() => {
-    const check = async () => {
+    const startCheck = async () => {
       let installed = await checkExtensionInstalled(extId);
       console.log({ extId, installed });
       setCheckResult(installed);
     };
-    check();
-  }, []);
+    startCheck();
+    const handleVisibleChange = () => {
+      // 激活一次，执行一次
+      if (!document.hidden) {
+        startCheck()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibleChange, false);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibleChange, false)
+    }
+  }, [extId]);
   useEffect(() => {
     const init = async () => {
       let decodedUrl = decodeURIComponent(dest);
