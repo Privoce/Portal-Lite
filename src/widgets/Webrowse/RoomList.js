@@ -105,7 +105,12 @@ const StyledList = styled.section`
             height:.2rem;
             margin-right: .1rem;
           }
-
+          .title{
+            white-space: nowrap;
+            max-width: 3.4rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
         }
       }
     }
