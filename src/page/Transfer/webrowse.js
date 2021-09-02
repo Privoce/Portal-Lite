@@ -48,8 +48,9 @@ const Result = ({ children }) => (
     {children}
   </StyledTip>
 );
+const LandingUrl = 'https://webrow.se/landing/';
 export default function WebrowseTransfer() {
-  const { id, dest } = useParams();
+  const { rid } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
   const [tip, setTip] = useState('');
   const { authClient } = useAuthing({
@@ -83,25 +84,23 @@ export default function WebrowseTransfer() {
   }, [extId]);
   useEffect(() => {
     const init = async () => {
-      let decodedUrl = decodeURIComponent(dest);
-      let currUrl = new URL(decodedUrl);
-      if (id) {
+      if (rid) {
         let user = await authClient.getCurrentUser();
         if (user) {
           // 把用户信息同步到webrowse扩展
           document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { user } }));
         }
-        document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { rid: id, wid } }));
+        document.dispatchEvent(new CustomEvent('WEBROWSE_ROOM_EVENT', { detail: { rid, wid } }));
         // 注入成功
-        location.href = currUrl;
+        location.href = LandingUrl;
       } else {
-        setTip(`Webrowse Transfer error: \n\r ${id}`);
+        setTip(`Webrowse Transfer error: \n\r ${rid}`);
       }
     };
     if (checkResult) {
       init();
     }
-  }, [dest, id, checkResult]);
+  }, [rid, checkResult]);
 
   //  location.href = jumpUrl;
   console.log({ checkResult });
