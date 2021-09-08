@@ -48,7 +48,7 @@ const Result = ({ children }) => (
     {children}
   </StyledTip>
 );
-const LandingUrl = 'https://webrow.se/landing/';
+const LandingUrl = 'https://webrow.se#howto';
 export default function WebrowseTransfer() {
   const { rid } = useParams();
   const [checkResult, setCheckResult] = useState(undefined);
