@@ -157,10 +157,10 @@ export default function RoomList({ username, lang = {}, toggleAddPopup }) {
       <div className="col rooms">
         <h2 className="title">Room</h2>
         {roomList.map(r => {
-          const { name, members } = r;
+          const { name, members = [] } = r;
           return <div onClick={handleRoomSelect.bind(null, r.id)} key={r.id} className={`box room ${currRoom?.id == r.id ? 'curr' : ''} ${r.active ? 'active' : ''}`}>
             <h3 className="name">{name}</h3>
-            {members.length !== 0 && <ul className="members">
+            {members && members.length !== 0 && <ul className="members">
               {members.map(m => {
                 return <li className="member" key={m.id} title={m.username}>
                   <img src={m.photo || m.avator} alt="member photo" />
