@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 // import axios from 'axios';
 import { SocialConnections } from '@authing/react-ui-components';
 
-import BaiduTongji from './component/BaiduTongji';
-
 // authing config
 export const appId = '6034a70af621af721e5320b9';
 export const appHost = 'https://portal-lite-china.authing.cn';
@@ -19,9 +17,6 @@ export const GuardConfig = {
   //   isShowChange: true
   // }
 };
-
-// Pushy config
-export const PushyAppId = '60eee1558abb33b02f642e81';
 
 function gtag() {
   window.dataLayer.push(arguments);
@@ -55,5 +50,5 @@ export default function InitialConfig() {
       window.removeEventListener('error', handleError, true);
     };
   }, []);
-  return <>{isProd && <BaiduTongji />}</>;
+  return null;
 }
