@@ -37,8 +37,12 @@ function useRoomList(username) {
   useEffect(() => {
     if (data && username) {
       let rooms = data?.portal_room;
-      let filtered_rooms = rooms.filter((r) => {
-        return r.host == username || r.creator == username || (r.members && r.members.some((m) => m.username == username));
+      let filtered_rooms = (rooms || []).filter((r) => {
+        return (
+          r.host == username ||
+          r.creator == username ||
+          (r.members && r.members.some((m) => m.username == username))
+        );
       });
       console.log({ filtered_rooms });
       setFiltered(filtered_rooms);

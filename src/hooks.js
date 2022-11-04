@@ -1,5 +1,5 @@
 // import { createLocalStorageStateHook } from 'use-local-storage-state';
-import createPersistedState from 'use-persisted-state';
+import { useLocalstorageState } from 'rooks';
 import { useState, useEffect, useCallback } from 'react';
 import { useAuthing } from '@authing/react-ui-components';
 import { appId, appHost } from './InitialConfig';
@@ -52,12 +52,10 @@ const useWidgets = (keys = null) => {
 };
 // 小组件的本地设置
 const LOCAL_WG_SETTINGS_KEY = 'WIDGET_SETTINGS_DATA';
-const useLocalSettings = createPersistedState(LOCAL_WG_SETTINGS_KEY);
 const defaultGetParams = { key: 'local', name: 'common' };
 
-// const useLocalSettings = createLocalStorageStateHook(LOCAL_WG_SETTINGS_KEY, null);
 const useWidgetSettings = () => {
-  const [widgetSettings, setWidgetSettings] = useLocalSettings();
+  const [widgetSettings, setWidgetSettings] = useLocalstorageState(LOCAL_WG_SETTINGS_KEY, {});
   const { authClient } = useAuthing({
     appId,
     appHost

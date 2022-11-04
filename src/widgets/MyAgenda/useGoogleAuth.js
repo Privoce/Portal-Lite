@@ -19,8 +19,12 @@ const formatEvents = (evts = [], calendars) => {
         organizer
       } = evt;
       let { email } = creator || organizer || {};
-      const { id: calendarId, backgroundColor, foregroundColor, readOnly } =
-        calendars.find(({ id }) => id == email) || {};
+      const {
+        id: calendarId,
+        backgroundColor,
+        foregroundColor,
+        readOnly
+      } = calendars.find(({ id }) => id == email) || {};
       return {
         id,
         foregroundColor,
@@ -65,7 +69,7 @@ const addToGroup = (group, evt) => {
   return group;
 };
 const calendarListAPI = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
-const cid = process.env.REACT_APP_GOOGLE_CALENDAR_CID;
+const cid = import.meta.env.VITE_GOOGLE_CALENDAR_CID;
 const scopes = 'https://www.googleapis.com/auth/calendar';
 const useGoogleAuth = (localEvents = null, readonly = false) => {
   const [auth, setAuth] = useState(null);
@@ -149,15 +153,8 @@ const useGoogleAuth = (localEvents = null, readonly = false) => {
         const { items } = calendarResp.result;
         // let { id } = items.find((it) => it.primary);
         let initialCalendars = items.map((c) => {
-          let {
-            id,
-            summary,
-            description,
-            backgroundColor,
-            foregroundColor,
-            primary,
-            accessRole
-          } = c;
+          let { id, summary, description, backgroundColor, foregroundColor, primary, accessRole } =
+            c;
           // 首次load均设置checked为true
           return {
             id,

@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-// import Navs from './SwiperTabs/nav_data';
 import { useWidgetSettings } from '../../hooks';
 
 // 导航
 const useNavData = (widgetName = '', defaultData) => {
-  // const [histories, setHistories] = useState([]);
   const histories = [];
   const { getWidgetSetting, updateWidgetSetting } = useWidgetSettings();
   const initialData = defaultData?.local || getWidgetSetting({ name: widgetName }) || [];

@@ -1,0 +1,1 @@
+import{u as a}from"./index.esm.31b1f64b.js";const c=(...r)=>fetch(...r).then(t=>t.json());function d(r){const{data:t,error:e}=a(r,c),{code:n,data:o=null,msg:s}=t||{};return{data:o,loading:!e&&!o,error:n!==0?s:e}}export{d as u};
